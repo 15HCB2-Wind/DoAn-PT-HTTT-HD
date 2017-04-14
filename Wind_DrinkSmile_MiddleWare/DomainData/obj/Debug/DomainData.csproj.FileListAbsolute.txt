@@ -1,0 +1,8 @@
+C:\Users\19101994\Desktop\DomainData\DomainData\bin\Debug\DomainData.dll
+C:\Users\19101994\Desktop\DomainData\DomainData\bin\Debug\DomainData.pdb
+C:\Users\19101994\Desktop\DomainData\DomainData\obj\Debug\DomainData.dll
+C:\Users\19101994\Desktop\DomainData\DomainData\obj\Debug\DomainData.pdb
+C:\Users\19101994\Desktop\MiddleWare\DomainData\bin\Debug\DomainData.dll
+C:\Users\19101994\Desktop\MiddleWare\DomainData\bin\Debug\DomainData.pdb
+C:\Users\19101994\Desktop\MiddleWare\DomainData\obj\Debug\DomainData.dll
+C:\Users\19101994\Desktop\MiddleWare\DomainData\obj\Debug\DomainData.pdb
