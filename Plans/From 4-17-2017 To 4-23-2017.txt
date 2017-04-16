@@ -1,0 +1,7 @@
+Từ ngày 17/4/2017 đến 20/4/2017 để các bạn làm đồ án giữa kỳ môn Lập trình Mobile.
+Từ ngày 21/4/2017 đến 23/4/2017 kế hoạch như sau:
+	-	Tú (1542287): Làm giao diện đăng nhập.
+	-	Phong/Tín/Tuấn Anh/Trung Hiếu (1542255/1542276/1542205/1542227): Làm phần còn lại của MiddleWare theo mẫu 2 bảng đã có trước đó.
+	(MiddleWare của nhóm đã bao gồm DataService để cung cấp data cho các service xử lý nghiệp vụ bên trên)
+	
+*Kế hoạch có thể thay đổi tùy theo tình huống hoặc các trường hợp bất ngờ từ các môn khác.
