@@ -16,3 +16,6 @@ C:\Users\19101994\Desktop\MiddleWare\ConsoleTest\bin\Debug\Configs.pdb
 C:\Users\19101994\Desktop\MiddleWare\ConsoleTest\bin\Debug\DataAccess.pdb
 C:\Users\19101994\Desktop\MiddleWare\ConsoleTest\obj\Debug\ConsoleTest.exe
 C:\Users\19101994\Desktop\MiddleWare\ConsoleTest\obj\Debug\ConsoleTest.pdb
+C:\Users\19101994\Documents\GitHub\DoAn-PT-HTTT-HD\Wind_DrinkSmile_MiddleWare\ConsoleTest\bin\Debug\ConsoleTest.exe.config
+C:\Users\19101994\Documents\GitHub\DoAn-PT-HTTT-HD\Wind_DrinkSmile_MiddleWare\ConsoleTest\obj\Debug\ConsoleTest.exe
+C:\Users\19101994\Documents\GitHub\DoAn-PT-HTTT-HD\Wind_DrinkSmile_MiddleWare\ConsoleTest\obj\Debug\ConsoleTest.pdb
