@@ -1,5 +1,0 @@
-C:\Users\19101994\Desktop\MiddleWare\Configs\bin\Debug\Configs.dll
-C:\Users\19101994\Desktop\MiddleWare\Configs\bin\Debug\Configs.pdb
-C:\Users\19101994\Desktop\MiddleWare\Configs\obj\Debug\Configs.dll
-C:\Users\19101994\Desktop\MiddleWare\Configs\obj\Debug\Configs.pdb
-C:\Users\19101994\Desktop\MiddleWare\Configs\obj\Debug\Configs.csprojResolveAssemblyReference.cache
