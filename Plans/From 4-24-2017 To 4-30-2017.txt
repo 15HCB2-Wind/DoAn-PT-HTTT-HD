@@ -1,7 +1,0 @@
-Từ ngày 24/4/2017 đến 25/4/2017:
-	-	Để các bạn làm bài tập Mobile.
-	-	Tìm hiểu JSP hoặc Servlet, phân chia các service nào nên làm trên java / c#.
-Từ ngày 26/4/2017 đến 30/4/2017:
-	-	...
-	
-*Kế hoạch có thể thay đổi tùy theo tình huống hoặc các trường hợp bất ngờ từ các môn khác.
