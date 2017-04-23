@@ -8,6 +8,16 @@ namespace DataAccess.Repositories
 {
     public class PhanCongRepository: DataAccessInsertUpdate<PhanCong>
     {
+        #region Singleton
+        private PhanCongRepository() { }
+        private static PhanCongRepository _singleton;
+        public static PhanCongRepository GetInstance()
+        {
+            if (_singleton == null)
+                _singleton = new PhanCongRepository();
+            return _singleton;
+        }
+        #endregion
         protected override string SQL_insert(PhanCong addingObject)
         {
             return string.Format("insert into PhanCong(MaPhanCong,NgayBatDau,NgayKetThuc,NgayTrongTuan,MaNV,MaChuong) values " +

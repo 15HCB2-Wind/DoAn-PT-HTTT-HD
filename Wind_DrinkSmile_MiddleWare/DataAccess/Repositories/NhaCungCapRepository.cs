@@ -8,6 +8,16 @@ namespace DataAccess.Repositories
 {
     public class NhaCungCapRepository : DataAccessInsertUpdate<NhaCungCap>
     {
+        #region Singleton
+        private NhaCungCapRepository() { }
+        private static NhaCungCapRepository _singleton;
+        public static NhaCungCapRepository GetInstance()
+        {
+            if (_singleton == null)
+                _singleton = new NhaCungCapRepository();
+            return _singleton;
+        }
+        #endregion
         protected override string SQL_insert(NhaCungCap addingObject)
         {
             return string.Format("insert into NhaCungCap(MaNCC,TenNCC,TinhTrang,DiaChi) values ('{0}',N'{1}',N'{2}',N'{3}')",
