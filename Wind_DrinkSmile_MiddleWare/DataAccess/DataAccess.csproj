@@ -43,7 +43,11 @@
   <ItemGroup>
     <Compile Include="DataAccessInterfaces.cs" />
     <Compile Include="DataProvider.cs" />
+    <Compile Include="Repositories\ChuongTraiRepository.cs" />
+    <Compile Include="Repositories\KhoSuaRepository.cs" />
+    <Compile Include="Repositories\NhaCungCapRepository.cs" />
     <Compile Include="Repositories\NhanVienRepository.cs" />
+    <Compile Include="Repositories\PhanCongRepository.cs" />
     <Compile Include="Repositories\PhanQuyenRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlDataReaderExt.cs" />
