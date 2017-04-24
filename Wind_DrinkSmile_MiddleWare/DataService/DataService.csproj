@@ -78,6 +78,10 @@
   <ItemGroup>
     <Compile Include="App_Start\CentralizedPrefixProvider.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\BaoCaoTinhTrangBoAPIController.cs" />
+    <Compile Include="Controllers\BaoCaoXuatAPIController.cs" />
+    <Compile Include="Controllers\BoAPIController.cs" />
+    <Compile Include="Controllers\ChamSocAPIController.cs" />
     <Compile Include="Controllers\NhanVienAPIController.cs" />
     <Compile Include="Controllers\PhanQuyenAPIController.cs" />
     <Compile Include="Global.asax.cs">
