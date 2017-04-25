@@ -1,0 +1,58 @@
+﻿@using FrontEnd_DrinkSmile.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "Đăng nhập";
+}
+<div class="row">
+    <div class="offset-lg-3 col-lg-6 offset-md-2 col-md-8 offset-sm-1 col-sm-10 col-xs-12 mt-2">
+        <div class="card" id="loginForm">
+            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "card-block", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="form-header bg-primary">
+                    <h3><i class="fa fa-sign-in"></i> Đăng nhập</h3>
+                </div>
+                @Html.ValidationSummary(true, "", new { @class = "text-danger text-center" })
+
+                <div class="md-form">
+                    <i class="fa fa-server prefix"></i>
+                    <select class="mdb-select colorful-select dropdown-primary">
+                        <option value="1">Miền Bắc</option>
+                        <option value="2">Miền Trung</option>
+                        <option value="3">Miền Nam</option>
+                    </select>
+                    <label>Server</label>
+                </div>
+                <div class="md-form">
+                    <i class="fa fa-envelope prefix"></i>
+                    @Html.TextBoxFor(m => m.Email, new { @id = "email", @class = "form-control" })
+                    @Html.LabelFor(m => m.Email, new { @for = "email" })
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                </div>
+                <div class="md-form">
+                    <i class="fa fa-lock prefix"></i>
+                    @Html.PasswordFor(m => m.Password, new { @id = "pass", @class = "form-control" })
+                    @Html.LabelFor(m => m.Password, new { @for = "pass" })
+                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Đăng nhập</button>
+                </div>
+            }
+            <div class="modal-footer">
+                <div class="options">
+                    @*<p>Chưa có tài khoản? @Html.ActionLink("Đăng ký", "Register")</p>*@
+                    <p>@Html.ActionLink("Quên mật khẩu?", "ForgotPassword")</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+            $('.mdb-select').material_select();
+        });
+    </script>
+}

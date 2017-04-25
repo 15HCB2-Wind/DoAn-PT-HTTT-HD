@@ -1,0 +1,6 @@
+/* YOUR CUSTOM STYLES */
+main { margin-bottom: 50px }
+input:-webkit-autofill { -webkit-box-shadow: 0 0 0 50px white inset !important }
+button.navbar-toggler { padding-right: 0px }
+.field-validation-error,
+.mdb-select { margin-left: 3rem }
