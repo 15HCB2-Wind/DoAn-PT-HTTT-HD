@@ -78,7 +78,11 @@
   <ItemGroup>
     <Compile Include="App_Start\CentralizedPrefixProvider.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\ChuongTraiAPIController.cs" />
+    <Compile Include="Controllers\KhoSuaAPIController.cs" />
+    <Compile Include="Controllers\NhaCungCapAPIController.cs" />
     <Compile Include="Controllers\NhanVienAPIController.cs" />
+    <Compile Include="Controllers\PhanCongAPIController.cs" />
     <Compile Include="Controllers\PhanQuyenAPIController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
