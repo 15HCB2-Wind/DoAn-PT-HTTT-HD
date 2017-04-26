@@ -8,15 +8,9 @@ namespace FrontEnd_DrinkSmile.Controllers
 {
     public class HomeController : Controller
     {
-        //public ActionResult Index()
-        //{
-        //    return View();
-        //}
-
-        [Authorize]
         public ActionResult Index()
         {
-            return RedirectToAction("Index", "KhoanTien");
+            return View();
         }
 
         public ActionResult About()

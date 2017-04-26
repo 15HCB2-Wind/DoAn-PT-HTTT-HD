@@ -1,12 +1,11 @@
-﻿@using Microsoft.AspNet.Identity
-@if (Request.IsAuthenticated)
+﻿@if (Request.IsAuthenticated)
 {
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "hidden" }))
     {
         @Html.AntiForgeryToken()
     }
     <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" data-toggle="dropdown">@User.Identity.GetUserName()</a>
+        <a class="nav-link dropdown-toggle" data-toggle="dropdown">Name</a>
         <div class="dropdown-menu dropdown-menu-right">
             <a class="dropdown-item" href="@Url.Action("ChangePassword", "Manage")"><i class="fa fa-refresh fa-fw"></i> Đổi mật khẩu</a>
             <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()"><i class="fa fa-sign-out fa-fw"></i> Đăng xuất</a>
