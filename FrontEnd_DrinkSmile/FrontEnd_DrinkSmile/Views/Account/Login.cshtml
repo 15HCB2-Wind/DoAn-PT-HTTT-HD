@@ -10,8 +10,8 @@
                 <div class="form-header bg-primary">
                     <h3><i class="fa fa-sign-in"></i> Đăng nhập</h3>
                 </div>
-                @Html.ValidationSummary(true, "", new { @class = "text-danger text-center" })
-
+                @Html.ValidationSummary(true, "", new { @id = "error", @class = "text-danger text-center" })
+                <p id="error" class="text-danger text-center"></p>
                 <div class="md-form">
                     <i class="fa fa-server prefix"></i>
                     <select class="mdb-select colorful-select dropdown-primary">
@@ -24,12 +24,12 @@
                 <div class="md-form">
                     <i class="fa fa-envelope prefix"></i>
                     <input id="username" class="form-control" type="text" name="username" />
-                    <label id="username_error" for="username">Username</label>
+                    <label for="username">Username</label>
                 </div>
                 <div class="md-form">
                     <i class="fa fa-lock prefix"></i>
                     <input id="password" class="form-control" type="password" name="password" />
-                    <label id="password_error" for="password">Password</label>
+                    <label for="password">Password</label>
                 </div>
                 <div class="text-center">
                     <button type="button" class="btn btn-primary" id="btn_login">
@@ -54,7 +54,7 @@
             $('#btn_login').click(function () {
                 $.ajax({
                     type: 'post',
-                    dataType: 'jsonp',
+                    dataType: 'json',
                     data: { Username: $('#username').val(), Password: $('#password').val() },
                     url: 'http://192.168.22.140:28288/account/login',
                     beforeSend: function () {
@@ -64,7 +64,18 @@
                         $('#loader').hide();
                     },
                     success: function (data) {
-                        console.log(data);
+                        if (data.IsError) {
+                            $("#error").show();
+                            $("#error").text(data.Errors[0]);
+                        }
+                        else {
+                            Cookies.set("role", data._PhanQuyen.CapPQ);
+                            Cookies.set("manv", data.MaNV);
+                            location.href = "/Home/Index";
+                        }
+                    },
+                    error: function (data) {
+                        
                     }
                 });
             });
