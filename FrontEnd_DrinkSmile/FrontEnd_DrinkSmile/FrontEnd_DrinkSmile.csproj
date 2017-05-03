@@ -111,6 +111,9 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Manager\ManagerAreaRegistration.cs" />
+    <Compile Include="Areas\Staff\StaffAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -151,6 +154,9 @@
     <Content Include="fonts\Roboto-Thin.eot" />
     <Content Include="fonts\Roboto-Thin.ttf" />
     <Content Include="fonts\Roboto-Thin.woff" />
+    <Content Include="Areas\Admin\Views\web.config" />
+    <Content Include="Areas\Manager\Views\web.config" />
+    <Content Include="Areas\Staff\Views\web.config" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -190,6 +196,15 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Admin\Controllers\" />
+    <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Areas\Admin\Views\Shared\" />
+    <Folder Include="Areas\Manager\Controllers\" />
+    <Folder Include="Areas\Manager\Models\" />
+    <Folder Include="Areas\Manager\Views\Shared\" />
+    <Folder Include="Areas\Staff\Controllers\" />
+    <Folder Include="Areas\Staff\Models\" />
+    <Folder Include="Areas\Staff\Views\Shared\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
