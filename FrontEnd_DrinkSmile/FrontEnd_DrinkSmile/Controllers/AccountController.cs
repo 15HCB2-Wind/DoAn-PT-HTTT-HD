@@ -20,13 +20,12 @@ namespace FrontEnd_DrinkSmile.Controllers
         {
             if (Request.Cookies["manv"] != null)
             {
-                HttpCookie MaNV = new HttpCookie("manv");
-                MaNV.Expires = DateTime.Now.AddDays(-1d);
-                Response.Cookies.Add(MaNV);
-
-                HttpCookie Role = new HttpCookie("role");
-                Role.Expires = DateTime.Now.AddDays(-1d);
-                Response.Cookies.Add(Role);
+                foreach (var cookie in Request.Cookies.AllKeys)
+                {
+                    var c = Request.Cookies[cookie];
+                    c.Expires = DateTime.Now.AddDays(-1);
+                    Response.Cookies.Add(c);
+                }
             }
             return RedirectToAction("Login", "Account");
         }

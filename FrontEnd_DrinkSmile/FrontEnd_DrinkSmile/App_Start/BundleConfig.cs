@@ -10,7 +10,7 @@ namespace FrontEnd_DrinkSmile
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js",
-                        "~/Scripts/jquery.cookie.js"));
+                        "~/Scripts/js.cookie.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
@@ -21,7 +21,8 @@ namespace FrontEnd_DrinkSmile
                       //"~/Scripts/respond.min.js",
                       //"~/Scripts/bootstrap.min.js",
                       "~/Scripts/compiled.min.js",
-                      "~/Scripts/style.js"));
+                      "~/Scripts/config_hosts.js",
+                      "~/Scripts/helper.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.min.css",

@@ -14,10 +14,9 @@
                 <p id="error" class="text-danger text-center"></p>
                 <div class="md-form">
                     <i class="fa fa-server prefix"></i>
-                    <select class="mdb-select colorful-select dropdown-primary">
-                        <option value="1">Miền Bắc</option>
-                        <option value="2">Miền Trung</option>
-                        <option value="3">Miền Nam</option>
+                    <select class="mdb-select colorful-select dropdown-primary" id="area">
+                        <option value="hcm">Hồ Chí Minh</option>
+                        <option value="hn">Hà Nội</option>
                     </select>
                     <label>Server</label>
                 </div>
@@ -52,32 +51,53 @@
             $('.mdb-select').material_select();
             $('#loader').hide();
             $('#btn_login').click(function () {
-                $.ajax({
-                    type: 'post',
-                    dataType: 'json',
-                    data: { Username: $('#username').val(), Password: $('#password').val() },
-                    url: 'http://192.168.22.140:28288/account/login',
-                    beforeSend: function () {
-                        $('#loader').show();
-                    },
-                    complete: function () {
-                        $('#loader').hide();
-                    },
-                    success: function (data) {
+                //$.ajax({
+                //    type: 'post',
+                //    dataType: 'json',
+                //    data: { Username: $('#username').val(), Password: $('#password').val() },
+                //    url: 'http://192.168.22.140:28288/account/login',
+                //    beforeSend: function () {
+                //        $('#loader').show();
+                //    },
+                //    complete: function () {
+                //        $('#loader').hide();
+                //    },
+                //    success: function (data) {
+                //        if (data.IsError) {
+                //            $("#error").show();
+                //            $("#error").text(data.Errors[0]);
+                //        }
+                //        else {
+                //            Cookies.set("role", data._PhanQuyen.CapPQ);
+                //            Cookies.set("manv", data.MaNV);
+                //            Cookies.set("area", );
+                //            location.href = "/Home/Index";
+                //        }
+                //    },
+                //    error: function (data) {
+
+                //    }
+                //});
+                callAjax('post',
+                    { Username: $('#username').val(), Password: $('#password').val() },
+                    $('#area').val(), "login", "account/login",
+                    function (data) {
                         if (data.IsError) {
                             $("#error").show();
                             $("#error").text(data.Errors[0]);
                         }
                         else {
-                            Cookies.set("role", data._PhanQuyen.CapPQ);
-                            Cookies.set("manv", data.MaNV);
+                            Cookies.set("role", data.Data._PhanQuyen.CapPQ);
+                            Cookies.set("manv", data.Data.MaNV);
+                            Cookies.set("area", $('#area').val());
                             location.href = "/Home/Index";
                         }
                     },
-                    error: function (data) {
-                        
+                    function () {
+                        $("#error").show();
+                        $("#error").text("Không thể kết nối tới máy chủ");
                     }
-                });
+                );
             });
         });
     </script>
