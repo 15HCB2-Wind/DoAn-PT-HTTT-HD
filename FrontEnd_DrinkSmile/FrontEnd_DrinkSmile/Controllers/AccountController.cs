@@ -11,30 +11,36 @@ namespace FrontEnd_DrinkSmile.Controllers
         [AllowAnonymous]
         public ActionResult Login()
         {
-            if (Request.Cookies["manv"] != null)
+            if (Request.Cookies["token"] != null)
                 return RedirectToAction("Index", "Home");
             return View();
-        }
-
-        public ActionResult LogOff()
-        {
-            if (Request.Cookies["manv"] != null)
-            {
-                HttpCookie MaNV = new HttpCookie("manv");
-                MaNV.Expires = DateTime.Now.AddDays(-1d);
-                Response.Cookies.Add(MaNV);
-
-                HttpCookie Role = new HttpCookie("role");
-                Role.Expires = DateTime.Now.AddDays(-1d);
-                Response.Cookies.Add(Role);
-            }
-            return RedirectToAction("Login", "Account");
         }
 
         [AllowAnonymous]
         public ActionResult ForgotPassword()
         {
             return View();
+        }
+
+        public ActionResult LogOff()
+        {
+            if (Request.Cookies["token"] != null)
+            {
+                foreach (var cookie in Request.Cookies.AllKeys)
+                {
+                    var c = Request.Cookies[cookie];
+                    c.Expires = DateTime.Now.AddDays(-1);
+                    Response.Cookies.Add(c);
+                }
+            }
+            return RedirectToAction("Login", "Account");
+        }
+
+        public ActionResult ChangePassword()
+        {
+            if (Request.Cookies["token"] != null)
+                return View();
+            return RedirectToAction("Login", "Account");
         }
     }
 }

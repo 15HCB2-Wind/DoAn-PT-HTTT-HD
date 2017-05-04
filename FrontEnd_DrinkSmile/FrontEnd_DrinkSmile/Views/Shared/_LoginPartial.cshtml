@@ -1,22 +1,19 @@
-﻿@if (Request.Cookies["manv"] != null)
+﻿@if (Request.Cookies["token"] != null)
 {
-    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "hidden" }))
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "form_logoff", @class = "hidden" }))
     {
         @Html.AntiForgeryToken()
     }
     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" data-toggle="dropdown">Name</a>
         <div class="dropdown-menu dropdown-menu-right">
-            <a class="dropdown-item" href="@Url.Action("ChangePassword", "Manage")"><i class="fa fa-refresh fa-fw"></i> Đổi mật khẩu</a>
-            <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()"><i class="fa fa-sign-out fa-fw"></i> Đăng xuất</a>
+            <a class="dropdown-item" href="@Url.Action("ChangePassword", "Account")"><i class="fa fa-refresh fa-fw"></i> Đổi mật khẩu</a>
+            <a class="dropdown-item" href="javascript:document.getElementById('form_logoff').submit()"><i class="fa fa-sign-out fa-fw"></i> Đăng xuất</a>
         </div>
     </li>
 }
 else
 {
-    @*<li class="nav-item">
-            <a href="@Url.Action("Register","Account")" id="registerLink" class="nav-link"><i class="fa fa-pencil-square-o"></i> Đăng ký</a>
-        </li>*@
     <li class="nav-item">
         <a href="@Url.Action("Login", "Account")" id="loginLink" class="nav-link"><i class="fa fa-sign-in"></i> Đăng nhập</a>
     </li>

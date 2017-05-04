@@ -10,7 +10,7 @@ namespace FrontEnd_DrinkSmile.Controllers
     {
         public ActionResult Index()
         {
-            if (Request.Cookies["role"] != null && Request.Cookies["manv"] != null)
+            if (Request.Cookies["role"] != null && Request.Cookies["token"] != null)
                 return View();
             return RedirectToAction("Login", "Account");
         }
