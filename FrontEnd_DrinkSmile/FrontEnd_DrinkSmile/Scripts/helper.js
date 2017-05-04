@@ -1,4 +1,4 @@
-﻿function callAjax(type, data, areaId, whichService, url, successCallback, errorCallback){
+﻿function callAjax(type, data, areaId, whichService, url, successCallback){
     $.ajax({
         type: type,
         dataType: 'json',
@@ -11,6 +11,9 @@
             $('#loader').hide();
         },
         success: successCallback,
-        error: errorCallback
+        error: function () {
+            $("#error").show();
+            $("#error").text("Không thể kết nối tới máy chủ");
+        }
     });
 }

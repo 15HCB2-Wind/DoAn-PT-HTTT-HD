@@ -11,14 +11,20 @@ namespace FrontEnd_DrinkSmile.Controllers
         [AllowAnonymous]
         public ActionResult Login()
         {
-            if (Request.Cookies["manv"] != null)
+            if (Request.Cookies["token"] != null)
                 return RedirectToAction("Index", "Home");
+            return View();
+        }
+
+        [AllowAnonymous]
+        public ActionResult ForgotPassword()
+        {
             return View();
         }
 
         public ActionResult LogOff()
         {
-            if (Request.Cookies["manv"] != null)
+            if (Request.Cookies["token"] != null)
             {
                 foreach (var cookie in Request.Cookies.AllKeys)
                 {
@@ -30,10 +36,11 @@ namespace FrontEnd_DrinkSmile.Controllers
             return RedirectToAction("Login", "Account");
         }
 
-        [AllowAnonymous]
-        public ActionResult ForgotPassword()
+        public ActionResult ChangePassword()
         {
-            return View();
+            if (Request.Cookies["token"] != null)
+                return View();
+            return RedirectToAction("Login", "Account");
         }
     }
 }
