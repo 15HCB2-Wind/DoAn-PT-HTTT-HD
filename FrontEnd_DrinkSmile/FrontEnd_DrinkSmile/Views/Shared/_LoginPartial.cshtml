@@ -1,4 +1,4 @@
-﻿@if (Request.Cookies["manv"] != null)
+﻿@if (Request.Cookies["token"] != null)
 {
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "form_logoff", @class = "hidden" }))
     {
