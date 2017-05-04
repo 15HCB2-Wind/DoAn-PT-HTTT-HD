@@ -86,10 +86,12 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountAPIController.cs" />
-    <Compile Include="ErrorHandler\AccountAPIChecker.cs" />
+    <Compile Include="BusinessHandler\AccountAPIChecker.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Security.cs" />
+    <Compile Include="Helpers\Token.cs" />
     <Compile Include="Models\BodyRequests.cs" />
     <Compile Include="Models\BodyResponses.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -107,6 +109,10 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Configs\Configs.csproj">
+      <Project>{d06ec681-41bc-4483-902e-7f75af66ba4e}</Project>
+      <Name>Configs</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DataAccess\DataAccess.csproj">
       <Project>{0313e0bd-1ad2-4954-ac53-dd92ee1b9fa5}</Project>
       <Name>DataAccess</Name>

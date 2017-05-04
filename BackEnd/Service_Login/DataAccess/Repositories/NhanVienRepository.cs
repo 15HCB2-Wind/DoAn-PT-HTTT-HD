@@ -31,10 +31,12 @@ namespace DataAccess.Repositories
                     return new NhanVien()
                     {
                         MaNV = row.GetValueDefault<string>(0),
-                        _PhanQuyen = PhanQuyenRepository.GetInstance().GetFrom(row.GetValueDefault<string>(1)),
+                        HoTen = row.GetValueDefault<string>(1),
+                        TenTaiKhoan = row.GetValueDefault<string>(2),
+                        Email = row.GetValueDefault<string>(3),
+                        CapPQ = row.GetValueDefault<int>(4),
                     };
-
-                }, string.Format("select top 1 nv.manv, nv.mapq from nhanvien nv where nv.tentaikhoan = '{0}' and nv.matkhau = '{1}'", username, password));
+                }, string.Format("select top 1 nv.manv, nv.hoten, nv.tentaikhoan, nv.email, nv.cappq from nhanvien nv where nv.tentaikhoan = '{0}' and nv.matkhau = '{1}'", username, password));
             }
             catch (Exception ex)
             {
@@ -48,7 +50,74 @@ namespace DataAccess.Repositories
             int result = -1;
             try
             {
-                result = DataProvider.ExecuteNonQuery(string.Format("insert into nhanvien(manv, tentaikhoan, matkhau, mapq, email) values ('{0}', '{1}', '{2}', '{3}', '{4}')", obj.MaNV, obj.TenTaiKhoan, obj.MatKhau, obj.MaPQ, obj.Email));
+                result = DataProvider.ExecuteNonQuery(string.Format("insert into nhanvien(manv, tentaikhoan, matkhau, cappq, email) values ('{0}', '{1}', '{2}', '{3}', '{4}')", obj.MaNV, obj.TenTaiKhoan, obj.MatKhau, obj.CapPQ, obj.Email));
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+        }
+
+        public int Update(NhanVien obj)
+        {
+            int result = -1;
+            try
+            {
+                result = DataProvider.ExecuteNonQuery(string.Format("update nhanvien set tentaikhoan = '{1}', matkhau = '{2}', cappq = '{3}', email = '{4}' where manv = '{0}'", obj.MaNV, obj.TenTaiKhoan, obj.MatKhau, obj.CapPQ, obj.Email));
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+        }
+
+        public int Delete(string id)
+        {
+            int result = -1;
+            try
+            {
+                result = DataProvider.ExecuteNonQuery(string.Format("delete from nhanvien where manv = '{0}'", id));
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+        }
+
+        public int ChangePass(string id, string oldp, string newp)
+        {
+            int result = -1;
+            try
+            {
+                var is_exist = DataProvider.ExecuteReaderOne((SqlDataReader row) =>
+                {
+                    return new NhanVien();
+                }, string.Format("select top 1 nv.manv from nhanvien nv where nv.manv = '{0}' and nv.matkhau = '{1}'", id, oldp));
+                if (is_exist != null)
+                {
+                    result = DataProvider.ExecuteNonQuery(string.Format("update nhanvien set matkhau = '{1}' where manv = '{0}'", id, newp));
+                }
+                else
+                {
+                    result = 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+        }
+
+        public int ChangePass(string id, string newp)
+        {
+            int result = -1;
+            try
+            {
+                result = DataProvider.ExecuteNonQuery(string.Format("update nhanvien set matkhau = '{1}' where manv = '{0}'", id, newp));
             }
             catch (Exception ex)
             {

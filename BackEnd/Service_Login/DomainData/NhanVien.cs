@@ -9,11 +9,10 @@ namespace DomainData
     public class NhanVien
     {
         public string MaNV { get; set; }
+        public string HoTen { get; set; }
         public string TenTaiKhoan { get; set; }
         public string MatKhau { get; set; }
         public string Email { get; set; }
-        public string MaPQ { get; set; }
-        //
-        public PhanQuyen _PhanQuyen { get; set; }
+        public int CapPQ { get; set; }
     }
 }

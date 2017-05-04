@@ -16,3 +16,12 @@ C:\Users\19101994\Desktop\BackEnd\Service_Login\DataAccess\obj\Debug\DataAccess.
 C:\Users\19101994\Desktop\BackEnd\Service_Login\DataAccess\obj\Debug\DataAccess.pdb
 C:\Users\19101994\Desktop\BackEnd\Service_Login\DataAccess\bin\Debug\Configs.dll
 C:\Users\19101994\Desktop\BackEnd\Service_Login\DataAccess\bin\Debug\Configs.pdb
+C:\Users\19101994\Documents\GitHub\DoAn-PT-HTTT-HD\BackEnd\Service_Login\DataAccess\bin\Debug\DataAccess.dll
+C:\Users\19101994\Documents\GitHub\DoAn-PT-HTTT-HD\BackEnd\Service_Login\DataAccess\bin\Debug\DataAccess.pdb
+C:\Users\19101994\Documents\GitHub\DoAn-PT-HTTT-HD\BackEnd\Service_Login\DataAccess\bin\Debug\Configs.dll
+C:\Users\19101994\Documents\GitHub\DoAn-PT-HTTT-HD\BackEnd\Service_Login\DataAccess\bin\Debug\DomainData.dll
+C:\Users\19101994\Documents\GitHub\DoAn-PT-HTTT-HD\BackEnd\Service_Login\DataAccess\bin\Debug\Configs.pdb
+C:\Users\19101994\Documents\GitHub\DoAn-PT-HTTT-HD\BackEnd\Service_Login\DataAccess\bin\Debug\DomainData.pdb
+C:\Users\19101994\Documents\GitHub\DoAn-PT-HTTT-HD\BackEnd\Service_Login\DataAccess\obj\Debug\DataAccess.dll
+C:\Users\19101994\Documents\GitHub\DoAn-PT-HTTT-HD\BackEnd\Service_Login\DataAccess\obj\Debug\DataAccess.pdb
+C:\Users\19101994\Documents\GitHub\DoAn-PT-HTTT-HD\BackEnd\Service_Login\DataAccess\obj\Debug\DataAccess.csprojResolveAssemblyReference.cache

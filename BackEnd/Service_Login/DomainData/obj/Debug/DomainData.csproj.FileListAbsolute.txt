@@ -7,3 +7,7 @@ C:\Users\19101994\Desktop\BackEnd\Service_Login\DomainData\bin\Debug\DomainData.
 C:\Users\19101994\Desktop\BackEnd\Service_Login\DomainData\bin\Debug\DomainData.pdb
 C:\Users\19101994\Desktop\BackEnd\Service_Login\DomainData\obj\Debug\DomainData.dll
 C:\Users\19101994\Desktop\BackEnd\Service_Login\DomainData\obj\Debug\DomainData.pdb
+C:\Users\19101994\Documents\GitHub\DoAn-PT-HTTT-HD\BackEnd\Service_Login\DomainData\bin\Debug\DomainData.dll
+C:\Users\19101994\Documents\GitHub\DoAn-PT-HTTT-HD\BackEnd\Service_Login\DomainData\bin\Debug\DomainData.pdb
+C:\Users\19101994\Documents\GitHub\DoAn-PT-HTTT-HD\BackEnd\Service_Login\DomainData\obj\Debug\DomainData.dll
+C:\Users\19101994\Documents\GitHub\DoAn-PT-HTTT-HD\BackEnd\Service_Login\DomainData\obj\Debug\DomainData.pdb

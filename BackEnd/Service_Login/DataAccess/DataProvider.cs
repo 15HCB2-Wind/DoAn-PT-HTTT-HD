@@ -13,7 +13,7 @@ public class DataProvider
     {
         get
         {
-            return Configs.Configs.CONNECTION_STRING;
+            return Configs.CONNECTION_STRING;
         }
     }
 
