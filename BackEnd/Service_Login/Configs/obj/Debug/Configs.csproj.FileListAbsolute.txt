@@ -1,0 +1,4 @@
+C:\Users\19101994\Desktop\BackEnd\Service_Login\Configs\bin\Debug\Configs.dll
+C:\Users\19101994\Desktop\BackEnd\Service_Login\Configs\bin\Debug\Configs.pdb
+C:\Users\19101994\Desktop\BackEnd\Service_Login\Configs\obj\Debug\Configs.dll
+C:\Users\19101994\Desktop\BackEnd\Service_Login\Configs\obj\Debug\Configs.pdb
