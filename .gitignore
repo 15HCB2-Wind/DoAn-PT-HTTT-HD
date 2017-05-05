@@ -12,3 +12,6 @@ FrontEnd_DrinkSmile/FrontEnd_DrinkSmile/bin/
 FrontEnd_DrinkSmile/.vs/
 FrontEnd_DrinkSmile/FrontEnd_DrinkSmile/obj/
 FrontEnd_DrinkSmile/FrontEnd_DrinkSmile/Project_Readme.html
+/BackEnd/Service_ImportExport/build/
+/BackEnd/Service_ImportExport/dist/
+/BackEnd/Service_ImportExport/nbproject/private/

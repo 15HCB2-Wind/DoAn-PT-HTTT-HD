@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated May 5, 2017 9:58:09 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="pojos.Phieunhapbo" table="phieunhapbo" catalog="service_importexport_drinksmile" optimistic-lock="version">
+        <id name="machungtu" type="string">
+            <column name="machungtu" length="10" />
+            <generator class="assigned" />
+        </id>
+        <property name="ngaylap" type="date">
+            <column name="ngaylap" length="10" />
+        </property>
+        <property name="ngaynhap" type="date">
+            <column name="ngaynhap" length="10" />
+        </property>
+        <property name="soluong" type="java.lang.Integer">
+            <column name="soluong" />
+        </property>
+        <property name="dahuy" type="java.lang.Boolean">
+            <column name="dahuy" />
+        </property>
+        <property name="mancc" type="string">
+            <column name="mancc" length="10" />
+        </property>
+        <property name="manv" type="string">
+            <column name="manv" length="10" />
+        </property>
+    </class>
+</hibernate-mapping>
