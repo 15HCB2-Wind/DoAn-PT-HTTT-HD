@@ -24,10 +24,10 @@
                     {
                         <ul class="navbar-nav mr-auto">
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" data-toggle="dropdown">@*<i class="fa fa-pencil-square-o"></i>*@Ghi chép</a>
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog fa-fw"></i>Quản lý sản xuất</a>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="@Url.Action("Index", "KhoanTien")"><i class="fa fa-money fa-fw"></i> Thu chi</a>
-                                    <a class="dropdown-item" href="@Url.Action("CreateTransfer", "KhoanTien")"><i class="fa fa-exchange fa-fw"></i> Chuyển khoản</a>
+                                    <a class="dropdown-item" href="@Url.Action("Index", "Cows", new { area = "Manage" })"><i class="fa fa-money fa-fw"></i> Bò</a>
+                                    <a class="dropdown-item" href="@Url.Action("Index", "Barns", new { area = "Manage" })"><i class="fa fa-exchange fa-fw"></i> Chuồng trại</a>
                                 </div>
                             </li>
                             <li class="nav-item">

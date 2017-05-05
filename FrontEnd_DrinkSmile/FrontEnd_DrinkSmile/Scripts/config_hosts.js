@@ -1,6 +1,6 @@
 ﻿var SERVICES = {
     "hcm": {
-        "login": "http://192.168.22.109:28288/",
+        "login": "http://192.168.22.158:28288/",
         "management": "",
         "import_export": "",
         "animal_care": "",

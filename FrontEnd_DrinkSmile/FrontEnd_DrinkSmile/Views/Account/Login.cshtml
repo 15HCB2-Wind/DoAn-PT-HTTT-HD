@@ -62,6 +62,7 @@
                         }
                         else {
                             Cookies.set("token", data.Data.Token);
+                            Cookies.set("name", data.Data.FullName);
                             Cookies.set("role", data.Data.PermissionLevel);
                             Cookies.set("area", $('#area').val());
                             location.href = "/Home/Index";
