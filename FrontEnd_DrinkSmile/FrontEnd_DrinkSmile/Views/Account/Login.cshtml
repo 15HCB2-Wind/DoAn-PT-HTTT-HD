@@ -57,6 +57,7 @@
                     $('#area').val(), "login", "account/login",
                     function (data) {
                         if (data.IsError) {
+                            toastr["error"](data.Errors[0]);
                             $("#error").show();
                             $("#error").text(data.Errors[0]);
                         }
