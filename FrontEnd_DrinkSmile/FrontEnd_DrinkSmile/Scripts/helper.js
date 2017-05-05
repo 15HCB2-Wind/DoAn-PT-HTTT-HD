@@ -6,9 +6,11 @@
         url: getAPI(areaId, whichService, url),
         beforeSend: function () {
             $('#loader').show();
+            $("fieldset").attr("disabled", "true");
         },
         complete: function () {
             $('#loader').hide();
+            $("fieldset").removeAttr("disabled");
         },
         success: function (data) {
             if (data.IsTokenTimeout) {
