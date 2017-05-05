@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated May 5, 2017 12:35:11 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="pojos.Bo" table="bo" catalog="service_management_drinksmile" optimistic-lock="version">
+        <id name="mabo" type="string">
+            <column name="mabo" length="10" />
+            <generator class="assigned" />
+        </id>
+        <property name="machip" type="string">
+            <column name="machip" length="10" />
+        </property>
+        <property name="mausac" type="string">
+            <column name="mausac" length="50" />
+        </property>
+        <property name="coditat" type="java.lang.Boolean">
+            <column name="coditat" />
+        </property>
+        <property name="nhandang" type="string">
+            <column name="nhandang" length="50" />
+        </property>
+        <property name="tinhtrang" type="string">
+            <column name="tinhtrang" length="50" />
+        </property>
+        <property name="daxoa" type="java.lang.Boolean">
+            <column name="daxoa" />
+        </property>
+        <property name="machuong" type="string">
+            <column name="machuong" length="10" />
+        </property>
+    </class>
+</hibernate-mapping>
