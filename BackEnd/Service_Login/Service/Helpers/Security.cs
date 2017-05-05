@@ -54,26 +54,26 @@ public static class Security
 
     public static string Encrypt(string str)
     {
-        byte[] a = Encoding.ASCII.GetBytes(KEY_CODE);
-        byte[] b = Encoding.ASCII.GetBytes(str);
+        byte[] a = Encoding.UTF8.GetBytes(KEY_CODE);
+        byte[] b = Encoding.UTF8.GetBytes(str);
         for (int i = 0; i < a.Length; i++)
         {
             if (i < b.Length)
                 a[i] += b[i];
         }
-        return Encoding.ASCII.GetString(a);
+        return Encoding.UTF8.GetString(a);
     }
 
     public static string Decrypt(string hash)
     {
-        byte[] a = Encoding.ASCII.GetBytes(hash);
-        byte[] b = Encoding.ASCII.GetBytes(KEY_CODE);
+        byte[] a = Encoding.UTF8.GetBytes(hash);
+        byte[] b = Encoding.UTF8.GetBytes(KEY_CODE);
         for (int i = 0; i < a.Length; i++)
         {
             if (i < b.Length)
                 a[i] -= b[i];
         }
-        return Encoding.ASCII.GetString(a);
+        return Encoding.UTF8.GetString(a);
     }
     #endregion
 }

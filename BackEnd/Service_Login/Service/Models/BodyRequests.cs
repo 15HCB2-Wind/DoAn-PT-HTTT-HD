@@ -8,8 +8,6 @@ namespace Service.Models
     public abstract class BodyRequest
     {
         public string Token { get; set; }
-        public object TokenPredicate1 { get; set; }
-        public object TokenPredicate2 { get; set; }
     }
 
     public class LoginBodyRequest : BodyRequest
@@ -37,6 +35,7 @@ namespace Service.Models
     public class SyncBodyRequest : BodyRequest
     {
         public string Id { get; set; }
+        public string FullName { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
         public string Email { get; set; }
@@ -44,5 +43,8 @@ namespace Service.Models
         public int SyncType { get; set; }
     }
 
-    public class CheckTokenBodyRequest : BodyRequest { }
+    public class CheckTokenBodyRequest : BodyRequest
+    {
+        public string TokenPassword { get; set; }
+    }
 }

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -25,7 +26,7 @@ namespace Service.BusinessHandler
             return !response.IsError;
         }
 
-        public static bool CPassValidate(CPassBodyRequest request, ref CPassBodyRessponse response)
+        public static bool CPassValidate(CPassBodyRequest request, ref CPassBodyResponse response)
         {
             if (string.IsNullOrEmpty(request.OldPassword))
             {
@@ -50,7 +51,7 @@ namespace Service.BusinessHandler
             return !response.IsError;
         }
 
-        public static bool CFPassValidate(CFPassBodyRequest request, ref CFPassBodyRessponse response)
+        public static bool CFPassValidate(CFPassBodyRequest request, ref CFPassBodyResponse response)
         {
             if (string.IsNullOrEmpty(request.NewPassword))
             {
@@ -65,32 +66,29 @@ namespace Service.BusinessHandler
             return !response.IsError;
         }
 
-        public static bool FPassValidate(FPassBodyRequest request, ref FPassBodyRessponse response)
+        public static bool FPassValidate(FPassBodyRequest request, ref FPassBodyResponse response)
         {
             return !response.IsError;
         }
 
-        public static bool TokenValidate(BodyRequest request)
+        public static void SyncPassword2ManagementServiceAsync(object obj)
         {
-            return Token.Validate(request.Token, (tokenValue, predicates) =>
+            var thread = new Thread((object t) =>
             {
-                try
+                int times = 10;
+                bool fail = true;
+                var client = new HttpClient();
+                do
                 {
-                    var tokenV = tokenValue as NhanVien;
-                    var userId = Convert.ToString(predicates[0]);
-                    var role = Convert.ToInt32(predicates[1]);
-                    return tokenV.MaNV.Equals(userId) && tokenV.CapPQ == role;
-                }
-                catch
-                {
-                    return false;
-                }
-            }, request.TokenPredicate1, request.TokenPredicate2);
-        }
-
-        public static async void SyncPassword2ManagementServiceAsync(string newp)
-        {
-            while (new HttpClient().PostAsync("http://localhost:29370/hcm/nhanvien/insert", new StringContent(JsonConvert.SerializeObject(newp), Encoding.UTF8, "application/json")).Result.StatusCode != HttpStatusCode.OK) { }
+                    try
+                    {
+                        fail = client.PostAsync(string.Format("{0}{1}", Configs.MANAGEMENT_SERVICE, "NhanVien/sync"), new StringContent(JsonConvert.SerializeObject(obj), Encoding.UTF8, "application/json")).Result.StatusCode != HttpStatusCode.OK;
+                    }
+                    catch { }
+                } while (fail && --times > 0);
+                (t as Thread).Abort();
+            });
+            thread.Start(thread);
         }
     }
 }
