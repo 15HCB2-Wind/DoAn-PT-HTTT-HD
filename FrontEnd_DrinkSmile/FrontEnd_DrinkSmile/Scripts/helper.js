@@ -6,42 +6,27 @@
         url: getAPI(areaId, whichService, url),
         beforeSend: function () {
             $('#loader').show();
+            $("#error").hide();
+            $("fieldset").attr("disabled", "true");
         },
         complete: function () {
             $('#loader').hide();
-        },
-        success: successCallback,
-        error: function () {
-            $("#error").show();
-            $("#error").text("Không thể kết nối tới máy chủ");
-        }
-    });
-}
-
-function callAjaxToken(type, data, whichService, url, successCallback) {
-    $.ajax({
-        type: 'post',
-        dataType: 'json',
-        data: { token: Cookies.get("token"), value: Cookies.get("role") },
-        url: getAPI(Cookies.get("area"), "login", "account/checktoken"),
-        beforeSend: function () {
-            $('#loader').show();
-        },
-        complete: function () {
-            $('#loader').hide();
+            $("fieldset").removeAttr("disabled");
         },
         success: function (data) {
-            if (data) {
-                callAjax(type, data, Cookies.get("area"), whichService, url, successCallback);
-            }
-            else {
+            if (data.IsTokenTimeout) {
                 Cookies.remove("token");
                 Cookies.remove("area");
+                Cookies.remove("name");
                 Cookies.remove("role");
                 location.href = "/Account/Login";
             }
+            else {
+                successCallback(data);
+            }
         },
         error: function () {
+            toastr["error"]("Không thể kết nối tới máy chủ !");
             $("#error").show();
             $("#error").text("Không thể kết nối tới máy chủ");
         }
