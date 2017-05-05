@@ -1,16 +1,7 @@
 package Ultility;
 
-import Config.ApplicationConfig;
 import java.io.*;
 import java.nio.charset.Charset;
-import java.security.InvalidKeyException;
-import java.security.MessageDigest;
-import java.security.*;
-import java.util.Arrays;
-
-import javax.crypto.*;
-import javax.crypto.spec.SecretKeySpec;
-
 
 public class Security {
     private static final String KEY_CODE = "&$@&$^OEWTMO$IFR&$OIFO#$JFK4MRFI*$UT";

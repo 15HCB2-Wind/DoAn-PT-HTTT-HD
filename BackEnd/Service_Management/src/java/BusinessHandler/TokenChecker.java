@@ -6,7 +6,6 @@
 package BusinessHandler;
 
 import Config.Configs;
-import DAO.PhanQuyenAdapter;
 import Models.BodyRequests;
 import Models.BodyResponses;
 import javax.ws.rs.client.Client;

@@ -5,7 +5,6 @@
  */
 package DAO;
 
-import Config.ApplicationConfig;
 import Config.Configs;
 import Models.ChangePasswordRequest;
 import Ultility.HibernateUtil;

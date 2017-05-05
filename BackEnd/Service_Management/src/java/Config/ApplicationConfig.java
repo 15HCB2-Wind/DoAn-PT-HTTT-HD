@@ -15,29 +15,11 @@ import javax.ws.rs.core.Application;
 @javax.ws.rs.ApplicationPath("webresources")
 public class ApplicationConfig extends Application {
 //Config URL
-    private String sync_IP = "http://192.168.22.158:28288/";
-    private String token_IP = "http://192.168.22.158:28288/";
-    private String sync_Nhanvien = "account/sync";
-    private String authenticate_token = "";
-    public static final String SECURITY_SECRET_KEY = "";
-    
     @Override
     public Set<Class<?>> getClasses() {
         Set<Class<?>> resources = new java.util.HashSet<>();
         addRestResourceClasses(resources);
         return resources;
-    }
-
-
-    /**
-     * @return the sync_Nhanvien
-     */
-    public String getSync_Nhanvien() {
-        return sync_IP + sync_Nhanvien;
-    }
-    
-    public String getAuthentication(){
-        return token_IP+authenticate_token;
     }
 
     private void addRestResourceClasses(Set<Class<?>> resources) {

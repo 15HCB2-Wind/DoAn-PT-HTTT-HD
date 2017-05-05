@@ -5,9 +5,6 @@
  */
 package DAO;
 
-import Ultility.HibernateUtil;
-import java.util.List;
-import pojos.*;
 
 /**
  *
