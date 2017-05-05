@@ -5,11 +5,11 @@
  */
 package Models;
 
+import pojos.Nhanvien;
+
 /**
  *
  * @author Shin'sLaptop
  */
-public abstract class BodyRequests<T> {
-    public String Token;
-    public T Data;
+public class UpdatePersonnelRequest extends BodyRequests<Nhanvien> {
 }

@@ -7,25 +7,16 @@ package Services;
 
 import DAO.NhanVienAdapter;
 import Models.ChangePasswordRequest;
-import Models.UpdatePersonnelBodyResponse;
+import Models.UpdatePersonnelRequest;
+import Models.UpdatePersonnelResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.UnsupportedEncodingException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.*;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import pojos.Nhanvien;
 
 
@@ -86,22 +77,23 @@ public class NhanVienAPIs {
     @Path("update")
     @Produces("application/json")
     @Consumes("application/json")
-    public UpdatePersonnelBodyResponse updateNhanVien(String json) {
-        UpdatePersonnelBodyResponse response = new UpdatePersonnelBodyResponse();
+    public UpdatePersonnelResponse updateNhanVien(String json) {
+        UpdatePersonnelRequest request = new Gson().fromJson(json, UpdatePersonnelRequest.class);
+        UpdatePersonnelResponse response = new UpdatePersonnelResponse();
         try{
-            Gson gson = new Gson();
-            Nhanvien request = gson.fromJson(json, Nhanvien.class);
-            if (ErrorHandler.NhanVienAPIsChecker.updateNhanVienChecker(request, response)){
-                boolean result = NhanVienAdapter.updateNhanVien(request);
-                if (result){
-                    response.Data = "Cập nhật thành công!";
-                }else{
-                    response.Errors.add("Cập nhật thất bại!");
-                    response.IsError = true;
+            if (BusinessHandler.TokenChecker.tokenCheck(request, response)){
+                if (BusinessHandler.NhanVienAPIsChecker.updateNhanVienChecker(request, response)){
+                    boolean result = NhanVienAdapter.updateNhanVien(request.Data);
+                    if (result){
+                        response.Data = "Cập nhật thành công!";
+                    }else{
+                        response.Errors.add("Cập nhật thất bại!");
+                        response.IsError = true;
+                    }
                 }
             }
         } catch (Exception ex) {
-            response.Errors.add(ex.getMessage());
+            response.Errors.add("Lỗi hệ thống!");
             response.IsError = true;
         }
         return response;

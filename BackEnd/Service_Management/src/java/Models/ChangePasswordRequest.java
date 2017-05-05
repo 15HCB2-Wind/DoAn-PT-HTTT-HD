@@ -9,8 +9,7 @@ package Models;
  *
  * @author Shin'sLaptop
  */
-public class ChangePasswordRequest {
+public class ChangePasswordRequest extends BodyRequests<Object> {
     public String UserId;
     public String NewPass;
-
 }

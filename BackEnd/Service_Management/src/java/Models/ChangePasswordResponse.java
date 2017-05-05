@@ -9,7 +9,6 @@ package Models;
  *
  * @author Shin'sLaptop
  */
-public abstract class BodyRequests<T> {
-    public String Token;
-    public T Data;
+public class ChangePasswordResponse extends BodyResponses{
+    
 }

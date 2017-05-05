@@ -6,19 +6,15 @@
 package DAO;
 
 import Config.ApplicationConfig;
+import Config.Configs;
 import Models.ChangePasswordRequest;
 import Ultility.HibernateUtil;
 import Ultility.Security;
 import java.io.UnsupportedEncodingException;
-import java.sql.Date;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Form;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -29,7 +25,6 @@ import pojos.*;
  * @author Shin-Desktop
  */
 public class NhanVienAdapter {
-    static ApplicationConfig config = new ApplicationConfig();
     //Help function
     private static void getNewID(Nhanvien obj) {
         int count = HibernateUtil.count("select count(manhanvien) from Nhanvien");
@@ -131,7 +126,7 @@ public class NhanVienAdapter {
         form.param("SyncType",code+"");
         
         Response response = client
-                .target(config.getSync_Nhanvien())
+                .target(Configs.sync2LoginService)
                 .request(MediaType.APPLICATION_JSON)
                 .post(Entity.form(form));
     }
