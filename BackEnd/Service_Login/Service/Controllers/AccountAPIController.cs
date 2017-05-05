@@ -26,7 +26,7 @@ namespace Service.Controllers
         public HttpResponseMessage Login([FromBody] LoginBodyRequest request)
         {
             var response = new LoginBodyResponse();
-            if (BusinessHandler.AccountAPIChecker.LoginValidate(request, ref response))
+            if (BusinessHandler.AccountBUS.LoginValidate(request, ref response))
             {
                 try
                 {
@@ -46,9 +46,10 @@ namespace Service.Controllers
                         };
                     }
                 }
-                catch (Exception ex)
+                catch
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+                    response.Errors.Add("Lỗi hệ thống.");
+                    response.IsError = true;
                 }
             }
             return Request.CreateResponse(HttpStatusCode.OK, response);
@@ -60,7 +61,7 @@ namespace Service.Controllers
         public HttpResponseMessage Change([FromBody] CPassBodyRequest request)
         {
             var response = new CPassBodyResponse();
-            if (BusinessHandler.AccountAPIChecker.CPassValidate(request, ref response))
+            if (BusinessHandler.AccountBUS.CPassValidate(request, ref response))
             {
                 try
                 {
@@ -76,7 +77,7 @@ namespace Service.Controllers
                         var result = NhanVienRepository.GetInstance().ChangePass(tokenValue.MaNV, oldp, newp);
                         if (result == 1)
                         {
-                            BusinessHandler.AccountAPIChecker.SyncPassword2ManagementServiceAsync(new
+                            BusinessHandler.AccountBUS.SyncPassword2ManagementServiceAsync(new
                             {
                                 UserId = tokenValue.MaNV,
                                 NewPass = newp
@@ -90,9 +91,10 @@ namespace Service.Controllers
                         }
                     }
                 }
-                catch (Exception ex)
+                catch
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+                    response.Errors.Add("Lỗi hệ thống.");
+                    response.IsError = true;
                 }
             }
             return Request.CreateResponse(HttpStatusCode.OK, response);
@@ -104,7 +106,7 @@ namespace Service.Controllers
         public HttpResponseMessage Forget([FromBody] FPassBodyRequest request)
         {
             var response = new FPassBodyResponse();
-            if (BusinessHandler.AccountAPIChecker.FPassValidate(request, ref response))
+            if (BusinessHandler.AccountBUS.FPassValidate(request, ref response))
             {
                 try
                 {
@@ -127,9 +129,10 @@ namespace Service.Controllers
                         response.Data = "Kiểm tra email của bạn để thay lấy lại mật khẩu.";
                     }
                 }
-                catch (Exception ex)
+                catch
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+                    response.Errors.Add("Lỗi hệ thống.");
+                    response.IsError = true;
                 }
             }
             return Request.CreateResponse(HttpStatusCode.OK, response);
@@ -141,7 +144,7 @@ namespace Service.Controllers
         public HttpResponseMessage Change([FromBody] CFPassBodyRequest request)
         {
             var response = new CFPassBodyResponse();
-            if (BusinessHandler.AccountAPIChecker.CFPassValidate(request, ref response))
+            if (BusinessHandler.AccountBUS.CFPassValidate(request, ref response))
             {
                 try
                 {
@@ -156,7 +159,7 @@ namespace Service.Controllers
                         var result = NhanVienRepository.GetInstance().ChangePass(tokenValue.MaNV, newp);
                         if (result == 1)
                         {
-                            BusinessHandler.AccountAPIChecker.SyncPassword2ManagementServiceAsync(new
+                            BusinessHandler.AccountBUS.SyncPassword2ManagementServiceAsync(new
                             {
                                 UserId = tokenValue.MaNV,
                                 NewPass = newp
@@ -170,9 +173,10 @@ namespace Service.Controllers
                         }
                     }
                 }
-                catch (Exception ex)
+                catch
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+                    response.Errors.Add("Lỗi hệ thống.");
+                    response.IsError = true;
                 }
             }
             return Request.CreateResponse(HttpStatusCode.OK, response);
@@ -183,38 +187,59 @@ namespace Service.Controllers
         [Route("sync")]
         public HttpResponseMessage Sync([FromBody] SyncBodyRequest request)
         {
+            var response = new SyncBodyResponse();
             try
             {
+                int result = -1;
                 switch (request.SyncType)
                 {
                     case 1:
-                        return Request.CreateResponse(HttpStatusCode.OK, NhanVienRepository.GetInstance().Add(new NhanVien()
+                        result = NhanVienRepository.GetInstance().Add(new NhanVien()
                         {
                             MaNV = request.Id,
                             HoTen = request.FullName,
                             TenTaiKhoan = request.Username,
                             MatKhau = request.Password,
                             CapPQ = request.PermissionLevel,
-                        }));
+                        });
+                        break;
                     case 0:
-                        return Request.CreateResponse(HttpStatusCode.OK, NhanVienRepository.GetInstance().Update(new NhanVien()
+                        result = NhanVienRepository.GetInstance().Update(new NhanVien()
                         {
                             MaNV = request.Id,
                             HoTen = request.FullName,
                             TenTaiKhoan = request.Username,
                             MatKhau = request.Password,
                             CapPQ = request.PermissionLevel,
-                        }));
+                        });
+                        break;
                     case -1:
-                        return Request.CreateResponse(HttpStatusCode.OK, NhanVienRepository.GetInstance().Delete(request.Id));
+                        result = NhanVienRepository.GetInstance().Delete(request.Id);
+                        break;
                     default:
-                        return Request.CreateResponse(HttpStatusCode.NoContent);
+                        response.IsError = true;
+                        break;
+                }
+                if (!response.IsError)
+                {
+                    switch (result)
+                    {
+                        case -1:
+                        case 0:
+                            response.IsError = true;
+                            break;
+                        case 1:
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+                response.IsError = true;
             }
+            return Request.CreateResponse(HttpStatusCode.NoContent, response);
         }
 
         //check token
@@ -222,13 +247,24 @@ namespace Service.Controllers
         [Route("checktoken")]
         public HttpResponseMessage CheckToken([FromBody] CheckTokenBodyRequest request)
         {
+            var response = new CheckTokenBodyResponse();
             if (request.TokenPassword == Configs.TOKEN_PASSWORD)
             {
-                var response = new CheckTokenBodyResponse();
-                response.Data = Token.Get(request.Token);
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                var token = Token.Get(request.Token);
+                if (token == null)
+                {
+                    response.Data = token;
+                }
+                else
+                {
+                    response.IsError = true;
+                }
             }
-            return Request.CreateResponse(HttpStatusCode.OK, false);
+            else
+            {
+                response.IsError = true;
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, response);
         }
     }
 }
