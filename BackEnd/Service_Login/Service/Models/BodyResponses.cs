@@ -24,16 +24,18 @@ namespace Service.Models
 
     public class LoginBodyResponse : BodyResponse { }
 
-    public class CPassBodyRessponse : BodyResponse
+    public class CPassBodyResponse : BodyResponse
     {
         public List<string> OldPassword_Errors { get; set; }
         public List<string> NewPassword_Errors { get; set; }
     }
 
-    public class CFPassBodyRessponse : BodyResponse
+    public class CFPassBodyResponse : BodyResponse
     {
         public List<string> NewPassword_Errors { get; set; }
     }
 
-    public class FPassBodyRessponse : BodyResponse { }
+    public class FPassBodyResponse : BodyResponse { }
+
+    public class CheckTokenBodyResponse : BodyResponse { }
 }

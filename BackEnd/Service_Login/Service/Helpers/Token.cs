@@ -52,18 +52,5 @@ namespace Service.Helpers
             }
             return null;
         }
-
-        public static bool Validate(string hash, Func<object, object[], bool> func, params object[] token_predicates)
-        {
-            var entry = TokenDictionary.Where(x => x.Key.Data == hash)
-                .Select(x => (KeyValuePair<Token, object>?)x)
-                .FirstOrDefault();
-            if (entry != null && entry.HasValue)
-            {
-                entry.Value.Key.TimeLife = DEFAULT_TIME_LIFE;
-                return func(entry.Value.Value, token_predicates);
-            }
-            return false;
-        }
     }
 }
