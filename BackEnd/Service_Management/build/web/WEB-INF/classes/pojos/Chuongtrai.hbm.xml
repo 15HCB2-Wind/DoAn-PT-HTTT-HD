@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated May 5, 2017 12:35:11 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="pojos.Chuongtrai" table="chuongtrai" catalog="service_management_drinksmile" optimistic-lock="version">
+        <id name="machuong" type="string">
+            <column name="machuong" length="10" />
+            <generator class="assigned" />
+        </id>
+        <property name="tenchuong" type="string">
+            <column name="tenchuong" length="50" />
+        </property>
+        <property name="succhua" type="java.lang.Double">
+            <column name="succhua" precision="22" scale="0" />
+        </property>
+        <property name="tinhtrang" type="string">
+            <column name="tinhtrang" length="50" />
+        </property>
+        <property name="daxoa" type="java.lang.Boolean">
+            <column name="daxoa" />
+        </property>
+        <property name="machinhanh" type="string">
+            <column name="machinhanh" length="10" />
+        </property>
+    </class>
+</hibernate-mapping>
