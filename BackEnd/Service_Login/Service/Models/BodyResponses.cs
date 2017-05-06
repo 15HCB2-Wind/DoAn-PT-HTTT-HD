@@ -28,14 +28,27 @@ namespace Service.Models
     {
         public List<string> OldPassword_Errors { get; set; }
         public List<string> NewPassword_Errors { get; set; }
+
+        public CPassBodyResponse()
+        {
+            OldPassword_Errors = new List<string>();
+            NewPassword_Errors = new List<string>();
+        }
     }
 
     public class CFPassBodyResponse : BodyResponse
     {
         public List<string> NewPassword_Errors { get; set; }
+
+        public CFPassBodyResponse()
+        {
+            NewPassword_Errors = new List<string>();
+        }
     }
 
     public class FPassBodyResponse : BodyResponse { }
+
+    public class SyncBodyResponse : BodyResponse { }
 
     public class CheckTokenBodyResponse : BodyResponse { }
 }
