@@ -10,29 +10,29 @@ namespace Service.Models
         public string Token { get; set; }
     }
 
-    public class LoginBodyRequest : BodyRequest
+    public class LoginRequest : BodyRequest
     {
         public string Username { get; set; }
         public string Password { get; set; }
     }
 
-    public class FPassBodyRequest : BodyRequest
+    public class FPassRequest : BodyRequest
     {
         public string Email { get; set; }
     }
 
-    public class CPassBodyRequest : BodyRequest
+    public class CPassRequest : BodyRequest
     {
         public string OldPassword { get; set; }
         public string NewPassword { get; set; }
     }
 
-    public class CFPassBodyRequest : BodyRequest
+    public class CFPassRequest : BodyRequest
     {
         public string NewPassword { get; set; }
     }
 
-    public class SyncBodyRequest : BodyRequest
+    public class SyncRequest : BodyRequest
     {
         public string Id { get; set; }
         public string FullName { get; set; }
@@ -43,8 +43,15 @@ namespace Service.Models
         public int SyncType { get; set; }
     }
 
-    public class CheckTokenBodyRequest : BodyRequest
+    public class CheckTokenRequest : BodyRequest
     {
         public string TokenPassword { get; set; }
+        public int Role { get; set; }
+    }
+
+    public class ChangePasswordRequest : BodyRequest
+    {
+        public string UserId { get; set; }
+        public string NewPass { get; set; }
     }
 }

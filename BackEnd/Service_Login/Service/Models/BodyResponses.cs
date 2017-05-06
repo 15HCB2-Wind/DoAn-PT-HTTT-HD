@@ -22,33 +22,35 @@ namespace Service.Models
         }
     }
 
-    public class LoginBodyResponse : BodyResponse { }
+    public class LoginResponse : BodyResponse { }
 
-    public class CPassBodyResponse : BodyResponse
+    public class CPassResponse : BodyResponse
     {
         public List<string> OldPassword_Errors { get; set; }
         public List<string> NewPassword_Errors { get; set; }
 
-        public CPassBodyResponse()
+        public CPassResponse()
         {
             OldPassword_Errors = new List<string>();
             NewPassword_Errors = new List<string>();
         }
     }
 
-    public class CFPassBodyResponse : BodyResponse
+    public class CFPassResponse : BodyResponse
     {
         public List<string> NewPassword_Errors { get; set; }
 
-        public CFPassBodyResponse()
+        public CFPassResponse()
         {
             NewPassword_Errors = new List<string>();
         }
     }
 
-    public class FPassBodyResponse : BodyResponse { }
+    public class FPassResponse : BodyResponse { }
 
-    public class SyncBodyResponse : BodyResponse { }
+    public class SyncResponse : BodyResponse { }
 
-    public class CheckTokenBodyResponse : BodyResponse { }
+    public class CheckTokenResponse : BodyResponse { }
+
+    public class ChangePasswordResponse : BodyResponse { }
 }

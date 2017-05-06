@@ -1,4 +1,3 @@
-*.suo
 Wind_DrinkSmile_MiddleWare/ConsoleTest
 Wind_DrinkSmile_MiddleWare/Configs/bin
 Wind_DrinkSmile_MiddleWare/Configs/obj
@@ -35,3 +34,5 @@ BackEnd/Service_Login/DataAccess/obj
 BackEnd/Service_Login/Service/bin
 BackEnd/Service_Login/Service/obj
 BackEnd/Service_Login/packages
+/BackEnd/Service_Management/dist/
+/BackEnd/Service_Management/build/

@@ -9,8 +9,8 @@ namespace Service.Helpers
     public class Token
     {
         #region Settings
-        public const double DEFAULT_TIME_LIFE = 30; //minutes
-        public const int DEFAULT_PERIOD_DECREASE_TIME_LIFE = 60000; //miliseconds
+        private const double DEFAULT_TIME_LIFE = 30; //minutes
+        private const int DEFAULT_PERIOD_DECREASE_TIME_LIFE = 60000; //miliseconds
         #endregion
 
         #region Instance Of
@@ -30,21 +30,22 @@ namespace Service.Helpers
         }
         #endregion
 
-        public static Dictionary<Token, object> TokenDictionary { get; set; }
+        public static Dictionary<Token, dynamic> TokenDictionary { get; set; }
 
-        public static string Create(object value, string str)
+        public static string Create(dynamic value, string str, double tlife = DEFAULT_TIME_LIFE)
         {
             if (TokenDictionary == null)
-                TokenDictionary = new Dictionary<Token, object>();
-            var token = new Token(str, DateTime.Now.Second % 2 == 0 ? "MD5" : "SHA1");
+                TokenDictionary = new Dictionary<Token, dynamic>();
+            var token = new Token(string.Format("{0}:{1}", TokenDictionary.Count, str), DateTime.Now.Second % 2 == 0 ? "MD5" : "SHA1");
+            token.TimeLife = tlife;
             TokenDictionary.Add(token, value);
             return token.Data;
         }
 
-        public static object Get(string hash)
+        public static dynamic Get(string hash)
         {
             var entry = TokenDictionary.Where(x => x.Key.Data == hash)
-                .Select(x => (KeyValuePair<Token, object>?)x)
+                .Select(x => (KeyValuePair<Token, dynamic>?)x)
                 .FirstOrDefault();
             if (entry != null && entry.HasValue)
             {
