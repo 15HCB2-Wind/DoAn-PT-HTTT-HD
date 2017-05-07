@@ -16,6 +16,8 @@ FrontEnd_DrinkSmile/FrontEnd_DrinkSmile/Project_Readme.html
 BackEnd/Service_ImportExport/build/
 BackEnd/Service_ImportExport/dist/
 BackEnd/Service_ImportExport/nbproject/private/
+BackEnd/Service_Management/dist/
+BackEnd/Service_Management/build/
 BackEnd/Service_Report/Configs/bin
 BackEnd/Service_Report/Configs/obj
 BackEnd/Service_Report/DomainData/bin
@@ -34,5 +36,12 @@ BackEnd/Service_Login/DataAccess/obj
 BackEnd/Service_Login/Service/bin
 BackEnd/Service_Login/Service/obj
 BackEnd/Service_Login/packages
-/BackEnd/Service_Management/dist/
-/BackEnd/Service_Management/build/
+BackEnd/Service_AnimalCare/Configs/bin
+BackEnd/Service_AnimalCare/Configs/obj
+BackEnd/Service_AnimalCare/DomainData/bin
+BackEnd/Service_AnimalCare/DomainData/obj
+BackEnd/Service_AnimalCare/DataAccess/bin
+BackEnd/Service_AnimalCare/DataAccess/obj
+BackEnd/Service_AnimalCare/Service/bin
+BackEnd/Service_AnimalCare/Service/obj
+BackEnd/Service_AnimalCare/packages
