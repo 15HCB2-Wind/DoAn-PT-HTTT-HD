@@ -41,15 +41,16 @@ public class TokenBUS {
 
                     CheckTokenResponse result = res.readEntity(CheckTokenResponse.class);
                     fail = result == null;
-                    if (!fail && result.IsError)
+                    if (!fail){
+                        response.IsTokenTimeout = result.IsTokenTimeout;
+                        if (result.IsError){
+                            response.Errors.add("Không thể truy cập đến máy chủ.");
+                            response.IsError = true;
+                        }
                         break;
+                    }
                 } catch (Exception ex){ }
             }while(fail && --times > 0);
-            
-            if (fail){
-                response.Errors.add("Không thể truy cập đến máy chủ.");
-                response.IsError = true;
-            }
         }
         return !response.IsError;
     }

@@ -91,7 +91,7 @@ public class NhanVienBUS {
 
                 SyncResponse result = res.readEntity(SyncResponse.class);
                 fail = result == null;
-                if (!fail && result.IsError)
+                if (!fail)
                     break;
             } catch (Exception ex){ }
         }while(fail && --times > 0);
