@@ -12,21 +12,7 @@ namespace FrontEnd_DrinkSmile.Controllers
         {
             if (Request.Cookies["token"] != null)
                 return View();
-            return RedirectToAction("Login", "Account");
-        }
-
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
+            return RedirectToAction("Login", "Account", new { ReturnUrl = "/Home/Index" });
         }
     }
 }

@@ -9,16 +9,28 @@ namespace FrontEnd_DrinkSmile.Controllers
     public class AccountController : Controller
     {
         [AllowAnonymous]
-        public ActionResult Login()
+        public ActionResult Login(string returnUrl)
         {
             if (Request.Cookies["token"] != null)
+            {
+                if (Url.IsLocalUrl(returnUrl)) return Redirect(returnUrl);
                 return RedirectToAction("Index", "Home");
+            }
+            ViewBag.ReturnUrl = returnUrl;
             return View();
         }
 
         [AllowAnonymous]
         public ActionResult ForgotPassword()
         {
+            return View();
+        }
+
+        [AllowAnonymous]
+        public ActionResult ResetPassword(string token)
+        {
+            if (string.IsNullOrEmpty(token)) return HttpNotFound();
+            ViewBag.Token = token;
             return View();
         }
 
@@ -40,7 +52,7 @@ namespace FrontEnd_DrinkSmile.Controllers
         {
             if (Request.Cookies["token"] != null)
                 return View();
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction("Login", "Account", new { ReturnUrl = "/Account/ChangePassword" });
         }
     }
 }

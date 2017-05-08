@@ -4,13 +4,10 @@
 <div class="row">
     <div class="offset-lg-3 col-lg-6 offset-md-2 col-md-8 offset-sm-1 col-sm-10 col-xs-12 mt-2">
         <fieldset class="card">
-            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "card-block", @id = "form_login", role = "form" }))
-            {
-                @Html.AntiForgeryToken()
+            <form method="post" class="card-block" id="form_login" role="form">
                 <div class="form-header bg-primary">
                     <h3><i class="fa fa-sign-in"></i> Đăng nhập</h3>
                 </div>
-                @Html.ValidationSummary(true, "", new { @id = "error", @class = "text-danger text-center" })
                 <p id="error" class="text-danger text-center"></p>
                 <div class="md-form">
                     <i class="fa fa-server prefix"></i>
@@ -35,7 +32,7 @@
                         Đăng nhập <i id="loader" class="fa fa-spinner fa-pulse fa-lg fa-fw"></i>
                     </button>
                 </div>
-            }
+            </form>
             <div class="modal-footer">
                 <div class="options">
                     <p>@Html.ActionLink("Quên mật khẩu?", "ForgotPassword")</p>
@@ -66,7 +63,7 @@
                             Cookies.set("name", data.Data.FullName);
                             Cookies.set("role", data.Data.PermissionLevel);
                             Cookies.set("area", $('#area').val());
-                            location.href = "/Home/Index";
+                            location.href = "/Account/Login?ReturnUrl=@ViewBag.ReturnUrl";
                         }
                     }
                 );

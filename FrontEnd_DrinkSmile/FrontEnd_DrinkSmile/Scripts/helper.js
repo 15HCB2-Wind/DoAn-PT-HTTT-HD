@@ -19,7 +19,7 @@
                 Cookies.remove("area");
                 Cookies.remove("name");
                 Cookies.remove("role");
-                location.href = "/Account/Login";
+                location.href = "/Account/Login?ReturnUrl=" + location.pathname;
             }
             else {
                 successCallback(data);
@@ -32,3 +32,7 @@
         }
     });
 }
+
+//setTimeout(function () {
+//    location.href = "/Home/Index";
+//}, 2000);
