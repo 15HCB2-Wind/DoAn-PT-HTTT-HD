@@ -45,6 +45,30 @@ namespace DataAccess.Repositories
             return result;
         }
 
+        public NhanVien GetUserByEmail(string email)
+        {
+            NhanVien result = null;
+            try
+            {
+                result = DataProvider.ExecuteReaderOne((SqlDataReader row) =>
+                {
+                    return new NhanVien()
+                    {
+                        MaNV = row.GetValueDefault<string>(0),
+                        HoTen = row.GetValueDefault<string>(1),
+                        TenTaiKhoan = row.GetValueDefault<string>(2),
+                        Email = row.GetValueDefault<string>(3),
+                        CapPQ = row.GetValueDefault<int>(4),
+                    };
+                }, string.Format("select top 1 nv.manv, nv.hoten, nv.tentaikhoan, nv.email, nv.cappq from nhanvien nv where nv.email = '{0}'", email));
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+        }
+
         public int Add(NhanVien obj)
         {
             int result = -1;

@@ -23,9 +23,9 @@ namespace Service.Controllers
         //login
         [HttpPost]
         [Route("login")]
-        public HttpResponseMessage Login([FromBody] LoginBodyRequest request)
+        public HttpResponseMessage Login([FromBody] LoginRequest request)
         {
-            var response = new LoginBodyResponse();
+            var response = new LoginResponse();
             if (BusinessHandler.AccountBUS.LoginValidate(request, ref response))
             {
                 try
@@ -40,7 +40,7 @@ namespace Service.Controllers
                     {
                         response.Data = new
                         {
-                            Token = Token.Create(user, string.Format("{0}${1}${2}${3}", user.MaNV, user.CapPQ, user.TenTaiKhoan, DateTime.Now)),
+                            Token = Token.Create(user, DateTime.Now.Ticks.ToString()),
                             FullName = user.HoTen,
                             PermissionLevel = user.CapPQ,
                         };
@@ -58,9 +58,9 @@ namespace Service.Controllers
         //change pass
         [HttpPost]
         [Route("change")]
-        public HttpResponseMessage Change([FromBody] CPassBodyRequest request)
+        public HttpResponseMessage Change([FromBody] CPassRequest request)
         {
-            var response = new CPassBodyResponse();
+            var response = new CPassResponse();
             if (BusinessHandler.AccountBUS.CPassValidate(request, ref response))
             {
                 try
@@ -77,7 +77,7 @@ namespace Service.Controllers
                         var result = NhanVienRepository.GetInstance().ChangePass(tokenValue.MaNV, oldp, newp);
                         if (result == 1)
                         {
-                            BusinessHandler.AccountBUS.SyncPassword2ManagementServiceAsync(new
+                            BusinessHandler.AccountBUS.SyncPassword2ManagementServiceAsync(new ChangePasswordRequest
                             {
                                 UserId = tokenValue.MaNV,
                                 NewPass = newp
@@ -103,37 +103,30 @@ namespace Service.Controllers
         //forget pass
         [HttpPost]
         [Route("forget")]
-        public HttpResponseMessage Forget([FromBody] FPassBodyRequest request)
+        public HttpResponseMessage Forget([FromBody] FPassRequest request)
         {
-            var response = new FPassBodyResponse();
-            if (BusinessHandler.AccountBUS.FPassValidate(request, ref response))
+            var response = new FPassResponse();
+            try
             {
-                try
+                var user = NhanVienRepository.GetInstance().GetUserByEmail(request.Email);
+                if (user != null)
                 {
-                    var tokenValue = Token.Get(request.Token) as NhanVien;
-                    if (tokenValue == null)
-                    {
-                        response.IsTokenTimeout = true;
-                    }
-                    else
-                    {
-                        MailMessage mail = new MailMessage(Configs.EMAIL_SENDER, tokenValue.Email);
-                        SmtpClient client = new SmtpClient();
-                        client.Port = 25;
-                        client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                        client.UseDefaultCredentials = false;
-                        client.Host = "smtp.google.com";
-                        mail.Subject = "Drink Smile - Change Password!";
-                        mail.Body = string.Format("Click here to change your password:\n{0}token?={1}", Configs.CHANGE_PASS_URL, request.Token);
-                        client.Send(mail);
-                        response.Data = "Kiểm tra email của bạn để thay lấy lại mật khẩu.";
-                    }
+                    MailMessage mail = new MailMessage(Configs.EMAIL_SENDER, request.Email);
+                    SmtpClient client = new SmtpClient();
+                    client.Port = 25;
+                    client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    client.UseDefaultCredentials = false;
+                    client.Host = "smtp.google.com";
+                    mail.Subject = "Drink Smile - Change Password!";
+                    mail.Body = string.Format("Click here to change your password:\n{0}token?={1}\nYou can not change your password after 10 minutes.", Configs.CHANGE_PASS_URL, Token.Create(user, DateTime.Now.Ticks.ToString(), 10));
+                    client.Send(mail);
                 }
-                catch
-                {
-                    response.Errors.Add("Lỗi hệ thống.");
-                    response.IsError = true;
-                }
+                response.Data = "Kiểm tra email của bạn để thay lấy lại mật khẩu.";
+            }
+            catch
+            {
+                response.Errors.Add("Lỗi hệ thống.");
+                response.IsError = true;
             }
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
@@ -141,9 +134,9 @@ namespace Service.Controllers
         //change pass from forget
         [HttpPost]
         [Route("cfpass")]
-        public HttpResponseMessage Change([FromBody] CFPassBodyRequest request)
+        public HttpResponseMessage Change([FromBody] CFPassRequest request)
         {
-            var response = new CFPassBodyResponse();
+            var response = new CFPassResponse();
             if (BusinessHandler.AccountBUS.CFPassValidate(request, ref response))
             {
                 try
@@ -159,7 +152,7 @@ namespace Service.Controllers
                         var result = NhanVienRepository.GetInstance().ChangePass(tokenValue.MaNV, newp);
                         if (result == 1)
                         {
-                            BusinessHandler.AccountBUS.SyncPassword2ManagementServiceAsync(new
+                            BusinessHandler.AccountBUS.SyncPassword2ManagementServiceAsync(new ChangePasswordRequest
                             {
                                 UserId = tokenValue.MaNV,
                                 NewPass = newp
@@ -185,9 +178,9 @@ namespace Service.Controllers
         //sync from management service
         [HttpPost]
         [Route("sync")]
-        public HttpResponseMessage Sync([FromBody] SyncBodyRequest request)
+        public HttpResponseMessage Sync([FromBody] SyncRequest request)
         {
-            var response = new SyncBodyResponse();
+            var response = new SyncResponse();
             try
             {
                 int result = -1;
@@ -198,6 +191,7 @@ namespace Service.Controllers
                         {
                             MaNV = request.Id,
                             HoTen = request.FullName,
+                            Email = request.Email,
                             TenTaiKhoan = request.Username,
                             MatKhau = request.Password,
                             CapPQ = request.PermissionLevel,
@@ -208,6 +202,7 @@ namespace Service.Controllers
                         {
                             MaNV = request.Id,
                             HoTen = request.FullName,
+                            Email = request.Email,
                             TenTaiKhoan = request.Username,
                             MatKhau = request.Password,
                             CapPQ = request.PermissionLevel,
@@ -220,20 +215,7 @@ namespace Service.Controllers
                         response.IsError = true;
                         break;
                 }
-                if (!response.IsError)
-                {
-                    switch (result)
-                    {
-                        case -1:
-                        case 0:
-                            response.IsError = true;
-                            break;
-                        case 1:
-                            break;
-                        default:
-                            break;
-                    }
-                }
+                response.IsError = result != 1;
             }
             catch
             {
@@ -245,22 +227,36 @@ namespace Service.Controllers
         //check token
         [HttpPost]
         [Route("checktoken")]
-        public HttpResponseMessage CheckToken([FromBody] CheckTokenBodyRequest request)
+        public HttpResponseMessage CheckToken([FromBody] CheckTokenRequest request)
         {
-            var response = new CheckTokenBodyResponse();
-            if (request.TokenPassword == Configs.TOKEN_PASSWORD)
+            var response = new CheckTokenResponse();
+            try
             {
-                var token = Token.Get(request.Token);
-                if (token == null)
+                if (request.TokenPassword == Configs.TOKEN_PASSWORD)
                 {
-                    response.Data = token;
+                    var token = Token.Get(request.Token);
+                    if (token == null)
+                    {
+                        response.IsError = true;
+                    }
+                    else
+                    {
+                        if (token.CapPQ == request.Role)
+                        {
+                            response.Data = token;
+                        }
+                        else
+                        {
+                            response.IsError = true;
+                        }
+                    }
                 }
                 else
                 {
                     response.IsError = true;
                 }
             }
-            else
+            catch
             {
                 response.IsError = true;
             }

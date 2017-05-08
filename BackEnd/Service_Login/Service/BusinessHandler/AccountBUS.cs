@@ -16,7 +16,7 @@ namespace Service.BusinessHandler
 {
     public class AccountBUS
     {
-        public static bool LoginValidate(LoginBodyRequest request, ref LoginBodyResponse response)
+        public static bool LoginValidate(LoginRequest request, ref LoginResponse response)
         {
             if (string.IsNullOrEmpty(request.Username) || string.IsNullOrEmpty(request.Password) || request.Username.Count() > 100 || request.Password.Count() > 50)
             {
@@ -26,7 +26,7 @@ namespace Service.BusinessHandler
             return !response.IsError;
         }
 
-        public static bool CPassValidate(CPassBodyRequest request, ref CPassBodyResponse response)
+        public static bool CPassValidate(CPassRequest request, ref CPassResponse response)
         {
             if (string.IsNullOrEmpty(request.OldPassword))
             {
@@ -51,7 +51,7 @@ namespace Service.BusinessHandler
             return !response.IsError;
         }
 
-        public static bool CFPassValidate(CFPassBodyRequest request, ref CFPassBodyResponse response)
+        public static bool CFPassValidate(CFPassRequest request, ref CFPassResponse response)
         {
             if (string.IsNullOrEmpty(request.NewPassword))
             {
@@ -66,12 +66,7 @@ namespace Service.BusinessHandler
             return !response.IsError;
         }
 
-        public static bool FPassValidate(FPassBodyRequest request, ref FPassBodyResponse response)
-        {
-            return !response.IsError;
-        }
-
-        public static void SyncPassword2ManagementServiceAsync(object obj)
+        public static void SyncPassword2ManagementServiceAsync(ChangePasswordRequest obj)
         {
             var thread = new Thread((object t) =>
             {
@@ -82,7 +77,8 @@ namespace Service.BusinessHandler
                 {
                     try
                     {
-                        fail = client.PostAsync(string.Format("{0}{1}", Configs.MANAGEMENT_SERVICE, "NhanVien/sync"), new StringContent(JsonConvert.SerializeObject(obj), Encoding.UTF8, "application/json")).Result.StatusCode != HttpStatusCode.OK;
+                        var result = client.PostAsync(Configs.SYNC_TO_MANAGEMENT_SERVICE, new StringContent(JsonConvert.SerializeObject(obj), Encoding.UTF8, "application/json")).Result.Content.ReadAsAsync<ChangePasswordResponse>().Result;
+                        fail = result == null || result.IsError;
                     }
                     catch { }
                 } while (fail && --times > 0);

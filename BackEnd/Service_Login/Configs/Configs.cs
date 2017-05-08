@@ -12,7 +12,7 @@ public class Configs
 
     public const string CHANGE_PASS_URL = "http://x.x.x.x:y/";
 
-    public const string MANAGEMENT_SERVICE = "http://192.168.22.102:8080/Service_Management/webresources/";
+    public const string SYNC_TO_MANAGEMENT_SERVICE = "http://localhost:8080/Service_Management/webresources/NhanVien/sync";
 
     public const string TOKEN_PASSWORD = "&YH*hf4JEUFHKEKLRJH93#$i";
 }
