@@ -15,10 +15,12 @@ public abstract class BodyResponses {
     public Object Data;
     public boolean IsError;
     public ArrayList<String> Errors;
+    public boolean IsTokenTimeout;
     
     public BodyResponses(){
         Data = null;
         IsError = false;
         Errors = new ArrayList<>();
+        IsTokenTimeout = false;
     }
 }

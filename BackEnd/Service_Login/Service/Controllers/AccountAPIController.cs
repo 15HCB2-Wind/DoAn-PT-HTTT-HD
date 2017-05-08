@@ -111,17 +111,17 @@ namespace Service.Controllers
                 var user = NhanVienRepository.GetInstance().GetUserByEmail(request.Email);
                 if (user != null)
                 {
-                    MailMessage mail = new MailMessage(Configs.EMAIL_SENDER, request.Email);
-                    SmtpClient client = new SmtpClient();
-                    client.Port = 25;
-                    client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                    client.UseDefaultCredentials = false;
-                    client.Host = "smtp.google.com";
-                    mail.Subject = "Drink Smile - Change Password!";
-                    mail.Body = string.Format("Click here to change your password:\n{0}token?={1}\nYou can not change your password after 10 minutes.", Configs.CHANGE_PASS_URL, Token.Create(user, DateTime.Now.Ticks.ToString(), 10));
-                    client.Send(mail);
+                    SendMail.SendTo(new EmailFormModel
+                    {
+                        MailTitle = "Drink Smile - Thay đổi mật khẩu.",
+                        MailBody = string.Format("<p>Nhấn vào đường dẫn sau để đổi mật khẩu:</p><p>{0}</p><p>Không thể đổi mật khẩu bằng đường dẫn này sau 10 phút tính từ khi mail được gởi đi.</p>", string.Format(Configs.CHANGE_FORGOT_PASS_URL, Token.Create(user, DateTime.Now.Ticks.ToString(), 10))),
+                        FromName = Configs.MAIL_SENDER_NAME,
+                        FromEmail = Configs.MAIL_SENDER,
+                        FromEmailPassword = Configs.MAIL_SENDER_PASSWORD,
+                        ToEmail = request.Email,
+                    });
                 }
-                response.Data = "Kiểm tra email của bạn để thay lấy lại mật khẩu.";
+                response.Data = "Kiểm tra email của bạn để lấy lại mật khẩu.";
             }
             catch
             {
@@ -157,11 +157,11 @@ namespace Service.Controllers
                                 UserId = tokenValue.MaNV,
                                 NewPass = newp
                             });
-                            response.Data = "Thay đổi mật khẩu thành công.";
+                            response.Data = "Đã lấy lại mật khẩu thành công.";
                         }
                         else
                         {
-                            response.Errors.Add("Thay đổi mật khẩu thất bại.");
+                            response.Errors.Add("Đã lấy lại mật khẩu thất bại.");
                             response.IsError = true;
                         }
                     }
@@ -237,7 +237,7 @@ namespace Service.Controllers
                     var token = Token.Get(request.Token);
                     if (token == null)
                     {
-                        response.IsError = true;
+                        response.IsTokenTimeout = true;
                     }
                     else
                     {

@@ -12,9 +12,9 @@ package Config;
 public class Configs {
     public static final boolean     DEBUG_MODE              =   true;
     
-    public static final String      SYNC_TO_LOGIN_SERVICE   =   "http://localhost:28288/account/sync";
+    public static final String      SYNC_TO_LOGIN_SERVICE   =   "http://localhost:30000/account/sync";
     
-    public static final String      CHECK_TOKEN             =   "http://localhost:28288/account/checktoken";
+    public static final String      CHECK_TOKEN             =   "http://localhost:30000/account/checktoken";
     
     public static final String      TOKEN_PASSWORD          =   "&YH*hf4JEUFHKEKLRJH93#$i";
 }
