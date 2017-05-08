@@ -111,6 +111,16 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Areas\Manage\Controllers\AgencyController.cs" />
+    <Compile Include="Areas\Manage\Controllers\BarnController.cs" />
+    <Compile Include="Areas\Manage\Controllers\CowController.cs" />
+    <Compile Include="Areas\Manage\Controllers\ProviderController.cs" />
+    <Compile Include="Areas\Manage\Controllers\StaffController.cs" />
+    <Compile Include="Areas\Manage\Controllers\WareHouseController.cs" />
+    <Compile Include="Areas\Manage\ManageAreaRegistration.cs" />
+    <Compile Include="Areas\Report\Controllers\AnimalStateController.cs" />
+    <Compile Include="Areas\Report\Controllers\ExportController.cs" />
+    <Compile Include="Areas\Report\ReportAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -123,7 +133,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\compiled.min.css" />
     <Content Include="Content\font-awesome.min.css" />
-    <Content Include="Content\logo.jpg" />
+    <Content Include="Content\logo.png" />
     <Content Include="Content\style.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
@@ -151,6 +161,16 @@
     <Content Include="fonts\Roboto-Thin.eot" />
     <Content Include="fonts\Roboto-Thin.ttf" />
     <Content Include="fonts\Roboto-Thin.woff" />
+    <Content Include="Areas\Manage\Views\web.config" />
+    <Content Include="Areas\Manage\Views\Staff\Index.cshtml" />
+    <Content Include="Areas\Manage\Views\Cow\Index.cshtml" />
+    <Content Include="Areas\Manage\Views\Barn\Index.cshtml" />
+    <Content Include="Areas\Manage\Views\WareHouse\Index.cshtml" />
+    <Content Include="Areas\Manage\Views\Agency\Index.cshtml" />
+    <Content Include="Areas\Report\Views\web.config" />
+    <Content Include="Areas\Report\Views\Export\Index.cshtml" />
+    <Content Include="Areas\Report\Views\AnimalState\Index.cshtml" />
+    <Content Include="Areas\Manage\Views\Provider\Index.cshtml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -193,6 +213,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Manage\Models\" />
+    <Folder Include="Areas\Manage\Views\Shared\" />
+    <Folder Include="Areas\Report\Models\" />
+    <Folder Include="Areas\Report\Views\Shared\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
