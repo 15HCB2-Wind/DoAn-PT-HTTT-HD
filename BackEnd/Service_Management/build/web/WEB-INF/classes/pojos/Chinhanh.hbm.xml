@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated May 5, 2017 12:35:11 PM by Hibernate Tools 4.3.1 -->
+<!-- Generated May 9, 2017 7:00:33 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="pojos.Chinhanh" table="chinhanh" catalog="service_management_drinksmile" optimistic-lock="version">
         <id name="machinhanh" type="string">
@@ -9,16 +9,16 @@
             <generator class="assigned" />
         </id>
         <property name="tenchinhanh" type="string">
-            <column name="tenchinhanh" length="45" />
+            <column name="tenchinhanh" length="50" />
         </property>
         <property name="sodt" type="string">
-            <column name="sodt" length="45" />
+            <column name="sodt" length="15" />
         </property>
         <property name="diachi" type="string">
-            <column name="diachi" length="45" />
+            <column name="diachi" length="100" />
         </property>
         <property name="tinhtrang" type="string">
-            <column name="tinhtrang" length="45" />
+            <column name="tinhtrang" length="50" />
         </property>
         <property name="daxoa" type="java.lang.Boolean">
             <column name="daxoa" />

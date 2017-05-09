@@ -1,5 +1,5 @@
 package pojos;
-// Generated May 5, 2017 12:35:10 PM by Hibernate Tools 4.3.1
+// Generated May 9, 2017 7:00:32 PM by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
@@ -10,7 +10,7 @@ import java.util.Date;
 public class Nhanvien  implements java.io.Serializable {
 
 
-     private String manhanvien; 
+     private String manhanvien;
      private String hoten;
      private String gioitinh;
      private Date ngaysinh;

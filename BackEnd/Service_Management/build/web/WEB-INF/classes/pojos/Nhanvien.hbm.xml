@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated May 5, 2017 12:35:11 PM by Hibernate Tools 4.3.1 -->
+<!-- Generated May 9, 2017 7:00:33 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="pojos.Nhanvien" table="nhanvien" catalog="service_management_drinksmile" optimistic-lock="version">
         <id name="manhanvien" type="string">
@@ -18,22 +18,22 @@
             <column name="ngaysinh" length="10" />
         </property>
         <property name="sodt" type="string">
-            <column name="sodt" length="50" />
+            <column name="sodt" length="15" />
         </property>
         <property name="diachi" type="string">
-            <column name="diachi" length="45" />
+            <column name="diachi" length="10" />
         </property>
         <property name="email" type="string">
-            <column name="email" length="45" unique="true" />
+            <column name="email" length="50" unique="true" />
         </property>
         <property name="tentaikhoan" type="string">
-            <column name="tentaikhoan" length="30" unique="true" />
+            <column name="tentaikhoan" length="50" unique="true" />
         </property>
         <property name="matkhau" type="string">
-            <column name="matkhau" length="45" />
+            <column name="matkhau" length="50" />
         </property>
         <property name="tinhtrang" type="string">
-            <column name="tinhtrang" length="45" />
+            <column name="tinhtrang" length="50" />
         </property>
         <property name="daxoa" type="java.lang.Boolean">
             <column name="daxoa" />

@@ -1,5 +1,5 @@
 package pojos;
-// Generated May 5, 2017 12:35:10 PM by Hibernate Tools 4.3.1
+// Generated May 9, 2017 7:00:32 PM by Hibernate Tools 4.3.1
 
 
 
@@ -11,7 +11,7 @@ public class Chuongtrai  implements java.io.Serializable {
 
      private String machuong;
      private String tenchuong;
-     private Double succhua;
+     private Integer succhua;
      private String tinhtrang;
      private Boolean daxoa;
      private String machinhanh;
@@ -23,7 +23,7 @@ public class Chuongtrai  implements java.io.Serializable {
     public Chuongtrai(String machuong) {
         this.machuong = machuong;
     }
-    public Chuongtrai(String machuong, String tenchuong, Double succhua, String tinhtrang, Boolean daxoa, String machinhanh) {
+    public Chuongtrai(String machuong, String tenchuong, Integer succhua, String tinhtrang, Boolean daxoa, String machinhanh) {
        this.machuong = machuong;
        this.tenchuong = tenchuong;
        this.succhua = succhua;
@@ -46,11 +46,11 @@ public class Chuongtrai  implements java.io.Serializable {
     public void setTenchuong(String tenchuong) {
         this.tenchuong = tenchuong;
     }
-    public Double getSucchua() {
+    public Integer getSucchua() {
         return this.succhua;
     }
     
-    public void setSucchua(Double succhua) {
+    public void setSucchua(Integer succhua) {
         this.succhua = succhua;
     }
     public String getTinhtrang() {

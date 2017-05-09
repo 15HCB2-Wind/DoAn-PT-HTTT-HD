@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated May 5, 2017 9:58:09 PM by Hibernate Tools 4.3.1 -->
+<!-- Generated May 9, 2017 7:03:55 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="pojos.Phieuxuat" table="phieuxuat" catalog="service_importexport_drinksmile" optimistic-lock="version">
         <id name="machungtu" type="string">
@@ -21,7 +21,7 @@
             <column name="dahuy" />
         </property>
         <property name="lydo" type="string">
-            <column name="lydo" length="50" />
+            <column name="lydo" length="100" />
         </property>
         <property name="manv" type="string">
             <column name="manv" length="10" />
