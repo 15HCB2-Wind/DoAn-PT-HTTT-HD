@@ -1,5 +1,8 @@
 /* YOUR CUSTOM STYLES */
-main { margin-bottom: 50px }
+footer.page-footer {
+    margin-top: 0px;
+    padding-top: 0px;
+}
 input:-webkit-autofill { -webkit-box-shadow: 0 0 0 50px white inset !important }
 button.navbar-toggler { padding-right: 0px }
 .field-validation-error,

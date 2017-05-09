@@ -72,8 +72,35 @@
             @RenderBody()
         </div>
     </main>
+    <footer class="page-footer unique-color center-on-small-only">
+        <div class="footer-copyright">
+            <div class="container-fluid">
+                © 2017 Copyright: <a href="https://www.MDBootstrap.com"> MDBootstrap.com </a>
+            </div>
+        </div>
+    </footer>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/js")
+    <script>
+        $(document).ready(function () {
+            calcPositionFooter();
+
+            $(window).resize(function () {
+                calcPositionFooter();
+            });
+
+            function calcPositionFooter() {
+                setTimeout(function () {
+                    if ($("body").height() < $(window).height()) {
+                        $("main").css("margin-bottom", $(window).height() - $("body").height());
+                    }
+                    else {
+                        $("main").css("margin-bottom", 50);
+                    }
+                }, 500);
+            };
+        });
+    </script>
     @RenderSection("scripts", required: false)
 </body>
 </html>
