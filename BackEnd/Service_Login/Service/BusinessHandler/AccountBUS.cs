@@ -18,7 +18,7 @@ namespace Service.BusinessHandler
     {
         public static bool LoginValidate(LoginRequest request, ref LoginResponse response)
         {
-            if (string.IsNullOrEmpty(request.Username) || string.IsNullOrEmpty(request.Password) || request.Username.Count() > 100 || request.Password.Count() > 50)
+            if (string.IsNullOrEmpty(request.Username) || string.IsNullOrEmpty(request.Password) || request.Username.Count() > 50 || request.Password.Count() > 50)
             {
                 response.Errors.Add("Đăng nhập không hợp lệ.");
                 response.IsError = true;

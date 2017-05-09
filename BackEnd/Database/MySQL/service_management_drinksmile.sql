@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 05, 2017 at 01:32 PM
+-- Generation Time: May 09, 2017 at 05:35 AM
 -- Server version: 5.7.14
 -- PHP Version: 5.6.25
 
@@ -54,10 +54,10 @@ INSERT INTO `bo` (`mabo`, `machip`, `mausac`, `coditat`, `nhandang`, `tinhtrang`
 
 CREATE TABLE `chinhanh` (
   `machinhanh` varchar(10) NOT NULL,
-  `tenchinhanh` varchar(45) DEFAULT NULL,
-  `sodt` varchar(45) DEFAULT NULL,
-  `diachi` varchar(45) DEFAULT NULL,
-  `tinhtrang` varchar(45) DEFAULT NULL,
+  `tenchinhanh` varchar(50) DEFAULT NULL,
+  `sodt` varchar(15) DEFAULT NULL,
+  `diachi` varchar(100) DEFAULT NULL,
+  `tinhtrang` varchar(50) DEFAULT NULL,
   `daxoa` bit(1) DEFAULT NULL,
   `quanly` varchar(10) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -67,8 +67,7 @@ CREATE TABLE `chinhanh` (
 --
 
 INSERT INTO `chinhanh` (`machinhanh`, `tenchinhanh`, `sodt`, `diachi`, `tinhtrang`, `daxoa`, `quanly`) VALUES
-('CN001', 'Trại bò Tân Thành', '0909091109', 'Số 1 Lê Duẩn', 'Đang hoạt động', b'0', 'NV001'),
-('CN002', 'Trại bò Hoàng Nam', '0123456789', '66 Hoàng Văn Thụ', 'Đang hoạt động', b'0', 'NV002');
+('CN001', 'Trại bò Tân Thành', '0909091109', 'Số 1 Lê Duẩn', 'Đang hoạt động', b'0', 'NV001');
 
 -- --------------------------------------------------------
 
@@ -79,7 +78,7 @@ INSERT INTO `chinhanh` (`machinhanh`, `tenchinhanh`, `sodt`, `diachi`, `tinhtran
 CREATE TABLE `chuongtrai` (
   `machuong` varchar(10) NOT NULL,
   `tenchuong` varchar(50) DEFAULT NULL,
-  `succhua` double DEFAULT NULL,
+  `succhua` int(11) DEFAULT NULL,
   `tinhtrang` varchar(50) DEFAULT NULL,
   `daxoa` bit(1) DEFAULT NULL,
   `machinhanh` varchar(10) DEFAULT NULL
@@ -105,10 +104,23 @@ CREATE TABLE `khosua` (
   `tenkho` varchar(50) DEFAULT NULL,
   `succhua` double DEFAULT NULL,
   `luongsuaco` double DEFAULT NULL,
-  `diachi` varchar(50) DEFAULT NULL,
+  `diachi` varchar(100) DEFAULT NULL,
   `daxoa` bit(1) DEFAULT NULL,
   `tinhtrang` varchar(50) DEFAULT NULL,
   `machinhanh` varchar(10) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `nhacungcap`
+--
+
+CREATE TABLE `nhacungcap` (
+  `manhacungcap` varchar(10) NOT NULL,
+  `ten` varchar(50) DEFAULT NULL,
+  `diachi` varchar(100) DEFAULT NULL,
+  `tinhtrang` varchar(50) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -122,23 +134,16 @@ CREATE TABLE `nhanvien` (
   `hoten` varchar(50) DEFAULT NULL,
   `gioitinh` varchar(5) DEFAULT NULL,
   `ngaysinh` date DEFAULT NULL,
-  `sodt` varchar(50) DEFAULT NULL,
-  `diachi` varchar(45) DEFAULT NULL,
-  `email` varchar(45) DEFAULT NULL,
-  `tentaikhoan` varchar(30) DEFAULT NULL,
-  `matkhau` varchar(45) DEFAULT NULL,
-  `tinhtrang` varchar(45) DEFAULT NULL,
+  `sodt` varchar(15) DEFAULT NULL,
+  `diachi` varchar(10) DEFAULT NULL,
+  `email` varchar(50) DEFAULT NULL,
+  `tentaikhoan` varchar(50) DEFAULT NULL,
+  `matkhau` varchar(50) DEFAULT NULL,
+  `tinhtrang` varchar(50) DEFAULT NULL,
   `daxoa` bit(1) DEFAULT NULL,
   `machinhanh` varchar(10) DEFAULT NULL,
   `maphanquyen` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `nhanvien`
---
-
-INSERT INTO `nhanvien` (`manhanvien`, `hoten`, `gioitinh`, `ngaysinh`, `sodt`, `diachi`, `email`, `tentaikhoan`, `matkhau`, `tinhtrang`, `daxoa`, `machinhanh`, `maphanquyen`) VALUES
-('NV001', 'test1', 'Nam', '1994-12-13', '0909090909', 'tao lao', 'tao lao 1', 'tk001', '&$^OEWTMO$IFR&$OIFO#$JFK4MRFI*$UT', 'okokok', b'0', 'CN001', 'PQ001');
 
 -- --------------------------------------------------------
 
@@ -148,7 +153,7 @@ INSERT INTO `nhanvien` (`manhanvien`, `hoten`, `gioitinh`, `ngaysinh`, `sodt`, `
 
 CREATE TABLE `phanquyen` (
   `maphanquyen` varchar(10) NOT NULL,
-  `tenphanquyen` varchar(45) DEFAULT NULL,
+  `tenphanquyen` varchar(50) DEFAULT NULL,
   `capphanquyen` int(11) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -169,7 +174,8 @@ INSERT INTO `phanquyen` (`maphanquyen`, `tenphanquyen`, `capphanquyen`) VALUES
 -- Indexes for table `bo`
 --
 ALTER TABLE `bo`
-  ADD PRIMARY KEY (`mabo`);
+  ADD PRIMARY KEY (`mabo`),
+  ADD UNIQUE KEY `machip_UNIQUE` (`machip`);
 
 --
 -- Indexes for table `chinhanh`
@@ -190,11 +196,16 @@ ALTER TABLE `khosua`
   ADD PRIMARY KEY (`makho`);
 
 --
+-- Indexes for table `nhacungcap`
+--
+ALTER TABLE `nhacungcap`
+  ADD PRIMARY KEY (`manhacungcap`);
+
+--
 -- Indexes for table `nhanvien`
 --
 ALTER TABLE `nhanvien`
   ADD PRIMARY KEY (`manhanvien`),
-  ADD UNIQUE KEY `manhanvien_UNIQUE` (`manhanvien`),
   ADD UNIQUE KEY `email_UNIQUE` (`email`),
   ADD UNIQUE KEY `tentaikhoan_UNIQUE` (`tentaikhoan`);
 

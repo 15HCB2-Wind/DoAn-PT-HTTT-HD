@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 05, 2017 at 01:32 PM
+-- Generation Time: May 09, 2017 at 05:35 AM
 -- Server version: 5.7.14
 -- PHP Version: 5.6.25
 
@@ -60,7 +60,7 @@ CREATE TABLE `phieuxuat` (
   `ngayxuat` date DEFAULT NULL,
   `tongluongsua` double DEFAULT NULL,
   `dahuy` bit(1) DEFAULT NULL,
-  `lydo` varchar(50) DEFAULT NULL,
+  `lydo` varchar(100) DEFAULT NULL,
   `manv` varchar(10) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
