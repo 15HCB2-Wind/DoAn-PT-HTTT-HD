@@ -12,6 +12,7 @@ namespace Service.Models
 
     public class PhanCongRequest : BodyRequest
     {
+        public string IdPhanCong { get; set; }
         public DateTime FromDate { get; set; }
         public DateTime ToDate { get; set; }
         public string Days { get; set; }
