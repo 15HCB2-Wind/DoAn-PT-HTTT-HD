@@ -1,0 +1,124 @@
+﻿@model FrontEnd_DrinkSmile.Areas.Manage.Models.Staff
+@{
+    ViewBag.Title = "Thêm nhân viên";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="offset-lg-3 col-lg-6 offset-md-2 col-md-8 offset-sm-1 col-sm-10 col-xs-12">
+        <fieldset class="card-block">
+            <form id="form_addstaff" method="post" role="form">
+                <div class="text-center">
+                    <h3><i class="fa fa-plus"></i> Thêm nhân viên</h3>
+                    <hr class="mt-2 mb-2">
+                </div>
+                <p id="error" class="text-danger text-center"></p>
+
+
+
+                <div class="md-form">
+                    <i class="fa fa-bars prefix"></i>
+                    @Html.DropDownList("HangMucID", null, htmlAttributes: new { @class = "mdb-select colorful-select dropdown-primary hang-muc" })
+                    @Html.LabelFor(model => model.HangMucID, "Loại ghi chép")
+                </div>
+                <div class="md-form">
+                    <i class="fa fa-money prefix"></i>
+                    @Html.EditorFor(model => model.SoTien, new { htmlAttributes = new { @id = "money", @class = "form-control", @data_val_number = Html.DisplayNameFor(model => model.SoTien) + " không hợp lệ" } })
+                    @Html.LabelFor(model => model.SoTien, htmlAttributes: new { @for = "money" })
+                    @Html.ValidationMessageFor(model => model.SoTien, "", new { @class = "text-danger" })
+                </div>
+                <div class="md-form">
+                    <i class="fa fa-list-ul prefix"></i>
+                    @Html.DropDownList("DanhMucID", null, "--- Chọn danh mục ---", htmlAttributes: new { @class = "mdb-select colorful-select dropdown-primary danh-muc" })
+                    @Html.LabelFor(model => model.DanhMucID, "Danh mục")
+                    @Html.ValidationMessageFor(model => model.DanhMucID, "", new { @class = "text-danger" })
+                </div>
+                <div class="md-form">
+                    <i class="fa fa-sticky-note-o prefix"></i>
+                    @Html.EditorFor(model => model.GhiChu, new { htmlAttributes = new { @id = "note", @class = "form-control" } })
+                    @Html.LabelFor(model => model.GhiChu, htmlAttributes: new { @for = "note" })
+                    @Html.ValidationMessageFor(model => model.GhiChu, "", new { @class = "text-danger" })
+                </div>
+                <div class="md-form">
+                    <i class="fa fa-address-book prefix"></i>
+                    @Html.DropDownList("TaiKhoanID", null, htmlAttributes: new { @class = "mdb-select colorful-select dropdown-primary" })
+                    @Html.LabelFor(model => model.TaiKhoanID, "Tài khoản")
+                </div>
+                <div class="col-xs-12">
+                    <div class="row">
+                        <div class="col-sm-8 col-xs-12">
+                            <div class="md-form">
+                                <i class="fa fa-calendar prefix"></i>
+                                <input type="text" name="Ngay" id="date" class="form-control datepicker" data-value="@(Model == null ? System.DateTime.Now.ToShortDateString() : Model.ThoiGian.ToString("yyyy/MM/dd"))">
+                                <label for="date">Ngày</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 col-xs-12">
+                            <div class="md-form">
+                                <i class="fa fa-clock-o prefix"></i>
+                                <input type="text" name="Gio" id="time" class="form-control timepicker" value="@(Model == null ? System.DateTime.Now.ToString("HH:mm") : Model.ThoiGian.ToString("HH:mm"))">
+                                <label for="time">Giờ</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Lưu</button>
+                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Thoát</button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                                    <h4 class="modal-title w-100">Thoát</h4>
+                                </div>
+                                <div class="modal-body text-center">
+                                    Bạn thực sự muốn thoát?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                                    <a class="btn btn-danger" href="@Url.Action("Index")">Đồng ý</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </fieldset>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.mdb-select').material_select();
+
+            $('.datepicker').pickadate({
+                monthsFull: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+                monthsShort: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+                weekdaysFull: ['Chủ nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'],
+                weekdaysShort: ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'],
+
+                showMonthsShort: true,
+                showWeekdaysFull: false,
+
+                today: 'Hôm nay',
+                clear: '',
+                close: 'Đóng',
+
+                labelMonthNext: 'Tháng sau',
+                labelMonthPrev: 'Tháng trước',
+                labelMonthSelect: 'Chọn tháng',
+                labelYearSelect: 'Chọn năm',
+
+                firstDay: 1,
+                format: 'dddd, dd mmm, yyyy',
+                formatSubmit: 'yyyy-mm-dd',
+
+                min: new Date(1752, 0, 1),
+                max: new Date(9998, 11, 31)
+            });
+        });
+    </script>
+}

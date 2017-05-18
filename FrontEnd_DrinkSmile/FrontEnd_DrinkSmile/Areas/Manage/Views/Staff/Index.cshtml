@@ -1,8 +1,65 @@
-﻿
-@{
-    ViewBag.Title = "Index";
+﻿@{
+    ViewBag.Title = "Quản lý nhân viên";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<h2><i class="fa fa-list"></i> Danh sách nhân viên</h2>
+@*<p>
+        @Html.ActionLink("Thêm nhân viên", "Create")
+    </p>
+    <p class="text-center">Bạn chưa có nhân viên nào, bấm vào @Html.ActionLink("đây", "Create") để thêm nhân viên.</p>*@
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Mã NV</th>
+            <th>Họ tên</th>
+            <th>Email</th>
+            <th>Username</th>
+            <th>Còn hoạt động</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td colspan="6"><i id="loader" class="fa fa-circle-o-notch fa-pulse fa-lg fa-fw"></i></td>
+        </tr>
 
-<h2>Quản lý nhân viên</h2>
+        @*<tr>
+                <td>@x.MaNV</td>
+                <td>@x.HoTen</td>
+                <td>@x.Email</td>
+                <td>@x.TenTaiKhoan</td>
+                <td>@x.DaXoa</td>
+                <td><a href="@Url.Action("Edit","Staff", new { id = x.MaNV })">Chi tiết</a></td>
+            </tr>*@
+    </tbody>
+</table>
 
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+            //$('.mdb-select').material_select();
+
+            callAjax('post',
+                    { Predicates: ["NV00004"] },
+                    "hcm", "management", "NhanVien/getAll",
+                    function (data) {
+                        $('#loader').hide();
+                        console.log(data);
+                        @*if (data.IsError) {
+                            toastr["error"](data.Errors[0]);
+                            $("#error").show();
+                            $("#error").text(data.Errors[0]);
+                        }
+                        else {
+                            Cookies.set("token", data.Data.Token);
+                            Cookies.set("name", data.Data.FullName);
+                            Cookies.set("role", data.Data.PermissionLevel);
+                            Cookies.set("area", $('#area').val());
+                            location.href = "/Account/Login?ReturnUrl=@ViewBag.ReturnUrl";
+                        }*@
+                    }
+                );
+        });
+    </script>
+}

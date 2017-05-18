@@ -6,6 +6,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import javafx.collections.ObservableList;
 import org.hibernate.Query;
+import pojos.Nhanvien;
 
 public class HibernateUtil {
 
@@ -227,5 +228,9 @@ public class HibernateUtil {
             session.close();
         }
         return result;
+    }
+
+    public static List<Nhanvien> getList(String from_Nhanvien) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

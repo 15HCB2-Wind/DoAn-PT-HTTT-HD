@@ -33,6 +33,11 @@ public class NhanVienAdapter {
         return null;
     }
     
+    public static List<Nhanvien> getAll(Object userid){
+        List<Nhanvien> list = HibernateUtil.getList("from Nhanvien where manhanvien <> :p0", new Object[]{ userid });
+        return list;
+    }
+    
     public static boolean add(Nhanvien obj) {
         getNewID(obj);
         obj.setMatkhau(Security.Encrypt(obj.getMatkhau()));

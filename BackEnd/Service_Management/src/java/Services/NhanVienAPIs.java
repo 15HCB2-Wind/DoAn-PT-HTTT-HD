@@ -16,6 +16,8 @@ import Models.*;
 import BusinessHandler.NhanVienBUS;
 import DAO.NhanVienAdapter;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import java.util.List;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
@@ -59,6 +61,28 @@ public class NhanVienAPIs {
                     }else{
                         response.Data = result;
                     }
+                }catch(Exception ex){
+                    response.Errors.add("Lỗi hệ thống.");
+                    response.IsError = true;
+                }
+            }
+        }
+        return gson.toJson(response);
+    }
+    
+    @POST
+    @Path("getAll")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public String getAll(String json){
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+        SelectRequest request = gson.fromJson(json, SelectRequest.class);
+        SelectResponse response = new SelectResponse();
+        if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2)){
+            if (NhanVienBUS.getSingleValidate(request, response)){
+                try{
+                    List<Nhanvien> result = NhanVienAdapter.getAll(request.Predicates[0]);
+                    response.Data = result;
                 }catch(Exception ex){
                     response.Errors.add("Lỗi hệ thống.");
                     response.IsError = true;
