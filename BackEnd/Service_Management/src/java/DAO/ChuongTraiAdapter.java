@@ -19,6 +19,11 @@ public class ChuongTraiAdapter {
         return null;
     }
     
+    public static List<Chuongtrai> getAll(Object id){
+        List<Chuongtrai> list = HibernateUtil.getList("from Chuongtrai where machinhanh = :p0", new Object[]{ id });
+        return list;
+    }
+    
     public static boolean add(Chuongtrai obj) {
         getNewID(obj);
         return HibernateUtil.save(obj);

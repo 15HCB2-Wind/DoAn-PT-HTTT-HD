@@ -1,6 +1,6 @@
 ﻿function callAjax(type, data, areaId, whichService, url, successCallback) {
     $.ajax({
-        contentType: 'application/json;charset=utf-8',
+        //contentType: 'application/json;charset=utf-8',
         dataType: 'json',
         data: data,
         type: type,

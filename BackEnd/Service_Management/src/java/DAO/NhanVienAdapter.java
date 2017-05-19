@@ -8,7 +8,6 @@ package DAO;
 import Models.Other.ChangePasswordRequest;
 import Ultility.HibernateUtil;
 import Ultility.Security;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 import pojos.*;
 
@@ -54,9 +53,19 @@ public class NhanVienAdapter {
 
     public static boolean update(Nhanvien obj) {
         Nhanvien nv = getSingle(obj.getManhanvien());
-        obj.setMatkhau(nv.getMatkhau());
-        obj.setTentaikhoan(nv.getTentaikhoan());
-        return HibernateUtil.update(obj);
+        nv.setHoten(obj.getHoten());
+        nv.setGioitinh(obj.getGioitinh());
+        nv.setNgaysinh(obj.getNgaysinh());
+        nv.setSodt(obj.getSodt());
+        nv.setDiachi(obj.getDiachi());
+        nv.setEmail(obj.getEmail());
+        //nv.setTentaikhoan(obj.getTentaikhoan());
+        //nv.setMatkhau(obj.getMatkhau());
+        nv.setTinhtrang(obj.getTinhtrang());
+        nv.setDaxoa(obj.getDaxoa());
+        nv.setMachinhanh(obj.getMachinhanh());
+        nv.setMaphanquyen(obj.getMaphanquyen());
+        return HibernateUtil.update(nv);
     }
 
     public static int changePassword(ChangePasswordRequest obj) {
