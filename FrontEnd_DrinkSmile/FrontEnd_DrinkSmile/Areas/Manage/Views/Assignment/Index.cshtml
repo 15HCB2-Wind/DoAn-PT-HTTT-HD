@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Nhà Cung Cấp";
+    ViewBag.Title = "Quản Lý Phân Công";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section Scripts {
@@ -8,8 +8,8 @@
             $.ajax({
                 type: type,
                 dataType: 'json',
-                data: data,
-                url: 'http://localhost:8080/Service_Management/webresources/NhaCungCap/getAll',
+                data:  data,
+                url: 'http://localhost:28289/assignment/getListAssignmentsOfBarn',
                 beforeSend: function () {},
                 complete: function () {},
                 success: function (data) {
@@ -20,17 +20,24 @@
         }
 
         $(document).ready(function () {
-            callAjax('post', {}, function (data) {
+            callAjax('post', { Data: { machuong: "Chuong0001" } }, function (data) {
                 console.log(data);
                 for(var i=0; i<data.Data.length;i++)
                 {
-                    $('#data_nhacungcap').append("<td>" + data.Data[i].manhacungcap + "</td>");
+                    $('#dataTables').append("<tr>" +
+                        "<td></td>" +
+                        "<td>" + data.Data[i].MaPhanCong + "</td>" +
+                        "<td>" + data.Data[i].MaNV + "</td>" +
+                        "<td>" + data.Data[i].NgayTrongTuan + "</td>" +
+                        "<td>" + data.Data[i].NgayBatDau + "</td>" +
+                        "<td>" + data.Data[i].NgayKetThuc + "</td>" +
+                        +"</tr>");
                 }
             })
         });
     </script>
 }
-<h2>Quản lý NCC</h2>
+<h2>Quản lý Phân Công</h2>
 <div id="controller">
 
 </div>
@@ -38,9 +45,9 @@
     <div class="panel-body">
 
         <div id="button_function">
-            <button>Them nha cung cap</button>
-            <button>Xoa nha cung cap</button>
-            <button>Sua nha cung cap</button>
+            <button>Them</button>
+            <button>Xoa</button>
+            <button>Sua</button>
         </div>
 
         <div class="dataTable_wrapper">
@@ -48,16 +55,15 @@
                 <thead>
                     <tr>
                         <th>check all</th>
-                        <th>Mã Nhà Cung Cấp</th>
-                        <th>Tên Nhà Cung Cấp</th>
-                        <th>Tình Trạng</th>
-                        <th>Địa chỉ</th>
+                        <th>Mã phân công</th>
+                        <th>Mã nhân viên</th>
+                        <th>Ngày trong tuần</th>
+                        <th>Ngày bắt đầu</th>
+                        <th>Ngày kết thúc</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr id="data_nhacungcap">
-                    </tr>
-                               
+                    <tr id="data_listphancong"></tr>
                 </tbody>
             </table>
         </div>
