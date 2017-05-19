@@ -1,8 +1,67 @@
 ﻿
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Nhà Cung Cấp";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@section Scripts {
+    <script>
+        function callAjax(type, data, successCallback) {
+            $.ajax({
+                type: type,
+                dataType: 'json',
+                data: data,
+                url: 'http://localhost:8080/Service_Management/webresources/NhaCungCap/getAll',
+                beforeSend: function () {},
+                complete: function () {},
+                success: function (data) {
+                        successCallback(data);
+                },
+                error: function () {}
+            });
+        }
 
+        $(document).ready(function () {
+            callAjax('post', {}, function (data) {
+                console.log(data);
+                for(var i=0; i<data.Data.length;i++)
+                {
+                    $('#data_nhacungcap').append("<td>" + data.Data[i].manhacungcap + "</td>");
+                }
+            })
+        });
+    </script>
+}
 <h2>Quản lý NCC</h2>
+<div id="controller">
+
+</div>
+<div id="list_provider">
+    <div class="panel-body">
+
+        <div id="button_function">
+            <button>Them nha cung cap</button>
+            <button>Xoa nha cung cap</button>
+            <button>Sua nha cung cap</button>
+        </div>
+
+        <div class="dataTable_wrapper">
+            <table class="table table-striped table-bordered table-hover" id="dataTables">
+                <thead>
+                    <tr>
+                        <th>check all</th>
+                        <th>Mã Nhà Cung Cấp</th>
+                        <th>Tên Nhà Cung Cấp</th>
+                        <th>Tình Trạng</th>
+                        <th>Địa chỉ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr id="data_nhacungcap">
+                    </tr>
+                               
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 

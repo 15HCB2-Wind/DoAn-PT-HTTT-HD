@@ -39,6 +39,7 @@ public class NhanVienAdapter {
     
     public static boolean add(Nhanvien obj) {
         getNewID(obj);
+        obj.setDaxoa(false);
         obj.setMatkhau(Security.Encrypt(obj.getMatkhau()));
         return HibernateUtil.save(obj);
     }

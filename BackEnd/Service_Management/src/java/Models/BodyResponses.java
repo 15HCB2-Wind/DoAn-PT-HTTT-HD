@@ -5,7 +5,9 @@
  */
 package Models;
 
+import com.google.gson.Gson;
 import java.util.*;
+import javax.ws.rs.core.Response;
 
 /**
  *
@@ -22,5 +24,11 @@ public abstract class BodyResponses {
         IsError = false;
         Errors = new ArrayList<>();
         IsTokenTimeout = false;
+    }
+    
+    public Response json(){
+        return Response.ok(new Gson().toJson(this))
+                .header("Access-Control-Allow-Origin", "*")
+                .build();
     }
 }
