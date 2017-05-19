@@ -3,13 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Models;
+package Models.Other;
+
+import Models.BodyRequest;
 
 /**
  *
- * @author Shin'sLaptop
+ * @author 19101994
  */
-public abstract class BodyRequests<T> {
-    public String Token;
-    public T Data;
+public class CheckTokenRequest extends BodyRequest {
+    public String TokenPassword;
+    public int Role;
 }

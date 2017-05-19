@@ -10,6 +10,9 @@ package Config;
  * @author Shin-Desktop
  */
 public class Configs {
-    public static final String sync2LoginService = "http://192.168.22.158:28288/account/sync";
-    public static final String checkToken = "http://192.168.22.158:28288/account/checktoken";
+    public static final boolean     DEBUG_MODE              =   true;
+    
+    public static final String      CHECK_TOKEN             =   "http://localhost:30000/account/checktoken";
+    
+    public static final String      TOKEN_PASSWORD          =   "&YH*hf4JEUFHKEKLRJH93#$i";
 }
