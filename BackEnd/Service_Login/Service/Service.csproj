@@ -95,6 +95,7 @@
     <Compile Include="Helpers\Token.cs" />
     <Compile Include="Models\BodyRequests.cs" />
     <Compile Include="Models\BodyResponses.cs" />
+    <Compile Include="Models\TokenData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

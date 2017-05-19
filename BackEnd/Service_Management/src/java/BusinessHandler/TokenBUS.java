@@ -21,7 +21,7 @@ import javax.ws.rs.core.Response;
  * @author Shin'sLaptop
  */
 public class TokenBUS {
-    public static boolean tokenCheck(BodyRequests request, BodyResponses response, int role){
+    public static boolean tokenCheck(BodyRequest request, BodyResponse response, int role){
         if (!Configs.DEBUG_MODE){
             int times = 3;
             boolean fail = true;
@@ -52,6 +52,43 @@ public class TokenBUS {
                 } catch (Exception ex){ }
             }while(fail && --times > 0);
         }
-        return !response.IsError;
+        return !response.IsError && !response.IsTokenTimeout;
+    }
+    
+    public static TokenData tokenData(BodyRequest request, BodyResponse response, int role){
+        TokenData tokenData = null;
+        if (!Configs.DEBUG_MODE){
+            int times = 3;
+            boolean fail = true;
+            
+            CheckTokenRequest ctRequest = new CheckTokenRequest();
+            ctRequest.Token = request.Token;
+            ctRequest.TokenPassword = Configs.TOKEN_PASSWORD;
+            ctRequest.Role = role;
+
+            do{
+                try{
+                    Client client = ClientBuilder.newClient();
+                    Response res = client
+                            .target(Configs.CHECK_TOKEN)
+                            .request(MediaType.APPLICATION_JSON)
+                            .post(Entity.json(new Gson().toJson(ctRequest)));
+
+                    CheckTokenResponse result = res.readEntity(CheckTokenResponse.class);
+                    fail = result == null;
+                    if (!fail){
+                        response.IsTokenTimeout = result.IsTokenTimeout;
+                        if (result.IsError){
+                            response.Errors.add("Không thể truy cập đến máy chủ.");
+                            response.IsError = true;
+                        }else{
+                            tokenData = result.Data;
+                        }
+                        break;
+                    }
+                } catch (Exception ex){ }
+            }while(fail && --times > 0);
+        }
+        return tokenData;
     }
 }

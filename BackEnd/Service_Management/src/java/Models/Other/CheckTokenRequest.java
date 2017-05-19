@@ -5,13 +5,13 @@
  */
 package Models.Other;
 
-import Models.BodyRequests;
+import Models.BodyRequest;
 
 /**
  *
  * @author 19101994
  */
-public class CheckTokenRequest extends BodyRequests {
+public class CheckTokenRequest extends BodyRequest {
     public String TokenPassword;
     public int Role;
 }

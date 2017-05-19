@@ -5,12 +5,12 @@
  */
 package Models.Other;
 
-import Models.BodyResponses;
+import Models.BodyResponse;
 
 /**
  *
  * @author Shin'sLaptop
  */
-public class ChangePasswordResponse extends BodyResponses{
+public class ChangePasswordResponse extends BodyResponse{
     
 }

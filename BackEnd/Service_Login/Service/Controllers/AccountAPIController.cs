@@ -243,7 +243,11 @@ namespace Service.Controllers
                     {
                         if (token.CapPQ == request.Role)
                         {
-                            response.Data = token;
+                            response.Data = new TokenData
+                            {
+                                UserId = token.MaNV,
+                                PermissionLevel = token.CapPQ,
+                            };
                         }
                         else
                         {

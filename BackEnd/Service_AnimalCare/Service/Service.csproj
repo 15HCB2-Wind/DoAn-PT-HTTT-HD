@@ -86,12 +86,14 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="BusinessHandler\PhanCongBUS.cs" />
+    <Compile Include="BusinessHandler\TokenBUS.cs" />
     <Compile Include="Controllers\PhanCongAPIController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\BodyRequest.cs" />
-    <Compile Include="Models\BodyResponse.cs" />
+    <Compile Include="Models\BodyRequests.cs" />
+    <Compile Include="Models\BodyResponses.cs" />
+    <Compile Include="Models\TokenData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

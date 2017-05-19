@@ -5,12 +5,13 @@
  */
 package Models.Other;
 
-import Models.BodyResponses;
+import Models.BodyResponse;
+import Models.TokenData;
 
 /**
  *
  * @author 19101994
  */
-public class CheckTokenResponse extends BodyResponses {
-    
+public class CheckTokenResponse extends BodyResponse {
+    public TokenData Data;
 }

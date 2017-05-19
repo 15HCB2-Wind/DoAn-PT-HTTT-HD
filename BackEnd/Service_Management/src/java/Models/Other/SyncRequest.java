@@ -5,13 +5,13 @@
  */
 package Models.Other;
 
-import Models.BodyRequests;
+import Models.BodyRequest;
 
 /**
  *
  * @author 19101994
  */
-public class SyncRequest extends BodyRequests{
+public class SyncRequest extends BodyRequest{
     public String Id;
     public String FullName;
     public String Username;

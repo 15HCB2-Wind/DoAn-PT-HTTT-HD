@@ -5,12 +5,12 @@
  */
 package Models.Other;
 
-import Models.BodyResponses;
+import Models.BodyResponse;
 
 /**
  *
  * @author 19101994
  */
-public class SyncResponse extends BodyResponses{
+public class SyncResponse extends BodyResponse{
     
 }

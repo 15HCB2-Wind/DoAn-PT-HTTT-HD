@@ -9,6 +9,6 @@ package Models;
  *
  * @author Shin'sLaptop
  */
-public abstract class BodyRequests {
+public abstract class BodyRequest {
     public String Token;
 }

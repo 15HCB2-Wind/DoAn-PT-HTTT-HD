@@ -5,12 +5,12 @@
  */
 package Models.DataAccess;
 
-import Models.BodyResponses;
+import Models.BodyResponse;
 
 /**
  *
  * @author 19101994
  */
-public class SelectResponse extends BodyResponses {
+public class SelectResponse extends BodyResponse {
     
 }

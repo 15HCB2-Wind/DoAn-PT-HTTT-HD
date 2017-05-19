@@ -5,12 +5,12 @@
  */
 package Models.DataAccess;
 
-import Models.BodyRequests;
+import Models.BodyRequest;
 
 /**
  *
  * @author 19101994
  */
-public class DeleteRequest extends BodyRequests {
+public class DeleteRequest extends BodyRequest {
     public Object[] Predicates;
 }

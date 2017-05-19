@@ -5,13 +5,13 @@
  */
 package Models.Other;
 
-import Models.BodyRequests;
+import Models.BodyRequest;
 
 /**
  *
  * @author Shin'sLaptop
  */
-public class ChangePasswordRequest extends BodyRequests {
+public class ChangePasswordRequest extends BodyRequest {
     public String UserId;
     public String NewPass;
 }
