@@ -3,13 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Shin'sLaptop/Documents/GitHub/DoAn-PT-HTTT-HD/BackEnd/Service_Management/src/java/Services/NhaCungCapAPIs.java</file>
-            <file>file:/C:/Users/Shin'sLaptop/Documents/GitHub/DoAn-PT-HTTT-HD/BackEnd/Service_Management/src/java/Config/ApplicationConfig.java</file>
-            <file>file:/C:/Users/Shin'sLaptop/Documents/GitHub/DoAn-PT-HTTT-HD/BackEnd/Service_Management/src/java/Models/BodyResponses.java</file>
-            <file>file:/C:/Users/Shin'sLaptop/Documents/GitHub/DoAn-PT-HTTT-HD/BackEnd/Service_Management/src/java/DAO/NhanVienAdapter.java</file>
-            <file>file:/C:/Users/Shin'sLaptop/Documents/GitHub/DoAn-PT-HTTT-HD/BackEnd/Service_Management/src/java/Services/ChiNhanhAPIs.java</file>
-            <file>file:/C:/Users/Shin'sLaptop/Documents/GitHub/DoAn-PT-HTTT-HD/BackEnd/Service_Management/src/java/BusinessHandler/ChiNhanhBUS.java</file>
-            <file>file:/C:/Users/Shin'sLaptop/Documents/GitHub/DoAn-PT-HTTT-HD/BackEnd/Service_Management/src/java/Services/NhanVienAPIs.java</file>
+            <file>file:/E:/PTHTTTHD/Project/Source/BackEnd/Service_Management/src/java/BusinessHandler/NhanVienBUS.java</file>
+            <file>file:/E:/PTHTTTHD/Project/Source/BackEnd/Service_Management/src/java/DAO/NhanVienAdapter.java</file>
+            <file>file:/E:/PTHTTTHD/Project/Source/BackEnd/Service_Management/src/java/Models/DataAccess/Staff/SelectStaffRequest.java</file>
+            <file>file:/E:/PTHTTTHD/Project/Source/BackEnd/Service_Management/src/java/Services/NhanVienAPIs.java</file>
+            <file>file:/E:/PTHTTTHD/Project/Source/BackEnd/Service_Management/src/java/Models/DataAccess/Staff/StaffRequest.java</file>
+            <file>file:/E:/PTHTTTHD/Project/Source/BackEnd/Service_Management/src/java/Models/DataAccess/Staff/StaffResponse.java</file>
         </group>
     </open-files>
 </project-private>
