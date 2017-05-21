@@ -24,49 +24,90 @@
                 console.log(data);
                 for(var i=0; i<data.Data.length;i++)
                 {
+
+                   
+                    var days = data.Data[i].NgayTrongTuan.split(',');
+                    console.log(days);
+                    var week = ["2", "3", "4", "5", "6", "7", "CN"];
+
+                    for (var j = 0; j < week.length; j++) {
+                        if (!days.includes(week[j])) {
+                            week[j] = "";
+                        }
+                    }
+
+                    var td = "";
+                    for (var j = 0; j < week.length; j++) {
+                        if (!days.includes(week[j])) {
+                            td += '<td><div class="form-group"><input type="checkbox" class="filled-in" id="checkbox2"><label for="checkbox2"></label></td>';
+                        }
+                        else {
+                            td += '<td><div class="form-group"><input type="checkbox" class="filled-in" id="checkbox2" checked="checked"><label for="checkbox2"></label></td>';
+                        }
+                    }
+                    
                     $('#dataTables').append("<tr>" +
-                        "<td></td>" +
-                        "<td>" + data.Data[i].MaPhanCong + "</td>" +
+                        '<td><div class="form-group"><input type="checkbox" class="filled-in" id="checkbox2"><label for="checkbox2"></label></td>' +
+                        '<td class="idphancong">' + data.Data[i].MaPhanCong + '</td>'+
                         "<td>" + data.Data[i].MaNV + "</td>" +
-                        "<td>" + data.Data[i].NgayTrongTuan + "</td>" +
+                        td +
                         "<td>" + data.Data[i].NgayBatDau + "</td>" +
                         "<td>" + data.Data[i].NgayKetThuc + "</td>" +
-                        +"</tr>");
+                        '<td><span class="spnSelected"><img src="../../../Content/Edit-26.png" alt="Alternate Text" /></span> </td>' +
+                        "</tr>");
                 }
             })
+        });
+
+        $("#dataTables").on('click', '.spnSelected', function () {
+            var self = $(this).closest("tr");
+            var col1_value = self.find(".idphancong").text();
+            alert("Mã phân công:" + col1_value);
         });
     </script>
 }
 <h2>Quản lý Phân Công</h2>
 <div id="controller">
-
+    
 </div>
-<div id="list_provider">
-    <div class="panel-body">
+<form>
+    <div id="list_provider">
+        <div class="panel-body">
 
-        <div id="button_function">
-            <button>Them</button>
-            <button>Xoa</button>
-            <button>Sua</button>
-        </div>
+            <div id="button_function">
+                <button>Them</button>
+                <button>Xoa</button>
+                <button>Sua</button>
+            </div>
 
-        <div class="dataTable_wrapper">
-            <table class="table table-striped table-bordered table-hover" id="dataTables">
-                <thead>
-                    <tr>
-                        <th>check all</th>
-                        <th>Mã phân công</th>
-                        <th>Mã nhân viên</th>
-                        <th>Ngày trong tuần</th>
-                        <th>Ngày bắt đầu</th>
-                        <th>Ngày kết thúc</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr id="data_listphancong"></tr>
-                </tbody>
-            </table>
+            <div class="dataTable_wrapper">
+                <input id="Checkbox1" type="checkbox" checked="checked" />
+                <table class="table table-striped table-bordered table-hover" id="dataTables">
+                    <thead>
+                        <tr>
+                            <th rowspan="2">check all</th>
+                            <th rowspan="2">Mã phân công</th>
+                            <th rowspan="2">Mã nhân viên</th>
+                            <th colspan="7"><p align="center">Ngày trong tuần</p></th>
+                            <th rowspan="2">Ngày bắt đầu</th>
+                            <th rowspan="2">Ngày kết thúc</th>
+                            <th rowspan="2">Sửa</th>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>3</td>
+                            <td>4</td>
+                            <td>5</td>
+                            <td>6</td>
+                            <td>7</td>
+                            <td>CN</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!---->
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</div>
-
+</form>
