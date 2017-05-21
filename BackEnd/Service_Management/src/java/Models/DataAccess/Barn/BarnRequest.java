@@ -3,17 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Models.DataAccess.Staff;
+package Models.DataAccess.Barn;
 
 import Models.BodyRequest;
+import pojos.Chuongtrai;
 
 /**
  *
  * @author Tu
  */
-public class SelectStaffRequest extends BodyRequest {
+public class BarnRequest extends BodyRequest {
 
-    public String MaNV;
-    public String MaCN;
-    public String MaPQ;
+    public Chuongtrai Data;
 }

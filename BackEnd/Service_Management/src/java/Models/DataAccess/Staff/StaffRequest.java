@@ -5,14 +5,14 @@
  */
 package Models.DataAccess.Staff;
 
-import Models.BodyRequests;
+import Models.BodyRequest;
 import pojos.Nhanvien;
 
 /**
  *
  * @author 19101994
  */
-public class StaffRequest extends BodyRequests {
+public class StaffRequest extends BodyRequest {
 
     public Nhanvien Data;
 }

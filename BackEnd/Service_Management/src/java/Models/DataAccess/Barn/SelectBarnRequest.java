@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Models.DataAccess.Staff;
+package Models.DataAccess.Barn;
 
 import Models.BodyRequest;
 
@@ -11,9 +11,8 @@ import Models.BodyRequest;
  *
  * @author Tu
  */
-public class SelectStaffRequest extends BodyRequest {
+public class SelectBarnRequest extends BodyRequest {
 
-    public String MaNV;
+    public String MaCT;
     public String MaCN;
-    public String MaPQ;
 }
