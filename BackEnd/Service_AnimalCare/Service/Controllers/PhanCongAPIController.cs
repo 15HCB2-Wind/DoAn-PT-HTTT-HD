@@ -1,4 +1,7 @@
-﻿using Service.Models;
+﻿using DataAccess.Repositories;
+using DomainData;
+using Service.BusinessHandler;
+using Service.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,44 +21,26 @@ namespace Service.Controllers
         [Route("add")]
         public HttpResponseMessage AddPhanCong([FromBody] PhanCongRequest request)
         {
-            var response = new PhanCongResponse();
-            if (request.FromDate > request.ToDate)
-                response.Errors.Add("Ngày bắt đầu không được lớn hơn ngày kết thúc làm việc");
-            if (string.IsNullOrEmpty(request.IdChuong))
-                response.Errors.Add("Chuồng không tồn tại, hãy chọn chuồng khác");
-
-            List<int> listdays = new List<int>();
-            try
-            {
-                string[] temp = request.Days.Split(',');
-                foreach (string item in temp)
+            var response = new PhanCongResponse(); 
+            if (BusinessHandler.TokenBUS.tokenCheck(request, response, 1)) {
+                
+                PhanCongBUS.AddPhanCong(request, ref response);
+                if (response.IsError)
+                    return Request.CreateResponse(HttpStatusCode.OK, response);
+                else
                 {
-                    if (item == "CN")
-                        listdays.Add(8);
+                    if (PhanCongRepository.Insert(request.Data) < 0)
+                    {
+                        response.Errors.Add("Lỗi hệ thống");
+                        response.IsError = true;
+                    }
                     else
-                        listdays.Add(int.Parse(item));
+                    {
+                        response.Data = "Thêm thành công!";
+                    }
                 }
             }
-            catch (Exception)
-            {
-                response.Errors.Add("Định dạng ngày làm việc ko đúng, ví dụ: 2,3,4,5,6,7,CN");
-                response.IsError = true;
-            }
-
-            if (response.IsError)
-                return Request.CreateResponse(HttpStatusCode.OK, response);
-            else
-            {
-                try
-                {
-                    BusinessHandler.PhanCongBUS.AddPhanCong(request, ref response);
-                }
-                catch (Exception)
-                {
-                    response.Errors.Add("Lỗi hệ thống");
-                    response.IsError = true;
-                }
-            }
+            
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
@@ -65,36 +50,38 @@ namespace Service.Controllers
         public HttpResponseMessage UpdatePhanCong([FromBody] PhanCongRequest request)
         {
             var response = new PhanCongResponse();
-            if (request.FromDate > request.ToDate)
-                response.Errors.Add("Ngày bắt đầu không được lớn hơn ngày kết thúc làm việc");
-            if (string.IsNullOrEmpty(request.IdChuong))
-                response.Errors.Add("Chuồng không tồn tại, hãy chọn chuồng khác");
-
-            List<int> listdays = new List<int>();
-            try
+            if (BusinessHandler.TokenBUS.tokenCheck(request, response, 1))
             {
-                string[] temp = request.Days.Split(',');
-                foreach (string item in temp)
+                PhanCongBUS.UpdatePhanCong(request, ref response);
+                if (response.IsError)
+                    return Request.CreateResponse(HttpStatusCode.OK, response);
+                else
                 {
-                    if (item == "CN")
-                        listdays.Add(8);
+                    if (PhanCongRepository.Update(request.Data) < 0)
+                    {
+                        response.Errors.Add("Lỗi hệ thống");
+                        response.IsError = true;
+                    }
                     else
-                        listdays.Add(int.Parse(item));
+                    {
+                        response.Data = "Thêm thành công!";
+                    }
                 }
             }
-            catch (Exception)
-            {
-                response.Errors.Add("Định dạng ngày làm việc ko đúng, ví dụ: 2,3,4,5,6,7,CN");
-                response.IsError = true;
-            }
+            return Request.CreateResponse(HttpStatusCode.OK, response);
+        }
 
-            if (response.IsError)
-                return Request.CreateResponse(HttpStatusCode.OK, response);
-            else
+        //Lấy danh sách phân công của 1 chi nhánh
+        [HttpPost]
+        [Route("getListAssignmentsOfBarn")]
+        public HttpResponseMessage GetAllFromChuongTrai([FromBody] PhanCongRequest request)
+        {
+            var response = new PhanCongResponse();
+            if (BusinessHandler.TokenBUS.tokenCheck(request, response, 1))
             {
                 try
                 {
-                    BusinessHandler.PhanCongBUS.UpdatePhanCong(request, ref response);
+                    BusinessHandler.PhanCongBUS.GetAllFromChuongTrai(request, ref response);
                 }
                 catch (Exception)
                 {
@@ -105,60 +92,45 @@ namespace Service.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
-        //Lấy danh sách phân công của 1 chi nhánh
-        [HttpPost]
-        [Route("getlistphancongofchuongtrai")]
-        public HttpResponseMessage GetAllFromChuongTrai([FromBody] PhanCongRequest request)
-        {
-            var response = new PhanCongResponse();
-            try
-            {
-                BusinessHandler.PhanCongBUS.GetAllFromChuongTrai(request, ref response);
-            }
-            catch (Exception)
-            {
-                response.Errors.Add("Lỗi hệ thống");
-                response.IsError = true;
-            }
-
-            return Request.CreateResponse(HttpStatusCode.OK, response);
-        }
-
         //Lấy danh sách phân công của 1 nhân viên
         [HttpPost]
-        [Route("getlistphancongofnhanvien")]
+        [Route("getListAssignmentsOfEmployeer")]
         public HttpResponseMessage GetAllFromNhanVien([FromBody] PhanCongRequest request)
         {
             var response = new PhanCongResponse();
-            try
+            if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2))
             {
-                BusinessHandler.PhanCongBUS.GetAllFromNhanVien(request, ref response);
+                try
+                {
+                    BusinessHandler.PhanCongBUS.GetAllFromNhanVien(request, ref response);
+                }
+                catch (Exception)
+                {
+                    response.Errors.Add("Lỗi hệ thống");
+                    response.IsError = true;
+                }
             }
-            catch (Exception)
-            {
-                response.Errors.Add("Lỗi hệ thống");
-                response.IsError = true;
-            }
-            
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
         //Lấy 1 Phân công khi truyền vào mã phân công
         [HttpPost]
-        [Route("getsinglephancong")]
+        [Route("getSingleAssignment")]
         public HttpResponseMessage GetOneFromPhanCong([FromBody] PhanCongRequest request)
         {
             var response = new PhanCongResponse();
-            try
+            if (BusinessHandler.TokenBUS.tokenCheck(request, response, 1))
             {
-                BusinessHandler.PhanCongBUS.GetOneFromPhanCong(request, ref response);
+                try
+                {
+                    BusinessHandler.PhanCongBUS.GetOneFromPhanCong(request, ref response);
+                }
+                catch (Exception)
+                {
+                    response.Errors.Add("Lỗi hệ thống");
+                    response.IsError = true;
+                }
             }
-            catch (Exception)
-            {
-                response.Errors.Add("Lỗi hệ thống");
-                response.IsError = true;
-            }
-
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
     }

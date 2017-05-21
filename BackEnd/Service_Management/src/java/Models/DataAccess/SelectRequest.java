@@ -5,13 +5,13 @@
  */
 package Models.DataAccess;
 
-import Models.BodyRequests;
+import Models.BodyRequest;
 import java.util.ArrayList;
 
 /**
  *
  * @author 19101994
  */
-public class SelectRequest extends BodyRequests {
+public class SelectRequest extends BodyRequest {
     public Object[] Predicates;
 }

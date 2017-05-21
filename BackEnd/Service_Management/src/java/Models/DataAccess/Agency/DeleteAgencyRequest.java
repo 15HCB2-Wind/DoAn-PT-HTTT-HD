@@ -5,13 +5,13 @@
  */
 package Models.DataAccess.Agency;
 
-import Models.BodyRequests;
+import Models.BodyRequest;
 import pojos.Chinhanh;
 
 /**
  *
  * @author Ut Hieu
  */
-public class DeleteAgencyRequest extends BodyRequests{
+public class DeleteAgencyRequest extends BodyRequest{
     public Chinhanh Data; 
 }

@@ -78,7 +78,7 @@ namespace Service.BusinessHandler
                     try
                     {
                         var result = client.PostAsync(Configs.SYNC_TO_MANAGEMENT_SERVICE, new StringContent(JsonConvert.SerializeObject(obj), Encoding.UTF8, "application/json")).Result.Content.ReadAsAsync<ChangePasswordResponse>().Result;
-                        fail = result == null || result.IsError;
+                        fail = result == null;
                     }
                     catch { }
                 } while (fail && --times > 0);

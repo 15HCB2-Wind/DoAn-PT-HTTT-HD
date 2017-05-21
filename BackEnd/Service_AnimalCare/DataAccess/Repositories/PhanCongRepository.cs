@@ -9,40 +9,39 @@ namespace DataAccess.Repositories
 {
     public class PhanCongRepository : DataAccessOrigin<PhanCong>
     {
-        public static string Insert(PhanCong pc)
-        {
+        public static bool createIDAssignment(PhanCong pc){
             //tạo mã phân công
-            TempCount count = null;
+            object result = -1;
             try
             {
-                count = DataProvider.ExecuteReaderOne((SqlDataReader row) =>
-                {
-                    return new TempCount()
-                    {
-                        Count = row.GetInt32(0)
-                    };
-                }, "select count(MaPhanCong) as Count from PhanCong");
-
+                result = DataProvider.ExecuteScalar("select count(MaPhanCong) as Count from PhanCong");
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                return false;
             }
-
-            //thêm mới phân công
-            pc.MaPhanCong = String.Format("PC{0:D4}", count.Count + 1);
-            int result = -1;
-            try
-            {
-                result = DataProvider.ExecuteNonQuery(string.Format("insert into phancong(maphancong,ngaybatdau,ngayketthuc,ngaytrongtuan,manv,machuong) values ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}')", pc.MaPhanCong, pc.NgayBatDau, pc.NgayKetThuc, pc.NgayTrongTuan, pc.MaNV, pc.MaChuong));
-            }
-            catch (Exception ex)
-            {
-                return ex.Message;
-            }
-            return result.ToString();
+            pc.MaPhanCong = String.Format("PC{0:D4}", Convert.ToInt32(result) + 1);
+            return true;
         }
-        public static string Update(PhanCong pc)
+
+        public static int Insert(PhanCong pc)
+        {
+            //thêm mới phân công
+            int result = -1;
+            if (createIDAssignment(pc)){
+                try
+                {
+                    result = DataProvider.ExecuteNonQuery(string.Format("insert into phancong(maphancong,ngaybatdau,ngayketthuc,ngaytrongtuan,manv,machuong) values ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}')", pc.MaPhanCong, pc.NgayBatDau, pc.NgayKetThuc, pc.NgayTrongTuan, pc.MaNV, pc.MaChuong));
+                }
+                catch (Exception ex)
+                {
+                    return result;
+                }
+            }
+            return result;
+        }
+
+        public static int Update(PhanCong pc)
         {
             int result = -1;
             try
@@ -51,9 +50,9 @@ namespace DataAccess.Repositories
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                return result;
             }
-            return result.ToString();
+            return result;
         }
         public static List<PhanCong> GetAllFromNhanVien(PhanCong pc)
         {

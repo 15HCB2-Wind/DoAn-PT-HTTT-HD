@@ -5,12 +5,12 @@
  */
 package Models.DataAccess.Agency;
 
-import Models.BodyResponses;
+import Models.BodyResponse;
 
 /**
  *
  * @author Ut Hieu
  */
-public class DeleteAgencyResponse extends BodyResponses {
+public class DeleteAgencyResponse extends BodyResponse {
     
 }
