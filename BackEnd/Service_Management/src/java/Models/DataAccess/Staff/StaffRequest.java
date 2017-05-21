@@ -3,15 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Models.DataAccess.Personnel;
+package Models.DataAccess.Staff;
 
-import Models.DataAccess.InsertRequest;
+import Models.BodyRequests;
 import pojos.Nhanvien;
 
 /**
  *
  * @author 19101994
  */
-public class InsertPersonnelRequest extends InsertRequest{
+public class StaffRequest extends BodyRequests {
+
     public Nhanvien Data;
 }

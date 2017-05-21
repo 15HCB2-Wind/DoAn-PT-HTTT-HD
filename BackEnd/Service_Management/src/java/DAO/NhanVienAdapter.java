@@ -16,14 +16,15 @@ import pojos.*;
  * @author Shin-Desktop
  */
 public class NhanVienAdapter {
+
     private static void getNewID(Nhanvien obj) {
         int count = HibernateUtil.count("select count(manhanvien) from Nhanvien");
         obj.setManhanvien(String.format("NV%05d", count + 1));
     }
-    
-    public static Nhanvien getSingle(Object userid){
-        List<Nhanvien> list = HibernateUtil.getSingle("from Nhanvien where manhanvien = :p0", new Object[]{ userid });
-        if (list.size()>0) {
+
+    public static Nhanvien getSingle(Object MaNV) {
+        List<Nhanvien> list = HibernateUtil.getSingle("from Nhanvien where manhanvien = :p0", new Object[]{MaNV});
+        if (list.size() > 0) {
             Nhanvien nhanvien = list.get(0);
             nhanvien.setTentaikhoan(null);
             nhanvien.setMatkhau(null);
@@ -31,12 +32,12 @@ public class NhanVienAdapter {
         }
         return null;
     }
-    
-    public static List<Nhanvien> getAll(Object userid){
-        List<Nhanvien> list = HibernateUtil.getList("from Nhanvien where manhanvien <> :p0", new Object[]{ userid });
+
+    public static List<Nhanvien> getAll(String MaCN, String MaPQ) {
+        List<Nhanvien> list = HibernateUtil.getList("from Nhanvien where machinhanh = :p0 and maphanquyen = :p1", new Object[]{MaCN, MaPQ});
         return list;
     }
-    
+
     public static boolean add(Nhanvien obj) {
         getNewID(obj);
         obj.setDaxoa(false);
@@ -45,11 +46,11 @@ public class NhanVienAdapter {
     }
 
     public static int delete(Object userid) {
-        return HibernateUtil.execute("update Nhanvien set daxoa = :p1 where manhanvien = :p0", new Object[]{ userid, true });
+        return HibernateUtil.execute("update Nhanvien set daxoa = :p1 where manhanvien = :p0", new Object[]{userid, true});
     }
-    
+
     public static int recover(Object userid) {
-        return HibernateUtil.execute("update Nhanvien set daxoa = :p1 where manhanvien = :p0", new Object[]{ userid, false });
+        return HibernateUtil.execute("update Nhanvien set daxoa = :p1 where manhanvien = :p0", new Object[]{userid, false});
     }
 
     public static boolean update(Nhanvien obj) {
@@ -70,6 +71,6 @@ public class NhanVienAdapter {
     }
 
     public static int changePassword(ChangePasswordRequest obj) {
-        return HibernateUtil.execute("update Nhanvien set matkhau = :p1 where manhanvien = :p0", new Object[]{ obj.UserId, obj.NewPass });
+        return HibernateUtil.execute("update Nhanvien set matkhau = :p1 where manhanvien = :p0", new Object[]{obj.UserId, obj.NewPass});
     }
 }

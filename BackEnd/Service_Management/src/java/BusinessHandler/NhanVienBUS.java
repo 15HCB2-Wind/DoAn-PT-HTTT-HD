@@ -5,22 +5,15 @@
  */
 package BusinessHandler;
 
-import Models.DataAccess.Personnel.UpdatePersonnelRequest;
-import Models.DataAccess.Personnel.InsertPersonnelRequest;
-import Models.DataAccess.Personnel.InsertPersonnelResponse;
-import Models.DataAccess.Personnel.UpdatePersonnelResponse;
+import Models.DataAccess.Staff.StaffRequest;
+import Models.DataAccess.Staff.StaffResponse;
 import Models.Other.SyncResponse;
 import Models.Other.SyncRequest;
-import Models.DataAccess.*;
-import Models.*;
 import Config.Configs;
 import DAO.PhanQuyenAdapter;
 import com.google.gson.Gson;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.client.*;
+import javax.ws.rs.core.*;
 import pojos.Nhanvien;
 
 /**
@@ -28,50 +21,23 @@ import pojos.Nhanvien;
  * @author Shin'sLaptop
  */
 public class NhanVienBUS {
-    public static boolean insertValidate(InsertPersonnelRequest request, InsertPersonnelResponse response){
-        if (request.Data.getHoten().isEmpty()){
+
+    public static boolean validateInformation(StaffRequest request, StaffResponse response) {
+        if (request.Data.getHoten().isEmpty()) {
             response.NameErrors.add("Họ tên không được để trống!");
             response.IsError = true;
         }
-        if (request.Data.getEmail().isEmpty()){
+        if (request.Data.getEmail().isEmpty()) {
             response.EmailErrors.add("Email không được để trống!");
             response.IsError = true;
         }
         return !response.IsError;
     }
-    
-    public static boolean updateValidate(UpdatePersonnelRequest request, UpdatePersonnelResponse response){
-        if (request.Data.getHoten().isEmpty()){
-            response.NameErrors.add("Họ tên không được để trống!");
-            response.IsError = true;
-        }
-        if (request.Data.getEmail().isEmpty()){
-            response.EmailErrors.add("Email không được để trống!");
-            response.IsError = true;
-        }
-        return !response.IsError;
-    }
-    
-    public static boolean deleteValidate(DeleteRequest request, DeleteResponse response){
-        if (request.Predicates.length <= 0){
-            response.Errors.add("Không đủ tham số tìm kiếm!");
-            response.IsError = true;
-        }
-        return !response.IsError;
-    }
-    
-    public static boolean getSingleValidate(SelectRequest request, SelectResponse response){
-        if (request.Predicates.length <= 0){
-            response.Errors.add("Không đủ tham số tìm kiếm!");
-            response.IsError = true;
-        }
-        return !response.IsError;
-    }
-    
-    public static void sync(int code, Nhanvien obj){
+
+    public static void sync(int code, Nhanvien obj) {
         int times = 3;
         boolean fail = true;
-        
+
         SyncRequest sRequest = new SyncRequest();
         sRequest.Id = obj.getManhanvien();
         sRequest.FullName = obj.getHoten();
@@ -80,9 +46,9 @@ public class NhanVienBUS {
         sRequest.Email = obj.getEmail();
         sRequest.PermissionLevel = PhanQuyenAdapter.getSingle(obj.getMaphanquyen()).getCapphanquyen();
         sRequest.SyncType = code;
-        
-        do{
-            try{
+
+        do {
+            try {
                 Client client = ClientBuilder.newClient();
                 Response res = client
                         .target(Configs.SYNC_TO_LOGIN_SERVICE)
@@ -91,9 +57,11 @@ public class NhanVienBUS {
 
                 SyncResponse result = res.readEntity(SyncResponse.class);
                 fail = result == null;
-                if (!fail)
+                if (!fail) {
                     break;
-            } catch (Exception ex){ }
-        }while(fail && --times > 0);
+                }
+            } catch (Exception ex) {
+            }
+        } while (fail && --times > 0);
     }
 }
