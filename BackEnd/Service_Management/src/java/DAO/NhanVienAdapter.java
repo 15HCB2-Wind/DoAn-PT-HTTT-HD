@@ -33,7 +33,7 @@ public class NhanVienAdapter {
         return null;
     }
 
-    public static List<Nhanvien> getAll(String MaCN, String MaPQ) {
+    public static List<Nhanvien> getAll(Object MaCN, Object MaPQ) {
         List<Nhanvien> list = HibernateUtil.getList("from Nhanvien where machinhanh = :p0 and maphanquyen = :p1", new Object[]{MaCN, MaPQ});
         return list;
     }
