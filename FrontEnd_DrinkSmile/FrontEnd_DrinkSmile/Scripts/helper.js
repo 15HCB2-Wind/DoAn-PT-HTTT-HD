@@ -1,9 +1,12 @@
 ﻿function callAjax(type, data, areaId, whichService, url, successCallback) {
     $.ajax({
         //contentType: 'application/json;charset=utf-8',
+        headers: {
+            'Content-Type': 'application/json'
+        },
         type: type,
         dataType: 'json',
-        data: data,
+        data: JSON.stringify(data),
         url: getAPI(areaId, whichService, url),
         beforeSend: function () {
             $('#loader').show();

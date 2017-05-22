@@ -41,7 +41,7 @@ public class NhanVienAPIs {
     @Path("get")
     @Produces("application/json")
     @Consumes("application/json")
-    public Response get(String json) {
+    public String get(String json) {
         Gson gson = new Gson();
         SelectStaffRequest request = gson.fromJson(json, SelectStaffRequest.class);
         SelectResponse response = new SelectResponse();
@@ -59,14 +59,14 @@ public class NhanVienAPIs {
                 response.IsError = true;
             }
         }
-        return response.json();
+        return gson.toJson(response);
     }
 
     @POST
     @Path("getAll")
     @Produces("application/json")
     @Consumes("application/json")
-    public Response getAll(String json) {
+    public String getAll(String json) {
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
         SelectStaffRequest request = gson.fromJson(json, SelectStaffRequest.class);
         SelectResponse response = new SelectResponse();
@@ -79,16 +79,14 @@ public class NhanVienAPIs {
                 response.IsError = true;
             }
         }
-        return Response.ok(gson.toJson(response))
-                .header("Access-Control-Allow-Origin", "*")
-                .build();
+        return gson.toJson(response);
     }
 
     @POST
     @Path("add")
     @Produces("application/json")
     @Consumes("application/json")
-    public Response add(String json) {
+    public String add(String json) {
         Gson gson = new Gson();
         StaffRequest request = gson.fromJson(json, StaffRequest.class);
         StaffResponse response = new StaffResponse();
@@ -108,14 +106,14 @@ public class NhanVienAPIs {
                 }
             }
         }
-        return response.json();
+        return gson.toJson(response);
     }
 
     @POST
     @Path("delete")
     @Produces("application/json")
     @Consumes("application/json")
-    public Response delete(String json) {
+    public String delete(String json) {
         Gson gson = new Gson();
         SelectStaffRequest request = gson.fromJson(json, SelectStaffRequest.class);
         DeleteResponse response = new DeleteResponse();
@@ -134,14 +132,14 @@ public class NhanVienAPIs {
                 response.IsError = true;
             }
         }
-        return response.json();
+        return gson.toJson(response);
     }
 
     @POST
     @Path("recover")
     @Produces("application/json")
     @Consumes("application/json")
-    public Response recover(String json) {
+    public String recover(String json) {
         Gson gson = new Gson();
         SelectStaffRequest request = gson.fromJson(json, SelectStaffRequest.class);
         DeleteResponse response = new DeleteResponse();
@@ -160,14 +158,14 @@ public class NhanVienAPIs {
                 response.IsError = true;
             }
         }
-        return response.json();
+        return gson.toJson(response);
     }
 
     @POST
     @Path("update")
     @Produces("application/json")
     @Consumes("application/json")
-    public Response update(String json) {
+    public String update(String json) {
         Gson gson = new Gson();
         StaffRequest request = gson.fromJson(json, StaffRequest.class);
         StaffResponse response = new StaffResponse();
@@ -187,7 +185,7 @@ public class NhanVienAPIs {
                 }
             }
         }
-        return response.json();
+        return gson.toJson(response);
     }
 
     @POST
