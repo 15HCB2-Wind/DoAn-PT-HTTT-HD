@@ -133,6 +133,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\compiled.min.css" />
+    <Content Include="Content\Delete Filled-26.png" />
     <Content Include="Content\Edit-26.png" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
@@ -184,6 +185,7 @@
     <Content Include="fonts\Roboto-Thin.woff2" />
     <Content Include="Areas\Manage\Views\Assignment\Index.cshtml" />
     <Content Include="Areas\Manage\Views\Assignment\Create.cshtml" />
+    <Content Include="Areas\Manage\Views\Assignment\Update.cshtml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

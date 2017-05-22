@@ -79,7 +79,9 @@ public class NhanVienAPIs {
                 response.IsError = true;
             }
         }
-        return response.json();
+        return Response.ok(gson.toJson(response))
+                .header("Access-Control-Allow-Origin", "*")
+                .build();
     }
 
     @POST

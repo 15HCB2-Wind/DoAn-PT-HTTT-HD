@@ -13,5 +13,11 @@ namespace FrontEnd_DrinkSmile.Areas.Manage.Controllers
         {
             return View();
         }
+
+        public ActionResult Update(string getmaphancong)
+        {
+            ViewBag.getmaphancong = getmaphancong;
+            return View();
+        }
     }
 }
