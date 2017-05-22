@@ -3,21 +3,22 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Models.DataAccess.Personnel;
+package Models.DataAccess.Barn;
 
-import Models.DataAccess.InsertResponse;
+import Models.BodyResponse;
 import java.util.ArrayList;
 
 /**
  *
- * @author 19101994
+ * @author Tu
  */
-public class InsertPersonnelResponse extends InsertResponse {
+public class BarnResponse extends BodyResponse {
+
     public ArrayList<String> NameErrors;
-    public ArrayList<String> EmailErrors;
-    
-    public InsertPersonnelResponse(){
+    public ArrayList<String> SlotErrors;
+
+    public BarnResponse() {
         NameErrors = new ArrayList<>();
-        EmailErrors = new ArrayList<>();
+        SlotErrors = new ArrayList<>();
     }
 }

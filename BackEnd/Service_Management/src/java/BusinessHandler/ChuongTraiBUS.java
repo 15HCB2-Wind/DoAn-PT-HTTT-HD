@@ -5,13 +5,24 @@
  */
 package BusinessHandler;
 
-import Models.DataAccess.Personnel.InsertPersonnelRequest;
-import Models.DataAccess.Personnel.InsertPersonnelResponse;
+import Models.DataAccess.Barn.BarnRequest;
+import Models.DataAccess.Barn.BarnResponse;
 
 /**
  *
  * @author Tu
  */
 public class ChuongTraiBUS {
-    
+
+    public static boolean validateInformation(BarnRequest request, BarnResponse response) {
+        if (request.Data.getTenchuong().isEmpty()) {
+            response.NameErrors.add("Tên chuồng không được để trống!");
+            response.IsError = true;
+        }
+        if (request.Data.getSucchua() < 0 || request.Data.getSucchua() == null || request.Data.getSucchua() != (int)request.Data.getSucchua()) {
+            response.SlotErrors.add("Sức chứa không hợp lệ!");
+            response.IsError = true;
+        }
+        return !response.IsError;
+    }
 }

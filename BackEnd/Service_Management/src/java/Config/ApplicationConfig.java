@@ -26,6 +26,7 @@ public class ApplicationConfig extends Application {
         resources.add(Services.BoAPIs.class);
         resources.add(Services.ChiNhanhAPIs.class);
         resources.add(Services.KhoSuaAPIs.class);
+        resources.add(Services.ChuongTraiAPIs.class);
         resources.add(Services.NhaCungCapAPIs.class);
         resources.add(Services.NhanVienAPIs.class);
     }

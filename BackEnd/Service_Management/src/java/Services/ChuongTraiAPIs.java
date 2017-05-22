@@ -5,28 +5,25 @@
  */
 package Services;
 
-import Models.DataAccess.Staff.StaffRequest;
-import Models.DataAccess.Staff.StaffResponse;
-import Models.Other.ChangePasswordRequest;
-import Models.Other.ChangePasswordResponse;
-import Models.DataAccess.*;
-import BusinessHandler.NhanVienBUS;
-import DAO.NhanVienAdapter;
-import Models.DataAccess.Staff.SelectStaffRequest;
+import BusinessHandler.ChuongTraiBUS;
+import DAO.ChuongTraiAdapter;
+import Models.DataAccess.Barn.BarnRequest;
+import Models.DataAccess.Barn.BarnResponse;
+import Models.DataAccess.Barn.SelectBarnRequest;
+import Models.DataAccess.DeleteResponse;
+import Models.DataAccess.SelectResponse;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import java.util.List;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import pojos.Nhanvien;
+import pojos.Chuongtrai;
 
 /**
- * REST Web Service
  *
- * @author Shin-Desktop
+ * @author Tu
  */
-@Path("NhanVien")
-public class NhanVienAPIs {
+@Path("ChuongTrai")
+public class ChuongTraiAPIs {
 
     @Context
     private UriInfo context;
@@ -34,7 +31,7 @@ public class NhanVienAPIs {
     /**
      * Creates a new instance of NhanVienAPIs
      */
-    public NhanVienAPIs() {
+    public ChuongTraiAPIs() {
     }
 
     @POST
@@ -43,13 +40,13 @@ public class NhanVienAPIs {
     @Consumes("application/json")
     public Response get(String json) {
         Gson gson = new Gson();
-        SelectStaffRequest request = gson.fromJson(json, SelectStaffRequest.class);
+        SelectBarnRequest request = gson.fromJson(json, SelectBarnRequest.class);
         SelectResponse response = new SelectResponse();
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2)) {
             try {
-                Nhanvien result = NhanVienAdapter.getSingle(request.MaNV);
+                Chuongtrai result = ChuongTraiAdapter.getSingle(request.MaCT);
                 if (result == null) {
-                    response.Errors.add("Không tìm thấy nhân viên.");
+                    response.Errors.add("Không có kết quả.");
                     response.IsError = true;
                 } else {
                     response.Data = result;
@@ -67,12 +64,12 @@ public class NhanVienAPIs {
     @Produces("application/json")
     @Consumes("application/json")
     public Response getAll(String json) {
-        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-        SelectStaffRequest request = gson.fromJson(json, SelectStaffRequest.class);
+        Gson gson = new Gson();
+        SelectBarnRequest request = gson.fromJson(json, SelectBarnRequest.class);
         SelectResponse response = new SelectResponse();
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2)) {
             try {
-                List<Nhanvien> result = NhanVienAdapter.getAll(request.MaCN, request.MaPQ);
+                List<Chuongtrai> result = ChuongTraiAdapter.getAll(request.MaCN);
                 response.Data = result;
             } catch (Exception ex) {
                 response.Errors.add("Lỗi hệ thống.");
@@ -88,13 +85,12 @@ public class NhanVienAPIs {
     @Consumes("application/json")
     public Response add(String json) {
         Gson gson = new Gson();
-        StaffRequest request = gson.fromJson(json, StaffRequest.class);
-        StaffResponse response = new StaffResponse();
+        BarnRequest request = gson.fromJson(json, BarnRequest.class);
+        BarnResponse response = new BarnResponse();
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2)) {
-            if (NhanVienBUS.validateInformation(request, response)) {
+            if (ChuongTraiBUS.validateInformation(request, response)) {
                 try {
-                    if (NhanVienAdapter.add(request.Data)) {
-                        NhanVienBUS.sync(1, request.Data);
+                    if (ChuongTraiAdapter.add(request.Data)) {
                         response.Data = "Thêm thành công.";
                     } else {
                         response.Errors.add("Thêm thất bại.");
@@ -115,17 +111,16 @@ public class NhanVienAPIs {
     @Consumes("application/json")
     public Response delete(String json) {
         Gson gson = new Gson();
-        SelectStaffRequest request = gson.fromJson(json, SelectStaffRequest.class);
+        SelectBarnRequest request = gson.fromJson(json, SelectBarnRequest.class);
         DeleteResponse response = new DeleteResponse();
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2)) {
             try {
-                int result = NhanVienAdapter.delete(request.MaNV);
+                int result = ChuongTraiAdapter.delete(request.MaCT);
                 if (result != 1) {
-                    response.Errors.add("Xóa nhân viên thất bại.");
+                    response.Errors.add("Xóa chuồng trại thất bại.");
                     response.IsError = true;
                 } else {
-                    NhanVienBUS.sync(-1, NhanVienAdapter.getSingle(request.MaNV));
-                    response.Data = "Xóa nhân viên thành công.";
+                    response.Data = "Xóa chuồng trại thành công.";
                 }
             } catch (Exception ex) {
                 response.Errors.add("Lỗi hệ thống.");
@@ -141,17 +136,16 @@ public class NhanVienAPIs {
     @Consumes("application/json")
     public Response recover(String json) {
         Gson gson = new Gson();
-        SelectStaffRequest request = gson.fromJson(json, SelectStaffRequest.class);
+        SelectBarnRequest request = gson.fromJson(json, SelectBarnRequest.class);
         DeleteResponse response = new DeleteResponse();
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2)) {
             try {
-                int result = NhanVienAdapter.recover(request.MaNV);
+                int result = ChuongTraiAdapter.recover(request.MaCT);
                 if (result != 1) {
-                    response.Errors.add("Khôi phục nhân viên thất bại.");
+                    response.Errors.add("Khôi phục chuồng trại thất bại.");
                     response.IsError = true;
                 } else {
-                    NhanVienBUS.sync(1, NhanVienAdapter.getSingle(request.MaNV));
-                    response.Data = "Khôi phục nhân viên thành công.";
+                    response.Data = "Khôi phục chuồng trại thành công.";
                 }
             } catch (Exception ex) {
                 response.Errors.add("Lỗi hệ thống.");
@@ -167,13 +161,12 @@ public class NhanVienAPIs {
     @Consumes("application/json")
     public Response update(String json) {
         Gson gson = new Gson();
-        StaffRequest request = gson.fromJson(json, StaffRequest.class);
-        StaffResponse response = new StaffResponse();
+        BarnRequest request = gson.fromJson(json, BarnRequest.class);
+        BarnResponse response = new BarnResponse();
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2)) {
-            if (BusinessHandler.NhanVienBUS.validateInformation(request, response)) {
+            if (BusinessHandler.ChuongTraiBUS.validateInformation(request, response)) {
                 try {
-                    if (NhanVienAdapter.update(request.Data)) {
-                        NhanVienBUS.sync(0, request.Data);
+                    if (ChuongTraiAdapter.update(request.Data)) {
                         response.Data = "Cập nhật thành công!";
                     } else {
                         response.Errors.add("Cập nhật thất bại!");
@@ -186,21 +179,5 @@ public class NhanVienAPIs {
             }
         }
         return response.json();
-    }
-
-    @POST
-    @Path("sync")
-    @Produces("application/json")
-    @Consumes("application/json")
-    public String sync(String json) {
-        Gson gson = new Gson();
-        ChangePasswordRequest request = gson.fromJson(json, ChangePasswordRequest.class);
-        ChangePasswordResponse response = new ChangePasswordResponse();
-        try {
-            response.IsError = NhanVienAdapter.changePassword(request) != 1;
-        } catch (Exception ex) {
-            response.IsError = true;
-        }
-        return gson.toJson(response);
     }
 }
