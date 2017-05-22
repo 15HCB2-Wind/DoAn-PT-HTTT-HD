@@ -41,7 +41,7 @@
             //$('.mdb-select').material_select();
 
             callAjax('post',
-                    { Predicates: ["NV00004"] },
+                    { MaCN: "CN001", MaPQ: "PQ001" },
                     "hcm", "management", "NhanVien/getAll",
                     function (data) {
                         $('#loader').hide();
