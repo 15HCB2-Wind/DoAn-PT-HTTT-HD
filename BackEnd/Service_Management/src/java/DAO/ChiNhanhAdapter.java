@@ -33,7 +33,7 @@ public class ChiNhanhAdapter {
     }
     
     public static List<Chinhanh> getAll(){
-        return HibernateUtil.getList("from Chinhanh", null);
+        return HibernateUtil.getList("from Chinhanh order by machinhanh asc", null);
     }
     public static Chinhanh getSingle(Object userid){
         List<Chinhanh> list = HibernateUtil.getSingle("from Chinhanh where machinhanh = :p0", new Object[]{ userid });

@@ -17,7 +17,7 @@ import Models.DataAccess.Provider.UpdateProviderResponse;
 public class NhaCungCapBUS {
      public static boolean insertValidate(InsertProviderRequest request, InsertProviderResponse response){
         if (request.Data.getTen().isEmpty()){
-            response.NameErrors.add("Họ tên không được để trống!");
+            response.NameErrors.add("Tên không được để trống!");
             response.IsError = true;
         }
         return !response.IsError;
@@ -25,7 +25,7 @@ public class NhaCungCapBUS {
     
     public static boolean updateValidate(UpdateProviderRequest request, UpdateProviderResponse response){
         if (request.Data.getTen().isEmpty()){
-            response.NameErrors.add("Họ tên không được để trống!");
+            response.NameErrors.add("Tên không được để trống!");
             response.IsError = true;
         }
         return !response.IsError;

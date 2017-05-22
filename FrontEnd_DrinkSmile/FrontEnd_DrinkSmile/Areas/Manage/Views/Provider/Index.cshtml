@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Nhà Cung Cấp";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -16,16 +15,31 @@
                 success: function (data) {
                         successCallback(data);
                 },
-                error: function () {}
+                error: function () {
+                    toastr["error"]("Không thể kết nối tới máy chủ !");
+                    $("#error").show();
+                    $("#error").text("Không thể kết nối tới máy chủ");
+                }
             });
         }
 
         $(document).ready(function () {
             callAjax('post', {}, function (data) {
-                console.log(data);
-                for(var i=0; i<data.Data.length;i++)
-                {
-                    $('#data_nhacungcap').append("<td>" + data.Data[i].manhacungcap + "</td>");
+                if (data.IsError) {
+                    toastr["error"](data.Errors[0]);
+                    $("#error").show();
+                    $("#error").text(data.Errors[0]);
+                }
+                else {
+                    for (var i = 0; i < data.Data.length; i++) {
+                        $('#data_nhacungcap').append("<tr>" +
+                            "<td> <input type='checkbox' id='id_rows_to_delete0_left' name='rows_to_delete[0]' </td>" +
+                            "<td>" + data.Data[i].manhacungcap + "</td>" +
+                            "<td>" + data.Data[i].ten + "</td>" +
+                            "<td>" + data.Data[i].diachi + "</td>" +
+                            "<td>" + data.Data[i].tinhtrang + "</td>"
+                             + "</tr>");
+                    }
                 }
             })
         });
@@ -55,10 +69,9 @@
                         <th>Địa chỉ</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr id="data_nhacungcap">
-                    </tr>
-                               
+                <tbody id="data_nhacungcap">
+                   
+                    @* hien danh sach nha cung cap *@
                 </tbody>
             </table>
         </div>

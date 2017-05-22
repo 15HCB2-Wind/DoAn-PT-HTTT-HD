@@ -24,7 +24,7 @@ import pojos.Nhacungcap;
  */
 public class NhaCungCapAdapter {
     public static List<Nhacungcap> getAll(){
-        return HibernateUtil.getList("from Nhacungcap", null);
+        return HibernateUtil.getList("from Nhacungcap order by manhacungcap asc", null);
     }
     private static void getNewID(Nhacungcap obj) {
         

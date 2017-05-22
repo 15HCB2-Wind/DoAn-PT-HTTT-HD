@@ -23,6 +23,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import pojos.Chinhanh;
 
@@ -41,7 +42,7 @@ public class ChiNhanhAPIs {
     @Path("getAll")
     @Produces("application/json")
     @Consumes("application/json")
-    public String get(String json){
+    public Response get(String json){
         Gson gson = new Gson();
         SelectRequest request = gson.fromJson(json, SelectRequest.class);
         SelectResponse response = new SelectResponse();
@@ -55,14 +56,14 @@ public class ChiNhanhAPIs {
                 }
             }
         }
-        return gson.toJson(response);
+        return response.json();
     }
     
     @POST
     @Path("add")
     @Produces("application/json")
     @Consumes("application/json")
-    public String add(String json) {
+    public Response add(String json) {
         Gson gson = new Gson();
         InsertAgencyRequest request = gson.fromJson(json, InsertAgencyRequest.class);
         InsertAgencyResponse response = new InsertAgencyResponse();
@@ -82,16 +83,16 @@ public class ChiNhanhAPIs {
                 }
             }
         }
-        return gson.toJson(response);
+        return response.json();
     }
     
     @POST
     @Path("delete")
     @Produces("application/json")
     @Consumes("application/json")
-    public String delete(String json) {
+    public Response delete(String json) {
         Gson gson = new Gson();
-DeleteAgencyRequest request = gson.fromJson(json, DeleteAgencyRequest.class);   
+        DeleteAgencyRequest request = gson.fromJson(json, DeleteAgencyRequest.class);   
         DeleteAgencyResponse response = new DeleteAgencyResponse();
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)){
             if (ChiNhanhBUS.deleteValidate(request, response)){
@@ -110,14 +111,14 @@ DeleteAgencyRequest request = gson.fromJson(json, DeleteAgencyRequest.class);
                 }
             }
         }
-        return gson.toJson(response);
+        return response.json();
     }
     
     @POST
     @Path("recover")
     @Produces("application/json")
     @Consumes("application/json")
-    public String recover(String json) {
+    public Response recover(String json) {
         Gson gson = new Gson();
         DeleteAgencyRequest request = gson.fromJson(json, DeleteAgencyRequest.class);   
         DeleteAgencyResponse response = new DeleteAgencyResponse();
@@ -138,14 +139,14 @@ DeleteAgencyRequest request = gson.fromJson(json, DeleteAgencyRequest.class);
                 }
             }
         }
-        return gson.toJson(response);
+        return response.json();
     }
     
     @POST
     @Path("update")
     @Produces("application/json")
     @Consumes("application/json")
-    public String update(String json) {
+    public Response update(String json) {
         Gson gson = new Gson();
         UpdateAgencyRequest request = gson.fromJson(json, UpdateAgencyRequest.class);
         UpdateAgencyResponse response = new UpdateAgencyResponse();
@@ -165,7 +166,7 @@ DeleteAgencyRequest request = gson.fromJson(json, DeleteAgencyRequest.class);
                 }
             }
         }
-        return gson.toJson(response);
+        return response.json();
     }
     
 //    @POST
