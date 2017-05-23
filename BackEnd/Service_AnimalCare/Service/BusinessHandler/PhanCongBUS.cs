@@ -95,13 +95,63 @@ namespace Service.BusinessHandler
         public static void GetOneFromPhanCong(PhanCongRequest request, ref PhanCongResponse response)
         {
             PhanCongRepository pc_repository = new PhanCongRepository();
-            response.Data = PhanCongRepository.GetOneFromPhanCong(request.Data);
+            var result = PhanCongRepository.GetOneFromPhanCong(request.Data);
+            if (result != null)
+            {
+                result.NgayBatDauFormatted = result.NgayBatDau.ToString("dd-MM-yyyy");
+                result.NgayKetThucFormatted = result.NgayKetThuc.ToString("dd-MM-yyyy");
+                response.Data = result;
+            }
+            else
+            {
+                response.Errors.Add("Có lỗi xảy ra!");
+                response.IsError = true;
+            }
         }
 
         public static void GetAllFromChuongTrai(PhanCongRequest request, ref PhanCongResponse response)
         {
             PhanCongRepository pc_repository = new PhanCongRepository();
             response.Data = PhanCongRepository.GetAllFromChuongTrai(request.Data);
+        }
+
+        public static void GetAllFromAgency(ListNhanVienChiNhanh request, ref PhanCongResponse response)
+        {
+            PhanCongRepository pc_repository = new PhanCongRepository();
+            string condition = "";
+            for (int i = 0; i < request.Data.Count; i++)
+            {
+                if (i == request.Data.Count - 1)
+                {
+                    condition = condition + "MaNV='" + request.Data[i].manhanvien + "'";
+                }
+                else
+                {
+                    condition = condition + "MaNV='" + request.Data[i].manhanvien + "' or ";
+                }
+            }
+            var result = PhanCongRepository.GetAllFromAgency(condition);
+            if (result != null)
+            {
+                foreach (var item in result)
+                {
+                    item.NgayBatDauFormatted = item.NgayBatDau.ToString("MM/dd/yyyy");
+                    item.NgayKetThucFormatted = item.NgayKetThuc.ToString("MM/dd/yyyy");
+                    foreach (var rqitem in request.Data)
+                    {
+                        if (item.MaNV == rqitem.manhanvien)
+                        {
+                            item.HoTen = rqitem.hoten;
+                        }
+                    }
+                }
+                response.Data = result;
+            }
+            else
+            {
+                response.Errors.Add("Có lỗi xảy ra!");
+                response.IsError = true;
+            }
         }
     }
 }

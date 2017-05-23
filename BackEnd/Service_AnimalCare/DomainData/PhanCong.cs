@@ -13,5 +13,9 @@ namespace DomainData
         public string NgayTrongTuan { get; set; }
         public string MaNV { get; set; }
         public string MaChuong { get; set; }
+        public string HoTen { get; set; }
+        //
+        public string NgayBatDauFormatted { get; set; }
+        public string NgayKetThucFormatted { get; set; }
     }
 }

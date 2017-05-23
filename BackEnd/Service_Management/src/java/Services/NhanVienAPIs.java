@@ -85,6 +85,24 @@ public class NhanVienAPIs {
         }
         return gson.toJson(response);
     }
+    
+    @POST
+    @Path("getAllOfAgency")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public String getAllOfAgency(String json) {
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+        SelectStaffRequest request = gson.fromJson(json, SelectStaffRequest.class);
+        SelectResponse response = new SelectResponse();
+        try {
+            List<Nhanvien> result = NhanVienAdapter.getAll(request.MaCN, request.MaPQ);
+            response.Data = result;
+        } catch (Exception ex) {
+            response.Errors.add("Lỗi hệ thống.");
+            response.IsError = true;
+        }
+        return gson.toJson(response);
+    }
 
     @POST
     @Path("add")

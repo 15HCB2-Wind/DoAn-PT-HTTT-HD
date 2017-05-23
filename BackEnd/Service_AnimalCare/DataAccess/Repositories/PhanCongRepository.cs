@@ -94,7 +94,7 @@ namespace DataAccess.Repositories
                         MaNV = row.GetValueDefault<string>(4),
                         MaChuong = row.GetValueDefault<string>(5)
                     };
-                }, string.Format("select top 1 * from phancong where maphancong = '{0}'", pc.MaPhanCong));
+                }, string.Format("select top 1 * from phancong where maphancong = {0}", pc.MaPhanCong));
             }
             catch (Exception)
             {
@@ -119,6 +119,32 @@ namespace DataAccess.Repositories
                         MaChuong = row.GetValueDefault<string>(5)
                     };
                 }, string.Format("select * from phancong where machuong = '{0}'", pc.MaChuong));
+            }
+            catch (Exception)
+            {
+                return result;
+            }
+            return result;
+        }
+
+        public static List<PhanCong> GetAllFromAgency(string condition)
+        {
+            List<PhanCong> result = null;
+            try
+            {
+                result = DataProvider.ExecuteReader((SqlDataReader row) =>
+                {
+                    string a = "select * from phancong where " + condition;
+                    return new PhanCong()
+                    {
+                        MaPhanCong = row.GetValueDefault<string>(0),
+                        NgayBatDau = row.GetValueDefault<DateTime>(1),
+                        NgayKetThuc = row.GetValueDefault<DateTime>(2),
+                        NgayTrongTuan = row.GetValueDefault<string>(3),
+                        MaNV = row.GetValueDefault<string>(4),
+                        MaChuong = row.GetValueDefault<string>(5)
+                    };
+                }, "select * from phancong where "+ condition);
             }
             catch (Exception)
             {
