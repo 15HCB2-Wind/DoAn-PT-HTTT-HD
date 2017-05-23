@@ -73,4 +73,5 @@ public class NhanVienAdapter {
     public static int changePassword(ChangePasswordRequest obj) {
         return HibernateUtil.execute("update Nhanvien set matkhau = :p1 where manhanvien = :p0", new Object[]{obj.UserId, obj.NewPass});
     }
+
 }

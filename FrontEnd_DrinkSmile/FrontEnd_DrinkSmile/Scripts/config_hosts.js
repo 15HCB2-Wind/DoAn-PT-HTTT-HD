@@ -3,7 +3,7 @@
         "login": "http://localhost:30000/",
         "management": "http://localhost:8080/Service_Management/webresources/",
         "import_export": "",
-        "animal_care": "",
+        "animal_care": "http://localhost:28289/",
         "report": ""
     },
     "hn": {

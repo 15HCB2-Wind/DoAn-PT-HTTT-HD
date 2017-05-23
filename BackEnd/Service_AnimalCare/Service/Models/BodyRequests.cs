@@ -16,6 +16,16 @@ namespace Service.Models
         public PhanCong Data { get; set; }
     }
 
+    public class ListNhanVienChiNhanh : BodyRequest
+    {
+        public class NhanVien
+        {
+            public string manhanvien { get; set; }
+            public string hoten { get; set; }
+        }
+        public List<NhanVien> Data { get; set; }
+    }
+
     public class CheckTokenRequest : BodyRequest
     {
         public string TokenPassword;
