@@ -1,0 +1,89 @@
+﻿@{
+    ViewBag.Title = "Thêm chuồng trại";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="offset-lg-3 col-lg-6 offset-md-2 col-md-8 offset-sm-1 col-sm-10 col-xs-12">
+        <fieldset class="card-block">
+            <form id="form_addstaff" method="post" role="form">
+                <div class="text-center">
+                    <h3><i class="fa fa-home"></i> Thêm chuồng trại</h3>
+                    <hr class="mt-2 mb-2">
+                </div>
+                <p id="error" class="text-danger text-center"></p>
+                <div class="md-form form-sm">
+                    <i class="fa fa-id-card-o prefix"></i>
+                    <input id="tenchuong" class="form-control" type="text" />
+                    <label for="tenchuong">Tên chuồng</label>
+                </div>
+                <div class="md-form form-sm">
+                    <i class="fa fa-tachometer prefix"></i>
+                    <input id="succhua" class="form-control" type="number" min="1" max="100" />
+                    <label for="succhua">Sức chứa</label>
+                </div>
+                <div class="md-form form-sm">
+                    <i class="fa fa-tag prefix"></i>
+                    <input id="tinhtrang" class="form-control" type="text" />
+                    <label for="tinhtrang">Tình trạng</label>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Lưu</button>
+                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Thoát</button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                                    <h4 class="modal-title w-100">Thoát</h4>
+                                </div>
+                                <div class="modal-body text-center">
+                                    Bạn thực sự muốn thoát?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                                    <a class="btn btn-danger" href="@Url.Action("Index")">Đồng ý</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </fieldset>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.mdb-select').material_select();
+
+            $('.datepicker').pickadate({
+                monthsFull: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+                monthsShort: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+                weekdaysFull: ['Chủ nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'],
+                weekdaysShort: ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'],
+
+                showMonthsShort: true,
+                showWeekdaysFull: false,
+
+                today: 'Hôm nay',
+                clear: '',
+                close: 'Đóng',
+
+                labelMonthNext: 'Tháng sau',
+                labelMonthPrev: 'Tháng trước',
+                labelMonthSelect: 'Chọn tháng',
+                labelYearSelect: 'Chọn năm',
+
+                firstDay: 1,
+                format: 'dd-mm-yyyy',
+                formatSubmit: 'yyyy-mm-dd',
+
+                min: new Date(1752, 0, 1),
+                max: new Date(9998, 11, 31)
+            });
+        });
+    </script>
+}

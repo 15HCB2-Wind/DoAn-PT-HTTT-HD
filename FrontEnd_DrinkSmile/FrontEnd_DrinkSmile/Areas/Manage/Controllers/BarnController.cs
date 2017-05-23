@@ -13,5 +13,10 @@ namespace FrontEnd_DrinkSmile.Areas.Manage.Controllers
         {
             return View();
         }
+
+        public ActionResult Create()
+        {
+            return View();
+        }
     }
 }

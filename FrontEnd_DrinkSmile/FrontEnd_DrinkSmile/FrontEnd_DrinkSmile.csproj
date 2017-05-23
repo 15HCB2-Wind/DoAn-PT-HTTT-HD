@@ -185,7 +185,8 @@
     <Content Include="fonts\Roboto-Thin.woff2" />
     <Content Include="Areas\Manage\Views\Assignment\Index.cshtml" />
     <Content Include="Areas\Manage\Views\Assignment\Create.cshtml" />
-    <Content Include="Areas\Manage\Views\Assignment\Update.cshtml" />
+	<Content Include="Areas\Manage\Views\Assignment\Update.cshtml" />
+    <Content Include="Areas\Manage\Views\Barn\Create.cshtml" />    
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
