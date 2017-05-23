@@ -47,7 +47,7 @@ public class NhaCungCapAPIs {
     @Path("getAll")
     @Produces("application/json")
     @Consumes("application/json")
-    public Response getAll(String json){
+    public String getAll(String json){
         Gson gson = new Gson();
         SelectRequest request = gson.fromJson(json, SelectRequest.class);
         SelectResponse response = new SelectResponse();
@@ -60,14 +60,14 @@ public class NhaCungCapAPIs {
                 response.IsError = true;
             }
         }
-        return response.json();
+        return gson.toJson(response);
     }
     
     @POST
     @Path("add")
     @Produces("application/json")
     @Consumes("application/json")
-    public Response add(String json) {
+    public String add(String json) {
         Gson gson = new Gson();
         InsertProviderRequest request = gson.fromJson(json, InsertProviderRequest.class);
         InsertProviderResponse response = new InsertProviderResponse();
@@ -86,13 +86,13 @@ public class NhaCungCapAPIs {
                 }
             }
         }
-        return response.json();
+        return gson.toJson(response);
     }
     @POST
     @Path("update")
     @Produces("application/json")
     @Consumes("application/json")
-    public Response update(String json) {
+    public String update(String json) {
         Gson gson = new Gson();
         UpdateProviderRequest request = gson.fromJson(json, UpdateProviderRequest.class);
         UpdateProviderResponse response = new UpdateProviderResponse();
@@ -112,6 +112,6 @@ public class NhaCungCapAPIs {
                 }
             }
         }
-        return response.json();
+        return gson.toJson(response);
     }
 }
