@@ -1,8 +1,145 @@
-﻿
-@{
-    ViewBag.Title = "Index";
+﻿@{
+    ViewBag.Title = "Danh sách bò";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Quản lý bò</h2>
+<h2><i class="fa fa-list"></i> Danh sách bò trang trại</h2>
+<table class="table table-hover">
+    <thead class="thead-inverse">
+        <tr>
+            <th>Mã bò (chip theo dõi)</th>
+            <th>Màu sắc</th>
+            <th>Nhận dạng</th>
+            <th>Dị tật</th>
+            <th>Tình trạng</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="tbCows"></tbody>
+</table>
 
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        var cows = {};
+        var barns = [];
+
+        $(document).ready(function () {
+            loadTable();
+        });
+
+        function deleteCow(barnIndex, cowIndex) {
+            callAjax('post',
+                    { Token: Cookies.get("token"), Predicates: [cows[barns[barnIndex]][cowIndex].mabo] },
+                    Cookies.get("area"), "management", "Bo/delete",
+                    function (data) {
+                        if (data.IsError) {
+                            toastr["error"](data.Errors[0]);
+                            $("#error").show();
+                            $("#error").text(data.Errors[0]);
+                        }
+                        else {
+                            toastr["success"](data.Data);
+                            loadTable();
+                        }
+                    }
+                );
+        }
+
+        function recoverCow(barnIndex, cowIndex) {
+            callAjax('post',
+                    { Token: Cookies.get("token"), Predicates: [cows[barns[barnIndex]][cowIndex].mabo] },
+                    Cookies.get("area"), "management", "Bo/recover",
+                    function (data) {
+                        if (data.IsError) {
+                            toastr["error"](data.Errors[0]);
+                            $("#error").show();
+                            $("#error").text(data.Errors[0]);
+                        }
+                        else {
+                            toastr["success"](data.Data);
+                            loadTable();
+                        }
+                    }
+                );
+        }
+
+        function loadTable() {
+            callAjax('post',
+                    { Token: Cookies.get("token") },
+                    Cookies.get("area"), "management", "Bo/getAllOfAgency",
+                    function (data) {
+                        if (data.IsError) {
+                            toastr["error"](data.Errors[0]);
+                            $("#error").show();
+                            $("#error").text(data.Errors[0]);
+                        }
+                        else {
+                            if (data.Data) {
+                                cows = {};
+                                barns = [];
+                                for (var i = 0; i < data.Data.length; i++) {
+                                    var item = data.Data[i];
+                                    if (barns.indexOf(item.machuong) < 0)
+                                        barns.push(item.machuong);
+                                    if (!cows[item.machuong])
+                                        cows[item.machuong] = [];
+                                    cows[item.machuong].push(item);
+                                }
+                                //=========================
+                                $('#tbCows').html('');
+                                for (var j = 0; j < barns.length; j++) {
+                                    $('#tbCows').append(
+                                            '<tr>' +
+                                                '<td>' + barns[j] + '</td>' +
+                                                '<td></td>' +
+                                                '<td></td>' +
+                                                '<td></td>' +
+                                                '<td></td>' +
+                                                '<td></td>' +
+                                            '</tr>'
+                                            );
+                                    for (var i = 0; i < cows[barns[j]].length; i++) {
+                                        var item = cows[barns[j]][i];
+
+                                        var td4;
+                                        if (item.daxoa) {
+                                            td4 = '<td></td>';
+                                        }
+                                        else {
+                                            td4 = '<td><i class="fa fa-check" aria-hidden="true"></i></td>';
+                                        }
+
+                                        var deleteButton;
+                                        if (item.daxoa) {
+                                            deleteButton = '<a class="red-text" onclick="recoverCow(' + j + ',' + i + ')"><i class="fa fa-refresh" aria-hidden="true"></i></a>';
+                                        }
+                                        else {
+                                            deleteButton = '<a class="red-text" onclick="deleteCow(' + j + ',' + i + ')"><i class="fa fa-times"></i></a>';
+                                        }
+
+                                        $('#tbCows').append(
+                                            '<tr>' +
+                                                '<td>' + item.mabo + ' (' + item.machip + ')</td>' +
+                                                '<td>' + item.mausac + '</td>' +
+                                                '<td>' + item.nhandang + '</td>' +
+                                                td4 +
+                                                '<td>' + item.tinhtrang + '</td>' +
+                                                '<td>' +
+                                                    '<a class="teal-text" href="/Manage/Cow/Edit?id=' + item.mabo + '"><i class="fa fa-pencil"></i></a>' +
+                                                    deleteButton +
+                                                '</td>' +
+                                            '</tr>'
+                                            );
+                                    }
+                                }
+                                //=========================
+                            } else {
+                                toastr["warning"]("Không có dữ liệu.");
+                            }
+                        }
+                    }
+                );
+        }
+    </script>
+}

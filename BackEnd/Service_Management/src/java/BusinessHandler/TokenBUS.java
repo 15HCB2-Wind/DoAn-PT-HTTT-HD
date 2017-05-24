@@ -38,8 +38,10 @@ public class TokenBUS {
                             .target(Configs.CHECK_TOKEN)
                             .request(MediaType.APPLICATION_JSON)
                             .post(Entity.json(new Gson().toJson(ctRequest)));
-
-                    CheckTokenResponse result = res.readEntity(CheckTokenResponse.class);
+                    
+                    String json = res.readEntity(String.class);
+                    CheckTokenResponse result = new Gson().fromJson(json, CheckTokenResponse.class);
+//                    CheckTokenResponse result = res.readEntity(CheckTokenResponse.class);
                     fail = result == null;
                     if (!fail){
                         response.IsTokenTimeout = result.IsTokenTimeout;
@@ -73,21 +75,29 @@ public class TokenBUS {
                             .target(Configs.CHECK_TOKEN)
                             .request(MediaType.APPLICATION_JSON)
                             .post(Entity.json(new Gson().toJson(ctRequest)));
-
-                    CheckTokenResponse result = res.readEntity(CheckTokenResponse.class);
+                    
+                    String json = res.readEntity(String.class);
+                    CheckTokenResponse result = new Gson().fromJson(json, CheckTokenResponse.class);
+//                    CheckTokenResponse result = res.readEntity(CheckTokenResponse.class);
                     fail = result == null;
                     if (!fail){
                         response.IsTokenTimeout = result.IsTokenTimeout;
                         if (result.IsError){
                             response.Errors.add("Không thể truy cập đến máy chủ.");
                             response.IsError = true;
+                            return null;
                         }else{
                             tokenData = result.Data;
                         }
                         break;
                     }
-                } catch (Exception ex){ }
+                } catch (Exception ex){ 
+                    System.out.print(ex.getMessage());
+                }
             }while(fail && --times > 0);
+        }
+        if (response.IsTokenTimeout){
+            return null;
         }
         return tokenData;
     }
