@@ -8,7 +8,7 @@
     @Styles.Render("~/Content/css")
     @*@Scripts.Render("~/bundles/modernizr")*@
 </head>
-<body class="fixed-sn">
+<body>
     <header>
         <nav class="navbar navbar-toggleable-sm fixed-top navbar-dark unique-color">
             <div class="container">
@@ -68,7 +68,7 @@
         </nav>
     </header>
     <main>
-        <div class="container-fluid">
+        <div class="container">
             @RenderBody()
         </div>
     </main>
@@ -81,23 +81,6 @@
     </footer>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/js")
-    <script>
-        $(document).ready(function () {
-            calcPositionFooter();
-
-            $(window).resize(function () {
-                calcPositionFooter();
-            });
-
-            function calcPositionFooter() {
-                setTimeout(function () {
-                    if ($("body").height() < $(window).height()) {
-                        $("main").css("margin-bottom", $(window).height() - $("body").height() + 16);
-                    }
-                }, 1000);
-            };
-        });
-    </script>
     @RenderSection("scripts", required: false)
 </body>
 </html>

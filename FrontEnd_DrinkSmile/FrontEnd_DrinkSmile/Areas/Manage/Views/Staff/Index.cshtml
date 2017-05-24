@@ -14,17 +14,13 @@
             <th>Họ tên</th>
             <th>Email</th>
             <th>Username</th>
-            <th>Đã nghỉ</th>
+            <th></th>
             <th></th>
         </tr>
     </thead>
-    <tbody>
-        <tr id="loader">
-            <td colspan="6"><i class="fa fa-circle-o-notch fa-pulse fa-lg fa-fw"></i></td>
-        </tr>
-    </tbody>
+    <tbody></tbody>
 </table>
-
+<p class="text-center" id="loader"><i class="fa fa-circle-o-notch fa-pulse fa-lg fa-fw"></i></p>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script>
@@ -40,12 +36,15 @@
                     else {
                         if (result.Data.length > 0) {
                             for (var i = 0; i < result.Data.length; i++) {
+                                var danghi = "";
+                                if (result.Data[i].daxoa == true) { danghi = "Đã nghỉ"; }
+
                                 var html = "<tr>"
                                             + "<td>" + result.Data[i].manhanvien + "</td>"
                                             + "<td>" + result.Data[i].hoten + "</td>"
                                             + "<td>" + result.Data[i].email + "</td>"
                                             + "<td>" + result.Data[i].tentaikhoan + "</td>"
-                                            + "<td>" + result.Data[i].daxoa + "</td>"
+                                            + "<td>" + danghi + "</td>"
                                             + "<td><a href='/Manage/Staff/Edit/" + result.Data[i].manhanvien + "'>Cập nhật</a></td>"
                                         + "</tr>";
                                 $("tbody").append(html);
