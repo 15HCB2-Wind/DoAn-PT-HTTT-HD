@@ -64,14 +64,14 @@ namespace Service.Controllers
                     }
                     else
                     {
-                        response.Data = "Thêm thành công!";
+                        response.Data = "Sửa thành công!";
                     }
                 }
             }
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
-        //Lấy danh sách phân công của 1 chi nhánh
+        //Lấy danh sách phân công của 1 chuồng
         [HttpPost]
         [Route("getListAssignmentsOfBarn")]
         public HttpResponseMessage GetAllFromChuongTrai([FromBody] PhanCongRequest request)
@@ -91,6 +91,28 @@ namespace Service.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
+
+        //Lấy danh sách phân công của 1 chi nhánh
+        [HttpPost]
+        [Route("getListAssignmentsOfAgency")]
+        public HttpResponseMessage GetAllFromAgency([FromBody] ListNhanVienChiNhanh request)
+        {
+            var response = new PhanCongResponse();
+            if (BusinessHandler.TokenBUS.tokenCheck(request, response, 1))
+            {
+                try
+                {
+                    BusinessHandler.PhanCongBUS.GetAllFromAgency(request, ref response);
+                }
+                catch (Exception)
+                {
+                    response.Errors.Add("Lỗi hệ thống");
+                    response.IsError = true;
+                }
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, response);
+        }
+
 
         //Lấy danh sách phân công của 1 nhân viên
         [HttpPost]

@@ -4,38 +4,55 @@
 }
 @section Scripts{
     <script>
-        function callAjax(type, data, successCallback) {
-            $.ajax({
-                type: type,
-                dataType: 'json',
-                data: data,
-                url: 'http://localhost:28289/assignment/getSingleAssignment',
-                beforeSend: function () { },
-                complete: function () { },
-                success: function (data) {
-                    successCallback(data);
-                },
-                error: function () { }
-            });
-        }
+        var listchuong;
+        var manv;
         $(document).ready(function () {
             window.params = function () {
                 var params = {};
-                var param_array = window.location.href.split('?')[1].split('&');
+                var url = window.location.href;
+                var tempUrl = url.split('%20').join(' ');
+                var param_array = tempUrl.split('?')[1].split('&');
                 for (var i in param_array) {
                     x = param_array[i].split('=');
                     params[x[0]] = x[1];
                 }
+
                 return params;
             }();
-
             var temp = document.getElementById('maphancong');
             temp.innerHTML = "Phân Công: " + window.params.maphancong;
-            callAjax('post', { Data: { maphancong: "PC0002"/*window.params.maphancong*/ } }, function (data) {
-                console.log(data);
+            var tennv = document.getElementById('tennv');
+            tennv.innerHTML = params.hoten;
+            callAjax('post', { Data: { maphancong: "'" + window.params.maphancong + "'" } }, "hcm", "animal_care", "assignment/getSingleAssignment", function (data) {
+                //ngày trong tuần
+                var days = data.Data.NgayTrongTuan.split(',');
+                for (var j = 0; j < days.length; j++) {
+                    var temp = document.getElementById("checkbox" + days[j]);
+                    temp.checked = true;
+                }
+                //
+                var ngaybatdau = document.getElementById('ngaybatdau');
+                ngaybatdau.value = data.Data.NgayBatDauFormatted;
+                var ngayketthuc = document.getElementById('ngayketthuc');
+                ngayketthuc.value = data.Data.NgayKetThucFormatted;
+                var btnCT = document.getElementById('btnCT');
+                btnCT.innerHTML = data.Data.TenChuong;
+                manv = data.Data.MaNV;
+                callAjax('post', { MaCN: "CN0001" }, "hcm", "management", "ChuongTrai/getAll", function (data2) {
+                    console.log(data2);
+                    listchuong = data2.Data;
+                    for (var i = 0; i < data2.Data.length; i++) {
+                        $("#dropdown").append('<a class="dropdown-item" onclick="chuongtraiclick(' + i + ')">' + data2.Data[i].tenchuong + '</a>');
+                    }
+                    for (var i = 0; i < data2.Data.length; i++) {
+                        if (data.Data.MaChuong == data2.Data[i].machuong) {
+                            btnCT.innerHTML = data2.Data[i].tenchuong;
+                        }
+                    }
+                });
             });
-        });
 
+        });
 
 
         $('.datepicker').pickadate({
@@ -57,13 +74,74 @@
             labelYearSelect: 'Chọn năm',
 
             firstDay: 1,
-            format: 'dd-mm-yyyy',
+            format: 'yyyy-mm-dd',
             formatSubmit: 'yyyy-mm-dd',
 
             min: new Date(1752, 0, 1),
             max: new Date(9998, 11, 31)
         });
+
+        function saveclick() {
+            var days = "";
+            var ct = "";
+            for (var i = 0; i < listchuong.length; i++) {
+                if (document.getElementById('btnCT').innerHTML == listchuong[i].tenchuong) {
+                    ct=listchuong[i].machuong;
+                }
+            }
+            if (document.getElementById('checkbox2').checked) {
+                days += "2,";
+            }
+            if (document.getElementById('checkbox3').checked) {
+                days += "3,";
+            }
+            if (document.getElementById('checkbox4').checked) {
+                days += "4,";
+            }
+            if (document.getElementById('checkbox5').checked) {
+                days += "5,";
+            }
+            if (document.getElementById('checkbox6').checked) {
+                days += "6,";
+            }
+            if (document.getElementById('checkbox7').checked) {
+                days += "7,";
+            }
+            if (document.getElementById('checkboxCN').checked) {
+                days += "CN";
+            }
+            if (days[days.length - 1] == ',') {
+                days = days.substring(0, days.length - 1)
+            }
+            var data = {
+                MaPhanCong: window.params.maphancong,
+                NgayBatDau: document.getElementById('ngaybatdau').value,
+                NgayKetThuc: document.getElementById('ngayketthuc').value,
+                NgayTrongTuan: days,
+                MaNV: manv,
+                MaChuong: ct
+            };
+            callAjax('post', {Data:data}, "hcm", "animal_care", "Assignment/update", function (data2) {
+                if (data2.IsError != null && data2.IsError) {
+                    for (var i = 0; i < data2.Errors.length; i++) {
+                        alert(data2.Errors[i]);
+                    }
+                }
+                else {
+                    alert(data2.Data);
+                    window.location.href = "http://localhost:8082/Manage/Assignment/Index";
+                }
+            });
+
+        }
+
+
+        function chuongtraiclick(data) {
+            var btnCT = document.getElementById('btnCT');
+            btnCT.innerHTML = listchuong[data].tenchuong;
+        };
     </script>
+
 }
 
 <h2 id="maphancong"></h2>
@@ -83,14 +161,14 @@
                 <table class="table table-striped table-bordered table-hover" id="dataTables">
                     <thead>
                         <tr>
-                            <td>Thuộc tính</td>
-                            <td>Giá trị</td>
+                            <td class="font-weight-bold">Thuộc tính</td>
+                            <td class="font-weight-bold">Giá trị</td>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>Tên nhân viên</td>
-                            <td>Tên nhân viên</td>
+                            <td id="tennv"></td>
                         </tr>
                         <tr>
                             <td>Ngày trong tuần</td>
@@ -132,8 +210,8 @@
                             <td>
                                 <div class="md-form form-sm">
                                     <i class="fa fa-calendar prefix"></i>
-                                    <input type="text" id="ngaysinh" class="form-control datepicker" data-value="@(DateTime.Now.ToShortDateString())">
-                                    <label for="ngaysinh"></label>
+                                    <input type="text" id="ngaybatdau" class="form-control datepicker" data-value="@(DateTime.Now.ToShortDateString())">
+                                    <label for="ngaybatdau"></label>
                                 </div>
                             </td>
                         </tr>
@@ -142,8 +220,8 @@
                             <td>
                                 <div class="md-form form-sm">
                                     <i class="fa fa-calendar prefix"></i>
-                                    <input type="text" id="ngaysinh" class="form-control datepicker" data-value="@(DateTime.Now.ToShortDateString())">
-                                    <label for="ngaysinh"></label>
+                                    <input type="text" id="ngayketthuc" class="form-control datepicker" data-value="@(DateTime.Now.ToShortDateString())">
+                                    <label for="ngaykethuc"></label>
                                 </div>
                             </td>
                         </tr>
@@ -151,15 +229,17 @@
                             <td>Mã chuồng</td>
                             <td>
                                 <div class="btn-group">
-                                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Chuồng trại</button>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="#">Chuồng 0001</a>
-                                        <a class="dropdown-item" href="#">Chuồng 0002</a>
-                                        <a class="dropdown-item" href="#">Chuồng 0003</a>
-                                        <!--<div class="dropdown-divider"></div>-->
-                                        <a class="dropdown-item" href="#">Chuồng 0004</a>
+                                    <button id="btnCT" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Chuồng trại</button>
+                                    <div class="dropdown-menu" id="dropdown">
+                                        <!--load data danh sach chuong-->
                                     </div>
                                 </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <button type="button" class="btn btn-success" onclick="saveclick()">Lưu</button>
                             </td>
                         </tr>
                     </tbody>

@@ -1,18 +1,229 @@
 ﻿@{
-    ViewBag.Title = "Thêm Phân Công";
+    ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@section Scripts{
+    <script>
+        var listchuong;
+        var listnv;
+        var manv;
+        var machuong;
+        $(document).ready(function () {
+            callAjax('post', { MaCN: "CN0001", MaPQ: "PQ0001" }, "hcm", "management", "NhanVien/getAllOfAgency", function (data) {
+                listnv = data.Data;
+                for (var i = 0; i < data.Data.length; i++) {
+                    $("#dropdownNV").append('<a class="dropdown-item" onclick="nhanvienclick(' + i + ')">' + data.Data[i].hoten + '</a>');
+                }
+            });
+            callAjax('post', { MaCN: "CN0001" }, "hcm", "management", "ChuongTrai/getAll", function (data) {
+                listchuong = data.Data;
+                for (var i = 0; i < data.Data.length; i++) {
+                    $("#dropdownCT").append('<a class="dropdown-item" onclick="chuongtraiclick(' + i + ')">' + data.Data[i].tenchuong + '</a>');
+                }
+            });
+        });
 
-<!DOCTYPE html>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title></title>
-</head>
-<body>
-    <div>
-     <h1>Hello Word Thêm PC</h1>
+
+        $('.datepicker').pickadate({
+            monthsFull: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+            monthsShort: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+            weekdaysFull: ['Chủ nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'],
+            weekdaysShort: ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'],
+
+            showMonthsShort: true,
+            showWeekdaysFull: false,
+
+            today: 'Hôm nay',
+            clear: '',
+            close: 'Đóng',
+
+            labelMonthNext: 'Tháng sau',
+            labelMonthPrev: 'Tháng trước',
+            labelMonthSelect: 'Chọn tháng',
+            labelYearSelect: 'Chọn năm',
+
+            firstDay: 1,
+            format: 'yyyy-mm-dd',
+            formatSubmit: 'yyyy-mm-dd',
+
+            min: new Date(1752, 0, 1),
+            max: new Date(9998, 11, 31)
+        });
+
+        function saveclick() {
+            var days = "";
+            if (document.getElementById('checkbox2').checked) {
+                days += "2,";
+            }
+            if (document.getElementById('checkbox3').checked) {
+                days += "3,";
+            }
+            if (document.getElementById('checkbox4').checked) {
+                days += "4,";
+            }
+            if (document.getElementById('checkbox5').checked) {
+                days += "5,";
+            }
+            if (document.getElementById('checkbox6').checked) {
+                days += "6,";
+            }
+            if (document.getElementById('checkbox7').checked) {
+                days += "7,";
+            }
+            if (document.getElementById('checkboxCN').checked) {
+                days += "CN";
+            }
+            if (days[days.length - 1] == ',') {
+                days = days.substring(0, days.length - 1)
+            }
+            var data = {
+                NgayBatDau: document.getElementById('ngaybatdau').value,
+                NgayKetThuc: document.getElementById('ngayketthuc').value,
+                NgayTrongTuan: days,
+                MaNV: manv,
+                MaChuong: machuong
+            };
+            callAjax('post', { Data: data }, "hcm", "animal_care", "Assignment/add", function (data2) {
+                if (data2.IsError != null && data2.IsError) {
+                    for (var i = 0; i < data2.Errors.length; i++) {
+                        alert(data2.Errors[i]);
+                    }
+                }
+                else {
+                    alert(data2.Data);
+                    window.location.href = "http://localhost:8082/Manage/Assignment/Index";
+                }
+            });
+
+        }
+
+        function chuongtraiclick(data) {
+            var btnCT = document.getElementById('btnCT');
+            btnCT.innerHTML = listchuong[data].tenchuong;
+            machuong = listchuong[data].machuong;
+        };
+
+        function nhanvienclick(data) {
+            var btnNV = document.getElementById('btnNV');
+            btnNV.innerHTML = listnv[data].hoten;
+            manv = listnv[data].manhanvien;
+        };
+
+    </script>
+
+}
+
+<h2 id="maphancong"></h2>
+
+<div id="controller">
+
+</div>
+<form>
+    <div id="list_provider">
+        <div class="panel-body">
+
+            <div id="button_function">
+
+            </div>
+
+            <div class="dataTable_wrapper">
+                <table class="table table-striped table-bordered table-hover" id="dataTables">
+                    <thead>
+                        <tr>
+                            <td class="font-weight-bold">Thuộc tính</td>
+                            <td class="font-weight-bold">Giá trị</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Tên nhân viên</td>
+                            <td id="tennv">
+                                <div class="btn-group">
+                                    <button id="btnNV" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Nhân viên</button>
+                                    <div class="dropdown-menu" id="dropdownNV">
+                                        <!--load data danh sach chuong-->
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Ngày trong tuần</td>
+                            <td>
+                                <div class="form-inline">
+                                    <div class="form-group">
+                                        <input type="checkbox" id="checkbox2">
+                                        <label for="checkbox2">2</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="checkbox" id="checkbox3">
+                                        <label for="checkbox3">3</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="checkbox" id="checkbox4">
+                                        <label for="checkbox4">4</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="checkbox" id="checkbox5">
+                                        <label for="checkbox5">5</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="checkbox" id="checkbox6">
+                                        <label for="checkbox6">6</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="checkbox" id="checkbox7">
+                                        <label for="checkbox7">7</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="checkbox" id="checkboxCN">
+                                        <label for="checkboxCN">CN</label>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Ngày bắt đầu</td>
+                            <td>
+                                <div class="md-form form-sm">
+                                    <i class="fa fa-calendar prefix"></i>
+                                    <input type="text" id="ngaybatdau" class="form-control datepicker" data-value="@(DateTime.Now.ToShortDateString())">
+                                    <label for="ngaybatdau"></label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Ngày kết thúc</td>
+                            <td>
+                                <div class="md-form form-sm">
+                                    <i class="fa fa-calendar prefix"></i>
+                                    <input type="text" id="ngayketthuc" class="form-control datepicker" data-value="@(DateTime.Now.ToShortDateString())">
+                                    <label for="ngaykethuc"></label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Mã chuồng</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="btnCT" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Chuồng trại</button>
+                                    <div class="dropdown-menu" id="dropdownCT">
+                                        <!--load data danh sach chuong-->
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <button type="button" class="btn btn-success" onclick="saveclick()">Lưu</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-</body>
-</html>
+</form>
+
+

@@ -41,7 +41,8 @@ public class NhanVienAdapter {
     public static boolean add(Nhanvien obj) {
         getNewID(obj);
         obj.setDaxoa(false);
-        obj.setMatkhau(Security.Encrypt(obj.getMatkhau()));
+        obj.setTentaikhoan(obj.getEmail());
+        obj.setMatkhau(Security.Encrypt(obj.getTentaikhoan()));
         return HibernateUtil.save(obj);
     }
 
@@ -73,4 +74,5 @@ public class NhanVienAdapter {
     public static int changePassword(ChangePasswordRequest obj) {
         return HibernateUtil.execute("update Nhanvien set matkhau = :p1 where manhanvien = :p0", new Object[]{obj.UserId, obj.NewPass});
     }
+
 }

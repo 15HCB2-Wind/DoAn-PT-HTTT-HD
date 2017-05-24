@@ -52,6 +52,7 @@ public class NhanVienAPIs {
                     response.Errors.add("Không tìm thấy nhân viên.");
                     response.IsError = true;
                 } else {
+                    result.setMatkhau(null);
                     response.Data = result;
                 }
             } catch (Exception ex) {
@@ -73,11 +74,32 @@ public class NhanVienAPIs {
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2)) {
             try {
                 List<Nhanvien> result = NhanVienAdapter.getAll(request.MaCN, request.MaPQ);
+                for(int i = 0; i < result.size(); i++){
+                    result.get(i).setMatkhau(null);
+                }
                 response.Data = result;
             } catch (Exception ex) {
                 response.Errors.add("Lỗi hệ thống.");
                 response.IsError = true;
             }
+        }
+        return gson.toJson(response);
+    }
+    
+    @POST
+    @Path("getAllOfAgency")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public String getAllOfAgency(String json) {
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+        SelectStaffRequest request = gson.fromJson(json, SelectStaffRequest.class);
+        SelectResponse response = new SelectResponse();
+        try {
+            List<Nhanvien> result = NhanVienAdapter.getAll(request.MaCN, request.MaPQ);
+            response.Data = result;
+        } catch (Exception ex) {
+            response.Errors.add("Lỗi hệ thống.");
+            response.IsError = true;
         }
         return gson.toJson(response);
     }
