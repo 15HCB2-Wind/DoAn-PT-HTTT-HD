@@ -23,6 +23,11 @@ namespace Service.BusinessHandler
                 response.Errors.Add("Chuồng không tồn tại, hãy chọn chuồng khác");
                 response.IsError = true;
             }
+            if (string.IsNullOrEmpty(data.MaNV))
+            {
+                response.Errors.Add("Chưa chọn nhân viên phân công");
+                response.IsError = true;                
+            }
 
             List<int> listdays = new List<int>();
             try
@@ -38,7 +43,7 @@ namespace Service.BusinessHandler
             }
             catch (Exception)
             {
-                response.Errors.Add("Định dạng ngày làm việc ko đúng, ví dụ: 2,3,4,5,6,7,CN");
+                response.Errors.Add("Hãy chọn ngày làm việc!");
                 response.IsError = true;
             }
             if (response.IsError)
@@ -76,7 +81,7 @@ namespace Service.BusinessHandler
             }
             catch (Exception)
             {
-                response.Errors.Add("Định dạng ngày làm việc ko đúng, ví dụ: 2,3,4,5,6,7,CN");
+                response.Errors.Add("Hãy chọn ngày làm việc!");
                 response.IsError = true;
             }
             if (response.IsError)
@@ -98,8 +103,8 @@ namespace Service.BusinessHandler
             var result = PhanCongRepository.GetOneFromPhanCong(request.Data);
             if (result != null)
             {
-                result.NgayBatDauFormatted = result.NgayBatDau.ToString("dd-MM-yyyy");
-                result.NgayKetThucFormatted = result.NgayKetThuc.ToString("dd-MM-yyyy");
+                result.NgayBatDauFormatted = result.NgayBatDau.ToString("yyyy-MM-dd");
+                result.NgayKetThucFormatted = result.NgayKetThuc.ToString("yyyy-MM-dd");
                 response.Data = result;
             }
             else
@@ -135,8 +140,8 @@ namespace Service.BusinessHandler
             {
                 foreach (var item in result)
                 {
-                    item.NgayBatDauFormatted = item.NgayBatDau.ToString("MM/dd/yyyy");
-                    item.NgayKetThucFormatted = item.NgayKetThuc.ToString("MM/dd/yyyy");
+                    item.NgayBatDauFormatted = item.NgayBatDau.ToString("yyyy-MM-dd");
+                    item.NgayKetThucFormatted = item.NgayKetThuc.ToString("yyyy-MM-dd");
                     foreach (var rqitem in request.Data)
                     {
                         if (item.MaNV == rqitem.manhanvien)

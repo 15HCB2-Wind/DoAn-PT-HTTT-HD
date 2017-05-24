@@ -64,7 +64,7 @@ namespace Service.Controllers
                     }
                     else
                     {
-                        response.Data = "Thêm thành công!";
+                        response.Data = "Sửa thành công!";
                     }
                 }
             }
