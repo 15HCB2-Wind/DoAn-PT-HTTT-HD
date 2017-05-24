@@ -5,10 +5,17 @@
  */
 package BusinessHandler;
 
+import Models.DataAccess.Cow.CowRequest;
+import Models.DataAccess.Cow.CowResponse;
+
 /**
  *
  * @author 19101994
  */
 public class BoBUS {
+    
+    public static boolean insertUpdateValidate(CowRequest request, CowResponse response) {
+        return !response.IsError;
+    }
     
 }

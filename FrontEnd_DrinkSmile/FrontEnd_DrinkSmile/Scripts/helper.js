@@ -36,7 +36,3 @@
         }
     });
 }
-
-//setTimeout(function () {
-//    location.href = "/Home/Index";
-//}, 2000);

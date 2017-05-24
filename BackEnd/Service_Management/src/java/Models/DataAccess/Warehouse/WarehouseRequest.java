@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Models.DataAccess.Cow;
+package Models.DataAccess.Warehouse;
 
-import Models.DataAccess.InsertRequest;
-import pojos.Bo;
+import Models.BodyRequest;
+import pojos.Khosua;
 
 /**
  *
  * @author 19101994
  */
-public class InsertCowRequest extends InsertRequest {
-    public Bo Data;
+public class WarehouseRequest extends BodyRequest {
+    public Khosua Data;
 }

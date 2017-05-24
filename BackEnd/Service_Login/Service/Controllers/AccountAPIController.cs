@@ -114,7 +114,7 @@ namespace Service.Controllers
                     SendMail.SendTo(new EmailFormModel
                     {
                         MailTitle = "Drink Smile - Thay đổi mật khẩu.",
-                        MailBody = string.Format("<p>Nhấn vào đường dẫn sau để đổi mật khẩu:</p><p>{0}</p><p>Không thể đổi mật khẩu bằng đường dẫn này sau 10 phút tính từ khi mail được gởi đi.</p>", string.Format(Configs.CHANGE_FORGOT_PASS_URL, Token.Create(user, DateTime.Now.Ticks.ToString(), 10))),
+                        MailBody = string.Format("<p>Nhấn vào đường dẫn sau để đổi mật khẩu:</p><p>{0}</p><p>Không thể đổi mật khẩu bằng đường dẫn này sau 10 phút tính từ khi mail được gởi đi.</p>", string.Format(Configs.CHANGE_FORGOT_PASS_URL, Token.Create(user, DateTime.Now.Ticks.ToString(), 10, false))),
                         FromName = Configs.MAIL_SENDER_NAME,
                         FromEmail = Configs.MAIL_SENDER,
                         FromEmailPassword = Configs.MAIL_SENDER_PASSWORD,

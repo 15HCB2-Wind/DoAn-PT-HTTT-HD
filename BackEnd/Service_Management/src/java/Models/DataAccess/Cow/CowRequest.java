@@ -5,16 +5,14 @@
  */
 package Models.DataAccess.Cow;
 
-import java.util.ArrayList;
+import Models.BodyRequest;
+import pojos.Bo;
 
 /**
  *
  * @author 19101994
  */
-public class InsertCowResponse {
-//    public ArrayList<String> NameErrors;
-//    
-//    public UpdateAgencyResponse(){
-//        NameErrors = new ArrayList<>();
-//    }
+public class CowRequest extends BodyRequest {
+    public Bo Data;
+    public String BarnId;
 }

@@ -5,13 +5,13 @@
  */
 package Models.DataAccess.Cow;
 
-import Models.DataAccess.UpdateRequest;
-import pojos.Bo;
+import Models.BodyResponse;
+import java.util.ArrayList;
 
 /**
  *
  * @author 19101994
  */
-public class UpdateCowRequest extends UpdateRequest{
-    public Bo Data;
+public class CowResponse extends BodyResponse {
+    
 }
