@@ -135,13 +135,15 @@ namespace Service.BusinessHandler
                     condition = condition + "MaNV='" + request.Data[i].manhanvien + "' or ";
                 }
             }
+            if (!string.IsNullOrEmpty(condition))
+                condition = "(" + condition + ")";
             var result = PhanCongRepository.GetAllFromAgency(condition);
             if (result != null)
             {
                 foreach (var item in result)
                 {
-                    item.NgayBatDauFormatted = item.NgayBatDau.ToString("yyyy-MM-dd");
-                    item.NgayKetThucFormatted = item.NgayKetThuc.ToString("yyyy-MM-dd");
+                    item.NgayBatDauFormatted = item.NgayBatDau.ToString("dd-MM-yyyy");
+                    item.NgayKetThucFormatted = item.NgayKetThuc.ToString("dd-MM-yyyy");
                     foreach (var rqitem in request.Data)
                     {
                         if (item.MaNV == rqitem.manhanvien)

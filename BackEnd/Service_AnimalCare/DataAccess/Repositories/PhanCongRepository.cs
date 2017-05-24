@@ -70,7 +70,7 @@ namespace DataAccess.Repositories
                         MaNV = row.GetValueDefault<string>(4),
                         MaChuong = row.GetValueDefault<string>(5)
                     };
-                },string.Format("select * from phancong where manv = '{0}'",pc.MaNV));
+                }, string.Format("select * from phancong where manv = '{0}' and '{1}' between NgayBatDau and NgayKetThuc", pc.MaNV,DateTime.Now));
             }
             catch (Exception)
             {
@@ -118,7 +118,7 @@ namespace DataAccess.Repositories
                         MaNV = row.GetValueDefault<string>(4),
                         MaChuong = row.GetValueDefault<string>(5)
                     };
-                }, string.Format("select * from phancong where machuong = '{0}'", pc.MaChuong));
+                }, string.Format("select * from phancong where machuong = '{0}' and '{1}' between NgayBatDau and NgayKetThuc", pc.MaChuong,DateTime.Now));
             }
             catch (Exception)
             {
@@ -134,7 +134,6 @@ namespace DataAccess.Repositories
             {
                 result = DataProvider.ExecuteReader((SqlDataReader row) =>
                 {
-                    string a = "select * from phancong where " + condition;
                     return new PhanCong()
                     {
                         MaPhanCong = row.GetValueDefault<string>(0),
@@ -144,7 +143,7 @@ namespace DataAccess.Repositories
                         MaNV = row.GetValueDefault<string>(4),
                         MaChuong = row.GetValueDefault<string>(5)
                     };
-                }, "select * from phancong where "+ condition);
+                }, string.Format("select * from phancong where {0} and '{1}' between NgayBatDau and NgayKetThuc",condition,DateTime.Now));
             }
             catch (Exception)
             {

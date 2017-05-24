@@ -44,8 +44,9 @@
             labelYearSelect: 'Chọn năm',
 
             firstDay: 1,
-            format: 'yyyy-mm-dd',
+            format: 'dd-mm-yyyy',
             formatSubmit: 'yyyy-mm-dd',
+            hiddenPrefix:'prefix_',
 
             min: new Date(1752, 0, 1),
             max: new Date(9998, 11, 31)
@@ -78,12 +79,13 @@
                 days = days.substring(0, days.length - 1)
             }
             var data = {
-                NgayBatDau: document.getElementById('ngaybatdau').value,
-                NgayKetThuc: document.getElementById('ngayketthuc').value,
+                NgayBatDau: $('input[name=prefix_bd_submit]').val(),
+                NgayKetThuc: $('input[name=prefix_kt_submit]').val(),
                 NgayTrongTuan: days,
                 MaNV: manv,
                 MaChuong: machuong
             };
+            console.log(data);
             callAjax('post', { Data: data }, "hcm", "animal_care", "Assignment/add", function (data2) {
                 if (data2.IsError != null && data2.IsError) {
                     for (var i = 0; i < data2.Errors.length; i++) {
@@ -187,7 +189,7 @@
                             <td>
                                 <div class="md-form form-sm">
                                     <i class="fa fa-calendar prefix"></i>
-                                    <input type="text" id="ngaybatdau" class="form-control datepicker" data-value="@(DateTime.Now.ToShortDateString())">
+                                    <input name="bd" type="text" id="ngaybatdau" class="form-control datepicker" data-value="@(DateTime.Now.ToShortDateString())">
                                     <label for="ngaybatdau"></label>
                                 </div>
                             </td>
@@ -197,7 +199,7 @@
                             <td>
                                 <div class="md-form form-sm">
                                     <i class="fa fa-calendar prefix"></i>
-                                    <input type="text" id="ngayketthuc" class="form-control datepicker" data-value="@(DateTime.Now.ToShortDateString())">
+                                    <input name="kt" type="text" id="ngayketthuc" class="form-control datepicker" data-value="@(DateTime.Now.ToShortDateString())">
                                     <label for="ngaykethuc"></label>
                                 </div>
                             </td>

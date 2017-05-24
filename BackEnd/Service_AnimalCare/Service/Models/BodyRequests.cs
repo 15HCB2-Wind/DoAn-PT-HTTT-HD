@@ -31,4 +31,9 @@ namespace Service.Models
         public string TokenPassword;
         public int Role;
     }
+
+    public class ChamSocRequest : BodyRequest
+    {
+        public ChamSoc Data { get; set; }
+    }
 }

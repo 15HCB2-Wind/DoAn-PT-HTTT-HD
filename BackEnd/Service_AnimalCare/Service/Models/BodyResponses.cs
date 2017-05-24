@@ -28,4 +28,6 @@ namespace Service.Models
     {
         public TokenData Data { get; set; }
     }
+
+    public class ChamSocResponse : BodyResponse { }
 }

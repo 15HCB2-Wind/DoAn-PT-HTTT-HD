@@ -44,6 +44,7 @@
     <Compile Include="DataAccessInterfaces.cs" />
     <Compile Include="DataProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\ChamSocRepository.cs" />
     <Compile Include="Repositories\PhanCongRepository.cs" />
     <Compile Include="SqlDataReaderExt.cs" />
   </ItemGroup>
