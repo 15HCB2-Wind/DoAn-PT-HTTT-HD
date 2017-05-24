@@ -11,6 +11,7 @@ import Models.Other.SyncResponse;
 import Models.Other.SyncRequest;
 import Config.Configs;
 import DAO.PhanQuyenAdapter;
+import DAO.NhanVienAdapter;
 import com.google.gson.Gson;
 import javax.ws.rs.client.*;
 import javax.ws.rs.core.*;
@@ -24,11 +25,15 @@ public class NhanVienBUS {
 
     public static boolean validateInformation(StaffRequest request, StaffResponse response) {
         if (request.Data.getHoten().isEmpty()) {
-            response.NameErrors.add("Họ tên không được để trống!");
+            response.NameErrors.add("Họ tên không được để trống");
             response.IsError = true;
         }
         if (request.Data.getEmail().isEmpty()) {
-            response.EmailErrors.add("Email không được để trống!");
+            response.EmailErrors.add("Email không được để trống");
+            response.IsError = true;
+        }
+        if (NhanVienAdapter.checkEmail(request.Data.getEmail()) == false) {
+            response.EmailErrors.add("Email dã tồn tại");
             response.IsError = true;
         }
         return !response.IsError;

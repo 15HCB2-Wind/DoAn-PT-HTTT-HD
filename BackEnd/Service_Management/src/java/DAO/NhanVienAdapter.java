@@ -22,6 +22,13 @@ public class NhanVienAdapter {
         obj.setManhanvien(String.format("NV%05d", count + 1));
     }
 
+    public static boolean checkEmail(String email) {
+        if (HibernateUtil.getSingle("from Nhanvien where email = :p0", new Object[]{email}) == null) {
+            return true;
+        }
+        return false;
+    }
+
     public static Nhanvien getSingle(Object MaNV) {
         List<Nhanvien> list = HibernateUtil.getSingle("from Nhanvien where manhanvien = :p0", new Object[]{MaNV});
         if (list.size() > 0) {

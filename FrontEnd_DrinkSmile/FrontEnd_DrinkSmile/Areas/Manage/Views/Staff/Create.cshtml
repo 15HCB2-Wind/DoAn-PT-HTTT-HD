@@ -153,6 +153,10 @@
                                 $("#emailerror").addClass("active");
                                 $("#emailerror").attr("data-error", result.EmailErrors[0]);
                             }
+
+                            if (result.Errors.length > 0) {
+                                toastr["error"](result.Errors[0]);
+                            }
                         }
                         else {
                             Data = null;
