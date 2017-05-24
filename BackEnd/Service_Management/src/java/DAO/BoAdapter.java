@@ -11,7 +11,7 @@ import pojos.Bo;
 
 /**
  *
- * @author Shin'sLaptop
+ * @author 19101994
  */
 public class BoAdapter {
     private static void getNewID(Bo obj) {
@@ -19,7 +19,7 @@ public class BoAdapter {
         obj.setMabo(String.format("COW%05d", count + 1));
     }
     
-    public static Bo getSingle(String id){
+    public static Bo getSingle(Object id){
         List<Bo> list = HibernateUtil.getSingle("from Bo where mabo = :p0", new Object[]{ id });
         if (list.size() > 0) {
             Bo result = list.get(0);
@@ -28,26 +28,27 @@ public class BoAdapter {
         return null;
     }
     
-    public static List<Bo> getAllOfAgency(String id){
-        return HibernateUtil.getList("from Bo where machinhanh <> :p0", new Object[]{ id });
+    public static List<Bo> getAllOfAgency(Object id){
+        return HibernateUtil.getList("select a from Bo a, Chuongtrai b where a.machuong = b.machuong and b.machinhanh = :p0", new Object[]{ id });
     }
     
-    public static List<Bo> getAllOfBarn(String id){
-        return HibernateUtil.getList("from Bo where machuong <> :p0", new Object[]{ id });
+    public static List<Bo> getAllOfBarn(Object id){
+        return HibernateUtil.getList("from Bo where machuong = :p0", new Object[]{ id });
     }
     
     public static boolean add(Bo obj) {
         getNewID(obj);
         obj.setDaxoa(false);
+        obj.setTinhtrang("Khỏe mạnh.");
         return HibernateUtil.save(obj);
     }
 
-    public static int delete(Object userid) {
-        return HibernateUtil.execute("update Bo set daxoa = :p1 where mabo = :p0", new Object[]{ userid, true });
+    public static int delete(Object id) {
+        return HibernateUtil.execute("update Bo set daxoa = :p1, tinhtrang = :p2 where mabo = :p0", new Object[]{ id, true, "- - - - -" });
     }
     
-    public static int recover(Object userid) {
-        return HibernateUtil.execute("update Bo set daxoa = :p1 where mabo = :p0", new Object[]{ userid, false });
+    public static int recover(Object id) {
+        return HibernateUtil.execute("update Bo set daxoa = :p1, tinhtrang = :p2 where mabo = :p0", new Object[]{ id, false, "Khỏe mạnh." });
     }
 
     public static boolean update(Bo obj) {

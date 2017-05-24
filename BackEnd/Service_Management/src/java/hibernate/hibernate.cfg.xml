@@ -45,6 +45,8 @@ Contributor(s):
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
     <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/service_management_drinksmile?zeroDateTimeBehavior=convertToNull</property>
     <property name="hibernate.connection.username">root</property>
+    <property name="hibernate.connection.CharSet">utf8</property>
+    <property name="hibernate.connection.characterEncoding">utf8</property>
     <mapping resource="pojos/Phanquyen.hbm.xml"/>
     <mapping resource="pojos/Bo.hbm.xml"/>
     <mapping resource="pojos/Nhacungcap.hbm.xml"/>

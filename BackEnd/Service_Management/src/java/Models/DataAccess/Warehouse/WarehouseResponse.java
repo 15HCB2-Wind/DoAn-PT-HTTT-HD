@@ -3,12 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Models.DataAccess.Cow;
+package Models.DataAccess.Warehouse;
+
+import Models.BodyResponse;
+import java.util.ArrayList;
 
 /**
  *
  * @author 19101994
  */
-public class UpdateCowResponse {
+public class WarehouseResponse extends BodyResponse {
     
 }

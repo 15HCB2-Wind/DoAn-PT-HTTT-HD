@@ -92,12 +92,9 @@
             function calcPositionFooter() {
                 setTimeout(function () {
                     if ($("body").height() < $(window).height()) {
-                        $("main").css("margin-bottom", $(window).height() - $("body").height());
+                        $("main").css("margin-bottom", $(window).height() - $("body").height() + 16);
                     }
-                    else {
-                        $("main").css("margin-bottom", 50);
-                    }
-                }, 500);
+                }, 1000);
             };
         });
     </script>
