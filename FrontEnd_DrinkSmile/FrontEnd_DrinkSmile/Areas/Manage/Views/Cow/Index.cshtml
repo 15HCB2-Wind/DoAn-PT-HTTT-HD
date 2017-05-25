@@ -4,6 +4,7 @@
 }
 
 <h2><i class="fa fa-list"></i> Danh sách bò trang trại</h2>
+<a class="blue-text" href="/Manage/Cow/Add"><i class="fa fa-arrow-down" aria-hidden="true"></i> Ghi nhận bò nhập</a>
 <table class="table table-hover">
     <thead class="thead-inverse">
         <tr>
@@ -80,11 +81,12 @@
                                 barns = [];
                                 for (var i = 0; i < data.Data.length; i++) {
                                     var item = data.Data[i];
-                                    if (barns.indexOf(item.machuong) < 0)
-                                        barns.push(item.machuong);
-                                    if (!cows[item.machuong])
-                                        cows[item.machuong] = [];
-                                    cows[item.machuong].push(item);
+                                    var key = item.tenchuong + '(' + item.machuong + ')';
+                                    if (barns.indexOf(key) < 0)
+                                        barns.push(key);
+                                    if (!cows[key])
+                                        cows[key] = [];
+                                    cows[key].push(item);
                                 }
                                 //=========================
                                 $('#tbCows').html('');
@@ -102,12 +104,19 @@
                                     for (var i = 0; i < cows[barns[j]].length; i++) {
                                         var item = cows[barns[j]][i];
 
-                                        var td4;
+                                        var trType;
                                         if (item.daxoa) {
-                                            td4 = '<td></td>';
+                                            trType = '<tr class="table-danger">';
+                                        } else {
+                                            trType = '<tr>';
+                                        }
+
+                                        var td4;
+                                        if (item.coditat) {
+                                            td4 = '<td><i class="fa fa-check" aria-hidden="true"></i></td>';
                                         }
                                         else {
-                                            td4 = '<td><i class="fa fa-check" aria-hidden="true"></i></td>';
+                                            td4 = '<td></td>';
                                         }
 
                                         var deleteButton;
@@ -119,14 +128,14 @@
                                         }
 
                                         $('#tbCows').append(
-                                            '<tr>' +
+                                            trType +
                                                 '<td>' + item.mabo + ' (' + item.machip + ')</td>' +
                                                 '<td>' + item.mausac + '</td>' +
                                                 '<td>' + item.nhandang + '</td>' +
                                                 td4 +
                                                 '<td>' + item.tinhtrang + '</td>' +
                                                 '<td>' +
-                                                    '<a class="teal-text" href="/Manage/Cow/Edit?id=' + item.mabo + '"><i class="fa fa-pencil"></i></a>' +
+                                                    '<a class="teal-text" href="/Manage/Cow/Edit?id=' + item.mabo + '&chip=' + item.machip + '&color=' + item.mausac + '&hasD=' + item.coditat + '&spe=' + item.nhandang + '&barn=' + item.machuong + '&sta=' + item.tinhtrang + '"><i class="fa fa-pencil"></i></a>' +
                                                     deleteButton +
                                                 '</td>' +
                                             '</tr>'

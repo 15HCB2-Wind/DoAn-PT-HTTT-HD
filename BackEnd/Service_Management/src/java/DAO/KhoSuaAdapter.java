@@ -35,6 +35,7 @@ public class KhoSuaAdapter {
     
     public static boolean add(Khosua obj) {
         getNewID(obj);
+        obj.setLuongsuaco(0d);
         obj.setDaxoa(false);
         obj.setTinhtrang("Đang được sử dụng.");
         return HibernateUtil.save(obj);
@@ -51,7 +52,6 @@ public class KhoSuaAdapter {
     public static boolean update(Khosua obj) {
         Khosua updated = getSingle(obj.getMakho());
         updated.setDiachi(obj.getDiachi());
-        updated.setLuongsuaco(obj.getLuongsuaco());
         updated.setSucchua(obj.getSucchua());
         updated.setTenkho(obj.getTenkho());
         updated.setTinhtrang(obj.getTinhtrang());
