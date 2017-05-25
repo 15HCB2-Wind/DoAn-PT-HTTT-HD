@@ -25,10 +25,10 @@ public abstract class BodyResponse {
         Errors = new ArrayList<>();
         IsTokenTimeout = false;
     }
-    
     public Response json(){
         return Response.ok(new Gson().toJson(this))
                 .header("Access-Control-Allow-Origin", "*")
                 .build();
     }
+    
 }
