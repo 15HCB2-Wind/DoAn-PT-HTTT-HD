@@ -23,18 +23,20 @@ import pojos.Nhanvien;
  */
 public class NhanVienBUS {
 
-    public static boolean validateInformation(StaffRequest request, StaffResponse response) {
+    public static boolean validateInformation(StaffRequest request, StaffResponse response, String action) {
         if (request.Data.getHoten().isEmpty()) {
             response.NameErrors.add("Họ tên không được để trống");
             response.IsError = true;
         }
-        if (request.Data.getEmail().isEmpty()) {
-            response.EmailErrors.add("Email không được để trống");
-            response.IsError = true;
-        }
-        if (NhanVienAdapter.checkEmail(request.Data.getEmail()) == false) {
-            response.EmailErrors.add("Email dã tồn tại");
-            response.IsError = true;
+        if ("add".equals(action)) {
+            if (request.Data.getEmail().isEmpty()) {
+                response.EmailErrors.add("Email không được để trống");
+                response.IsError = true;
+            }
+            if (NhanVienAdapter.checkEmail(request.Data.getEmail()) == false) {
+                response.EmailErrors.add("Email đã tồn tại");
+                response.IsError = true;
+            }
         }
         return !response.IsError;
     }

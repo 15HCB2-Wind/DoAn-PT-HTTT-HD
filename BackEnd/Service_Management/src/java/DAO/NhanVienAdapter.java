@@ -23,7 +23,7 @@ public class NhanVienAdapter {
     }
 
     public static boolean checkEmail(String email) {
-        if (HibernateUtil.getSingle("from Nhanvien where email = :p0", new Object[]{email}) == null) {
+        if (HibernateUtil.count("select count(*) from Nhanvien where email = '" + email + "'") == 0) {
             return true;
         }
         return false;
