@@ -49,7 +49,6 @@
                         <option>Đang được sử dụng.</option>
                         <option>Đang được sữa chửa.</option>
                         <option>Vấn đề khác.</option>
-                        <option disabled>Ngưng hoạt động.</option>
                     </select>
                     <label>Tình trạng</label>
                 </div>
@@ -117,7 +116,6 @@
                         }
                         else {
                             toastr["success"](data.Data);
-                            $('#form_action')[0].reset();
                         }
                     });
             });
