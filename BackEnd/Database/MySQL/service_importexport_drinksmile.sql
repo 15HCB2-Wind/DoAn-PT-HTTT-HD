@@ -2,10 +2,10 @@
 -- version 4.6.4
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: May 09, 2017 at 05:35 AM
--- Server version: 5.7.14
--- PHP Version: 5.6.25
+-- Máy chủ: 127.0.0.1
+-- Thời gian đã tạo: Th5 25, 2017 lúc 11:10 SA
+-- Phiên bản máy phục vụ: 5.7.14
+-- Phiên bản PHP: 5.6.25
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,13 +17,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `service_importexport_drinksmile`
+-- Cơ sở dữ liệu: `service_importexport_drinksmile`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `chitietxuatsua`
+-- Cấu trúc bảng cho bảng `chitietxuatsua`
 --
 
 CREATE TABLE `chitietxuatsua` (
@@ -35,7 +35,7 @@ CREATE TABLE `chitietxuatsua` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `phieunhapbo`
+-- Cấu trúc bảng cho bảng `phieunhapbo`
 --
 
 CREATE TABLE `phieunhapbo` (
@@ -45,13 +45,14 @@ CREATE TABLE `phieunhapbo` (
   `soluong` int(11) DEFAULT NULL,
   `dahuy` bit(1) DEFAULT NULL,
   `mancc` varchar(10) DEFAULT NULL,
-  `manv` varchar(10) DEFAULT NULL
+  `manv` varchar(10) DEFAULT NULL,
+  `macn` varchar(10) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `phieuxuat`
+-- Cấu trúc bảng cho bảng `phieuxuat`
 --
 
 CREATE TABLE `phieuxuat` (
@@ -65,23 +66,23 @@ CREATE TABLE `phieuxuat` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Indexes for dumped tables
+-- Chỉ mục cho các bảng đã đổ
 --
 
 --
--- Indexes for table `chitietxuatsua`
+-- Chỉ mục cho bảng `chitietxuatsua`
 --
 ALTER TABLE `chitietxuatsua`
   ADD PRIMARY KEY (`machungtu`);
 
 --
--- Indexes for table `phieunhapbo`
+-- Chỉ mục cho bảng `phieunhapbo`
 --
 ALTER TABLE `phieunhapbo`
   ADD PRIMARY KEY (`machungtu`);
 
 --
--- Indexes for table `phieuxuat`
+-- Chỉ mục cho bảng `phieuxuat`
 --
 ALTER TABLE `phieuxuat`
   ADD PRIMARY KEY (`machungtu`);
