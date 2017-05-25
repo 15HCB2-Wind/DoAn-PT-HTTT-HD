@@ -15,7 +15,7 @@
                     $("#dropdownNV").append('<a class="dropdown-item" onclick="nhanvienclick(' + i + ')">' + data.Data[i].hoten + '</a>');
                 }
             });
-            callAjax('post', { MaCN: "CN0001" }, "hcm", "management", "ChuongTrai/getAll", function (data) {
+            callAjax('post', { Token: Cookies.get('token') }, "hcm", "management", "ChuongTrai/getAll", function (data) {
                 listchuong = data.Data;
                 for (var i = 0; i < data.Data.length; i++) {
                     $("#dropdownCT").append('<a class="dropdown-item" onclick="chuongtraiclick(' + i + ')">' + data.Data[i].tenchuong + '</a>');
