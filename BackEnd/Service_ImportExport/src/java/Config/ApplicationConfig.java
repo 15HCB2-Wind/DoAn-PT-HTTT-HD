@@ -23,6 +23,8 @@ public class ApplicationConfig extends Application {
     }
 
     private void addRestResourceClasses(Set<Class<?>> resources) {
+        resources.add(Config.CrossOriginResourceSharingFilter.class);
+        resources.add(Services.PhieuNhapBoAPIs.class);
         resources.add(Services.PhieuXuatAPIs.class);
     }
 }
