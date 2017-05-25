@@ -94,7 +94,21 @@ namespace Service.BusinessHandler
         public static void GetAllFromNhanVien(PhanCongRequest request, ref PhanCongResponse response)
         {
             PhanCongRepository pc_repository = new PhanCongRepository();
-            response.Data = PhanCongRepository.GetAllFromNhanVien(request.Data);
+            var result = PhanCongRepository.GetAllFromNhanVien(request.Data);
+            if (result != null)
+            {
+                foreach (var item in result)
+                {
+                    item.NgayBatDauFormatted = item.NgayBatDau.ToString("yyyy-MM-dd");
+                    item.NgayKetThucFormatted = item.NgayKetThuc.ToString("yyyy-MM-dd");    
+                }
+                response.Data = result;
+            }
+            else
+            {
+                response.Errors.Add("Có lỗi xảy ra!");
+                response.IsError = true;
+            }
         }
 
         public static void GetOneFromPhanCong(PhanCongRequest request, ref PhanCongResponse response)

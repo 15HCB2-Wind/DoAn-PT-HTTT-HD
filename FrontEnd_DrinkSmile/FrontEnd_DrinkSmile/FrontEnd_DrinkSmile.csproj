@@ -191,6 +191,7 @@
     <Content Include="Areas\Manage\Views\WareHouse\Create.cshtml" />
     <Content Include="Areas\Manage\Views\Cow\Edit.cshtml" />
     <Content Include="Areas\Manage\Views\Cow\Add.cshtml" />
+    <Content Include="Areas\Manage\Views\Staff\Edit.cshtml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
