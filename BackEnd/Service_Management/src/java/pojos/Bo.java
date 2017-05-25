@@ -17,6 +17,10 @@ public class Bo  implements java.io.Serializable {
      private String tinhtrang;
      private Boolean daxoa;
      private String machuong;
+     
+     //=====
+     public String tenchuong;
+     //=====
 
     public Bo() {
     }

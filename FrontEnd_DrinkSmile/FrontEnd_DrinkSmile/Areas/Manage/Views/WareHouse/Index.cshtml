@@ -82,6 +82,13 @@
                                 $('#tbWarehouses').html('');
                                 for (var i = 0; i < warehouses.length; i++) {
                                     var item = warehouses[i];
+                                    
+                                    var trType;
+                                    if (item.daxoa) {
+                                        trType = '<tr class="table-danger" title="' + item.diachi + '">';
+                                    } else {
+                                        trType = '<tr title="' + item.diachi + '">';
+                                    }
 
                                     var td4;
                                     if (item.daxoa) {
@@ -92,22 +99,25 @@
                                     }
 
                                     var deleteButton;
+                                    var editButton;
                                     if (item.daxoa) {
                                         deleteButton = '<a class="red-text" onclick="recoverWarehouse(' + i + ')"><i class="fa fa-refresh" aria-hidden="true"></i></a>';
+                                        editButton = '';
                                     }
                                     else {
                                         deleteButton = '<a class="red-text" onclick="deleteWarehouse(' + i + ')"><i class="fa fa-times"></i></a>';
+                                        editButton = '<a class="teal-text" href="/Manage/WareHouse/Edit?id=' + item.makho + '&name=' + item.tenkho + '&max=' + item.succhua + '&cur=' + item.luongsuaco + '&addr=' + item.diachi + '&sta=' + item.tinhtrang + '"><i class="fa fa-pencil"></i></a>';
                                     }
 
                                     $('#tbWarehouses').append(
-                                        '<tr title="' + item.diachi + '">' +
+                                        trType +
                                             '<td>' + item.tenkho + '</td>' +
                                             '<td>' + item.succhua + ' (L)</td>' +
                                             '<td>' + item.luongsuaco + ' (L)</td>' +
                                             td4 +
                                             '<td>' + item.tinhtrang + '</td>' +
                                             '<td>' +
-                                                '<a class="teal-text" href="/Manage/WareHouse/Edit?id=' + item.makho + '"><i class="fa fa-pencil"></i></a>' +
+                                                editButton +
                                                 deleteButton +
                                             '</td>' +
                                         '</tr>'

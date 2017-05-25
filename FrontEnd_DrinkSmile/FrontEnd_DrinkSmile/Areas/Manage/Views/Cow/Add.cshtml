@@ -1,0 +1,144 @@
+﻿
+@{
+    ViewBag.Title = "Ghi nhận bò nhập";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="offset-lg-3 col-lg-6 offset-md-2 col-md-8 offset-sm-1 col-sm-10 col-xs-12">
+        <fieldset class="card-block">
+            <form id="form_action" method="post" role="form">
+                <div class="text-center">
+                    <h3><i class="fa fa-weixin" aria-hidden="true"></i> Cập nhật thông tin bò</h3>
+                    <hr class="mt-2 mb-2">
+                </div>
+                <p id="error" class="text-danger text-center"></p>
+                <div class="md-form form-sm">
+                    <i class="fa fa-android prefix" aria-hidden="true"></i>
+                    <input id="machip" class="form-control" type="text" />
+                    <label for="machip">Mã chip</label>
+                </div>
+                <div class="md-form form-sm">
+                    <i class="fa fa-google-wallet prefix" aria-hidden="true"></i>
+                    <input id="mausac" class="form-control" type="text" />
+                    <label for="mausac">Màu sắc</label>
+                </div>
+                <br />
+                <fieldset class="form-group">
+                    <input type="checkbox" id="coditat">
+                    <label for="coditat">Có dị tật</label>
+                </fieldset>
+                <div class="md-form form-sm">
+                    <i class="fa fa-github-alt prefix" aria-hidden="true"></i>
+                    <input id="nhandang" class="form-control" type="text" />
+                    <label for="nhandang">Nhận dạng</label>
+                </div>
+                <br />
+                <div class="btn-group">
+                    <button id="btnCT" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Chuồng trại</button>
+                    <div class="dropdown-menu" id="chuongtrai">
+                        <!--load data danh sach chuong-->
+                    </div>
+                </div>
+                <br />
+                <br />
+                <br />
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Lưu <i id="loader" class="fa fa-circle-o-notch fa-pulse fa-lg fa-fw"></i></button>
+                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Thoát</button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                                    <h4 class="modal-title w-100">Thoát</h4>
+                                </div>
+                                <div class="modal-body text-center">
+                                    Bạn thực sự muốn thoát?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                                    <a class="btn btn-danger" href="@Url.Action("Index")">Đồng ý</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </fieldset>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        var listchuong;
+
+        $(document).ready(function () {
+            //init
+            $('#tinhtrang').material_select();
+
+            callAjax('post',
+                    {
+                        Token: Cookies.get('token'),
+                    },
+                    Cookies.get('area'), 'management', 'ChuongTrai/getAll',
+                    function (data) {
+                        if (data.IsError) {
+                            toastr["error"](data.Errors[0]);
+                            $("#error").show();
+                            $("#error").text(data.Errors[0]);
+                        }
+                        else {
+                            if (data.Data) {
+                                listchuong = data.Data;
+                                for (var i = 0; i < listchuong.length; i++) {
+                                    var row = listchuong[i].tenchuong + '(' + listchuong[i].machuong + ')';
+                                    $("#chuongtrai").append('<a class="dropdown-item" onclick="chuongtrai_click(' + i + ')">' + row + '</a>');
+                                    if (listchuong[i].machuong == QueryString['barn']) {
+                                        $('#btnCT').html(row);
+                                        $('#btnCT').attr('my-data', listchuong[i].machuong);
+                                    }
+                                }
+                            }
+                        }
+                    });
+
+            //=====
+            $('#loader').hide();
+            $('#form_action').submit(function (e) {
+                e.preventDefault();
+                callAjax('post',
+                    {
+                        Token: Cookies.get('token'),
+                        Data: {
+                            machip: $('#machip').val(),
+                            mausac: $('#mausac').val(),
+                            coditat: document.getElementById('coditat').checked,
+                            nhandang: $('#nhandang').val(),
+                            machuong: $('#btnCT').attr('my-data')
+                        }
+                    },
+                    Cookies.get('area'), 'management', 'Bo/add',
+                    function (data) {
+                        if (data.IsError) {
+                            toastr["error"](data.Errors[0]);
+                            $("#error").show();
+                            $("#error").text(data.Errors[0]);
+                        }
+                        else {
+                            toastr["success"](data.Data);
+                            $('#form_action')[0].reset();
+                        }
+                    });
+            });
+        });
+
+        function chuongtrai_click(index) {
+            var row = listchuong[index].tenchuong + '(' + listchuong[index].machuong + ')';
+            $('#btnCT').html(row);
+            $('#btnCT').attr('my-data', listchuong[index].machuong);
+        };
+    </script>
+}

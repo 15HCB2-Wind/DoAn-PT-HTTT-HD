@@ -199,7 +199,7 @@ public class NhanVienAPIs {
             if (BusinessHandler.NhanVienBUS.validateInformation(request, response, "update")) {
                 try {
                     if (NhanVienAdapter.update(request.Data)) {
-                        NhanVienBUS.sync(0, request.Data);
+                        //NhanVienBUS.sync(0, request.Data);
                         response.Data = "Cập nhật thành công!";
                     } else {
                         response.Errors.add("Cập nhật thất bại!");

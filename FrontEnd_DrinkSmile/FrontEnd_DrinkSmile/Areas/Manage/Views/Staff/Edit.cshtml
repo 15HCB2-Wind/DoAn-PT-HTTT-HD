@@ -55,8 +55,9 @@
                     <label for="sodt">Số điện thoại</label>
                 </div>
                 <input type="hidden" id="manv" />
-                <input type="hidden" id="macn" />
-                <input type="hidden" id="mapq" />
+                @*<input type="hidden" id="macn" />*@
+                @*<input type="hidden" id="mapq" />*@
+                @*<input type="hidden" id="daxoa" />*@
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary">
                         Lưu <i id="loader" class="fa fa-circle-o-notch fa-pulse fa-lg fa-fw"></i>
@@ -146,9 +147,11 @@
                             $("#diachi").val(result.Data.diachi);
                             $("#email").val(result.Data.email);
                             $("#sodt").val(result.Data.sodt);
+
                             $("#manv").val(result.Data.manhanvien);
-                            $("#macn").val(result.Data.machinhanh);
-                            $("#mapq").val(result.Data.maphanquyen);
+                            //$("#macn").val(result.Data.machinhanh);
+                            //$("#mapq").val(result.Data.maphanquyen);
+                            //$("#daxoa").val(result.Data.daxoa);
                         }
                     }
                 )
@@ -171,11 +174,12 @@
                         ngaysinh: ngaysinh,
                         gioitinh: $("input[name=gioitinh]:checked", "#form_editstaff").val(),
                         diachi: diachi,
-                        email: $("#email").val(),
+                        //email: $("#email").val(),
                         sodt: sodt,
-                        manhanvien: $("manv").val(),
-                        machinhanh: $("#macn").val(),
-                        maphanquyen: $("#mapq").val()
+                        manhanvien: $("#manv").val(),
+                        //machinhanh: $("#macn").val(),
+                        //maphanquyen: $("#mapq").val(),
+                        //daxoa: $("#daxoa").val()
                     }
                 }, "hcm", "management", "NhanVien/update",
                     function (result) {
@@ -191,7 +195,7 @@
                             }
                         }
                         else {
-                            location.href = "/Staff/Index";
+                            location.href = "/Manage/Staff/Index";
                         }
                     }
                 )

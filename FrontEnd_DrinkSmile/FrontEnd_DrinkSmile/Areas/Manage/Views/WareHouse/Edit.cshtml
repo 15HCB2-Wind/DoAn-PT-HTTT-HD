@@ -6,7 +6,7 @@
 <div class="row">
     <div class="offset-lg-3 col-lg-6 offset-md-2 col-md-8 offset-sm-1 col-sm-10 col-xs-12">
         <fieldset class="card-block">
-            <form id="_form" method="post" role="form">
+            <form id="form_action" method="post" role="form">
                 <div class="text-center">
                     <h3><i class="fa fa-home" aria-hidden="true"></i> Cập nhật kho</h3>
                     <hr class="mt-2 mb-2">
@@ -22,27 +22,35 @@
                         <div class="col-sm-6 col-xs-12">
                             <div class="md-form form-sm">
                                 <i class="fa fa-filter prefix"></i>
-                                <input id="thetich" class="form-control" type="number" min="0" step="100" />
-                                <label for="thetich">Thể tích</label>
+                                <input id="dungtich" class="form-control" type="number" min="0" step="100" />
+                                <label for="dungtich">Dung tích</label>
                             </div>
                         </div>
                         <div class="col-sm-6 col-xs-12">
                             <div class="md-form form-sm">
                                 <i class="fa fa-tint prefix" aria-hidden="true"></i>
-                                <input id="conlai" class="form-control" type="text" disabled="disabled" value="0 (l)" />
+                                <input id="hienco" class="form-control" type="text" disabled="disabled" value="0 (l)" />
                             </div>
                         </div>
                     </div>
                 </div>
+                <br />
                 <div class="md-form form-sm">
                     <i class="fa fa-map-marker prefix"></i>
-                    <input id="diachi" class="form-control" type="text" />
+                    @*<input id="diachi" class="form-control" type="text" />
+                    <label for="diachi">Địa chỉ</label>*@
+                    <textarea id="diachi" class="md-textarea" length="100"></textarea>
                     <label for="diachi">Địa chỉ</label>
                 </div>
+                <br />
                 <div class="md-form form-sm">
                     <i class="fa fa-pencil-square-o prefix"></i>
-                    <input id="tinhtrang" class="form-control" type="text" />
-                    <label for="tinhtrang">Tình trạng</label>
+                    <select id="tinhtrang" class="mdb-select danh-muc-tinhtrang">
+                        <option>Đang được sử dụng.</option>
+                        <option>Đang được sữa chửa.</option>
+                        <option>Vấn đề khác.</option>
+                    </select>
+                    <label>Tình trạng</label>
                 </div>
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary">Lưu <i id="loader" class="fa fa-circle-o-notch fa-pulse fa-lg fa-fw"></i></button>
@@ -75,19 +83,40 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script>
         $(document).ready(function () {
+            //init
+            $('.mdb-select').material_select();
+
+            $('#tenkho').val(QueryString['name']);
+            $('#dungtich').val(QueryString['max']);
+            $('#hienco').val(QueryString['cur']);
+            $('#diachi').val(QueryString['addr']);
+            $('.danh-muc-tinhtrang input[type=text]').val(QueryString['sta']);
+            $('#tinhtrang').val(QueryString['sta']);
+            //=====
             $('#loader').hide();
-            $('#_form').submit(function (e) {
+            $('#form_action').submit(function (e) {
                 e.preventDefault();
                 callAjax('post',
                     {
                         Token: Cookies.get('token'),
                         Data: {
-
+                            makho: QueryString['id'],
+                            tenkho: $('#tenkho').val(),
+                            succhua: $('#dungtich').val(),
+                            diachi: $('#diachi').val(),
+                            tinhtrang: $('#tinhtrang').val()
                         }
                     },
                     Cookies.get('area'), 'management', 'KhoSua/update',
                     function (data) {
-
+                        if (data.IsError) {
+                            toastr["error"](data.Errors[0]);
+                            $("#error").show();
+                            $("#error").text(data.Errors[0]);
+                        }
+                        else {
+                            toastr["success"](data.Data);
+                        }
                     });
             });
         });
