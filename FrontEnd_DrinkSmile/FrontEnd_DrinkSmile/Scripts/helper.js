@@ -1,9 +1,6 @@
 ﻿function callAjax(type, data, areaId, whichService, url, successCallback) {
     $.ajax({
-        //contentType: 'application/json;charset=utf-8',
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         type: type,
         dataType: 'json',
         data: JSON.stringify(data),
@@ -35,4 +32,4 @@
             $("#error").text("Không thể kết nối tới máy chủ");
         }
     });
-}
+} 

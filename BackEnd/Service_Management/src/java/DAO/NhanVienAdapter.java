@@ -40,6 +40,14 @@ public class NhanVienAdapter {
         return null;
     }
 
+    public static Nhanvien getSingleFullInfo(Object MaNV) {
+        List<Nhanvien> list = HibernateUtil.getSingle("from Nhanvien where manhanvien = :p0", new Object[]{MaNV});
+        if (list.size() > 0) {
+            return list.get(0);
+        }
+        return null;
+    }
+
     public static List<Nhanvien> getAll(Object MaCN, Object MaPQ) {
         List<Nhanvien> list = HibernateUtil.getList("from Nhanvien where machinhanh = :p0 and maphanquyen = :p1", new Object[]{MaCN, MaPQ});
         return list;
@@ -62,19 +70,13 @@ public class NhanVienAdapter {
     }
 
     public static boolean update(Nhanvien obj) {
-        Nhanvien nv = getSingle(obj.getManhanvien());
+        Nhanvien nv = getSingleFullInfo(obj.getManhanvien());
         nv.setHoten(obj.getHoten());
         nv.setGioitinh(obj.getGioitinh());
         nv.setNgaysinh(obj.getNgaysinh());
         nv.setSodt(obj.getSodt());
         nv.setDiachi(obj.getDiachi());
-        nv.setEmail(obj.getEmail());
-        //nv.setTentaikhoan(obj.getTentaikhoan());
-        //nv.setMatkhau(obj.getMatkhau());
         nv.setTinhtrang(obj.getTinhtrang());
-        nv.setDaxoa(obj.getDaxoa());
-        nv.setMachinhanh(obj.getMachinhanh());
-        nv.setMaphanquyen(obj.getMaphanquyen());
         return HibernateUtil.update(nv);
     }
 
