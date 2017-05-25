@@ -1,4 +1,9 @@
 /* YOUR CUSTOM STYLES */
+body { position: relative }
+main {
+    padding-top: calc(56px + 3rem);
+    padding-bottom: calc(50px + 3rem);
+}
 footer.page-footer {
     margin-top: 0px;
     padding-top: 0px;
@@ -7,12 +12,6 @@ footer.page-footer {
     bottom: 0;
     width: 100%;
 }
-
-main {
-    margin-top: calc(56px + 3rem);
-    margin-bottom: 50px;
-}
-
 input:-webkit-autofill { -webkit-box-shadow: 0 0 0 50px white inset !important }
 button.navbar-toggler { padding-right: 0px }
 .field-validation-error,

@@ -82,5 +82,10 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/js")
     @RenderSection("scripts", required: false)
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("body").css("min-height", $(window).height());
+        });
+    </script>
 </body>
 </html>

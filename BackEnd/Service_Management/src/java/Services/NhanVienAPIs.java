@@ -42,7 +42,7 @@ public class NhanVienAPIs {
     @Produces("application/json")
     @Consumes("application/json")
     public String get(String json) {
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
         SelectStaffRequest request = gson.fromJson(json, SelectStaffRequest.class);
         SelectResponse response = new SelectResponse();
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2)) {
@@ -68,7 +68,7 @@ public class NhanVienAPIs {
     @Produces("application/json")
     @Consumes("application/json")
     public String getAll(String json) {
-        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+        Gson gson = new GsonBuilder().setDateFormat("dd-MM-yyyy").create();
         SelectStaffRequest request = gson.fromJson(json, SelectStaffRequest.class);
         SelectResponse response = new SelectResponse();
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2)) {
@@ -113,7 +113,7 @@ public class NhanVienAPIs {
         StaffRequest request = gson.fromJson(json, StaffRequest.class);
         StaffResponse response = new StaffResponse();
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2)) {
-            if (NhanVienBUS.validateInformation(request, response)) {
+            if (NhanVienBUS.validateInformation(request, response, "add")) {
                 try {
                     if (NhanVienAdapter.add(request.Data)) {
                         NhanVienBUS.sync(1, request.Data);
@@ -126,6 +126,10 @@ public class NhanVienAPIs {
                     response.Errors.add("Lỗi hệ thống.");
                     response.IsError = true;
                 }
+            }
+            else {
+                response.Errors.add("Thêm thất bại.");
+                response.IsError = true;
             }
         }
         return gson.toJson(response);
@@ -192,7 +196,7 @@ public class NhanVienAPIs {
         StaffRequest request = gson.fromJson(json, StaffRequest.class);
         StaffResponse response = new StaffResponse();
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2)) {
-            if (BusinessHandler.NhanVienBUS.validateInformation(request, response)) {
+            if (BusinessHandler.NhanVienBUS.validateInformation(request, response, "update")) {
                 try {
                     if (NhanVienAdapter.update(request.Data)) {
                         NhanVienBUS.sync(0, request.Data);
@@ -205,6 +209,10 @@ public class NhanVienAPIs {
                     response.Errors.add("Lỗi hệ thống.");
                     response.IsError = true;
                 }
+            }
+            else {
+                response.Errors.add("Cập nhật thất bại!");
+                response.IsError = true;
             }
         }
         return gson.toJson(response);
