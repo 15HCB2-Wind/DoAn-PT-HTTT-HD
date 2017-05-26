@@ -1,59 +1,64 @@
 ﻿@{
-    ViewBag.Title = "Cập nhật kho";
+    ViewBag.Title = "Cập nhật chuồng trại";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <div class="row">
     <div class="offset-lg-3 col-lg-6 offset-md-2 col-md-8 offset-sm-1 col-sm-10 col-xs-12">
         <fieldset class="card-block">
-            <form id="form_action" method="post" role="form">
+            <form id="form_editbarn" method="post" role="form">
                 <div class="text-center">
-                    <h3><i class="fa fa-home" aria-hidden="true"></i> Cập nhật kho</h3>
+                    <h3><i class="fa fa-pencil-square-o"></i> Cập nhật chuồng trại</h3>
                     <hr class="mt-2 mb-2">
                 </div>
                 <p id="error" class="text-danger text-center"></p>
-                <div class="md-form form-sm">
+                <div class="md-form">
                     <i class="fa fa-id-card-o prefix"></i>
-                    <input id="tenkho" class="form-control" type="text" />
-                    <label for="tenkho">Tên kho</label>
+                    <input id="tenchuong" class="form-control" type="text" required="required" placeholder="" />
+                    <label id="tenchuongerror" for="tenchuong">Tên chuồng</label>
                 </div>
-                <div class="col-xs-12">
-                    <div class="row">
-                        <div class="col-sm-6 col-xs-12">
-                            <div class="md-form form-sm">
-                                <i class="fa fa-filter prefix"></i>
-                                <input id="dungtich" class="form-control" type="number" min="0" step="100" />
-                                <label for="dungtich">Dung tích</label>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-xs-12">
-                            <div class="md-form form-sm">
-                                <i class="fa fa-tint prefix" aria-hidden="true"></i>
-                                <input id="hienco" class="form-control" type="text" disabled="disabled" value="0 (l)" />
+                <div class="md-form">
+                    <i class="fa fa-battery-full prefix"></i>
+                    <input id="succhua" class="form-control" type="number" min="1" placeholder="" />
+                    <label id="succhuaerror" for="succhua">Sức chứa</label>
+                </div>
+                <div class="md-form">
+                    <i class="fa fa-battery-1 prefix"></i>
+                    <input id="dangchua" class="form-control" type="number" min="0" placeholder="" />
+                    <label id="dangchuaerror" for="dangchua">Đang chứa</label>
+                </div>
+                <div class="md-form">
+                    <i class="fa fa-comment-o prefix"></i>
+                    <input id="tinhtrang" class="form-control" type="text" placeholder="" />
+                    <label for="tinhtrang">Tình trạng</label>
+                </div>
+                <input type="hidden" id="mact" />
+                <input type="hidden" id="daxoa" />
+                
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">
+                        Lưu <i id="loader" class="fa fa-circle-o-notch fa-pulse fa-lg fa-fw"></i>
+                    </button>
+
+                    <button id="btnAction" type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalAction"></button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="modalAction" tabindex="-1" role="dialog">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                                    <h4 class="modal-title w-100">Xác nhận</h4>
+                                </div>
+                                <div class="modal-body text-center">
+                                    Bạn thực sự muốn thực hiện?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                                    <button class="btn btn-danger" id="action">Đồng ý</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <br />
-                <div class="md-form form-sm">
-                    <i class="fa fa-map-marker prefix"></i>
-                    @*<input id="diachi" class="form-control" type="text" />
-                        <label for="diachi">Địa chỉ</label>*@
-                    <textarea id="diachi" class="md-textarea" length="100"></textarea>
-                    <label for="diachi">Địa chỉ</label>
-                </div>
-                <br />
-                <div class="md-form form-sm">
-                    <i class="fa fa-pencil-square-o prefix"></i>
-                    <select id="tinhtrang" class="mdb-select danh-muc-tinhtrang">
-                        <option>Đang được sử dụng.</option>
-                        <option>Đang được sữa chửa.</option>
-                        <option>Vấn đề khác.</option>
-                    </select>
-                    <label>Tình trạng</label>
-                </div>
-                <div class="text-center">
-                    <button type="submit" class="btn btn-primary">Lưu <i id="loader" class="fa fa-circle-o-notch fa-pulse fa-lg fa-fw"></i></button>
+
                     <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Thoát</button>
                     <!-- Modal -->
                     <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
@@ -76,48 +81,123 @@
                 </div>
             </form>
         </fieldset>
+        <p class="text-center">
+            <i id="loader1" class="fa fa-circle-o-notch fa-pulse fa-2x"></i>
+            <a id="back" class="btn btn-danger" href="@Url.Action("Index")">Trở về trang quản lý</a>
+        </p>
     </div>
 </div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    <script>
+    <script type="text/javascript">
         $(document).ready(function () {
-            //init
-            $('.mdb-select').material_select();
+            $("fieldset").hide();
+            $("#loader").hide();
+            $("#back").hide();
 
-            $('#tenkho').val(QueryString['name']);
-            $('#dungtich').val(QueryString['max']);
-            $('#hienco').val(QueryString['cur']);
-            $('#diachi').val(QueryString['addr']);
-            $('.danh-muc-tinhtrang input[type=text]').val(QueryString['sta']);
-            $('#tinhtrang').val(QueryString['sta']);
-            //=====
-            $('#loader').hide();
-            $('#form_action').submit(function (e) {
-                e.preventDefault();
-                callAjax('post',
-                    {
-                        Token: Cookies.get('token'),
-                        Data: {
-                            makho: QueryString['id'],
-                            tenkho: $('#tenkho').val(),
-                            succhua: $('#dungtich').val(),
-                            diachi: $('#diachi').val(),
-                            tinhtrang: $('#tinhtrang').val()
-                        }
-                    },
-                    Cookies.get('area'), 'management', 'KhoSua/update',
-                    function (data) {
-                        if (data.IsError) {
-                            toastr["error"](data.Errors[0]);
-                            $("#error").show();
-                            $("#error").text(data.Errors[0]);
+            callAjax('post', { Token: Cookies.get("token"), MaCT: '@ViewBag.MaCT' }, Cookies.get("area"), "management", "ChuongTrai/get",
+                    function (result) {
+                        $('#loader1').hide();
+                        if (result.IsError) {
+                            $("#back").show();
+                            toastr["error"](result.Errors[0]);
                         }
                         else {
-                            toastr["success"](data.Data);
+                            $("fieldset").show();
+                            $("#tenchuong").val(result.Data.tenchuong);
+                            $("#succhua").val(result.Data.succhua);
+                            $("#dangchua").val(result.Data.dangchua);
+                            $("#tinhtrang").val(result.Data.tinhtrang);
+                            $("#mact").val(result.Data.machuong);
+                            $("#daxoa").val(result.Data.daxoa);
+
+                            if (result.Data.daxoa == false) {
+                                $("#btnAction").text("Xóa");
+                            }
+                            else {
+                                $("#btnAction").text("Khôi phục");
+                            }
                         }
-                    });
+                    }
+                )
+
+            $("#form_editbarn").submit(function (e) {
+                e.preventDefault();
+
+                if ($("#dangchua").val() > $("#succhua").val()) {
+                    $("#dangchua").addClass("validate invalid");
+                    $("#dangchuaerror").addClass("active");
+                    $("#dangchuaerror").attr("data-error", "Quá sức chứa");
+                    return;
+                }
+
+                var tinhtrang = $("#tinhtrang").val();
+                if (tinhtrang == "") { tinhtrang = null; }
+
+                callAjax('post', {
+                    Token: Cookies.get("token"),
+                    Data: {
+                        tenchuong: $("#tenchuong").val(),
+                        succhua: $("#succhua").val(),
+                        dangchua: $("#dangchua").val(),
+                        tinhtrang: tinhtrang,
+                        machuong: $("#mact").val(),
+                    }
+                }, Cookies.get("area"), "management", "ChuongTrai/update",
+                    function (result) {
+                        if (result.IsError) {
+                            if (result.NameErrors.length > 0) {
+                                $("#tenchuong").addClass("validate invalid");
+                                $("#tenchuongerror").addClass("active");
+                                $("#tenchuongerror").attr("data-error", result.NameErrors[0]);
+                            }
+
+                            if (result.SlotErrors.length > 0) {
+                                $("#succhua").addClass("validate invalid");
+                                $("#succhuaerror").addClass("active");
+                                $("#succhuaerror").attr("data-error", result.SlotErrors[0]);
+                            }
+
+                            if (result.Slot1Errors.length > 0) {
+                                $("#dangchua").addClass("validate invalid");
+                                $("#dangchuaerror").addClass("active");
+                                $("#dangchuaerror").attr("data-error", result.Slot1Errors[0]);
+                            }
+
+                            if (result.Errors.length > 0) {
+                                toastr["error"](result.Errors[0]);
+                            }
+                        }
+                        else {
+                            location.href = "/Manage/Barn/Index";
+                        }
+                    }
+                )
+            });
+
+            function actionForBarn(str) {
+                callAjax('post', { Token: Cookies.get("token"), MaCT: $("#mact").val() }, Cookies.get("area"), "management", "ChuongTrai/" + str,
+                    function (result) {
+                        if (result.IsError) {
+                            if (result.Errors.length > 0) {
+                                toastr["error"](result.Errors[0]);
+                            }
+                        }
+                        else {
+                            location.href = "/Manage/Barn/Index";
+                        }
+                    }
+                )
+            };
+
+            $("#action").click(function () {
+                if ($("#daxoa").val() == "false") {
+                    actionForBarn("delete");
+                }
+                else {
+                    actionForBarn("recover");
+                }
             });
         });
     </script>

@@ -30,6 +30,8 @@ public class ChuongTraiAdapter {
 
     public static boolean add(Chuongtrai obj) {
         getNewID(obj);
+        obj.setDangchua(0);
+        obj.setDaxoa(false);
         return HibernateUtil.save(obj);
     }
     
@@ -49,8 +51,8 @@ public class ChuongTraiAdapter {
         Chuongtrai c = getSingle(obj.getMachuong());
         c.setTenchuong(obj.getTenchuong());
         c.setSucchua(obj.getSucchua());
+        c.setDangchua(obj.getDangchua());
         c.setTinhtrang(obj.getTinhtrang());
-        c.setMachinhanh(obj.getMachinhanh());
         return HibernateUtil.update(c);
     }
 }

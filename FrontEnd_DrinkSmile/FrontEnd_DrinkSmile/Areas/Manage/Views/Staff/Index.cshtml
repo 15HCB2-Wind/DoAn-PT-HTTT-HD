@@ -4,7 +4,8 @@
 }
 <h2><i class="fa fa-list"></i> Danh sách nhân viên</h2>
 <p id="addStaff1">
-    @Html.ActionLink("Thêm nhân viên", "Create")
+    <a class="btn btn-primary" href="@Url.Action("Create")">Thêm nhân viên</a>
+    <a class="btn btn-success" href="@Url.Action("Index", "Assignment")">Phân công</a>
 </p>
 <p class="text-center" id="addStaff2">Bạn chưa có nhân viên nào, bấm vào @Html.ActionLink("đây", "Create") để thêm nhân viên.</p>
 <table class="table table-hover">
@@ -13,6 +14,7 @@
             <th>Mã NV</th>
             <th>Họ tên</th>
             <th>Email (tên tài khoản)</th>
+            <th></th>
             <th></th>
             <th></th>
         </tr>
@@ -44,6 +46,7 @@
                                             + "<td>" + result.Data[i].email + "</td>"
                                             + "<td>" + danghi + "</td>"
                                             + "<td><a href='/Manage/Staff/Edit/" + result.Data[i].manhanvien + "'>Cập nhật</a></td>"
+                                            + "<td><a href='/Manage/Assignment/Create?id=" + result.Data[i].manhanvien + "'>Phân công</a></td>"
                                         + "</tr>";
                                 $("tbody").append(html);
                             }

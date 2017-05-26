@@ -13,7 +13,7 @@ namespace FrontEnd_DrinkSmile.Areas.Manage.Controllers
                 if (Request.Cookies["role"].Value == "2") return View();
                 return RedirectToAction("Index");
             }
-            return RedirectToAction("Login", "Account", new { ReturnUrl = "/Manage/Staff/Index" });
+            return RedirectToAction("Login", "Account", new { area = "", ReturnUrl = "/Manage/Staff/Index" });
         }
 
         public ActionResult Create()
@@ -23,7 +23,7 @@ namespace FrontEnd_DrinkSmile.Areas.Manage.Controllers
                 if (Request.Cookies["role"].Value == "2") return View();
                 return RedirectToAction("Index");
             }
-            return RedirectToAction("Login", "Account", new { ReturnUrl = "/Manage/Staff/Create" });
+            return RedirectToAction("Login", "Account", new { area = "", ReturnUrl = "/Manage/Staff/Create" });
         }
 
         public ActionResult Edit(string id)
@@ -38,7 +38,7 @@ namespace FrontEnd_DrinkSmile.Areas.Manage.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            return RedirectToAction("Login", "Account", new { ReturnUrl = "/Manage/Staff/Edit/" + id });
+            return RedirectToAction("Login", "Account", new { area = "", ReturnUrl = "/Manage/Staff/Edit/" + id });
         }
     }
 }

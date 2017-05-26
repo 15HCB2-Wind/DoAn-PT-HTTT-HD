@@ -14,9 +14,7 @@ import BusinessHandler.NhanVienBUS;
 import DAO.NhanVienAdapter;
 import Models.DataAccess.Staff.SelectStaffRequest;
 import Models.TokenData;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import java.util.List;
+import com.google.gson.*;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import pojos.Nhanvien;
@@ -75,11 +73,7 @@ public class NhanVienAPIs {
         TokenData token = BusinessHandler.TokenBUS.tokenData(request, response, 2);
         if (token != null){
             try {
-                List<Nhanvien> result = NhanVienAdapter.getAll(NhanVienAdapter.getSingle(token.UserId).getMachinhanh());
-                for(int i = 0; i < result.size(); i++){
-                    result.get(i).setMatkhau(null);
-                }
-                response.Data = result;
+                response.Data = NhanVienAdapter.getAll(NhanVienAdapter.getSingle(token.UserId).getMachinhanh());;
             } catch (Exception ex) {
                 response.Errors.add("Lỗi hệ thống.");
                 response.IsError = true;
@@ -98,9 +92,9 @@ public class NhanVienAPIs {
         StaffResponse response = new StaffResponse();
         TokenData token = BusinessHandler.TokenBUS.tokenData(request, response, 2);
         if (token != null){
-            request.Data.setMachinhanh(NhanVienAdapter.getSingle(token.UserId).getMachinhanh());
             if (NhanVienBUS.validateInformation(request, response, "add")) {
                 try {
+                    request.Data.setMachinhanh(NhanVienAdapter.getSingle(token.UserId).getMachinhanh());
                     if (NhanVienAdapter.addNhanVien(request.Data)) {
                         NhanVienBUS.sync(1, request.Data);
                         response.Data = "Thêm thành công.";

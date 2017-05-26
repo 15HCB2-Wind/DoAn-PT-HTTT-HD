@@ -16,7 +16,7 @@ namespace FrontEnd_DrinkSmile.Areas.Manage.Controllers
                 if (Request.Cookies["role"].Value == "2") return View();
                 return RedirectToAction("Index");
             }
-            return RedirectToAction("Login", "Account", new { ReturnUrl = "/Manage/Cow/Index" });
+            return RedirectToAction("Login", "Account", new { area = "", ReturnUrl = "/Manage/Cow/Index" });
         }
 
         public ActionResult Edit()
@@ -26,7 +26,7 @@ namespace FrontEnd_DrinkSmile.Areas.Manage.Controllers
                 if (Request.Cookies["role"].Value == "2") return View();
                 return RedirectToAction("Index");
             }
-            return RedirectToAction("Login", "Account", new { ReturnUrl = "/Manage/Cow/Index" });
+            return RedirectToAction("Login", "Account", new { area = "", ReturnUrl = "/Manage/Cow/Index" });
         }
 
         public ActionResult Add()
@@ -36,7 +36,7 @@ namespace FrontEnd_DrinkSmile.Areas.Manage.Controllers
                 if (Request.Cookies["role"].Value == "2") return View();
                 return RedirectToAction("Index");
             }
-            return RedirectToAction("Login", "Account", new { ReturnUrl = "/Manage/Cow/Add" });
+            return RedirectToAction("Login", "Account", new { area = "", ReturnUrl = "/Manage/Cow/Add" });
         }
     }
 }
