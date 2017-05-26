@@ -60,7 +60,26 @@ public class NhaCungCapAPIs {
                 response.IsError = true;
             }
         }
-        return gson.toJson(response);
+         return gson.toJson(response);
+    }
+     @POST
+    @Path("getSingle")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public String getSingle(String json){
+        Gson gson = new Gson();
+        SelectRequest request = gson.fromJson(json, SelectRequest.class);
+        SelectResponse response = new SelectResponse();
+        if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)){// kiem tra quyen truy cap 
+                 //NhanVienBUS.getSingleValidate(request, response)
+            try{
+                response.Data = NhaCungCapAdapter.getSingle(request.Predicates[0]);
+            }catch(Exception ex){
+                response.Errors.add("Lỗi hệ thống.");
+                response.IsError = true;
+            }
+        }
+         return gson.toJson(response);
     }
     
     @POST
@@ -112,6 +131,6 @@ public class NhaCungCapAPIs {
                 }
             }
         }
-        return gson.toJson(response);
+       return gson.toJson(response);
     }
 }
