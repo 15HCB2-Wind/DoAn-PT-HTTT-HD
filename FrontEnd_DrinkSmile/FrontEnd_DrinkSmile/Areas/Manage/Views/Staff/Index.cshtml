@@ -25,7 +25,7 @@
     <script>
         $(document).ready(function () {
             $("#addStaff2").hide();
-            callAjax('post', { MaCN: "CN001", MaPQ: "PQ001" }, "hcm", "management", "NhanVien/getAll",
+            callAjax('post', { Token: Cookies.get("token") }, Cookies.get("area"), "management", "NhanVien/getAll",
                 function (result) {
                     if (result.IsError) {
                         toastr["error"](result.Errors[0]);

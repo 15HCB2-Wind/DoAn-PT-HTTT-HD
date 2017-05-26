@@ -11,17 +11,32 @@ namespace FrontEnd_DrinkSmile.Areas.Manage.Controllers
         // GET: Manage/WareHouse
         public ActionResult Index()
         {
-            return View();
+            if (Request.Cookies["token"] != null)
+            {
+                if (Request.Cookies["role"].Value == "2") return View();
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Login", "Account", new { ReturnUrl = "/Manage/WareHouse/Index" });
         }
 
         public ActionResult Edit()
         {
-            return View();
+            if (Request.Cookies["token"] != null)
+            {
+                if (Request.Cookies["role"].Value == "2") return View();
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Login", "Account", new { ReturnUrl = "/Manage/WareHouse/Index" });
         }
 
         public ActionResult Create()
         {
-            return View();
+            if (Request.Cookies["token"] != null)
+            {
+                if (Request.Cookies["role"].Value == "2") return View();
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Login", "Account", new { ReturnUrl = "/Manage/WareHouse/Create" });
         }
     }
 }

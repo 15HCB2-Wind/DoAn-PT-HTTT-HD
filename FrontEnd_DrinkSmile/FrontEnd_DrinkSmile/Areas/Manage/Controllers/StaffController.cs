@@ -8,19 +8,37 @@ namespace FrontEnd_DrinkSmile.Areas.Manage.Controllers
         // GET: Manage/Staff
         public ActionResult Index()
         {
-            return View();
+            if (Request.Cookies["token"] != null)
+            {
+                if (Request.Cookies["role"].Value == "2") return View();
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Login", "Account", new { ReturnUrl = "/Manage/Staff/Index" });
         }
 
         public ActionResult Create()
         {
-            return View();
+            if (Request.Cookies["token"] != null)
+            {
+                if (Request.Cookies["role"].Value == "2") return View();
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Login", "Account", new { ReturnUrl = "/Manage/Staff/Create" });
         }
 
         public ActionResult Edit(string id)
         {
-            if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            ViewBag.MaNV = id;
-            return View();
+            if (Request.Cookies["token"] != null)
+            {
+                if (Request.Cookies["role"].Value == "2")
+                {
+                    if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    ViewBag.MaNV = id;
+                    return View();
+                }
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Login", "Account", new { ReturnUrl = "/Manage/Staff/Edit/" + id });
         }
     }
 }

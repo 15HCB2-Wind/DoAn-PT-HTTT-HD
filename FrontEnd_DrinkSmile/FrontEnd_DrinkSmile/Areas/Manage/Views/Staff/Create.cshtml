@@ -129,17 +129,16 @@
                 if (sodt == "") { sodt = null; }
 
                 callAjax('post', {
+                    Token: Cookies.get("token"),
                     Data: {
                         hoten: $("#hoten").val(),
                         ngaysinh: ngaysinh,
                         gioitinh: $("input[name=gioitinh]:checked", "#form_addstaff").val(),
                         diachi: diachi,
                         email: $("#email").val(),
-                        sodt: sodt,
-                        machinhanh: "CN001",
-                        maphanquyen: "PQ001"
+                        sodt: sodt
                     }
-                }, "hcm", "management", "NhanVien/add",
+                }, Cookies.get("area"), "management", "NhanVien/add",
                     function (result) {
                         if (result.IsError) {
                             if (result.NameErrors.length > 0) {

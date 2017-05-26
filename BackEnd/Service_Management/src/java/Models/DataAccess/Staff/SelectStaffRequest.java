@@ -11,9 +11,6 @@ import Models.BodyRequest;
  *
  * @author Tu
  */
-public class SelectStaffRequest extends BodyRequest {
-
-    public String MaNV;
-    public String MaCN;
-    public String MaPQ;
+public class SelectStaffRequest extends BodyRequest{
+    public String UserId;
 }

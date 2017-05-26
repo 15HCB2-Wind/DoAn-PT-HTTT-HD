@@ -125,7 +125,7 @@
             $("#loader").hide();
             $("#back").hide();
 
-            callAjax('post', { MaNV: '@ViewBag.MaNV' }, "hcm", "management", "NhanVien/get",
+            callAjax('post', { Token: Cookies.get("token"), UserId: '@ViewBag.MaNV' }, Cookies.get("area"), "management", "NhanVien/get",
                     function (result) {
                         $('#loader1').hide();
                         if (result.IsError) {
@@ -207,6 +207,7 @@
                 if (tinhtrang == "") { tinhtrang = null; }
 
                 callAjax('post', {
+                    Token: Cookies.get("token"),
                     Data: {
                         hoten: $("#hoten").val(),
                         ngaysinh: ngaysinh,
@@ -220,7 +221,7 @@
                         //maphanquyen: $("#mapq").val(),
                         //daxoa: $("#daxoa").val()
                     }
-                }, "hcm", "management", "NhanVien/update",
+                }, Cookies.get("area"), "management", "NhanVien/update",
                     function (result) {
                         if (result.IsError) {
                             if (result.NameErrors.length > 0) {
@@ -241,7 +242,7 @@
             });
 
             function actionForStaff(str) {
-                callAjax('post', { MaNV: $("#manv").val() }, "hcm", "management", "NhanVien/" + str,
+                callAjax('post', { Token: Cookies.get("token"), UserId: $("#manv").val() }, Cookies.get("area"), "management", "NhanVien/" + str,
                     function (result) {
                         if (result.IsError) {
                             if (result.Errors.length > 0) {
@@ -256,7 +257,7 @@
             };
 
             $("#action").click(function () {
-                if ($("#daxoa").val() == false) {
+                if ($("#daxoa").val() == "false") {
                     actionForStaff("delete");
                 }
                 else {
