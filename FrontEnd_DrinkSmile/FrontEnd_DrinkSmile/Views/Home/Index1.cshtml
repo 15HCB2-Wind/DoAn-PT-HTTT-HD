@@ -8,10 +8,10 @@
         $(document).ready(function () {
             var listchuong;
             var temp;
-            callAjax('post', { Token: Cookies.get('token') }, "hcm", "management", "ChuongTrai/getAllForLoad", function (data) {
+            callAjax('post', { Token: Cookies.get('token') }, Cookies.get('area'), "management", "ChuongTrai/getAllBy1", function (data) {
                 listchuong = data.Data;
                 if (listchuong) {
-                    callAjax('post', { Token: Cookies.get('token'), Data: { MaNV: "testNV" } }, "hcm", "animal_care", "assignment/getListAssignmentsOfEmployeer", function (data2) {
+                    callAjax('post', { Token: Cookies.get('token'), Data: { MaNV: "testNV" } }, Cookies.get('area'), "animal_care", "assignment/getListAssignmentsOfEmployeer", function (data2) {
                         if (!data2.Data) {
                             //nay ko co viec
                         }
@@ -112,7 +112,7 @@
                                     '</div>');
                                 var predicate = temp[i].MaChuong;
 
-                                callAjax('post', { Token: Cookies.get('token'), Predicates: [predicate] }, "hcm", "management", "Bo/getAllForLoad", function (data3, index) {
+                                callAjax('post', { Token: Cookies.get('token'), Predicates: [predicate] }, Cookies.get('area'), "management", "Bo/getAllBy1", function (data3, index) {
                                     if (!data3.Data) {
                                         $('#form').hide();
                                         $('#congviec').text('Hôm nay không có việc!');

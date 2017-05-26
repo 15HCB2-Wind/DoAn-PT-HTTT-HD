@@ -109,10 +109,10 @@ public class BoAPIs {
     }
     
     @POST
-    @Path("getAllForLoad")
+    @Path("getAllBy1")
     @Produces("application/json")
     @Consumes("application/json")
-    public String getAllForLoad(String json){
+    public String getAllBy1(String json){
         Gson gson = new Gson();
         SelectRequest request = gson.fromJson(json, SelectRequest.class);
         SelectResponse response = new SelectResponse();
