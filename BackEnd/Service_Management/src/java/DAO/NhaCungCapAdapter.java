@@ -24,7 +24,13 @@ import pojos.Nhacungcap;
  */
 public class NhaCungCapAdapter {
     public static List<Nhacungcap> getAll(){
-        return HibernateUtil.getList("from Nhacungcap", null);
+        return HibernateUtil.getList("from Nhacungcap order by manhacungcap asc", null);
+    }
+    public static boolean isValidName(String name) {
+        if (HibernateUtil.getSingle("from Nhacungcap where ten = :p0", new Object[]{name}) != null) {
+            return false;
+        }
+        return true;
     }
     private static void getNewID(Nhacungcap obj) {
         
@@ -39,7 +45,7 @@ public class NhaCungCapAdapter {
               machu = "0";
          }
         int maso = Integer.parseInt(machu);
-        obj.setManhacungcap(String.format("NCC%05d", maso + 1));
+        obj.setManhacungcap(String.format("NCC%03d", maso + 1));
     }
     public static boolean add(Nhacungcap obj) {
         getNewID(obj);
