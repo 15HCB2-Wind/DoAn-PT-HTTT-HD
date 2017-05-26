@@ -29,11 +29,11 @@ public class ChiNhanhAdapter {
               machu = "0";
          }
         int maso = Integer.parseInt(machu);
-        obj.setMachinhanh(String.format("CN%05d", maso + 1));
+        obj.setMachinhanh(String.format("CN%03d", maso + 1));
     }
     
     public static List<Chinhanh> getAll(){
-        return HibernateUtil.getList("from Chinhanh", null);
+        return HibernateUtil.getList("from Chinhanh order by machinhanh asc", null);
     }
     public static Chinhanh getSingle(Object userid){
         List<Chinhanh> list = HibernateUtil.getSingle("from Chinhanh where machinhanh = :p0", new Object[]{ userid });
