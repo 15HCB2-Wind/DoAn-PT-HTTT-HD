@@ -120,6 +120,7 @@ public class BoAPIs {
             if (BoBUS.insertUpdateValidate(request, response)){
                 try{
                     if (BoAdapter.add(request.Data)){
+                        ChuongTraiAdapter.updateNumber(request.Data.getMachuong(), 1);
                         response.Data = "Thêm thành công.";
                     }else{
                         response.Errors.add("Thêm thất bại.");
@@ -149,6 +150,7 @@ public class BoAPIs {
                     response.Errors.add("Xóa thất bại.");
                     response.IsError = true;
                 }else{
+                    ChuongTraiAdapter.updateNumber(BoAdapter.getSingle(request.Predicates[0]), -1);
                     response.Data = "Xóa thành công.";
                 }
             }catch(Exception ex){
@@ -174,6 +176,7 @@ public class BoAPIs {
                     response.Errors.add("Khôi phục thất bại.");
                     response.IsError = true;
                 }else{
+                    ChuongTraiAdapter.updateNumber(BoAdapter.getSingle(request.Predicates[0]), 1);
                     response.Data = "Khôi phục thành công.";
                 }
             }catch(Exception ex){
@@ -195,7 +198,9 @@ public class BoAPIs {
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2)){
             if (BusinessHandler.BoBUS.insertUpdateValidate(request, response)){
                 try{
+                    ChuongTraiAdapter.updateNumber(BoAdapter.getSingle(request.Data.getMabo()), -1);
                     if (BoAdapter.update(request.Data)){
+                        ChuongTraiAdapter.updateNumber(request.Data.getMachuong(), 1);
                         response.Data = "Cập nhật thành công!";
                     }else{
                         response.Errors.add("Cập nhật thất bại!");

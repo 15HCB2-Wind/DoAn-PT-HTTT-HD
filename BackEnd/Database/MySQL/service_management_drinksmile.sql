@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 25, 2017 at 01:22 PM
+-- Generation Time: May 26, 2017 at 09:08 AM
 -- Server version: 5.7.14
 -- PHP Version: 5.6.25
 
@@ -81,6 +81,7 @@ CREATE TABLE `chuongtrai` (
   `machuong` varchar(10) NOT NULL,
   `tenchuong` varchar(50) DEFAULT NULL,
   `succhua` int(11) DEFAULT NULL,
+  `dangchua` int(11) DEFAULT NULL,
   `tinhtrang` varchar(50) DEFAULT NULL,
   `daxoa` bit(1) DEFAULT NULL,
   `machinhanh` varchar(10) DEFAULT NULL
@@ -90,10 +91,10 @@ CREATE TABLE `chuongtrai` (
 -- Dumping data for table `chuongtrai`
 --
 
-INSERT INTO `chuongtrai` (`machuong`, `tenchuong`, `succhua`, `tinhtrang`, `daxoa`, `machinhanh`) VALUES
-('CT001', 'Chuồng Hồi Sức-01', 2, 'Đang hoạt động', b'0', 'CN001'),
-('CT002', 'Chuồng Lấy Sữa-02', 4, 'Đang hoạt động', b'0', 'CN001'),
-('CT003', 'Chuồng Sanh Đẻ-01', 2, 'Đang hoạt động', b'0', 'CN001');
+INSERT INTO `chuongtrai` (`machuong`, `tenchuong`, `succhua`, `dangchua`, `tinhtrang`, `daxoa`, `machinhanh`) VALUES
+('CT001', 'Chuồng Hồi Sức-01', 2, 2, 'Đang hoạt động', b'0', 'CN001'),
+('CT002', 'Chuồng Lấy Sữa-02', 4, 1, 'Đang hoạt động', b'0', 'CN001'),
+('CT003', 'Chuồng Sanh Đẻ-01', 2, 1, 'Đang hoạt động', b'0', 'CN001');
 
 -- --------------------------------------------------------
 
@@ -161,9 +162,9 @@ CREATE TABLE `nhanvien` (
 --
 
 INSERT INTO `nhanvien` (`manhanvien`, `hoten`, `gioitinh`, `ngaysinh`, `sodt`, `diachi`, `email`, `tentaikhoan`, `matkhau`, `tinhtrang`, `daxoa`, `machinhanh`, `maphanquyen`) VALUES
-('testGD', 'Giám đốc', 'Nam', NULL, NULL, NULL, 'c@gmail.com', 'giamdoc', 'WVs&$^OEWTMO$IFR&$OIFO#$JFK4MRFI*$UT', 'Đang làm.', b'0', 'CN001', 'PQ003'),
-('testNV', 'Nhân viên', 'Nam', NULL, NULL, NULL, 'a@gmail.com', 'nhanvien', 'WVs&$^OEWTMO$IFR&$OIFO#$JFK4MRFI*$UT', 'Đang làm.', b'0', 'CN001', 'PQ001'),
-('testQL', 'Quản lý', 'Nam', NULL, NULL, NULL, 'b@gmail.com', 'quanly', 'WVs&$^OEWTMO$IFR&$OIFO#$JFK4MRFI*$UT', 'Đang làm.', b'0', 'CN001', 'PQ002');
+('NV00002', 'Phong', NULL, NULL, NULL, NULL, '123123@gmail.com', 'tk123', 'WVs&$^OEWTMO$IFR&$OIFO#$JFK4MRFI*$UT', '?ang làm.', b'0', 'CN001', 'PQ001'),
+('NV00003', 'Huỳnh Chí Phong', NULL, NULL, NULL, NULL, 'a@gmail.com', 'a', '�$@&$^OEWTMO$IFR&$OIFO#$JFK4MRFI*$UT', 'Đang làm.', b'0', 'CN001', 'PQ001'),
+('testQL', 'Phong', NULL, NULL, NULL, NULL, 'hiroshi.kaze1994@gmail.com', 'tk001', 'WVs&$^OEWTMO$IFR&$OIFO#$JFK4MRFI*$UT', '?ang làm.', b'0', 'CN001', 'PQ001');
 
 -- --------------------------------------------------------
 

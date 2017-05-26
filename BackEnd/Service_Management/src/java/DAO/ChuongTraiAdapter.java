@@ -21,13 +21,20 @@ public class ChuongTraiAdapter {
     }
 
     public static List<Chuongtrai> getAll(Object id) {
-        List<Chuongtrai> list = HibernateUtil.getList("from Chuongtrai where machinhanh = :p0", new Object[]{id});
-        return list;
+        return HibernateUtil.getList("from Chuongtrai where machinhanh = :p0", new Object[]{id});
+    }
+    
+    public static List<Chuongtrai> getAllAvailables(Object id) {
+        return HibernateUtil.getList("from Chuongtrai where machinhanh = :p0 and dangchua < succhua", new Object[]{id});
     }
 
     public static boolean add(Chuongtrai obj) {
         getNewID(obj);
         return HibernateUtil.save(obj);
+    }
+    
+    public static int updateNumber(Object id, int value) {
+        return HibernateUtil.execute("update Chuongtrai set dangchua = (dangchua + :p0) where machuong = :p0", new Object[]{id, value});
     }
 
     public static int delete(Object id) {

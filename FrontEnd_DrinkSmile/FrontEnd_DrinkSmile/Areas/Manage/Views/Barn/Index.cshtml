@@ -1,8 +1,134 @@
-﻿
-@{
-    ViewBag.Title = "Index";
+﻿@{
+    ViewBag.Title = "Kho sữa";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Quản lý chuồng trại</h2>
+<h2><i class="fa fa-list"></i> Danh sách kho sữa</h2>
+<a class="blue-text" href="/Manage/WareHouse/Create"><i class="fa fa-arrow-down" aria-hidden="true"></i> Thêm một kho mới</a>
+<table class="table table-hover">
+    <thead class="thead-inverse">
+        <tr>
+            <th>Kho chứa</th>
+            <th>Sức chứa (lít)</th>
+            <th>Hiện có (lít)</th>
+            <th>Hoạt động</th>
+            <th>Tình trạng</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="tbWarehouses"></tbody>
+</table>
 
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        var warehouses;
+
+        $(document).ready(function () {
+            loadTable();
+        });
+
+        function deleteWarehouse(index) {
+            callAjax('post',
+                    { Token: Cookies.get("token"), Predicates: [warehouses[index].makho] },
+                    Cookies.get("area"), "management", "KhoSua/delete",
+                    function (data) {
+                        if (data.IsError) {
+                            toastr["error"](data.Errors[0]);
+                            $("#error").show();
+                            $("#error").text(data.Errors[0]);
+                        }
+                        else {
+                            toastr["success"](data.Data);
+                            loadTable();
+                        }
+                    }
+                );
+        }
+
+        function recoverWarehouse(index) {
+            callAjax('post',
+                    { Token: Cookies.get("token"), Predicates: [warehouses[index].makho] },
+                    Cookies.get("area"), "management", "KhoSua/recover",
+                    function (data) {
+                        if (data.IsError) {
+                            toastr["error"](data.Errors[0]);
+                            $("#error").show();
+                            $("#error").text(data.Errors[0]);
+                        }
+                        else {
+                            toastr["success"](data.Data);
+                            loadTable();
+                        }
+                    }
+                );
+        }
+
+        function loadTable() {
+            callAjax('post',
+                    { Token: Cookies.get("token") },
+                    Cookies.get("area"), "management", "KhoSua/getAll",
+                    function (data) {
+                        if (data.IsError) {
+                            toastr["error"](data.Errors[0]);
+                            $("#error").show();
+                            $("#error").text(data.Errors[0]);
+                        }
+                        else {
+                            if (data.Data) {
+                                warehouses = data.Data;
+                                //=========================
+                                $('#tbWarehouses').html('');
+                                for (var i = 0; i < warehouses.length; i++) {
+                                    var item = warehouses[i];
+
+                                    var trType;
+                                    if (item.daxoa) {
+                                        trType = '<tr class="table-danger" title="' + item.diachi + '">';
+                                    } else {
+                                        trType = '<tr title="' + item.diachi + '">';
+                                    }
+
+                                    var td4;
+                                    if (item.daxoa) {
+                                        td4 = '<td></td>';
+                                    }
+                                    else {
+                                        td4 = '<td><i class="fa fa-check" aria-hidden="true"></i></td>';
+                                    }
+
+                                    var deleteButton;
+                                    var editButton;
+                                    if (item.daxoa) {
+                                        deleteButton = '<a class="red-text" onclick="recoverWarehouse(' + i + ')"><i class="fa fa-refresh" aria-hidden="true"></i></a>';
+                                        editButton = '';
+                                    }
+                                    else {
+                                        deleteButton = '<a class="red-text" onclick="deleteWarehouse(' + i + ')"><i class="fa fa-times"></i></a>';
+                                        editButton = '<a class="teal-text" href="/Manage/WareHouse/Edit?id=' + item.makho + '&name=' + item.tenkho + '&max=' + item.succhua + '&cur=' + item.luongsuaco + '&addr=' + item.diachi + '&sta=' + item.tinhtrang + '"><i class="fa fa-pencil"></i></a>';
+                                    }
+
+                                    $('#tbWarehouses').append(
+                                        trType +
+                                            '<td>' + item.tenkho + '</td>' +
+                                            '<td>' + item.succhua + ' (L)</td>' +
+                                            '<td>' + item.luongsuaco + ' (L)</td>' +
+                                            td4 +
+                                            '<td>' + item.tinhtrang + '</td>' +
+                                            '<td>' +
+                                                editButton +
+                                                deleteButton +
+                                            '</td>' +
+                                        '</tr>'
+                                        );
+                                }
+                                //=========================
+                            } else {
+                                toastr["warning"]("Không có dữ liệu.");
+                            }
+                        }
+                    }
+                );
+        }
+    </script>
+}
