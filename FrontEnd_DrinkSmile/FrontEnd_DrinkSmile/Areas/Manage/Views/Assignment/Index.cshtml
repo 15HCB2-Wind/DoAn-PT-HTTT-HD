@@ -1,52 +1,55 @@
 ﻿@{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Phân công nhân viên";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section Scripts {
     <script>
-    $(document).ready(function () {
-        callAjax('post', { MaCN: "CN0001", MaPQ: "PQ0001" }, "hcm", "management", "NhanVien/getAllOfAgency", function (data1) {
-            callAjax('post', data1, "hcm", "animal_care", "assignment/getListAssignmentsOfAgency", function (data) {
-                for (var i = 0; i < data.Data.length; i++) {
-
-                    var days = data.Data[i].NgayTrongTuan.split(',');
-                    var week = ["2", "3", "4", "5", "6", "7", "CN"];
-
-                    for (var j = 0; j < week.length; j++) {
-                        if (!days.includes(week[j])) {
-                            week[j] = "";
-                        }
-                    }
-
-                    var td = "";
-                    for (var j = 0; j < week.length; j++) {
-                        if (!days.includes(week[j])) {
-                            td += '<td></td>';
+        $(document).ready(function () {
+            callAjax('post', { MaCN: "CN0001", MaPQ: "PQ0001" }, "hcm", "management", "NhanVien/getAll", function (data1) {
+                if (!data1.Data) {
+                    $('#form').hide();
+                    $('#congviec').text('Không có nhân viên đang làm việc.');
+                } else {
+                    callAjax('post', data1, "hcm", "animal_care", "assignment/getListAssignmentsOfAgency", function (data) {
+                        if (!data.Data) {
+                            $('#form').hide();
+                            $('#congviec').text('Chưa có phân công nào!');
                         }
                         else {
-                            td += '<td align="center" valign="middle"><i class="fa fa-check" aria-hidden="true"></i></td>';
+                            for (var i = 0; i < data.Data.length; i++) {
+
+                                var days = data.Data[i].NgayTrongTuan.split(',');
+                                var week = ["2", "3", "4", "5", "6", "7", "CN"];
+
+                                for (var j = 0; j < week.length; j++) {
+                                    if (!days.includes(week[j])) {
+                                        week[j] = "";
+                                    }
+                                }
+
+                                var td = "";
+                                for (var j = 0; j < week.length; j++) {
+                                    if (!days.includes(week[j])) {
+                                        td += '<td></td>';
+                                    }
+                                    else {
+                                        td += '<td align="center" valign="middle"><i class="fa fa-check" aria-hidden="true"></i></td>';
+                                    }
+                                }
+                                $('#dataTables').append('<tr height="50px">' +
+                                    '<td align="center" valign="middle">' + data.Data[i].HoTen + '</td>' +
+                                    td +
+                                    '<td align="center" valign="middle">' + data.Data[i].NgayBatDauFormatted + '</td>' +
+                                    '<td align="center" valign="middle">' + data.Data[i].NgayKetThucFormatted + '</td>' +
+                                    '<td align="center" valign="middle"><a href="/Manage/Assignment/Update?maphancong=' + data.Data[i].MaPhanCong + '&hoten=' + data.Data[i].HoTen + '"><i class="fa fa-edit" aria-hidden="true"></i></a></td>' +
+                                        //'<td align="center" valign="middle"><span class="spnSelected"><img src="../../../Content/Edit-26.png"/></span></td>' +
+                                        '</tr>');
+                            }
                         }
-                    }
-                    $('#dataTables').append('<tr height="50px">' +
-                        '<td align="center" valign="middle">' + data.Data[i].HoTen + '</td>' +
-                        td +
-                        '<td align="center" valign="middle">' + data.Data[i].NgayBatDauFormatted + '</td>' +
-                        '<td align="center" valign="middle">' + data.Data[i].NgayKetThucFormatted + '</td>' +
-                        '<td align="center" valign="middle"><a href="/Manage/Assignment/Update?maphancong=' + data.Data[i].MaPhanCong + '&hoten=' + data.Data[i].HoTen + '"><i class="fa fa-edit" aria-hidden="true"></i></a></td>' +
-                            //'<td align="center" valign="middle"><span class="spnSelected"><img src="../../../Content/Edit-26.png"/></span></td>' +
-                            '</tr>');
+
+                    })
                 }
             })
-            })
-
-        });
-
-        $("#dataTables").on('click', '.spnSelected', function () {
-            var self = $(this).closest("tr");
-            var col1_value = self.find(".idphancong").text();
-            maphancong = col1_value;
-            alert("ok");
-            //location.href = "Update?getobj=" + col1_value;
         });
 
         function addclick() {
@@ -59,8 +62,10 @@
 <div id="controller">
 
 </div>
-<form>
-    <button type="button" class="btn btn-success" onclick="addclick()">Thêm mới phân công</button>
+<button type="button" class="btn btn-success" onclick="addclick()">Thêm mới phân công</button>
+<p id="congviec"></p>
+<form id="form">
+    
     <div id="list_provider">
         <div class="panel-body">
             <div class="dataTable_wrapper">

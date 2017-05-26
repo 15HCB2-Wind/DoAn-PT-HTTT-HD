@@ -1,4 +1,5 @@
-﻿var AjaxTempData = {};
+﻿var AjaxCounter = 0;
+var AjaxTempData = {};
 function callAjax(type, data, areaId, whichService, url, successCallback, tempData) {
     var u = getAPI(areaId, whichService, url)
     $.ajax({
@@ -10,18 +11,21 @@ function callAjax(type, data, areaId, whichService, url, successCallback, tempDa
         dataType: 'json',
         data: JSON.stringify(data),
         url: u,
-        beforeSend: function () {
-            AjaxTempData[u] = tempData;
+        beforeSend: function (jqXHR) {
+            jqXHR['key-temp-data'] = AjaxCounter++ + u;
+            AjaxTempData[jqXHR['key-temp-data']] = tempData;
+
             $('#loader').show();
             $("#error").hide();
             $("fieldset").attr("disabled", "true");
         },
-        complete: function () {
-            AjaxTempData[u] = null;
+        complete: function (jqXHR) {
+            AjaxTempData[jqXHR['key-temp-data']] = null;
+
             $('#loader').hide();
             $("fieldset").removeAttr("disabled");
         },
-        success: function (data) {
+        success: function (data, textStatus, jqXHR) {
             if (data.IsTokenTimeout) {
                 Cookies.remove("token");
                 Cookies.remove("area");
@@ -30,7 +34,7 @@ function callAjax(type, data, areaId, whichService, url, successCallback, tempDa
                 location.href = "/Account/Login?ReturnUrl=" + location.pathname;
             }
             else {
-                successCallback(data, AjaxTempData[u]);
+                successCallback(data, AjaxTempData[jqXHR['key-temp-data']]);
             }
         },
         error: function () {

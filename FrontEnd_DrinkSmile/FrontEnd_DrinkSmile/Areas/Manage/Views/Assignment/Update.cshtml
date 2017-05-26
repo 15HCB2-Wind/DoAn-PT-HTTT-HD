@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Update";
+    ViewBag.Title = "Cập nhật phân công";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section Scripts{
@@ -105,11 +105,11 @@
             callAjax('post', {Data:data}, "hcm", "animal_care", "Assignment/update", function (data2) {
                 if (data2.IsError != null && data2.IsError) {
                     for (var i = 0; i < data2.Errors.length; i++) {
-                        alert(data2.Errors[i]);
+                        toastr["error"](data2.Errors[i]);
                     }
                 }
                 else {
-                    alert(data2.Data);
+                    //alert(data2.Data);
                     window.location.href = "http://localhost:8082/Manage/Assignment/Index";
                 }
             });

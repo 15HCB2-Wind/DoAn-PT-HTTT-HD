@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Thêm phân công mới";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section Scripts{
@@ -9,7 +9,7 @@
         var manv;
         var machuong;
         $(document).ready(function () {
-            callAjax('post', { MaCN: "CN0001", MaPQ: "PQ0001" }, "hcm", "management", "NhanVien/getAllOfAgency", function (data) {
+            callAjax('post', { MaCN: "CN0001", MaPQ: "PQ0001" }, "hcm", "management", "NhanVien/getAll", function (data) {
                 listnv = data.Data;
                 for (var i = 0; i < data.Data.length; i++) {
                     $("#dropdownNV").append('<a class="dropdown-item" onclick="nhanvienclick(' + i + ')">' + data.Data[i].hoten + '</a>');
@@ -89,11 +89,11 @@
             callAjax('post', { Data: data }, "hcm", "animal_care", "Assignment/add", function (data2) {
                 if (data2.IsError != null && data2.IsError) {
                     for (var i = 0; i < data2.Errors.length; i++) {
-                        alert(data2.Errors[i]);
+                        toastr["error"](data2.Errors[i]);
                     }
                 }
                 else {
-                    alert(data2.Data);
+                    //alert(data2.Data);
                     window.location.href = "http://localhost:8082/Manage/Assignment/Index";
                 }
             });

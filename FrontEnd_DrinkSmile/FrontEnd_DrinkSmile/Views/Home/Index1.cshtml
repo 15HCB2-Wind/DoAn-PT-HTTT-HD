@@ -5,157 +5,212 @@
 
 @section Scripts {
     <script>
-    $(document).ready(function () {
-        var listchuong;
-        var temp;
-        callAjax('post', { Token: Cookies.get('token') }, "hcm", "management", "ChuongTrai/getAllForLoad", function (data) {
-            listchuong = data.Data;
-            console.log(listchuong);
-            callAjax('post', { Token: Cookies.get('token'), Data: { MaNV: "NV0001" } }, "hcm", "animal_care", "assignment/getListAssignmentsOfEmployeer", function (data) {
-                var index = new Array();
-                temp = new Array();
-                for (var i = 0; i < data.Data.length; i++) {
-                    var str = data.Data[i].NgayTrongTuan;
-                    var listngay = str.split(',');
+        $(document).ready(function () {
+            var listchuong;
+            var temp;
+            callAjax('post', { Token: Cookies.get('token') }, "hcm", "management", "ChuongTrai/getAllForLoad", function (data) {
+                listchuong = data.Data;
+                callAjax('post', { Token: Cookies.get('token'), Data: { MaNV: "testNV" } }, "hcm", "animal_care", "assignment/getListAssignmentsOfEmployeer", function (data2) {
+                    if (!data2.Data) {
+                        //nay ko co viec
+                    }
+                    else {
+                        var index = new Array();
+                        temp = new Array();
+                        for (var i = 0; i < data2.Data.length; i++) {
+                            var str = data2.Data[i].NgayTrongTuan;
+                            var listngay = str.split(',');
 
-                    var d = new Date();
-                    var ngay = d.getDay();
-                    var tempngay = new Array();
-                    for (var j = 0; j < listngay.length; j++) {
-                        if (listngay[j] == "2") {
-                            tempngay.push(1);
+                            var d = new Date();
+                            var ngay = d.getDay();
+                            var tempngay = new Array();
+                            for (var j = 0; j < listngay.length; j++) {
+                                if (listngay[j] == "2") {
+                                    tempngay.push(1);
+                                }
+                                if (listngay[j] == "3") {
+                                    tempngay.push(2);
+                                }
+                                if (listngay[j] == "4") {
+                                    tempngay.push(3);
+                                }
+                                if (listngay[j] == "5") {
+                                    tempngay.push(4);
+                                }
+                                if (listngay[j] == "6") {
+                                    tempngay.push(5);
+                                }
+                                if (listngay[j] == "7") {
+                                    tempngay.push(6);
+                                }
+                                if (listngay[j] == "CN") {
+                                    tempngay.push(0);
+                                }
+                            }
+
+                            for (var j = 0; j < tempngay.length; j++) {
+                                if (tempngay[j] == ngay) {
+                                    index.push(i);
+                                    break;
+                                }
+                            }
                         }
-                        if (listngay[j] == "3") {
-                            tempngay.push(2);
+                        for (var i = 0; i < index.length; i++) {
+                            temp.push(data2.Data[index[i]]);
                         }
-                        if (listngay[j] == "4") {
-                            tempngay.push(3);
-                        }
-                        if (listngay[j] == "5") {
-                            tempngay.push(4);
-                        }
-                        if (listngay[j] == "6") {
-                            tempngay.push(5);
-                        }
-                        if (listngay[j] == "7") {
-                            tempngay.push(6);
-                        }
-                        if (listngay[j] == "CN") {
-                            tempngay.push(0);
+                        for (var i = 0; i < temp.length; i++) {
+                            var name = "";
+                            for (var j = 0; j < listchuong.length; j++) {
+                                if (temp[i].MaChuong == listchuong[j].machuong) {
+                                    name = listchuong[j].tenchuong;
+                                    break;
+                                }
+                            }
+                            var td =
+                                '<table class="table table-striped table-bordered table-hover" id="' + temp[i].MaChuong + '_table">' +
+                                    '<thead>' +
+                                        '<tr>' +
+                                            '<th rowspan="3" class="text-center" style="vertical-align:middle">Bò</th>' +
+                                            '<th rowspan="3" class="text-center" style="vertical-align:middle" width="150px">Lượng sữa</th>' +
+                                            '<th rowspan="3" class="text-center" style="vertical-align:middle">Cho ăn</th>' +
+                                            '<th rowspan="3" class="text-center" style="vertical-align:middle">Vệ sinh</th>' +
+                                            '<th rowspan="3" class="text-center" style="vertical-align:middle" width="300px">Tình trạng công việc</th>' +
+                                            '<th colspan="4" class="text-center" style="vertical-align:middle">Tình trạng bò</th>' +
+                                            '<th rowspan="3" colspan="2"></th>' +
+                                            //'<th rowspan="2"></th>' +
+                                        '</tr>' +
+                                        '<tr>' +
+                                            '<td colspan="2" align="center" valign="middle">Chiều cao(mét)</td>' +
+                            '<td colspan="2" align="center" valign="middle">Cân nặng(kg)</td>' +
+                                        '</tr>' +
+                                        '<tr>' +
+                                            '<td align="center" valign="middle">Lần1</td>' +
+                                            '<td align="center" valign="middle">Lần2</td>' +
+                                            '<td align="center" valign="middle">Lần1</td>' +
+                                            '<td align="center" valign="middle">Lần2</td>' +
+                                        '</tr>' +
+                                    '</thead>' +
+                                    '<tbody>' +
+                                    '</tbody>' +
+                                '</table>';
+
+                            $('#accordion').append(
+                                '<div class="card">' +
+                                    '<div class="card-header" role="tab" id="' + temp[i].MaPhanCong + '" onclick="chuongtrai(\'' + temp[i].MaPhanCong + '\')">' +
+                                        '<a data-toggle="collapse" data-parent="#accordion" href="#' + temp[i].MaChuong + '" aria-expanded="false" aria-controls="' + temp[i].MaChuong + '">' +
+                                            '<h5 class="mb-0">' +
+                                                name + '<i class="fa fa-angle-down rotate-icon"></i>' +
+                                            '</h5>' +
+                                        '</a>' +
+                                    '</div>' +
+                                    '<div id="' + temp[i].MaChuong + '" class="collapse" role="tabpanel" aria-labelledby="' + temp[i].MaPhanCong + '">' +
+                                        '<div class="card-block">' +
+                                        td +
+                                        '</div>' +
+                                    '</div>' +
+                                '</div>');
+                            var predicate = temp[i].MaChuong;
+
+                            callAjax('post', { Token: Cookies.get('token'), Predicates: [predicate] }, "hcm", "management", "Bo/getAllForLoad", function (data3, index) {
+                                if (!data3.Data) {
+                                    $('#form').hide();
+                                    $('#congviec').text('Hôm nay không có việc!');
+                                }
+                                else {
+                                    for (var k = 0; k < data3.Data.length; k++) {
+                                        var code = temp[index].MaPhanCong + data3.Data[k].mabo;
+                                        $('#' + data3.Data[0].machuong + '_table').append(
+                                            '<tr>' +
+                                                '<td align="center" valign="middle" id="idbo' + code + '"><br/>' + data3.Data[k].mabo + '</td>' +
+                                                '<td align="center" valign="middle"><input id="luongsua' + code + '" type="number" min="0" step="1" value="0"/></td>' +
+                                                '<td align="center" valign="middle"><div class="form-group"><input type="checkbox" id="choan' + code + '"/><label for="choan' + code + '"></label></div></td>' +
+                                                '<td align="center" valign="middle"><div class="form-group"><input type="checkbox" id="vesinh' + code + '"/><label for="vesinh' + code + '"></label></div></td>' +
+                                                '<td align="center" valign="middle"><input id="tinhtrang' + code + '" type="text"/></td>' +
+                                                '<td align="center" valign="middle"><input id="chieucao1' + code + '" type="number" min="0" step="0.5" value="0"/></td>' +
+                                                '<td align="center" valign="middle"><input id="chieucao2' + code + '" type="number" min="0" step="0.5" value="0"/></td>' +
+                                                '<td align="center" valign="middle"><input id="cannang1' + code + '" type="number" min="0" step="5" value="0" /></td>' +
+                                                '<td align="center" valign="middle"><input id="cannang2' + code + '" type="number" min="0" step="5" value="0" /></td>' +
+                                                '<td align="center" valign="middle"><span class="spnSelected" onclick="spanClick(\'' + code + '\',\'' + temp[index].MaPhanCong + '\')"><i class="fa fa-save blue-text" aria-hidden="false"></i></span></td>' +
+                                                '<td align="center" valign="middle"><i id="hidden'+code+'" class="fa fa-check" aria-hidden="true" hidden="hidden"></i></td>' +
+                                            '</tr>');
+                                    }
+                                }
+                            }, i);
                         }
                     }
-
-                    for (var j = 0; j < tempngay.length; j++) {
-                        if (tempngay[j] == ngay) {
-                            //alert(data.Data[i].MaPhanCong);
-                            index.push(i);
-
-                            break;
-                        }
-                    }
-                }
-                for (var i = 0; i < index.length; i++) {
-                    temp.push(data.Data[index[i]]);
-                }
-                for (var i = 0; i < temp.length; i++) {
-                    var name = "";
-                    for (var j = 0; j < listchuong.length; j++) {
-                        if (temp[i].MaChuong == listchuong[j].machuong) {
-                            name = listchuong[j].tenchuong
-                        }
-                    }
-                    var td =
-                        '<table class="table table-striped table-bordered table-hover" id="' + temp[i].MaChuong + '_table">' +
-                            '<thead>' +
-                                '<tr>' +
-                                    '<th class="text-center" style="vertical-align:middle">Bò</th>' +
-                                    '<th class="text-center" style="vertical-align:middle" width="150px">Lượng sữa</th>' +
-                                    '<th class="text-center" style="vertical-align:middle">Cho ăn</th>' +
-                                    '<th class="text-center" style="vertical-align:middle">Vệ sinh</th>' +
-                                    '<th class="text-center" style="vertical-align:middle" width="400px">Tình trạng</th>' +
-                                    '<th></th>' +
-                                '</tr>' +
-                            '</thead>' +
-                            '<tbody>' +
-                            '</tbody>' +
-                        '</table>';
-
-                    $('#accordion').append(
-                        '<div class="card">' +
-                            '<div class="card-header" role="tab" id="' + name + '" onclick="chuongtrai(' + i + ')">' +
-                                '<a data-toggle="collapse" data-parent="#accordion" href="#' + temp[i].MaChuong + '" aria-expanded="false" aria-controls="' + temp[i].MaChuong + '">' +
-                                    '<h5 class="mb-0">' +
-                                        name + '<i class="fa fa-angle-down rotate-icon"></i>' +
-                                    '</h5>' +
-                                '</a>' +
-                            '</div>' +
-                            '<div id="' + temp[i].MaChuong + '" class="collapse" role="tabpanel" aria-labelledby="' + name + '">' +
-                                '<div class="card-block">' +
-                                td +
-                                '</div>' +
-                            '</div>' +
-                        '</div>');
-                    var predicate = temp[i].MaChuong;
-
-                    callAjax('post', { Token: Cookies.get('token'), Predicates: [predicate] }, "hcm", "management", "Bo/getAllOfBarn", function (data3, index) {
-                        console.log(index);
-                        for (var k = 0; k < data3.Data.length; k++) {
-                            console.log(temp);
-                            //console.log(data.Data[k].machuong);
-                            //console.log('#' + data.Data[k].machuong + '_table');
-                            $('#' + data3.Data[0].machuong + '_table').append(
-                                '<tr>' +
-                                    '<td align="center" valign="middle">' + data3.Data[k].mabo + '</td>' +
-                                    '<td align="center" valign="middle"><input id="thetich" type="number" min="0" step="1" /></td>' +
-                                    '<td align="center" valign="middle"><div class="form-group"><input type="checkbox" id="' + data3.Data[k].mabo + '_choan"/><label for="' + data3.Data[k].mabo + '_choan"></label></div></td>' +
-                                    '<td align="center" valign="middle"><div class="form-group"><input type="checkbox" id="' + data3.Data[k].mabo + '_vesinh"/><label for="' + data3.Data[k].mabo + '_vesinh"></label></div></td>' +
-                                    '<td align="center" valign="middle"><input id="tinhtrang" type="text"/></td>' +
-                                    '<td align="center" valign="middle">@*<span onclick="savechamsoc(' + data3.Data[k].mabo + ',' + temp[i].MaPhanCong + ')"><i class="fa fa-save" aria-hidden="true"></i></span>*@</td>' +
-                                '</tr>');
-                        }
-                    }, i);
-                }
+                });
             });
         });
 
-        //callAjax('post',{ Token: Cookies.get("token"), Data: { MaNV: "NV0001" } }, "hcm", "animal_care", "assignment/getListAssignmentsOfEmployeer", function (data) {
-        
-    });
+        function chuongtrai(mapc) {
+            if (!$('#' + mapc).attr('my-loaded')) {
+                $('#' + mapc).attr('my-loaded', true);
+                callAjax('post', { Token: Cookies.get('token'), Data: { MaPhanCong: mapc } }, Cookies.get("area"), "animal_care", "animalcare/getAll", function (data) {
+                    //if (data.Data) {
+                        console.log(data);
+                        for (var i = 0; i < data.Data.length; i++) {
+                            var code = data.Data[i].MaPhanCong+data.Data[i].MaBo;
+                            document.getElementById('luongsua' + code).value = data.Data[i].LuongSua;
+                            document.getElementById('choan' + code).checked = data.Data[i].DaChoAn;
+                            document.getElementById('vesinh' + code).checked = data.Data[i].DaDonVeSinh;
+                            document.getElementById('tinhtrang' + code).value = data.Data[i].TinhTrangCongViec;
+                            //document.getElementById('hidden' + code).hidden = "hidden";
+                            $('#hidden' + code).removeAttr('hidden');
+                        }
+                    //}
+                });
+            }
+        }
 
-    function savechamsoc(mabo, mapc) {
-        alert(mabo + '-' + mapc);
-    }
-    function chuongtrai(i) {
-        alert(i);
-    }
+        function spanClick(code, mapc) {
+            var mabo = document.getElementById('idbo' + code).innerHTML;
+            var luongsua = document.getElementById('luongsua' + code).value;
+            if (!luongsua) {
+                luongsua = 0;
+            }
+            var choan = document.getElementById('choan' + code).checked;
+            var vesinh = document.getElementById('vesinh' + code).checked;
+            console.log(choan);
+            console.log(vesinh);
+            var tinhtrang = document.getElementById('tinhtrang' + code).value;
+            if (!tinhtrang) {
+                tinhtrang = "Tốt";
+            }
+
+            callAjax('post', {
+                Token: Cookies.get("token"), Data: {
+                    MaBo: mabo,
+                    TinhTrangCongViec: tinhtrang,
+                    LuongSua: luongsua,
+                    DaChoAn: choan,
+                    DaDonVeSinh: vesinh,
+                    MaPhanCong: mapc
+                }
+            }, Cookies.get("area"), "animal_care", "animalcare/add", function (data) {
+                if (!data.Data) {
+                    for (var i = 0; i < data.Errors.length; i++) {
+                        toastr["error"](data.Errors[i]);
+                    }
+
+                }
+                else {
+                    toastr["success"](data.Data);
+                }
+            });
+        }
     </script>
 }
 
-<h2>Quản lý Phân Công</h2>
+<h2>Công việc </h2>
 <div id="controller">
-
 </div>
-<p>
-    <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
-        
-    </div>
+<p id="congviec">
 </p>
-<div class="collapse" id="collapseExample">
-    <div class="card card-block">
-        <table class="table table-striped table-bordered table-hover" id="dataTables">
-            <thead>
-                <tr>
-                    <th class="text-center" style="vertical-align:middle">Bò</th>
-                    <th class="text-center" style="vertical-align:middle" width="100px">Lượng sữa</th>
-                    <th class="text-center" style="vertical-align:middle">Cho ăn</th>
-                    <th class="text-center" style="vertical-align:middle">Vệ sinh</th>
-                    <th class="text-center" style="vertical-align:middle" width="400px">Tình trạng</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <!---->
-            </tbody>
-        </table>
-    </div>
-</div>
+<form id="form">
+    <p>
+        <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+
+        </div>
+    </p>
+</form>
+

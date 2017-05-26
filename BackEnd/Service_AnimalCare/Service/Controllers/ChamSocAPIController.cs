@@ -30,15 +30,33 @@ namespace Service.Controllers
                     return Request.CreateResponse(HttpStatusCode.OK, response);
                 else
                 {
-                    if (ChamSocRepository.Insert(request.Data) < 0)
+                    ChamSoc cs = ChamSocRepository.IsExistsChamSoc(request.Data);
+                    if (cs!=null)
                     {
-                        response.Errors.Add("Lỗi hệ thống");
-                        response.IsError = true;
+                        request.Data.MaChamSoc = cs.MaChamSoc;
+                        if (ChamSocRepository.Update(request.Data) < 0)
+                        {
+                            response.Errors.Add("Lỗi hệ thống");
+                            response.IsError = true;
+                        }
+                        else
+                        {
+                            response.Data = "Sửa thành công!";
+                        }
                     }
                     else
                     {
-                        response.Data = "Thêm thành công!";
+                        if (ChamSocRepository.Insert(request.Data) < 0)
+                        {
+                            response.Errors.Add("Lỗi hệ thống");
+                            response.IsError = true;
+                        }
+                        else
+                        {
+                            response.Data = "Thêm thành công!";
+                        }
                     }
+                    
                 }
             }
 
@@ -72,5 +90,24 @@ namespace Service.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
+        //GetListChamSocFromPhanCong
+        [HttpPost]
+        [Route("getAll")]
+        public HttpResponseMessage getAll([FromBody] PhanCongRequest request)
+        {
+            var response = new ChamSocResponse();
+            if (BusinessHandler.TokenBUS.tokenCheck(request, response, 1))
+            {
+                var result = ChamSocRepository.GetListChamSocFromPhanCong(request.Data);
+                if (result == null)
+                {
+                    response.Errors.Add("Lỗi hệ thống");
+                    response.IsError = true;
+                }
+                else
+                    response.Data = result;
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, response);
+        }
     }
 }

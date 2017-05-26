@@ -109,6 +109,25 @@ public class BoAPIs {
     }
     
     @POST
+    @Path("getAllForLoad")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public String getAllForLoad(String json){
+        Gson gson = new Gson();
+        SelectRequest request = gson.fromJson(json, SelectRequest.class);
+        SelectResponse response = new SelectResponse();
+        if (BusinessHandler.TokenBUS.tokenCheck(request, response, 1)){
+            try{
+                response.Data = BoAdapter.getAllOfBarn(request.Predicates[0]);
+            }catch(Exception ex){
+                response.Errors.add("Lỗi hệ thống.");
+                response.IsError = true;
+            }
+        }
+        return gson.toJson(response);
+    }
+    
+    @POST
     @Path("add")
     @Produces("application/json")
     @Consumes("application/json")
