@@ -73,7 +73,7 @@ public class NhanVienAPIs {
         TokenData token = BusinessHandler.TokenBUS.tokenData(request, response, 2);
         if (token != null){
             try {
-                response.Data = NhanVienAdapter.getAll(NhanVienAdapter.getSingle(token.UserId).getMachinhanh());;
+                response.Data = NhanVienAdapter.getAll(NhanVienAdapter.getSingle(token.UserId).getMachinhanh());
             } catch (Exception ex) {
                 response.Errors.add("Lỗi hệ thống.");
                 response.IsError = true;

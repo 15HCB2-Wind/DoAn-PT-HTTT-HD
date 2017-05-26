@@ -12,7 +12,7 @@
             temp.innerHTML = "Phân Công: " + QueryString['maphancong'];
             var tennv = document.getElementById('tennv');
             tennv.innerHTML = QueryString['hoten'];
-            callAjax('post', { Data: { maphancong: "'" + QueryString['maphancong'] + "'" } }, "hcm", "animal_care", "assignment/getSingleAssignment", function (data) {
+            callAjax('post', { Data: { maphancong: "'" + QueryString['maphancong'] + "'" } }, Cookies.get('area'), "animal_care", "assignment/getSingleAssignment", function (data) {
                 //ngày trong tuần
                 var days = data.Data.NgayTrongTuan.split(',');
                 for (var j = 0; j < days.length; j++) {
@@ -102,7 +102,7 @@
                 MaNV: manv,
                 MaChuong: ct
             };
-            callAjax('post', {Data:data}, "hcm", "animal_care", "Assignment/update", function (data2) {
+            callAjax('post', { Data: data }, Cookies.get('area'), "animal_care", "Assignment/update", function (data2) {
                 if (data2.IsError != null && data2.IsError) {
                     for (var i = 0; i < data2.Errors.length; i++) {
                         toastr["error"](data2.Errors[i]);

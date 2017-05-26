@@ -92,7 +92,7 @@
                     {
                         Token: Cookies.get('token'),
                     },
-                    Cookies.get('area'), 'management', 'ChuongTrai/getAll',
+                    Cookies.get('area'), 'management', 'ChuongTrai/getAllAvailables',
                     function (data) {
                         if (data.IsError) {
                             toastr["error"](data.Errors[0]);

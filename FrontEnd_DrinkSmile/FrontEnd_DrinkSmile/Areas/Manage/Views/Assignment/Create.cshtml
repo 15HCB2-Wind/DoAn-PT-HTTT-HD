@@ -9,16 +9,26 @@
         var manv;
         var machuong;
         $(document).ready(function () {
-            callAjax('post', { MaCN: "CN0001", MaPQ: "PQ0001" }, "hcm", "management", "NhanVien/getAll", function (data) {
+            callAjax('post', { Token: Cookies.get('token') }, Cookies.get('area'), "management", "NhanVien/getAll", function (data) {
                 listnv = data.Data;
-                for (var i = 0; i < data.Data.length; i++) {
-                    $("#dropdownNV").append('<a class="dropdown-item" onclick="nhanvienclick(' + i + ')">' + data.Data[i].hoten + '</a>');
+                if (listnv) {
+                    for (var i = 0; i < data.Data.length; i++) {
+                        if (QueryString['id'] && QueryString['id'] == data.Data[i].manhanvien)
+                            $('#btnNV').html(data.Data[i].hoten);
+                        $("#dropdownNV").append('<a class="dropdown-item" onclick="nhanvienclick(' + i + ')">' + data.Data[i].hoten + '</a>');
+                    }
+                } else {
+                    toastr['error'](data.Errors[0]);
                 }
             });
-            callAjax('post', { Token: Cookies.get('token') }, "hcm", "management", "ChuongTrai/getAll", function (data) {
+            callAjax('post', { Token: Cookies.get('token') }, Cookies.get('area'), "management", "ChuongTrai/getAll", function (data) {
                 listchuong = data.Data;
-                for (var i = 0; i < data.Data.length; i++) {
-                    $("#dropdownCT").append('<a class="dropdown-item" onclick="chuongtraiclick(' + i + ')">' + data.Data[i].tenchuong + '</a>');
+                if (listchuong) {
+                    for (var i = 0; i < data.Data.length; i++) {
+                        $("#dropdownCT").append('<a class="dropdown-item" onclick="chuongtraiclick(' + i + ')">' + data.Data[i].tenchuong + '</a>');
+                    }
+                } else {
+                    toastr['error'](data.Errors[0]);
                 }
             });
         });
@@ -86,7 +96,7 @@
                 MaChuong: machuong
             };
             console.log(data);
-            callAjax('post', { Data: data }, "hcm", "animal_care", "Assignment/add", function (data2) {
+            callAjax('post', { Data: data }, Cookies.get('area'), "animal_care", "Assignment/add", function (data2) {
                 if (data2.IsError != null && data2.IsError) {
                     for (var i = 0; i < data2.Errors.length; i++) {
                         toastr["error"](data2.Errors[i]);

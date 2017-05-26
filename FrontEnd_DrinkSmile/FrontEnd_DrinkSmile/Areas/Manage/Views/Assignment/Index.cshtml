@@ -5,13 +5,14 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
-            callAjax('post', { MaCN: "CN0001", MaPQ: "PQ0001" }, "hcm", "management", "NhanVien/getAll", function (data1) {
-                if (!data1.Data) {
+            callAjax('post', { Token: Cookies.get('token') }, Cookies.get('area'), "management", "NhanVien/getAll", function (data1) {
+                console.log(data1);
+                if (!data1.Data || data1.Data.length <= 0) {
                     $('#form').hide();
                     $('#congviec').text('Không có nhân viên đang làm việc.');
                 } else {
-                    callAjax('post', data1, "hcm", "animal_care", "assignment/getListAssignmentsOfAgency", function (data) {
-                        if (!data.Data) {
+                    callAjax('post', data1, Cookies.get('area'), "animal_care", "assignment/getListAssignmentsOfAgency", function (data) {
+                        if (!data.Data || data.Data.length <= 0) {
                             $('#form').hide();
                             $('#congviec').text('Chưa có phân công nào!');
                         }
