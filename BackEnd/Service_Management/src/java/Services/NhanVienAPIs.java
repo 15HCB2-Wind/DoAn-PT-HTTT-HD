@@ -42,7 +42,7 @@ public class NhanVienAPIs {
     @Produces("application/json")
     @Consumes("application/json")
     public String get(String json) {
-        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+        Gson gson = new GsonBuilder().setDateFormat("dd-MM-yyyy").create();
         SelectStaffRequest request = gson.fromJson(json, SelectStaffRequest.class);
         SelectResponse response = new SelectResponse();
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2)) {

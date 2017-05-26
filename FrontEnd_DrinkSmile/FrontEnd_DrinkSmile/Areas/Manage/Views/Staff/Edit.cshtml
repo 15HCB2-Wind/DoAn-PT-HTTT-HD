@@ -13,7 +13,7 @@
                 <p id="error" class="text-danger text-center"></p>
                 <div class="md-form">
                     <i class="fa fa-id-card-o prefix"></i>
-                    <input id="hoten" class="form-control" type="text" required="required" />
+                    <input id="hoten" class="form-control" type="text" placeholder="" required="required" />
                     <label id="hotenerror" for="hoten">Họ tên</label>
                 </div>
                 <div class="col-xs-12">
@@ -21,7 +21,7 @@
                         <div class="col-sm-6 col-xs-12">
                             <div class="md-form">
                                 <i class="fa fa-calendar prefix"></i>
-                                <input type="text" id="ngaysinh" class="form-control datepicker" name="ngaysinh">
+                                <input type="text" id="ngaysinh" class="form-control datepicker" placeholder="" name="ngaysinh">
                                 <label for="ngaysinh">Ngày sinh</label>
                             </div>
                         </div>
@@ -41,27 +41,53 @@
                 </div>
                 <div class="md-form">
                     <i class="fa fa-map-marker prefix"></i>
-                    <input id="diachi" class="form-control" type="text" />
+                    <input id="diachi" class="form-control" type="text" placeholder="" />
                     <label for="diachi">Địa chỉ</label>
                 </div>
                 <div class="md-form">
                     <i class="fa fa-envelope-o prefix"></i>
-                    <input id="email" class="form-control" type="email" disabled="disabled" />
+                    <input id="email" class="form-control" type="email" placeholder="" disabled="disabled" />
                     <label for="email">Email (tên tài khoản)</label>
                 </div>
                 <div class="md-form">
                     <i class="fa fa-mobile prefix"></i>
-                    <input id="sodt" class="form-control" type="tel" />
+                    <input id="sodt" class="form-control" type="tel" placeholder="" />
                     <label for="sodt">Số điện thoại</label>
                 </div>
+                <div class="md-form">
+                    <i class="fa fa-comment-o prefix"></i>
+                    <input id="tinhtrang" class="form-control" type="text" placeholder="" />
+                    <label for="tinhtrang">Tình trạng</label>
+                </div>
                 <input type="hidden" id="manv" />
+                <input type="hidden" id="daxoa" />
                 @*<input type="hidden" id="macn" />*@
                 @*<input type="hidden" id="mapq" />*@
-                @*<input type="hidden" id="daxoa" />*@
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary">
                         Lưu <i id="loader" class="fa fa-circle-o-notch fa-pulse fa-lg fa-fw"></i>
                     </button>
+
+                    <button id="btnAction" type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalAction"></button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="modalAction" tabindex="-1" role="dialog">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                                    <h4 class="modal-title w-100">Xác nhận</h4>
+                                </div>
+                                <div class="modal-body text-center">
+                                    Bạn thực sự muốn thực hiện?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                                    <button class="btn btn-danger" id="action">Đồng ý</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Thoát</button>
                     <!-- Modal -->
                     <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
@@ -96,35 +122,8 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $("fieldset").hide();
-            $('#loader').hide();
+            $("#loader").hide();
             $("#back").hide();
-
-            $('.datepicker').pickadate({
-                monthsFull: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
-                monthsShort: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
-                weekdaysFull: ['Chủ nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'],
-                weekdaysShort: ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'],
-
-                showMonthsShort: true,
-                showWeekdaysFull: false,
-
-                today: 'Hôm nay',
-                clear: '',
-                close: 'Đóng',
-
-                labelMonthNext: 'Tháng sau',
-                labelMonthPrev: 'Tháng trước',
-                labelMonthSelect: 'Chọn tháng',
-                labelYearSelect: 'Chọn năm',
-
-                firstDay: 1,
-                format: 'dd-mm-yyyy',
-                formatSubmit: 'yyyy-mm-dd',
-                hiddenPrefix: 'prefix_',
-
-                min: new Date(1752, 0, 1),
-                max: new Date(9998, 11, 31)
-            });
 
             callAjax('post', { MaNV: '@ViewBag.MaNV' }, "hcm", "management", "NhanVien/get",
                     function (result) {
@@ -136,8 +135,35 @@
                         else {
                             $("fieldset").show();
                             $("#hoten").val(result.Data.hoten);
+                            //$("#ngaysinh").val(result.Data.ngaysinh);
                             $("#ngaysinh").attr("data-value", result.Data.ngaysinh);
-                            $("input[name=prefix_ngaysinh_submit]").val(result.Data.ngaysinh);
+                            $('.datepicker').pickadate({
+                                monthsFull: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+                                monthsShort: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+                                weekdaysFull: ['Chủ nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'],
+                                weekdaysShort: ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'],
+
+                                showMonthsShort: true,
+                                showWeekdaysFull: false,
+
+                                today: 'Hôm nay',
+                                clear: '',
+                                close: 'Đóng',
+
+                                labelMonthNext: 'Tháng sau',
+                                labelMonthPrev: 'Tháng trước',
+                                labelMonthSelect: 'Chọn tháng',
+                                labelYearSelect: 'Chọn năm',
+
+                                firstDay: 1,
+                                format: 'dd-mm-yyyy',
+                                formatSubmit: 'yyyy-mm-dd',
+                                hiddenPrefix: 'prefix_',
+
+                                min: new Date(1752, 0, 1),
+                                max: new Date(9998, 11, 31)
+                            });
+
                             if (result.Data.gioitinh == "Nam") {
                                 $("#nam").attr("checked", "checked");
                             }
@@ -147,16 +173,25 @@
                             $("#diachi").val(result.Data.diachi);
                             $("#email").val(result.Data.email);
                             $("#sodt").val(result.Data.sodt);
+                            $("#tinhtrang").val(result.Data.tinhtrang);
 
                             $("#manv").val(result.Data.manhanvien);
+                            $("#daxoa").val(result.Data.daxoa);
                             //$("#macn").val(result.Data.machinhanh);
                             //$("#mapq").val(result.Data.maphanquyen);
-                            //$("#daxoa").val(result.Data.daxoa);
+
+
+                            if (result.Data.daxoa == false) {
+                                $("#btnAction").text("Xóa");
+                            }
+                            else {
+                                $("#btnAction").text("Khôi phục");
+                            }
                         }
                     }
                 )
 
-            $('#form_editstaff').submit(function (e) {
+            $("#form_editstaff").submit(function (e) {
                 e.preventDefault();
 
                 var ngaysinh = $("input[name=prefix_ngaysinh_submit]").val();
@@ -168,6 +203,9 @@
                 var sodt = $("#sodt").val();
                 if (sodt == "") { sodt = null; }
 
+                var tinhtrang = $("#tinhtrang").val();
+                if (tinhtrang == "") { tinhtrang = null; }
+
                 callAjax('post', {
                     Data: {
                         hoten: $("#hoten").val(),
@@ -176,6 +214,7 @@
                         diachi: diachi,
                         //email: $("#email").val(),
                         sodt: sodt,
+                        tinhtrang: tinhtrang,
                         manhanvien: $("#manv").val(),
                         //machinhanh: $("#macn").val(),
                         //maphanquyen: $("#mapq").val(),
@@ -199,6 +238,30 @@
                         }
                     }
                 )
+            });
+
+            function actionForStaff(str) {
+                callAjax('post', { MaNV: $("#manv").val() }, "hcm", "management", "NhanVien/" + str,
+                    function (result) {
+                        if (result.IsError) {
+                            if (result.Errors.length > 0) {
+                                toastr["error"](result.Errors[0]);
+                            }
+                        }
+                        else {
+                            location.href = "/Manage/Staff/Index";
+                        }
+                    }
+                )
+            };
+
+            $("#action").click(function () {
+                if ($("#daxoa").val() == false) {
+                    actionForStaff("delete");
+                }
+                else {
+                    actionForStaff("recover");
+                }
             });
         });
     </script>
