@@ -34,7 +34,7 @@ public class ChuongTraiAdapter {
     }
     
     public static int updateNumber(Object id, int value) {
-        return HibernateUtil.execute("update Chuongtrai set dangchua = (dangchua + :p0) where machuong = :p0", new Object[]{id, value});
+        return HibernateUtil.execute("update Chuongtrai set dangchua = (dangchua + :p1) where machuong = :p0", new Object[]{id, value});
     }
 
     public static int delete(Object id) {
