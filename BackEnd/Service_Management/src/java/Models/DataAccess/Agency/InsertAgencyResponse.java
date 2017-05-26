@@ -14,8 +14,10 @@ import java.util.ArrayList;
  */
 public class InsertAgencyResponse extends InsertResponse {
     public ArrayList<String> NameErrors;
+      public ArrayList<String> ManagerErrors;
     
     public InsertAgencyResponse(){
         NameErrors = new ArrayList<>();
+        ManagerErrors = new ArrayList<>();
     }
 }

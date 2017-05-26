@@ -14,8 +14,9 @@ import java.util.ArrayList;
  */
 public class UpdateAgencyResponse extends UpdateResponse {
         public ArrayList<String> NameErrors;
-    
+      public ArrayList<String> ManagerErrors;
     public UpdateAgencyResponse(){
         NameErrors = new ArrayList<>();
+          ManagerErrors = new ArrayList<>();
     }
 }

@@ -57,6 +57,26 @@ public class ChiNhanhAPIs {
         }
         return gson.toJson(response);
     }
+    @POST
+    @Path("getSingle")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public String getSingle(String json){
+        Gson gson = new Gson();
+        SelectRequest request = gson.fromJson(json, SelectRequest.class);
+        SelectResponse response = new SelectResponse();
+        if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)){
+            if (true){
+                try{
+                    response.Data = ChiNhanhAdapter.getSingle(request.Predicates[0]);
+                }catch(Exception ex){
+                    response.Errors.add("Lỗi hệ thống.");
+                    response.IsError = true;
+                }
+            }
+        }
+        return gson.toJson(response);
+    }
     
     @POST
     @Path("add")
@@ -69,8 +89,7 @@ public class ChiNhanhAPIs {
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)){
             if (ChiNhanhBUS.insertValidate(request, response)){
                 try{
-                    if (ChiNhanhAdapter.add(request.Data)){
-                        //NhanVienBUS.sync(1, request.Data);
+                    if (ChiNhanhAdapter.add(request.Data)){ 
                         response.Data = "Thêm thành công.";
                     }else{
                         response.Errors.add("Thêm thất bại.");

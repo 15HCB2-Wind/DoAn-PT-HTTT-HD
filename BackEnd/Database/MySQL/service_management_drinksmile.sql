@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 09, 2017 at 05:35 AM
+-- Generation Time: May 25, 2017 at 01:22 PM
 -- Server version: 5.7.14
 -- PHP Version: 5.6.25
 
@@ -42,9 +42,11 @@ CREATE TABLE `bo` (
 --
 
 INSERT INTO `bo` (`mabo`, `machip`, `mausac`, `coditat`, `nhandang`, `tinhtrang`, `daxoa`, `machuong`) VALUES
-('Bo001', 'Chip001', 'Vàng', b'0', 'Nó màu vàng', 'Tốt', b'0', 'CT001'),
-('Bo002', 'Chip002', 'Đỏ', b'0', 'Nó màu đỏ', 'Tốt', b'0', 'CT001'),
-('Bo003', 'Chip003', 'Nâu', b'0', 'Nó màu nâu', 'Tốt', b'0', 'CT002');
+('Bo001', 'Chip001', 'Vàng', b'0', 'Nó màu vàng', 'Đang ốm.', b'0', 'CT003'),
+('Bo002', 'Chip002', 'Đỏ', b'1', 'Nó màu đỏ', 'Khỏe mạnh.', b'0', 'CT001'),
+('Bo003', 'Chip003', 'Nâu', b'1', 'Nó màu nâu', '- - - - -', b'1', 'CT002'),
+('COW00004', 'XR-CP01', 'Xanh đen', b'0', 'Hay đi lò cò.', 'Khỏe mạnh.', b'0', 'CT001'),
+('COW00005', 'LKa01', 'Xanh nâu đen', b'0', '', 'Khỏe mạnh.', b'0', 'CT002');
 
 -- --------------------------------------------------------
 
@@ -110,6 +112,15 @@ CREATE TABLE `khosua` (
   `machinhanh` varchar(10) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `khosua`
+--
+
+INSERT INTO `khosua` (`makho`, `tenkho`, `succhua`, `luongsuaco`, `diachi`, `daxoa`, `tinhtrang`, `machinhanh`) VALUES
+('KS00001', 'Kho thường', 10000, 100, 'xxx yyy', b'0', 'Đang được sử dụng.', 'CN001'),
+('KS00002', 'Kho lạnh', 4000, 0, 'asd qqq', b'0', 'Đang được sữa chửa.', 'CN001'),
+('KS00003', 'Kho lạnh 2', 5000, 0, 'qwe qwe zzz', b'1', 'Ngưng hoạt động.', 'CN001');
+
 -- --------------------------------------------------------
 
 --
@@ -135,7 +146,7 @@ CREATE TABLE `nhanvien` (
   `gioitinh` varchar(5) DEFAULT NULL,
   `ngaysinh` date DEFAULT NULL,
   `sodt` varchar(15) DEFAULT NULL,
-  `diachi` varchar(10) DEFAULT NULL,
+  `diachi` varchar(100) DEFAULT NULL,
   `email` varchar(50) DEFAULT NULL,
   `tentaikhoan` varchar(50) DEFAULT NULL,
   `matkhau` varchar(50) DEFAULT NULL,
@@ -144,6 +155,15 @@ CREATE TABLE `nhanvien` (
   `machinhanh` varchar(10) DEFAULT NULL,
   `maphanquyen` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `nhanvien`
+--
+
+INSERT INTO `nhanvien` (`manhanvien`, `hoten`, `gioitinh`, `ngaysinh`, `sodt`, `diachi`, `email`, `tentaikhoan`, `matkhau`, `tinhtrang`, `daxoa`, `machinhanh`, `maphanquyen`) VALUES
+('testGD', 'Giám đốc', 'Nam', NULL, NULL, NULL, 'c@gmail.com', 'giamdoc', 'WVs&$^OEWTMO$IFR&$OIFO#$JFK4MRFI*$UT', 'Đang làm.', b'0', 'CN001', 'PQ003'),
+('testNV', 'Nhân viên', 'Nam', NULL, NULL, NULL, 'a@gmail.com', 'nhanvien', 'WVs&$^OEWTMO$IFR&$OIFO#$JFK4MRFI*$UT', 'Đang làm.', b'0', 'CN001', 'PQ001'),
+('testQL', 'Quản lý', 'Nam', NULL, NULL, NULL, 'b@gmail.com', 'quanly', 'WVs&$^OEWTMO$IFR&$OIFO#$JFK4MRFI*$UT', 'Đang làm.', b'0', 'CN001', 'PQ002');
 
 -- --------------------------------------------------------
 

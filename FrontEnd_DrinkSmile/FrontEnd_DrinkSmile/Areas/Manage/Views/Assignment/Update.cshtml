@@ -7,22 +7,12 @@
         var listchuong;
         var manv;
         $(document).ready(function () {
-            window.params = function () {
-                var params = {};
-                var url = window.location.href;
-                var tempUrl = url.split('%20').join(' ');
-                var param_array = tempUrl.split('?')[1].split('&');
-                for (var i in param_array) {
-                    x = param_array[i].split('=');
-                    params[x[0]] = x[1];
-                }
-                return params;
-            }();
+            
             var temp = document.getElementById('maphancong');
-            temp.innerHTML = "Phân Công: " + window.params.maphancong;
+            temp.innerHTML = "Phân Công: " + QueryString['maphancong'];
             var tennv = document.getElementById('tennv');
-            tennv.innerHTML = params.hoten;
-            callAjax('post', { Data: { maphancong: "'" + window.params.maphancong + "'" } }, "hcm", "animal_care", "assignment/getSingleAssignment", function (data) {
+            tennv.innerHTML = QueryString['hoten'];
+            callAjax('post', { Data: { maphancong: "'" + QueryString['maphancong'] + "'" } }, "hcm", "animal_care", "assignment/getSingleAssignment", function (data) {
                 //ngày trong tuần
                 var days = data.Data.NgayTrongTuan.split(',');
                 for (var j = 0; j < days.length; j++) {
@@ -37,13 +27,10 @@
                 var btnCT = document.getElementById('btnCT');
                 btnCT.innerHTML = data.Data.TenChuong;
                 manv = data.Data.MaNV;
-                callAjax('post', { MaCN: "CN0001" }, "hcm", "management", "ChuongTrai/getAll", function (data2) {
-                    console.log(data2);
+                callAjax('post', { Token: Cookies.get('token') }, Cookies.get('area'), "management", "ChuongTrai/getAll", function (data2) {
                     listchuong = data2.Data;
                     for (var i = 0; i < data2.Data.length; i++) {
                         $("#dropdown").append('<a class="dropdown-item" onclick="chuongtraiclick(' + i + ')">' + data2.Data[i].tenchuong + '</a>');
-                    }
-                    for (var i = 0; i < data2.Data.length; i++) {
                         if (data.Data.MaChuong == data2.Data[i].machuong) {
                             btnCT.innerHTML = data2.Data[i].tenchuong;
                         }
@@ -82,12 +69,7 @@
 
         function saveclick() {
             var days = "";
-            var ct = "";
-            for (var i = 0; i < listchuong.length; i++) {
-                if (document.getElementById('btnCT').innerHTML == listchuong[i].tenchuong) {
-                    ct=listchuong[i].machuong;
-                }
-            }
+            var ct = $('#btnCT').attr('my-data');
             if (document.getElementById('checkbox2').checked) {
                 days += "2,";
             }
@@ -113,7 +95,7 @@
                 days = days.substring(0, days.length - 1)
             }
             var data = {
-                MaPhanCong: window.params.maphancong,
+                MaPhanCong: QueryString['maphancong'],
                 NgayBatDau: document.getElementById('ngaybatdau').value,
                 NgayKetThuc: document.getElementById('ngayketthuc').value,
                 NgayTrongTuan: days,
@@ -138,6 +120,7 @@
         function chuongtraiclick(data) {
             var btnCT = document.getElementById('btnCT');
             btnCT.innerHTML = listchuong[data].tenchuong;
+            $('#btnCT').attr('my-data', listchuong[data].machuong);
         };
     </script>
 

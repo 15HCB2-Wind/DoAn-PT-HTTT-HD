@@ -41,11 +41,11 @@ Contributor(s):
 -->
 <hibernate-reverse-engineering>
   <schema-selection match-catalog="service_management_drinksmile"/>
-  <table-filter match-name="phanquyen"/>
-  <table-filter match-name="chinhanh"/>
   <table-filter match-name="nhacungcap"/>
   <table-filter match-name="khosua"/>
-  <table-filter match-name="bo"/>
+  <table-filter match-name="chinhanh"/>
+  <table-filter match-name="phanquyen"/>
   <table-filter match-name="nhanvien"/>
   <table-filter match-name="chuongtrai"/>
+  <table-filter match-name="bo"/>
 </hibernate-reverse-engineering>

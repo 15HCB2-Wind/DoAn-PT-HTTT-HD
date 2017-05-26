@@ -1,16 +1,20 @@
-﻿function callAjax(type, data, areaId, whichService, url, successCallback) {
+﻿var AjaxTempData = {};
+function callAjax(type, data, areaId, whichService, url, successCallback, tempData) {
+    var u = getAPI(areaId, whichService, url)
     $.ajax({
         headers: { 'Content-Type': 'application/json' },
         type: type,
         dataType: 'json',
         data: JSON.stringify(data),
-        url: getAPI(areaId, whichService, url),
+        url: u,
         beforeSend: function () {
+            AjaxTempData[u] = tempData;
             $('#loader').show();
             $("#error").hide();
             $("fieldset").attr("disabled", "true");
         },
         complete: function () {
+            AjaxTempData[u] = null;
             $('#loader').hide();
             $("fieldset").removeAttr("disabled");
         },
@@ -23,7 +27,7 @@
                 location.href = "/Account/Login?ReturnUrl=" + location.pathname;
             }
             else {
-                successCallback(data);
+                successCallback(data, AjaxTempData[u]);
             }
         },
         error: function () {

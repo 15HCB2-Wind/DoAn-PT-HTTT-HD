@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,6 +11,15 @@ namespace FrontEnd_DrinkSmile.Areas.Manage.Controllers
         // GET: Manage/Provider
         public ActionResult Index()
         {
+            return View();
+        }
+        public ActionResult Create()
+        {
+            return View();
+        }
+        public ActionResult Update(string getmanhacungcap)
+        {
+            ViewBag.getmanhacungcap = getmanhacungcap;
             return View();
         }
     }

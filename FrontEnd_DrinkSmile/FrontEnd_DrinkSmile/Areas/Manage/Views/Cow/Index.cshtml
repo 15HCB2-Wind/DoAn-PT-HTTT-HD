@@ -108,7 +108,7 @@
                                         if (item.daxoa) {
                                             trType = '<tr class="table-danger">';
                                         } else {
-                                            trType = '<tr>';
+                                            trType = '<tr class="table-success">';
                                         }
 
                                         var td4;
@@ -120,11 +120,14 @@
                                         }
 
                                         var deleteButton;
+                                        var editButton;
                                         if (item.daxoa) {
                                             deleteButton = '<a class="red-text" onclick="recoverCow(' + j + ',' + i + ')"><i class="fa fa-refresh" aria-hidden="true"></i></a>';
+                                            editButton = '';
                                         }
                                         else {
                                             deleteButton = '<a class="red-text" onclick="deleteCow(' + j + ',' + i + ')"><i class="fa fa-times"></i></a>';
+                                            editButton = '<a class="teal-text" href="/Manage/Cow/Edit?id=' + item.mabo + '&chip=' + item.machip + '&color=' + item.mausac + '&hasD=' + item.coditat + '&spe=' + item.nhandang + '&barn=' + item.machuong + '&sta=' + item.tinhtrang + '"><i class="fa fa-pencil"></i></a>';
                                         }
 
                                         $('#tbCows').append(
@@ -135,7 +138,7 @@
                                                 td4 +
                                                 '<td>' + item.tinhtrang + '</td>' +
                                                 '<td>' +
-                                                    '<a class="teal-text" href="/Manage/Cow/Edit?id=' + item.mabo + '&chip=' + item.machip + '&color=' + item.mausac + '&hasD=' + item.coditat + '&spe=' + item.nhandang + '&barn=' + item.machuong + '&sta=' + item.tinhtrang + '"><i class="fa fa-pencil"></i></a>' +
+                                                    editButton +
                                                     deleteButton +
                                                 '</td>' +
                                             '</tr>'

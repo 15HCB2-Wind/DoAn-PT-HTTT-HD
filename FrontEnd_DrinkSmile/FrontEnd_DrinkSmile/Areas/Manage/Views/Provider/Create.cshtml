@@ -1,0 +1,101 @@
+﻿@{
+    ViewBag.Title = "Thêm Nhà Cung Cấp";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="offset-lg-3 col-lg-6 offset-md-2 col-md-8 offset-sm-1 col-sm-10 col-xs-12">
+        <fieldset class="card-block">
+            <form id="form_create" method="post" role="form">
+                <div class="text-center">
+                    <h3><i class="fa fa-user-plus"></i> Thêm Nhà Cung Cấp</h3>
+                    <hr class="mt-2 mb-2">
+                </div>
+                <p id="error" class="text-danger text-center"></p>
+                <div class="md-form">
+                    <i class="fa fa-id-card-o prefix"></i>
+                    <input id="ten" class="form-control" type="text" required="required" />
+                    <label id="tenerror" for="ten">Tên</label>
+                </div>
+                <div class="md-form">
+                    <i class="fa fa-map-marker prefix"></i>
+                    <input id="diachi" class="form-control" type="text" />
+                    <label for="diachi">Địa chỉ</label>
+                </div>
+                <div class="md-form">
+                    <i class="fa fa-rss prefix"></i>
+                    <input id="tinhtrang" class="form-control" type="tel" />
+                    <label for="tinhtrang">Tình Trạng</label>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">
+                        Lưu <i id="loader" class="fa fa-circle-o-notch fa-pulse fa-lg fa-fw"></i>
+                    </button>
+                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Thoát</button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                                    <h4 class="modal-title w-100">Thoát</h4>
+                                </div>
+                                <div class="modal-body text-center">
+                                    Bạn thực sự muốn thoát?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                                    <a class="btn btn-danger" href="@Url.Action("Index")">Đồng ý</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </fieldset>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#loader').hide();
+
+            $('#form_create').submit(function (e) {
+                e.preventDefault();
+
+                var diachi = $("#diachi").val();
+                if (diachi == "") { diachi = null; }
+
+                var tinhtrang = $("#tinhtrang").val();
+                if (tinhtrang == "") { tinhtrang = null; }
+
+                callAjax('post', {
+                    Data: {
+                        ten: $("#ten").val(),
+                        diachi: diachi,
+                        tinhtrang: tinhtrang
+                    }
+                }, "hcm", "management", "NhaCungCap/add",
+                    function (result) {
+                        if (result.IsError) {
+                            if (result.NameErrors.length > 0) {
+                                $("#ten").addClass("validate invalid");
+                                $("#tenerror").addClass("active");
+                                $("#tenerror").attr("data-error", result.NameErrors[0]);
+                            }
+                            if (result.Errors.length > 0) {
+                                toastr["error"](result.Errors[0]);
+                            }
+                        }
+                        else {
+                            Data = null;
+                            toastr["success"](result.Data);
+                            $('#form_create')[0].reset();
+                        }
+                    }
+                )
+            });
+        });
+    </script>
+}

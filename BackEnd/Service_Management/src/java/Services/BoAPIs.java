@@ -117,7 +117,6 @@ public class BoAPIs {
         CowRequest request = gson.fromJson(json, CowRequest.class);
         CowResponse response = new CowResponse();
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2)){
-            request.Data.setMachuong(request.BarnId);
             if (BoBUS.insertUpdateValidate(request, response)){
                 try{
                     if (BoAdapter.add(request.Data)){

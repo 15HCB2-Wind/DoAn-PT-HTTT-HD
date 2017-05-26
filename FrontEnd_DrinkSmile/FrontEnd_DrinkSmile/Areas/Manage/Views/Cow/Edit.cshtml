@@ -34,11 +34,14 @@
                     <label for="nhandang">Nhận dạng</label>
                 </div>
                 <br />
-                <div class="md-form form-sm">
-                    <i class="fa fa-pencil-square-o prefix"></i>
-                    <select id="chuongtrai" class="mdb-select danh-muc-chuongtrai"></select>
-                    <label>Chuồng</label>
+                <div class="btn-group">
+                    <button id="btnCT" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Chuồng trại</button>
+                    <div class="dropdown-menu" id="chuongtrai">
+                        <!--load data danh sach chuong-->
+                    </div>
                 </div>
+                <br />
+                <br />
                 <br />
                 <div class="md-form form-sm">
                     <i class="fa fa-pencil-square-o prefix"></i>
@@ -46,7 +49,6 @@
                         <option>Khỏe mạnh.</option>
                         <option>Đang ốm.</option>
                         <option>Vấn đề khác.</option>
-                        <option disabled>- - - - -</option>
                     </select>
                     <label>Tình trạng</label>
                 </div>
@@ -80,9 +82,11 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script>
+        var listchuong;
+
         $(document).ready(function () {
             //init
-            $('.mdb-select').material_select();
+            $('#tinhtrang').material_select();
             
             callAjax('post',
                     {
@@ -97,23 +101,23 @@
                         }
                         else {
                             if (data.Data) {
-                                for (var i = 0; i < data.Data; i++) {
-                                    $('#chuongbo').append(
-                                        '<option value="' + data.Data[i].machuong + '">' + data.Data[i].tenchuong + '</option>'
-                                        );
+                                listchuong = data.Data;
+                                for (var i = 0; i < listchuong.length; i++) {
+                                    var row = listchuong[i].tenchuong + '(' + listchuong[i].machuong + ')';
+                                    $("#chuongtrai").append('<a class="dropdown-item" onclick="chuongtrai_click(' + i + ')">' + row + '</a>');
+                                    if (listchuong[i].machuong == QueryString['barn']) {
+                                        $('#btnCT').html(row);
+                                        $('#btnCT').attr('my-data', listchuong[i].machuong);
+                                    }
                                 }
-                                $('.danh-muc-chuongtrai input[type=text]').val(QueryString['barn']);
-                                $('#chuongtrai').val(QueryString['barn']);
                             }
                         }
                     });
 
             $('#machip').val(QueryString['chip']);
             $('#mausac').val(QueryString['color']);
-            $('#coditat').val(QueryString['hasD']);
+            document.getElementById('coditat').checked = QueryString['hasD'] == 'true';
             $('#nhandang').val(QueryString['spe']);
-            //$('.danh-muc-chuongtrai input[type=text]').val(QueryString['barn']);
-            //$('#chuongtrai').val(QueryString['barn']);
             $('.danh-muc-tinhtrang input[type=text]').val(QueryString['sta']);
             $('#tinhtrang').val(QueryString['sta']);
             //=====
@@ -124,7 +128,13 @@
                     {
                         Token: Cookies.get('token'),
                         Data: {
-                            mabo: QueryString['id']
+                            mabo: QueryString['id'],
+                            machip: $('#machip').val(),
+                            mausac: $('#mausac').val(),
+                            coditat: document.getElementById('coditat').checked,
+                            nhandang: $('#nhandang').val(),
+                            machuong: $('#btnCT').attr('my-data'),
+                            tinhtrang: $('#tinhtrang').val()
                         }
                     },
                     Cookies.get('area'), 'management', 'Bo/update',
@@ -136,10 +146,15 @@
                         }
                         else {
                             toastr["success"](data.Data);
-                            $('#form_action')[0].reset();
                         }
                     });
             });
         });
+
+        function chuongtrai_click(index) {
+            var row = listchuong[index].tenchuong + '(' + listchuong[index].machuong + ')';
+            $('#btnCT').html(row);
+            $('#btnCT').attr('my-data', listchuong[index].machuong);
+        };
     </script>
 }

@@ -14,5 +14,4 @@ import pojos.Bo;
  */
 public class CowRequest extends BodyRequest {
     public Bo Data;
-    public String BarnId;
 }

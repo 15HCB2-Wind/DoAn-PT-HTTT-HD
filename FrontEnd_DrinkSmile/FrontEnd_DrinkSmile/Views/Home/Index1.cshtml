@@ -1,14 +1,19 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Index1";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @section Scripts {
     <script>
-        $(document).ready(function () {
-            callAjax('post', { Data: { MaNV: "NV0001" } }, "hcm", "animal_care", "assignment/getListAssignmentsOfEmployeer", function (data) {
-                console.log(data);
+    $(document).ready(function () {
+        var listchuong;
+        var temp;
+        callAjax('post', { Token: Cookies.get('token') }, "hcm", "management", "ChuongTrai/getAllForLoad", function (data) {
+            listchuong = data.Data;
+            console.log(listchuong);
+            callAjax('post', { Token: Cookies.get('token'), Data: { MaNV: "NV0001" } }, "hcm", "animal_care", "assignment/getListAssignmentsOfEmployeer", function (data) {
+                var index = new Array();
+                temp = new Array();
                 for (var i = 0; i < data.Data.length; i++) {
                     var str = data.Data[i].NgayTrongTuan;
                     var listngay = str.split(',');
@@ -39,35 +44,90 @@
                             tempngay.push(0);
                         }
                     }
+
                     for (var j = 0; j < tempngay.length; j++) {
-                        if (tempngay[j]==ngay) {
+                        if (tempngay[j] == ngay) {
                             //alert(data.Data[i].MaPhanCong);
-                            $('#dataTables').append(
-                            '<tr>' +
-                            '<td align="center" valign="middle">Bò Temp</td>' +
-                            '<td align="center" valign="middle"><input id="thetich" type="number" min="0" step="100" /></td>' +
-                            '<td align="center" valign="middle"><input type="checkbox"/><label for="checkbox5"></label></td>' +
-                            '<td align="center" valign="middle"><input type="checkbox"/><label for="checkbox5"></label></td>' +
-                            '<td align="center" valign="middle"><input id="tinhtrang" type="text"/></td>' +
-                            '</tr>');
+                            index.push(i);
+
                             break;
                         }
                     }
                 }
-                
+                for (var i = 0; i < index.length; i++) {
+                    temp.push(data.Data[index[i]]);
+                }
+                for (var i = 0; i < temp.length; i++) {
+                    var name = "";
+                    for (var j = 0; j < listchuong.length; j++) {
+                        if (temp[i].MaChuong == listchuong[j].machuong) {
+                            name = listchuong[j].tenchuong
+                        }
+                    }
+                    var td =
+                        '<table class="table table-striped table-bordered table-hover" id="' + temp[i].MaChuong + '_table">' +
+                            '<thead>' +
+                                '<tr>' +
+                                    '<th class="text-center" style="vertical-align:middle">Bò</th>' +
+                                    '<th class="text-center" style="vertical-align:middle" width="150px">Lượng sữa</th>' +
+                                    '<th class="text-center" style="vertical-align:middle">Cho ăn</th>' +
+                                    '<th class="text-center" style="vertical-align:middle">Vệ sinh</th>' +
+                                    '<th class="text-center" style="vertical-align:middle" width="400px">Tình trạng</th>' +
+                                    '<th></th>' +
+                                '</tr>' +
+                            '</thead>' +
+                            '<tbody>' +
+                            '</tbody>' +
+                        '</table>';
+
+                    $('#accordion').append(
+                        '<div class="card">' +
+                            '<div class="card-header" role="tab" id="' + name + '" onclick="chuongtrai(' + i + ')">' +
+                                '<a data-toggle="collapse" data-parent="#accordion" href="#' + temp[i].MaChuong + '" aria-expanded="false" aria-controls="' + temp[i].MaChuong + '">' +
+                                    '<h5 class="mb-0">' +
+                                        name + '<i class="fa fa-angle-down rotate-icon"></i>' +
+                                    '</h5>' +
+                                '</a>' +
+                            '</div>' +
+                            '<div id="' + temp[i].MaChuong + '" class="collapse" role="tabpanel" aria-labelledby="' + name + '">' +
+                                '<div class="card-block">' +
+                                td +
+                                '</div>' +
+                            '</div>' +
+                        '</div>');
+                    var predicate = temp[i].MaChuong;
+
+                    callAjax('post', { Token: Cookies.get('token'), Predicates: [predicate] }, "hcm", "management", "Bo/getAllOfBarn", function (data3, index) {
+                        console.log(index);
+                        for (var k = 0; k < data3.Data.length; k++) {
+                            console.log(temp);
+                            //console.log(data.Data[k].machuong);
+                            //console.log('#' + data.Data[k].machuong + '_table');
+                            $('#' + data3.Data[0].machuong + '_table').append(
+                                '<tr>' +
+                                    '<td align="center" valign="middle">' + data3.Data[k].mabo + '</td>' +
+                                    '<td align="center" valign="middle"><input id="thetich" type="number" min="0" step="1" /></td>' +
+                                    '<td align="center" valign="middle"><div class="form-group"><input type="checkbox" id="' + data3.Data[k].mabo + '_choan"/><label for="' + data3.Data[k].mabo + '_choan"></label></div></td>' +
+                                    '<td align="center" valign="middle"><div class="form-group"><input type="checkbox" id="' + data3.Data[k].mabo + '_vesinh"/><label for="' + data3.Data[k].mabo + '_vesinh"></label></div></td>' +
+                                    '<td align="center" valign="middle"><input id="tinhtrang" type="text"/></td>' +
+                                    '<td align="center" valign="middle">@*<span onclick="savechamsoc(' + data3.Data[k].mabo + ',' + temp[i].MaPhanCong + ')"><i class="fa fa-save" aria-hidden="true"></i></span>*@</td>' +
+                                '</tr>');
+                        }
+                    }, i);
+                }
             });
         });
 
-        function btnchuong(data) {
-            //call ajax load danh sach bo
-            //gia su co danh sach bo data
-            var data;
+        //callAjax('post',{ Token: Cookies.get("token"), Data: { MaNV: "NV0001" } }, "hcm", "animal_care", "assignment/getListAssignmentsOfEmployeer", function (data) {
+        
+    });
 
-            
-            
-
-            
-        }
+    function savechamsoc(mabo, mapc) {
+        alert(mabo + '-' + mapc);
+    }
+    function chuongtrai(i) {
+        alert(i);
+    }
     </script>
 }
 
@@ -76,9 +136,9 @@
 
 </div>
 <p>
-    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" onclick="btnchuong(1)">
-        Chuồng:<span>ABCXYZ</span>
-    </button>
+    <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+        
+    </div>
 </p>
 <div class="collapse" id="collapseExample">
     <div class="card card-block">
@@ -86,7 +146,7 @@
             <thead>
                 <tr>
                     <th class="text-center" style="vertical-align:middle">Bò</th>
-                    <th class="text-center" style="vertical-align:middle">Lượng sữa</th>
+                    <th class="text-center" style="vertical-align:middle" width="100px">Lượng sữa</th>
                     <th class="text-center" style="vertical-align:middle">Cho ăn</th>
                     <th class="text-center" style="vertical-align:middle">Vệ sinh</th>
                     <th class="text-center" style="vertical-align:middle" width="400px">Tình trạng</th>

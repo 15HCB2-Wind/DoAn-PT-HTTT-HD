@@ -24,12 +24,20 @@ public class ChiNhanhBUS {
             response.NameErrors.add("Tên Chi Nhánh không được để trống!");
             response.IsError = true;
         }
+        if (request.Data.getQuanly().isEmpty()){
+            response.ManagerErrors.add("Vui lòng chọn nhân viên quản lý");
+            response.IsError = true;
+        }
         return !response.IsError;
     }
     
     public static boolean updateValidate(UpdateAgencyRequest request, UpdateAgencyResponse response){
         if (request.Data.getTenchinhanh().isEmpty()){
             response.NameErrors.add("Tên Chi Nhánh không được để trống!");
+            response.IsError = true;
+        }
+         if (request.Data.getQuanly().isEmpty()){
+            response.ManagerErrors.add("Vui lòng chọn nhân viên quản lý");
             response.IsError = true;
         }
         return !response.IsError;

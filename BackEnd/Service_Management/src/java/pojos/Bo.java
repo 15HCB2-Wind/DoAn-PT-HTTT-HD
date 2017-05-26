@@ -1,5 +1,5 @@
 package pojos;
-// Generated May 9, 2017 7:00:32 PM by Hibernate Tools 4.3.1
+// Generated May 25, 2017 7:26:53 PM by Hibernate Tools 4.3.1
 
 
 
@@ -18,9 +18,7 @@ public class Bo  implements java.io.Serializable {
      private Boolean daxoa;
      private String machuong;
      
-     //=====
      public String tenchuong;
-     //=====
 
     public Bo() {
     }
