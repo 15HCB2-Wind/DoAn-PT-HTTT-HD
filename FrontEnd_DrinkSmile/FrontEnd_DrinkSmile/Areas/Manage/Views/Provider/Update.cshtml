@@ -61,16 +61,22 @@
 
 
         $(document).ready(function () {
-            var manhacungcap = 'NCC00001';
+            var manhacungcap = QueryString['manhacungcap'];
             //load nha cung cap can update
             callAjax('post', { Predicates: [manhacungcap] }, "hcm", "management", "NhaCungCap/getSingle", function (data) {
-
-                var ten = document.getElementById('ten');
-                ten.value = data.Data.ten;
-                var diachi = document.getElementById('diachi');
-                diachi.value = data.Data.diachi;
-                var tinhtrang = document.getElementById('tinhtrang');
-                tinhtrang.value = data.Data.tinhtrang;
+                if (data.Data == null) {
+                    toastr["error"]("Nhà Cung Cấp không tồn tại!");
+                    //alert("Lỗi Hệ Thống");
+                    window.location.href = 'http://localhost:8082/Manage/Provider'
+                }
+                else {
+                    var ten = document.getElementById('ten');
+                    ten.value = data.Data.ten;
+                    var diachi = document.getElementById('diachi');
+                    diachi.value = data.Data.diachi;
+                    var tinhtrang = document.getElementById('tinhtrang');
+                    tinhtrang.value = data.Data.tinhtrang;
+                }
             });
 
             $('#loader').hide();
@@ -80,10 +86,10 @@
                 e.preventDefault();
 
                 var diachi = $("#diachi").val();
-                if (diachi == "") { diachi = null; }
+                if (diachi == "") { diachi = " "; }
 
                 var tinhtrang = $("#tinhtrang").val();
-                if (tinhtrang == "") { tinhtrang = null; }
+                if (tinhtrang == "") { tinhtrang = " "; }
 
                 callAjax('post', {
                     Data: {
@@ -108,6 +114,7 @@
                             Data = null;
                             toastr["success"](result.Data);
                             $('#form_update')[0].reset();
+                            window.location.href = 'http://localhost:8082/Manage/Provider'
                         }
                     }
                 )

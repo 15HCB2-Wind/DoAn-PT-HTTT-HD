@@ -18,12 +18,15 @@
                             "<td>" + data.Data[i].ten + "</td>" +
                             "<td>" + data.Data[i].diachi + "</td>" +
                             "<td>" + data.Data[i].tinhtrang + "</td>" +
-                            "<td><button id= " + data.Data[i].manhacungcap + ">Cập Nhật</button> </td>"
-                             + "</tr>");
+                            '<td align="center" valign="middle"><a href="/Manage/Provider/Update?manhacungcap=' + data.Data[i].manhacungcap + '"><i class="fa fa-edit" aria-hidden="true"></i></a></td>' +
+                            "</tr>");
                     }
                 }
             })
         });
+        function addclick() {
+            window.location.href = 'http://localhost:8082/Manage/Provider/Create'
+        }
     </script>
 }
 <h2>Quản lý Nhà Cung Cấp</h2>
@@ -34,7 +37,7 @@
     <div class="panel-body">
 
         <div id="button_function">
-            <button>Thêm Nhà Cung Cấp</button>
+            <button type="button" class="btn btn-success" onclick="addclick()">Thêm Nhà Cung Cấp</button>
         </div>
 
         <div class="dataTable_wrapper">

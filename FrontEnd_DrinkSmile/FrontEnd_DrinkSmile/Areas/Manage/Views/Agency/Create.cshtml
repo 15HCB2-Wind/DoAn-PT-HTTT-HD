@@ -95,13 +95,13 @@
                 e.preventDefault();
 
                 var diachi = $("#diachi").val();
-                if (diachi == "") { diachi = null; }
+                if (diachi == "") { diachi = " "; }
 
                 var sdt = $("#sdt").val();
-                if (sdt == "") { sdt = null; }
+                if (sdt == "") { sdt = " "; }
 
                 var tinhtrang = $("#tinhtrang").val();
-                if (tinhtrang == "") { tinhtrang = null; }
+                if (tinhtrang == "") { tinhtrang = " "; }
                 var daxoa = false;
                 callAjax('post', {
                     Data: {

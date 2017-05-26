@@ -192,6 +192,10 @@
     <Content Include="Areas\Manage\Views\Cow\Edit.cshtml" />
     <Content Include="Areas\Manage\Views\Cow\Add.cshtml" />
     <Content Include="Areas\Manage\Views\Staff\Edit.cshtml" />
+    <Content Include="Areas\Manage\Views\Provider\Create.cshtml" />
+    <Content Include="Areas\Manage\Views\Provider\Update.cshtml" />
+    <Content Include="Areas\Manage\Views\Agency\Create.cshtml" />
+    <Content Include="Areas\Manage\Views\Agency\Update.cshtml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

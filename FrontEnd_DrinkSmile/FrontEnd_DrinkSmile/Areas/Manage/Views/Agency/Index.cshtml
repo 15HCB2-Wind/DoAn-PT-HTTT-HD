@@ -21,16 +21,15 @@
                             "<td>" + data.Data[i].tinhtrang + "</td>" +
                             "<td>" + data.Data[i].daxoa + "</td>" +
                             "<td>" + data.Data[i].quanly + "</td>" +
-                            "<td><button id= " + data.Data[i].machinhanh + ">Cập Nhật</button> </td>"
-                             + "</tr>");
+                            '<td align="center" valign="middle"><a href="/Manage/Agency/Update?machinhanh=' + data.Data[i].machinhanh + '"><i class="fa fa-edit" aria-hidden="true"></i></a></td>' +
+                            "</tr>");
                     }
                 }
             })
         });
-        function chinhanhclick(data) {
-
-            alert(data);
-        };
+        function addclick() {
+            window.location.href = 'http://localhost:8082/Manage/Agency/Create'
+        }
     </script>
 }
 <h2>Quản lý Chi Nhánh</h2>
@@ -41,7 +40,7 @@
     <div class="panel-body">
 
         <div id="button_function">
-            <p>@Html.ActionLink("Thêm Chi Nhánh", "Create")</p>
+            <button type="button" class="btn btn-success" onclick="addclick()">Thêm Chi Nhánh</button>
         </div>
 
         <div class="dataTable_wrapper">
