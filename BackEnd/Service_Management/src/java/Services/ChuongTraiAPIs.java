@@ -81,6 +81,27 @@ public class ChuongTraiAPIs {
         }
         return gson.toJson(response);
     }
+    
+    @POST
+    @Path("getAllForLoad")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public String getAlLForLoad(String json) {
+        Gson gson = new Gson();
+        SelectBarnRequest request = gson.fromJson(json, SelectBarnRequest.class);
+        SelectResponse response = new SelectResponse();
+        TokenData token = BusinessHandler.TokenBUS.tokenData(request, response, 1);
+        if (token != null){
+            try {
+                List<Chuongtrai> result = ChuongTraiAdapter.getAll(NhanVienAdapter.getSingle(token.UserId).getMachinhanh());
+                response.Data = result;
+            } catch (Exception ex) {
+                response.Errors.add("Lỗi hệ thống.");
+                response.IsError = true;
+            }
+        }
+        return gson.toJson(response);
+    }
 
     @POST
     @Path("add")

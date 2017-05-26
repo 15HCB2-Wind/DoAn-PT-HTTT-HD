@@ -8,7 +8,7 @@
     $(document).ready(function () {
         var listchuong;
         var temp;
-        callAjax('post', { Token: Cookies.get('token') }, "hcm", "management", "ChuongTrai/getAll", function (data) {
+        callAjax('post', { Token: Cookies.get('token') }, "hcm", "management", "ChuongTrai/getAllForLoad", function (data) {
             listchuong = data.Data;
             console.log(listchuong);
             callAjax('post', { Token: Cookies.get('token'), Data: { MaNV: "NV0001" } }, "hcm", "animal_care", "assignment/getListAssignmentsOfEmployeer", function (data) {
