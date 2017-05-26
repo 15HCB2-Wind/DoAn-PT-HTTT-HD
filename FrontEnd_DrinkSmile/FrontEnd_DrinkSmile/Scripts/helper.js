@@ -3,10 +3,7 @@ var AjaxTempData = {};
 function callAjax(type, data, areaId, whichService, url, successCallback, tempData) {
     var u = getAPI(areaId, whichService, url)
     $.ajax({
-        //contentType: 'application/json;charset=utf-8',
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         type: type,
         dataType: 'json',
         data: JSON.stringify(data),

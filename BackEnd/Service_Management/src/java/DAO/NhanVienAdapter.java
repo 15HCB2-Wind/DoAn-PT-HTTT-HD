@@ -48,13 +48,18 @@ public class NhanVienAdapter {
         return null;
     }
 
-    public static List<Nhanvien> getAll(Object MaCN, Object MaPQ) {
-        List<Nhanvien> list = HibernateUtil.getList("from Nhanvien where machinhanh = :p0 and maphanquyen = :p1", new Object[]{MaCN, MaPQ});
+    public static List<Nhanvien> getAll(Object MaCN) {
+        List<Nhanvien> list = HibernateUtil.getList("from Nhanvien where machinhanh = :p0 and maphanquyen = :p1", new Object[]{MaCN, "PQ001"});
+        for (Nhanvien nhanvien : list) {
+            nhanvien.setTentaikhoan(null);
+            nhanvien.setMatkhau(null);
+        }
         return list;
     }
 
-    public static boolean add(Nhanvien obj) {
+    public static boolean addNhanVien(Nhanvien obj) {
         getNewID(obj);
+        obj.setMaphanquyen("PQ001");
         obj.setDaxoa(false);
         obj.setTentaikhoan(obj.getEmail());
         obj.setMatkhau(Security.Encrypt(obj.getTentaikhoan()));

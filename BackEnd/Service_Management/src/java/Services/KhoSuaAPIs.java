@@ -94,9 +94,9 @@ public class KhoSuaAPIs {
         WarehouseResponse response = new WarehouseResponse();
         TokenData token = BusinessHandler.TokenBUS.tokenData(request, response, 2);
         if (token != null){
-            request.Data.setMachinhanh(NhanVienAdapter.getSingle(token.UserId).getMachinhanh());
             if (KhoSuaBUS.insertUpdateValidate(request, response)){
                 try{
+                    request.Data.setMachinhanh(NhanVienAdapter.getSingle(token.UserId).getMachinhanh());
                     if (KhoSuaAdapter.add(request.Data)){
                         response.Data = "Thêm thành công.";
                     }else{

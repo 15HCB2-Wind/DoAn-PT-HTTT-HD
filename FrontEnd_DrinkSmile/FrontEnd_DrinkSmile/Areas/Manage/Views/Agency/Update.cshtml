@@ -77,33 +77,41 @@
         $(document).ready(function () {
 
             //load chi nhanh
-            var machinhanh = 'CN001';
+            var machinhanh = QueryString['machinhanh'];
             //load nha cung cap can update
             callAjax('post', { Predicates: [machinhanh] }, "hcm", "management", "ChiNhanh/getSingle", function (DSChiNhanh) {
+                if (DSChiNhanh.Data == null) {
+                    toastr["error"]("Chi Nhánh không tồn tại!");
+                    //alert("Lỗi Hệ Thống");
+                    window.location.href = 'http://localhost:8082/Manage/Agency'
+                }
+                else {
+                    var ten = document.getElementById('ten');
+                    ten.value = DSChiNhanh.Data.tenchinhanh;
+                    var sdt = document.getElementById('sdt');
+                    sdt.value = DSChiNhanh.Data.sodt;
+                    var diachi = document.getElementById('diachi');
+                    diachi.value = DSChiNhanh.Data.diachi;
+                    var tinhtrang = document.getElementById('tinhtrang');
+                    tinhtrang.value = DSChiNhanh.Data.tinhtrang;
+                    var quanly = document.getElementById('btnNV');
 
-                var ten = document.getElementById('ten');
-                ten.value = DSChiNhanh.Data.tenchinhanh;
-                var sdt = document.getElementById('sdt');
-                sdt.value = DSChiNhanh.Data.sodt;
-                var diachi = document.getElementById('diachi');
-                diachi.value = DSChiNhanh.Data.diachi;
-                var tinhtrang = document.getElementById('tinhtrang');
-                tinhtrang.value = DSChiNhanh.Data.tinhtrang;
-                var quanly = document.getElementById('btnNV');
-
-                //load nhân viên
-                callAjax('post', { MaCN: machinhanh, MaPQ: "PQ002" }, "hcm", "management", "NhanVien/getAllOfAgency", function (DSNhanVien) {
-                    listnv = DSNhanVien.Data;
-                    for (var i = 0; i < DSNhanVien.Data.length; i++) {
-                        $("#dropdownNV").append('<a class="dropdown-item" onclick="nhanvienclick(' + i + ')">' + DSNhanVien.Data[i].hoten + '</a>');
-                    }
-
-                    for (var i = 0; i < DSNhanVien.Data.length; i++) {
-                        if (DSChiNhanh.Data.quanly == DSNhanVien.Data[i].manhanvien) {
-                            quanly.innerHTML = DSNhanVien.Data[i].hoten;
+                    //load nhân viên quản lý
+                    callAjax('post', { MaCN: machinhanh, MaPQ: "PQ002" }, "hcm", "management", "NhanVien/getAllOfAgency", function (DSNhanVien) {
+                        listnv = DSNhanVien.Data;
+                        for (var i = 0; i < DSNhanVien.Data.length; i++) {
+                            $("#dropdownNV").append('<a class="dropdown-item" onclick="nhanvienclick(' + i + ')">' + DSNhanVien.Data[i].hoten + '</a>');
                         }
-                    }
-                });
+
+                        for (var i = 0; i < DSNhanVien.Data.length; i++) {
+                            if (DSChiNhanh.Data.quanly == DSNhanVien.Data[i].manhanvien) {
+                                quanly.innerHTML = DSNhanVien.Data[i].hoten;
+                            }
+                        }
+                    });
+                }
+
+                
             });
            
 

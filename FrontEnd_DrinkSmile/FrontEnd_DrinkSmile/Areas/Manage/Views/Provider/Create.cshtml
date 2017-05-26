@@ -65,10 +65,10 @@
                 e.preventDefault();
 
                 var diachi = $("#diachi").val();
-                if (diachi == "") { diachi = null; }
+                if (diachi == "") { diachi = " "; }
 
                 var tinhtrang = $("#tinhtrang").val();
-                if (tinhtrang == "") { tinhtrang = null; }
+                if (tinhtrang == "") { tinhtrang = " "; }
 
                 callAjax('post', {
                     Data: {
@@ -92,6 +92,7 @@
                             Data = null;
                             toastr["success"](result.Data);
                             $('#form_create')[0].reset();
+                            window.location.href = 'http://localhost:8082/Manage/Provider'
                         }
                     }
                 )

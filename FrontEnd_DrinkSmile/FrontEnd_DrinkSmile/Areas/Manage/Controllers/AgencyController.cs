@@ -17,9 +17,9 @@ namespace FrontEnd_DrinkSmile.Areas.Manage.Controllers
         {
             return View();
         }
-        public ActionResult Update(string getmanhacungcap)
+        public ActionResult Update(string getchinhanh)
         {
-            ViewBag.getmanhacungcap = getmanhacungcap;
+            ViewBag.getchinhanh = getchinhanh;
             return View();
         }
     }

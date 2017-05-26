@@ -177,7 +177,7 @@ namespace Service.Controllers
 
         //sync from management service
         [HttpPost]
-        [Route("sync")]
+        [Route("syncfuheigenhiegheukjenf")]
         public HttpResponseMessage Sync([FromBody] SyncRequest request)
         {
             var response = new SyncResponse();

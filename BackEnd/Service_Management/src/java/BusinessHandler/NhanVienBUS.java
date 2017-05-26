@@ -61,8 +61,10 @@ public class NhanVienBUS {
                         .target(Configs.SYNC_TO_LOGIN_SERVICE)
                         .request(MediaType.APPLICATION_JSON)
                         .post(Entity.json(new Gson().toJson(sRequest)));
-
-                SyncResponse result = res.readEntity(SyncResponse.class);
+                
+                String json = res.readEntity(String.class);
+                SyncResponse result = new Gson().fromJson(json, SyncResponse.class);
+//                SyncResponse result = res.readEntity(SyncResponse.class);
                 fail = result == null;
                 if (!fail) {
                     break;

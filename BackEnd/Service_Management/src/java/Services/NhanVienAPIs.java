@@ -13,9 +13,8 @@ import Models.DataAccess.*;
 import BusinessHandler.NhanVienBUS;
 import DAO.NhanVienAdapter;
 import Models.DataAccess.Staff.SelectStaffRequest;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import java.util.List;
+import Models.TokenData;
+import com.google.gson.*;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import pojos.Nhanvien;
@@ -42,12 +41,12 @@ public class NhanVienAPIs {
     @Produces("application/json")
     @Consumes("application/json")
     public String get(String json) {
-        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+        Gson gson = new GsonBuilder().setDateFormat("dd-MM-yyyy").create();
         SelectStaffRequest request = gson.fromJson(json, SelectStaffRequest.class);
         SelectResponse response = new SelectResponse();
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2)) {
             try {
-                Nhanvien result = NhanVienAdapter.getSingle(request.MaNV);
+                Nhanvien result = NhanVienAdapter.getSingle(request.UserId);
                 if (result == null) {
                     response.Errors.add("Không tìm thấy nhân viên.");
                     response.IsError = true;
@@ -69,37 +68,16 @@ public class NhanVienAPIs {
     @Consumes("application/json")
     public String getAll(String json) {
         Gson gson = new GsonBuilder().setDateFormat("dd-MM-yyyy").create();
-        SelectStaffRequest request = gson.fromJson(json, SelectStaffRequest.class);
+        SelectRequest request = gson.fromJson(json, SelectRequest.class);
         SelectResponse response = new SelectResponse();
-        if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2)) {
+        TokenData token = BusinessHandler.TokenBUS.tokenData(request, response, 2);
+        if (token != null){
             try {
-                List<Nhanvien> result = NhanVienAdapter.getAll(request.MaCN, request.MaPQ);
-                for(int i = 0; i < result.size(); i++){
-                    result.get(i).setMatkhau(null);
-                }
-                response.Data = result;
+                response.Data = NhanVienAdapter.getAll(NhanVienAdapter.getSingle(token.UserId).getMachinhanh());;
             } catch (Exception ex) {
                 response.Errors.add("Lỗi hệ thống.");
                 response.IsError = true;
             }
-        }
-        return gson.toJson(response);
-    }
-    
-    @POST
-    @Path("getAllOfAgency")
-    @Produces("application/json")
-    @Consumes("application/json")
-    public String getAllOfAgency(String json) {
-        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-        SelectStaffRequest request = gson.fromJson(json, SelectStaffRequest.class);
-        SelectResponse response = new SelectResponse();
-        try {
-            List<Nhanvien> result = NhanVienAdapter.getAll(request.MaCN, request.MaPQ);
-            response.Data = result;
-        } catch (Exception ex) {
-            response.Errors.add("Lỗi hệ thống.");
-            response.IsError = true;
         }
         return gson.toJson(response);
     }
@@ -112,10 +90,12 @@ public class NhanVienAPIs {
         Gson gson = new Gson();
         StaffRequest request = gson.fromJson(json, StaffRequest.class);
         StaffResponse response = new StaffResponse();
-        if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2)) {
+        TokenData token = BusinessHandler.TokenBUS.tokenData(request, response, 2);
+        if (token != null){
             if (NhanVienBUS.validateInformation(request, response, "add")) {
                 try {
-                    if (NhanVienAdapter.add(request.Data)) {
+                    request.Data.setMachinhanh(NhanVienAdapter.getSingle(token.UserId).getMachinhanh());
+                    if (NhanVienAdapter.addNhanVien(request.Data)) {
                         NhanVienBUS.sync(1, request.Data);
                         response.Data = "Thêm thành công.";
                     } else {
@@ -145,12 +125,12 @@ public class NhanVienAPIs {
         DeleteResponse response = new DeleteResponse();
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2)) {
             try {
-                int result = NhanVienAdapter.delete(request.MaNV);
+                int result = NhanVienAdapter.delete(request.UserId);
                 if (result != 1) {
                     response.Errors.add("Xóa nhân viên thất bại.");
                     response.IsError = true;
                 } else {
-                    NhanVienBUS.sync(-1, NhanVienAdapter.getSingle(request.MaNV));
+                    NhanVienBUS.sync(-1, NhanVienAdapter.getSingle(request.UserId));
                     response.Data = "Xóa nhân viên thành công.";
                 }
             } catch (Exception ex) {
@@ -171,12 +151,12 @@ public class NhanVienAPIs {
         DeleteResponse response = new DeleteResponse();
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2)) {
             try {
-                int result = NhanVienAdapter.recover(request.MaNV);
+                int result = NhanVienAdapter.recover(request.UserId);
                 if (result != 1) {
                     response.Errors.add("Khôi phục nhân viên thất bại.");
                     response.IsError = true;
                 } else {
-                    NhanVienBUS.sync(1, NhanVienAdapter.getSingle(request.MaNV));
+                    NhanVienBUS.sync(1, NhanVienAdapter.getSingleFullInfo(request.UserId));
                     response.Data = "Khôi phục nhân viên thành công.";
                 }
             } catch (Exception ex) {
@@ -199,7 +179,7 @@ public class NhanVienAPIs {
             if (BusinessHandler.NhanVienBUS.validateInformation(request, response, "update")) {
                 try {
                     if (NhanVienAdapter.update(request.Data)) {
-                        //NhanVienBUS.sync(0, request.Data);
+                        NhanVienBUS.sync(0, NhanVienAdapter.getSingleFullInfo(request.Data.getManhanvien()));
                         response.Data = "Cập nhật thành công!";
                     } else {
                         response.Errors.add("Cập nhật thất bại!");
@@ -219,7 +199,7 @@ public class NhanVienAPIs {
     }
 
     @POST
-    @Path("sync")
+    @Path("syncfuheigenhiegheukjenf")
     @Produces("application/json")
     @Consumes("application/json")
     public String sync(String json) {

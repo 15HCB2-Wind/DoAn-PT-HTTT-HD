@@ -19,8 +19,17 @@ public class ChuongTraiBUS {
             response.NameErrors.add("Tên chuồng không được để trống!");
             response.IsError = true;
         }
-        if (request.Data.getSucchua() < 0 || request.Data.getSucchua() == null || request.Data.getSucchua() != (int)request.Data.getSucchua()) {
-            response.SlotErrors.add("Sức chứa không hợp lệ!");
+        if (request.Data.getSucchua() < 0
+                || request.Data.getSucchua() == null
+                || request.Data.getSucchua() != (int) request.Data.getSucchua()) {
+            response.SlotErrors.add("Sức chứa không hợp lệ");
+            response.IsError = true;
+        }
+        if (request.Data.getDangchua() < 0
+                || request.Data.getDangchua() == null
+                || request.Data.getDangchua() != (int) request.Data.getDangchua()
+                || request.Data.getDangchua() > request.Data.getSucchua()) {
+            response.Slot1Errors.add("Quá sức chứa");
             response.IsError = true;
         }
         return !response.IsError;

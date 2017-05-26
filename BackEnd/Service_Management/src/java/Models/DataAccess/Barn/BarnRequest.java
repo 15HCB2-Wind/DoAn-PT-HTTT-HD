@@ -13,6 +13,5 @@ import pojos.Chuongtrai;
  * @author Tu
  */
 public class BarnRequest extends BodyRequest {
-
     public Chuongtrai Data;
 }

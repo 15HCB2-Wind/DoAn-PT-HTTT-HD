@@ -1,8 +1,61 @@
-﻿
-@{
-    ViewBag.Title = "Index";
+﻿@{
+    ViewBag.Title = "Quản lý chuồng trại";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<h2><i class="fa fa-list"></i> Danh sách chuồng trại</h2>
+<p id="addBarn1">
+    <a class="btn btn-primary" href="@Url.Action("Create")">Thêm chuồng trại</a>
+</p>
+<p class="text-center" id="addBarn2">Chi nhánh của bạn chưa có chuồng trại nào, bấm vào @Html.ActionLink("đây", "Create") để thêm.</p>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Mã chuồng</th>
+            <th>Tên chuồng</th>
+            <th>Sức chứa</th>
+            <th>Đang chứa</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+<p class="text-center" id="loader"><i class="fa fa-circle-o-notch fa-pulse fa-lg fa-fw"></i></p>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+            $("#addBarn2").hide();
+            callAjax('post', { Token: Cookies.get("token") }, Cookies.get("area"), "management", "ChuongTrai/getAll",
+                function (result) {
+                    if (result.IsError) {
+                        toastr["error"](result.Errors[0]);
+                        $("#error").show();
+                        $("#error").text(result.Errors[0]);
+                    }
+                    else {
+                        if (result.Data.length > 0) {
+                            for (var i = 0; i < result.Data.length; i++) {
+                                var dahuy = "";
+                                if (result.Data[i].daxoa == true) { dahuy = "Đã hủy"; }
 
-<h2>Quản lý chuồng trại</h2>
-
+                                var html = "<tr>"
+                                            + "<td>" + result.Data[i].machuong + "</td>"
+                                            + "<td>" + result.Data[i].tenchuong + "</td>"
+                                            + "<td>" + result.Data[i].succhua + "</td>"
+                                            + "<td>" + result.Data[i].dangchua + "</td>"
+                                            + "<td>" + dahuy + "</td>"
+                                            + "<td><a href='/Manage/Barn/Edit/" + result.Data[i].machuong + "'>Cập nhật</a></td>"
+                                        + "</tr>";
+                                $("tbody").append(html);
+                            }
+                        }
+                        else {
+                            $("#addBarn1").hide();
+                            $("#addBarn2").show();
+                        }
+                    }
+                });
+        });
+    </script>
+}

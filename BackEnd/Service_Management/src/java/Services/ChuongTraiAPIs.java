@@ -72,8 +72,7 @@ public class ChuongTraiAPIs {
         TokenData token = BusinessHandler.TokenBUS.tokenData(request, response, 2);
         if (token != null){
             try {
-                List<Chuongtrai> result = ChuongTraiAdapter.getAll(NhanVienAdapter.getSingle(token.UserId).getMachinhanh());
-                response.Data = result;
+                response.Data = ChuongTraiAdapter.getAll(NhanVienAdapter.getSingle(token.UserId).getMachinhanh());;
             } catch (Exception ex) {
                 response.Errors.add("Lỗi hệ thống.");
                 response.IsError = true;
@@ -83,18 +82,37 @@ public class ChuongTraiAPIs {
     }
     
     @POST
-    @Path("getAllForLoad")
+    @Path("getAllBy1")
     @Produces("application/json")
     @Consumes("application/json")
-    public String getAlLForLoad(String json) {
+    public String getAlLBy1(String json) {
         Gson gson = new Gson();
         SelectBarnRequest request = gson.fromJson(json, SelectBarnRequest.class);
         SelectResponse response = new SelectResponse();
         TokenData token = BusinessHandler.TokenBUS.tokenData(request, response, 1);
         if (token != null){
             try {
-                List<Chuongtrai> result = ChuongTraiAdapter.getAll(NhanVienAdapter.getSingle(token.UserId).getMachinhanh());
-                response.Data = result;
+                response.Data = ChuongTraiAdapter.getAll(NhanVienAdapter.getSingle(token.UserId).getMachinhanh());;
+            } catch (Exception ex) {
+                response.Errors.add("Lỗi hệ thống.");
+                response.IsError = true;
+            }
+        }
+        return gson.toJson(response);
+    }
+    
+    @POST
+    @Path("getAllAvailables")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public String getAllAvailables(String json) {
+        Gson gson = new Gson();
+        SelectBarnRequest request = gson.fromJson(json, SelectBarnRequest.class);
+        SelectResponse response = new SelectResponse();
+        TokenData token = BusinessHandler.TokenBUS.tokenData(request, response, 2);
+        if (token != null){
+            try {
+                response.Data = ChuongTraiAdapter.getAllAvailables(NhanVienAdapter.getSingle(token.UserId).getMachinhanh());;
             } catch (Exception ex) {
                 response.Errors.add("Lỗi hệ thống.");
                 response.IsError = true;
@@ -111,8 +129,10 @@ public class ChuongTraiAPIs {
         Gson gson = new Gson();
         BarnRequest request = gson.fromJson(json, BarnRequest.class);
         BarnResponse response = new BarnResponse();
-        if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2)) {
+        TokenData token = BusinessHandler.TokenBUS.tokenData(request, response, 2);
+        if (token != null){
             if (ChuongTraiBUS.validateInformation(request, response)) {
+                request.Data.setMachinhanh(NhanVienAdapter.getSingle(token.UserId).getMachinhanh());
                 try {
                     if (ChuongTraiAdapter.add(request.Data)) {
                         response.Data = "Thêm thành công.";

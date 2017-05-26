@@ -11,17 +11,32 @@ namespace FrontEnd_DrinkSmile.Areas.Manage.Controllers
         // GET: Manage/Cow
         public ActionResult Index()
         {
-            return View();
+            if (Request.Cookies["token"] != null)
+            {
+                if (Request.Cookies["role"].Value == "2") return View();
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Login", "Account", new { area = "", ReturnUrl = "/Manage/Cow/Index" });
         }
 
         public ActionResult Edit()
         {
-            return View();
+            if (Request.Cookies["token"] != null)
+            {
+                if (Request.Cookies["role"].Value == "2") return View();
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Login", "Account", new { area = "", ReturnUrl = "/Manage/Cow/Index" });
         }
 
         public ActionResult Add()
         {
-            return View();
+            if (Request.Cookies["token"] != null)
+            {
+                if (Request.Cookies["role"].Value == "2") return View();
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Login", "Account", new { area = "", ReturnUrl = "/Manage/Cow/Add" });
         }
     }
 }
