@@ -88,5 +88,30 @@ public class NhanVienAdapter {
     public static int changePassword(ChangePasswordRequest obj) {
         return HibernateUtil.execute("update Nhanvien set matkhau = :p1 where manhanvien = :p0", new Object[]{obj.UserId, obj.NewPass});
     }
+    
+    public static List<Nhanvien> getStaffOfAgency(Object MaCN) {
+        List<Nhanvien> list = HibernateUtil.getList("from Nhanvien where machinhanh = :p0", new Object[]{MaCN});
+        return list;
+    }
+    
+     public static String addManager(Nhanvien obj) {
+        getNewID(obj);
+        obj.setMaphanquyen("PQ002");
+        obj.setDaxoa(false);
+        obj.setTentaikhoan(obj.getEmail());
+        obj.setMatkhau(Security.Encrypt(obj.getTentaikhoan()));
+        if(HibernateUtil.save(obj))
+        {
+            return obj.getManhanvien().toString();
+        }
+        return "false";  
+    }
+    
+    public static boolean  updateRole(Nhanvien obj) {
+        Nhanvien nv = getSingleFullInfo(obj.getManhanvien());
+        nv.setMaphanquyen(obj.getMaphanquyen());
+        nv.setMachinhanh(obj.getMachinhanh());
+        return HibernateUtil.update(nv);
+    }
 
 }
