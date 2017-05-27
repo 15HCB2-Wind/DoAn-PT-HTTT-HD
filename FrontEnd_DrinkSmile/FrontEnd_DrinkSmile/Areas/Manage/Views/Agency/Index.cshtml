@@ -3,6 +3,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
     <script>
         $(document).ready(function () {
             callAjax('post', {}, "hcm", "management", "ChiNhanh/getAll", function (data) {
