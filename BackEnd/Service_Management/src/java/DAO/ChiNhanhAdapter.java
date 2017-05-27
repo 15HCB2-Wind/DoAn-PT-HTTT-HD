@@ -44,9 +44,13 @@ public class ChiNhanhAdapter {
         return null;
     }
     
-    public static boolean add(Chinhanh obj) {
+    public static String add(Chinhanh obj) {
         getNewID(obj);
-        return HibernateUtil.save(obj);
+         if(HibernateUtil.save(obj))
+         {
+             return obj.getMachinhanh();
+         }
+         return "false";
     }
 
     public static int delete(Chinhanh id) {
