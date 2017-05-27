@@ -213,4 +213,93 @@ public class NhanVienAPIs {
         }
         return gson.toJson(response);
     }
+    
+     @POST
+    @Path("getStaffOfAgency")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public String getStaffOfAgency(String json) {
+        Gson gson = new GsonBuilder().setDateFormat("dd-MM-yyyy").create();
+        SelectRequest request = gson.fromJson(json, SelectRequest.class);
+        SelectResponse response = new SelectResponse();
+//        TokenData token = BusinessHandler.TokenBUS.tokenData(request, response, 2);
+//        if (token != null){
+            try {
+                List<Nhanvien> result = NhanVienAdapter.getStaffOfAgency(request.Predicates[0]);
+                for(int i = 0; i < result.size(); i++){
+                    result.get(i).setMatkhau(null);
+                }
+                response.Data = result;
+            } catch (Exception ex) {
+                response.Errors.add("Lỗi hệ thống.");
+                response.IsError = true;
+            }
+//        }
+        return gson.toJson(response);
+    }
+    
+     @POST
+    @Path("addManager")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public String addManager(String json) {
+        Gson gson = new Gson();
+        StaffRequest request = gson.fromJson(json, StaffRequest.class);
+        StaffResponse response = new StaffResponse();
+//        TokenData token = BusinessHandler.TokenBUS.tokenData(request, response, 3);
+//        if (token != null){
+            //request.Data.setMachinhanh(NhanVienAdapter.getSingle(token.UserId).getMachinhanh());
+            //if (NhanVienBUS.validateInformation(request, response, "add")) {
+                try {
+                    String id = NhanVienAdapter.addManager(request.Data);
+                    if (!id.equals("false")) {
+                        //NhanVienBUS.sync(1, request.Data);
+                        response.Data = id;
+                    } else {
+                        response.Errors.add("Thêm thất bại.");
+                        response.IsError = true;
+                    }
+                } catch (Exception ex) {
+                    response.Errors.add("Lỗi hệ thống.");
+                    response.IsError = true;
+                }
+            //}
+//            //else {
+//                response.Errors.add("Thêm thất bại.");
+//                response.IsError = true;
+//            //}
+//        }
+        return gson.toJson(response);
+    }
+    
+     @POST
+    @Path("updateRole")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public String updateRole(String json) {
+        Gson gson = new Gson();
+        StaffRequest request = gson.fromJson(json, StaffRequest.class);
+        StaffResponse response = new StaffResponse();
+//        if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)) {
+            if (BusinessHandler.NhanVienBUS.validateInformation(request, response, "update")) {
+                try {
+                    if (NhanVienAdapter.updateRole(request.Data)) {
+                        NhanVienBUS.sync(0, NhanVienAdapter.getSingleFullInfo(request.Data.getManhanvien()));
+                        response.Data = "Cập nhật thành công!";
+                    } else {
+                        response.Errors.add("Cập nhật thất bại!");
+                        response.IsError = true;
+                    }
+                } catch (Exception ex) {
+                    response.Errors.add("Lỗi hệ thống.");
+                    response.IsError = true;
+                }
+            }
+            else {
+                response.Errors.add("Cập nhật thất bại!");
+                response.IsError = true;
+            }
+//        }
+        return gson.toJson(response);
+    }
 }
