@@ -89,8 +89,9 @@ public class ChiNhanhAPIs {
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)){
             if (ChiNhanhBUS.insertValidate(request, response)){
                 try{
-                    if (ChiNhanhAdapter.add(request.Data)){ 
-                        response.Data = "Thêm thành công.";
+                    String resulf = ChiNhanhAdapter.add(request.Data);
+                    if (!resulf.equals("false")){ 
+                        response.Data = resulf;
                     }else{
                         response.Errors.add("Thêm thất bại.");
                         response.IsError = true;
