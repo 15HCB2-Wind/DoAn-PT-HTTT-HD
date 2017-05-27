@@ -1,4 +1,4 @@
-﻿@{
+@{
     ViewBag.Title = "Thêm Chi Nhánh";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -14,16 +14,27 @@
                 <div class="md-form">
                     <i class="fa fa-id-card-o prefix"></i>
                     <input id="ten" class="form-control" type="text" required="required" />
-                    <label id="tenerror" for="ten">Tên</label>
+                    <label id="tenerror" for="ten">Tên Chi Nhánh</label>
                 </div>
-                <div class="btn-group">
-                    <i class="fa fa-user prefix"></i>
-                    <label id="nverror" for="btnNV">Nhân viên Quản Lý</label>
-                    <button id="btnNV" class="form-control" type="button" style="right:0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Nhân viên Quản Lý</button>
-                    <div class="dropdown-menu" id="dropdownNV">
-                        <!--load data danh sach nhanvien-->
+                <div class="col-xs-12">
+                    <div class="row">
+                        <div class="col-sm-6 col-xs-12">
+                            <div class="md-form">
+                                <i class="fa fa-user-o prefix"></i>
+                                <input id="nvQL" class="form-control" type="text" required="required" />
+                                <label for="nvQL">Nhân Viên Quản Lý</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-xs-12">
+                            <div class="md-form">
+                                <i class="fa fa-envelope-o prefix"></i>
+                                <input id="nvEmail" class="form-control" type="text" required="required" />
+                                <label for="nvEmail">Email Quản Lý</label>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                
                 <div class="md-form">
                     <i class="fa fa-mobile-phone prefix"></i>
                     <input id="sdt" class="form-control" type="text" />
@@ -75,66 +86,118 @@
         var listnv;
         var manv;
         $(document).ready(function () {
-            //load nhân viên
-            callAjax('post', { MaCN: "CN001", MaPQ: "PQ002" }, "hcm", "management", "NhanVien/getAllOfAgency", function (data) {
-                listnv = data.Data;
-                for (var i = 0; i < data.Data.length; i++) {
-                    $("#dropdownNV").append('<a class="dropdown-item" onclick="nhanvienclick(' + i + ')">' + data.Data[i].hoten + '</a>');
-                }
-                var quanly = document.getElementById('btnNV');
-                quanly.innerHTML = data.Data[0].hoten;
-                manv = data.Data[0].manhanvien;
-            });
-
             //ẩn loader
-
             $('#loader').hide();
 
             //lưu chi nhánh
             $('#form_create').submit(function (e) {
                 e.preventDefault();
 
-                var diachi = $("#diachi").val();
-                if (diachi == "") { diachi = " "; }
-
-                var sdt = $("#sdt").val();
-                if (sdt == "") { sdt = " "; }
-
-                var tinhtrang = $("#tinhtrang").val();
-                if (tinhtrang == "") { tinhtrang = " "; }
-                var daxoa = false;
+                //Thêm Nhân Viên Quản Lý Chi Nhánh
                 callAjax('post', {
+                    Token: "",
                     Data: {
-                        tenchinhanh: $("#ten").val(),
-                        sodt: sdt,
-                        diachi: diachi,
-                        tinhtrang: tinhtrang,
-                        daxoa: daxoa,
-                        quanly: manv                       
+                        hoten: $("#nvQL").val(),
+                        ngaysinh: null,
+                        gioitinh: "",
+                        diachi: "",
+                        email: $("#nvEmail").val(),
+                        sodt: ""
                     }
-                }, "hcm", "management", "ChiNhanh/add",
+                }, "hcm", "management", "NhanVien/addManager",
                     function (result) {
                         if (result.IsError) {
                             if (result.NameErrors.length > 0) {
-                                $("#ten").addClass("validate invalid");
-                                $("#tenerror").addClass("active");
-                                $("#tenerror").attr("data-error", result.NameErrors[0]);
+                                toastr["error"](result.NameErrors[0]);
                             }
-                            if (result.ManagerErrors.length > 0) {
-                                $("#nverror").addClass("active");
-                                $("#nverror").attr("data-error", result.NameErrors[0]);
+
+                            if (result.EmailErrors.length > 0) {
+                                toastr["error"](result.EmailErrors[0]);
                             }
+
                             if (result.Errors.length > 0) {
                                 toastr["error"](result.Errors[0]);
                             }
                         }
                         else {
-                            Data = null;
-                            toastr["success"](result.Data);
-                            $('#form_create')[0].reset();
+                            manv = result.Data;
+                            alert(manv);
+                            //Thêm Chi nhánh
+                            
+                            var diachi = $("#diachi").val();
+                            if (diachi == "") { diachi = " "; }
+
+                            var sdt = $("#sdt").val();
+                            if (sdt == "") { sdt = " "; }
+
+                            var tinhtrang = $("#tinhtrang").val();
+                            if (tinhtrang == "") { tinhtrang = " "; }
+                            var daxoa = false;
+
+                            callAjax('post', {
+                                Token: "",
+                                Data: {
+                                    tenchinhanh: $("#ten").val(),
+                                    sodt: sdt,
+                                    diachi: diachi,
+                                    tinhtrang: tinhtrang,
+                                    daxoa: daxoa,
+                                    quanly: manv
+                                }
+                            }, "hcm", "management", "ChiNhanh/add",
+                                function (result) {
+                                    if (result.IsError) {
+                                        if (result.NameErrors.length > 0) {
+                                            $("#ten").addClass("validate invalid");
+                                            $("#tenerror").addClass("active");
+                                            $("#tenerror").attr("data-error", result.NameErrors[0]);
+                                        }
+                                        if (result.ManagerErrors.length > 0) {
+                                            $("#nverror").addClass("active");
+                                            $("#nverror").attr("data-error", result.NameErrors[0]);
+                                        }
+                                        if (result.Errors.length > 0) {
+                                            toastr["error"](result.Errors[0]);
+                                        }
+                                    }
+                                    else {
+                                        var machinhanh = result.Data;
+                                        //Cập nhật lại mã chi nhánh cho nhân viên quản lý
+                                        callAjax('post', {
+                                            Token: "",
+                                            Data: {
+                                                manhanvien: manv,
+                                                hoten: "  ",
+                                                gioitinh: "",
+                                                email: " ",
+                                                tentaikhoan: "",
+                                                tinhtrang: "",
+                                                daxoa: false,
+                                                machinhanh: machinhanh,
+                                                maphanquyen: "PQ002"
+                                            }
+                                        }, "hcm", "management", "NhanVien/updateRole",
+                                            function (result) {
+                                                if (result.IsError) {
+                                                    if (result.Errors.length > 0) {
+                                                        toastr["error"](result.Errors[0]);
+                                                    }
+                                                }
+                                            }
+                                        )
+                                        
+                                        alert(result.Data);
+                                        Data = null;
+                                        toastr["success"](result.Data);
+                                        $('#form_create')[0].reset();
+                                    }
+                                }
+                            )
                         }
                     }
                 )
+
+
             });
         });
         function nhanvienclick(data) {
