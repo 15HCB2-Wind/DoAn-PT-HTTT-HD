@@ -34,6 +34,9 @@ namespace Service.Controllers
                     if (cs!=null)
                     {
                         request.Data.MaChamSoc = cs.MaChamSoc;
+                        ChamSocBUS.UpdateChamSoc(request,ref response);
+                        if (response.IsError)
+                            return Request.CreateResponse(HttpStatusCode.OK, response);
                         if (ChamSocRepository.Update(request.Data) < 0)
                         {
                             response.Errors.Add("Lỗi hệ thống");

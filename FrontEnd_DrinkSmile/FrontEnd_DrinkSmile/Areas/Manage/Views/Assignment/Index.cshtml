@@ -5,18 +5,25 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
+            var listchuong;
+            callAjax('post', { Token: Cookies.get('token') }, Cookies.get('area'), "management", "ChuongTrai/getAll", function (data2) {
+                listchuong = data2.Data;
+                console.log(data2);
+                
+            });
             callAjax('post', { Token: Cookies.get('token') }, Cookies.get('area'), "management", "NhanVien/getAll", function (data1) {
-                console.log(data1);
                 if (!data1.Data || data1.Data.length <= 0) {
                     $('#form').hide();
                     $('#congviec').text('Không có nhân viên đang làm việc.');
                 } else {
-                    callAjax('post', data1, Cookies.get('area'), "animal_care", "assignment/getListAssignmentsOfAgency", function (data) {
+                    callAjax('post', { Token: Cookies.get('token'), Data: data1.Data}, Cookies.get('area'), "animal_care", "assignment/getListAssignmentsOfAgency", function (data) {
                         if (!data.Data || data.Data.length <= 0) {
                             $('#form').hide();
                             $('#congviec').text('Chưa có phân công nào!');
                         }
                         else {
+                            console.log(data);
+                            var count = 0;
                             for (var i = 0; i < data.Data.length; i++) {
 
                                 var days = data.Data[i].NgayTrongTuan.split(',');
@@ -28,23 +35,47 @@
                                     }
                                 }
 
-                                var td = "";
+                                tdhoten = "";
+                                if (i!=0 && data.Data[i-1].MaNV == data.Data[i].MaNV) {
+                                    $('#' + data.Data[i].MaNV).attr('rowspan', count + 1)
+                                    count++;
+                                    tdhoten = "<br/>" + tdhoten;
+                                }
+                                else {
+                                    var color = "#eceff1";
+                                    if (i!=0) {
+                                        if($('#'+data.Data[i-1].MaNV).attr('bgcolor')=='#eceff1'){
+                                            color = "#ffffff";
+                                        }
+                                    }
+                                    tdhoten += '<td class="text-center align-middle" bgcolor="' + color + '" id="' + data.Data[i].MaNV + '" rowspan="1">' + data.Data[i].HoTen + '</td>';
+                                    count = 1;
+                                }
+
+
+                                var tdlich = "";
                                 for (var j = 0; j < week.length; j++) {
                                     if (!days.includes(week[j])) {
-                                        td += '<td></td>';
+                                        tdlich += '<td></td>';
                                     }
                                     else {
-                                        td += '<td align="center" valign="middle"><i class="fa fa-check" aria-hidden="true"></i></td>';
+                                        tdlich += '<td class="text-center align-middle"><i class="fa fa-check" aria-hidden="true"></i></td>';
+                                    }
+                                }
+                                var tdtenchuong = "";
+                                for (var k = 0; k < listchuong.length; k++) {
+                                    if (data.Data[i].MaChuong == listchuong[k].machuong) {
+                                        tdtenchuong = '<td class="text-center align-middle">' + listchuong[k].tenchuong + '</td>';
                                     }
                                 }
                                 $('#dataTables').append('<tr height="50px">' +
-                                    '<td align="center" valign="middle">' + data.Data[i].HoTen + '</td>' +
-                                    td +
-                                    '<td align="center" valign="middle">' + data.Data[i].NgayBatDauFormatted + '</td>' +
-                                    '<td align="center" valign="middle">' + data.Data[i].NgayKetThucFormatted + '</td>' +
-                                    '<td align="center" valign="middle"><a href="/Manage/Assignment/Update?maphancong=' + data.Data[i].MaPhanCong + '&hoten=' + data.Data[i].HoTen + '"><i class="fa fa-edit" aria-hidden="true"></i></a></td>' +
-                                        //'<td align="center" valign="middle"><span class="spnSelected"><img src="../../../Content/Edit-26.png"/></span></td>' +
-                                        '</tr>');
+                                    tdhoten +
+                                    tdlich +
+                                    '<td class="text-center align-middle">' + data.Data[i].NgayBatDauFormatted + '</td>' +
+                                    '<td class="text-center align-middle">' + data.Data[i].NgayKetThucFormatted + '</td>' +
+                                    tdtenchuong +
+                                    '<td class="text-center align-middle"><a href="/Manage/Assignment/Update?maphancong=' + data.Data[i].MaPhanCong + '&hoten=' + data.Data[i].HoTen + '"><i class="fa fa-edit" aria-hidden="true"></i></a></td>' +
+                                    '</tr>');
                             }
                         }
 
@@ -73,20 +104,21 @@
                 <table class="table table-striped table-bordered table-hover" id="dataTables">
                     <thead>
                         <tr>
-                            <th rowspan="2" class="text-center" style="vertical-align:middle">Nhân viên</th>
-                            <th colspan="7" class="text-center" style="vertical-align:middle">Ngày trong tuần</th>
-                            <th rowspan="2" class="text-center" style="vertical-align:middle">Bắt đầu</th>
-                            <th rowspan="2" class="text-center" style="vertical-align:middle">Kết thúc</th>
+                            <th rowspan="2" class="text-center align-middle" style="vertical-align:middle">Nhân viên</th>
+                            <th colspan="7" class="text-center align-middle" style="vertical-align:middle">Ngày trong tuần</th>
+                            <th rowspan="2" class="text-center align-middle" style="vertical-align:middle">Bắt đầu</th>
+                            <th rowspan="2" class="text-center align-middle" style="vertical-align:middle">Kết thúc</th>
+                            <th rowspan="2" class="text-center align-middle" style="vertical-align:middle">Chuồng</th>
                             <th rowspan="2"></th>
                         </tr>
                         <tr>
-                            <td width="60px" align="center" valign="middle">2</td>
-                            <td width="60px" align="center" valign="middle">3</td>
-                            <td width="60px" align="center" valign="middle">4</td>
-                            <td width="60px" align="center" valign="middle">5</td>
-                            <td width="60px" align="center" valign="middle">6</td>
-                            <td width="60px" align="center" valign="middle">7</td>
-                            <td width="60px" align="center" valign="middle">CN</td>
+                            <td width="60px" class="text-center align-middle">2</td>
+                            <td width="60px" class="text-center align-middle">3</td>
+                            <td width="60px" class="text-center align-middle">4</td>
+                            <td width="60px" class="text-center align-middle">5</td>
+                            <td width="60px" class="text-center align-middle">6</td>
+                            <td width="60px" class="text-center align-middle">7</td>
+                            <td width="60px" class="text-center align-middle">CN</td>
                         </tr>
                     </thead>
                     <tbody>

@@ -14,7 +14,10 @@
                 if (listnv) {
                     for (var i = 0; i < data.Data.length; i++) {
                         if (QueryString['id'] && QueryString['id'] == data.Data[i].manhanvien)
+                        {
+                            manv = data.Data[i].manhanvien;
                             $('#btnNV').html(data.Data[i].hoten);
+                        }
                         $("#dropdownNV").append('<a class="dropdown-item" onclick="nhanvienclick(' + i + ')">' + data.Data[i].hoten + '</a>');
                     }
                 } else {
@@ -96,7 +99,7 @@
                 MaChuong: machuong
             };
             console.log(data);
-            callAjax('post', { Data: data }, Cookies.get('area'), "animal_care", "Assignment/add", function (data2) {
+            callAjax('post', {Token:Cookies.get('token'), Data: data }, Cookies.get('area'), "animal_care", "Assignment/add", function (data2) {
                 if (data2.IsError != null && data2.IsError) {
                     for (var i = 0; i < data2.Errors.length; i++) {
                         toastr["error"](data2.Errors[i]);

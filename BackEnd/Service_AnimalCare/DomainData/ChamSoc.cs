@@ -17,5 +17,27 @@ namespace DomainData
         public string MaPhanCong { get; set; }
         public string MaBo { get; set; }
 
+        //tinhtrang
+        public float ChieuCao1 { get; set; }
+        public float CanNang1 { get; set; }
+        public float ChieuCao2 { get; set; }
+        public float CanNang2 { get; set; }
+
+        public ChamSoc()
+        {
+            MaChamSoc = "";
+            NgayGhiNhan = DateTime.Now;
+            TinhTrangCongViec = "";
+            LuongSua = 0;
+            DaChoAn = false;
+            DaDonVeSinh = false;
+            DaVatSua = false;
+            MaPhanCong = "";
+            MaBo = "";
+            ChieuCao1 = 0;
+            CanNang1 = 0;
+            ChieuCao2 = 0;
+            CanNang2 = 0;
+        }
     }
 }

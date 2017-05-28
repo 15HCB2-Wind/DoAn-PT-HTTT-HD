@@ -143,7 +143,32 @@ namespace DataAccess.Repositories
                         MaNV = row.GetValueDefault<string>(4),
                         MaChuong = row.GetValueDefault<string>(5)
                     };
-                }, string.Format("select * from phancong where {0} and '{1}' between NgayBatDau and NgayKetThuc",condition,DateTime.Now));
+                }, string.Format("select * from phancong where {0} and '{1}' between NgayBatDau and NgayKetThuc order by MaNV", condition, DateTime.Now));
+            }
+            catch (Exception)
+            {
+                return result;
+            }
+            return result;
+        }
+
+        public static PhanCong CheckValidate(PhanCong pc)
+        {
+            PhanCong result = null;
+            try
+            {
+                result = DataProvider.ExecuteReaderOne((SqlDataReader row) =>
+                {
+                    return new PhanCong()
+                    {
+                        MaPhanCong = row.GetValueDefault<string>(0),
+                        NgayBatDau = row.GetValueDefault<DateTime>(1),
+                        NgayKetThuc = row.GetValueDefault<DateTime>(2),
+                        NgayTrongTuan = row.GetValueDefault<string>(3),
+                        MaNV = row.GetValueDefault<string>(4),
+                        MaChuong = row.GetValueDefault<string>(5)
+                    };
+                }, string.Format("select top 1 * from phancong where (NgayBatDau between '{0}' and '{1}' or NgayKetThuc between '{0}' and '{1}' or (NgayBatDau<'{0}' and NgayKetThuc>'{1}')) and MaNV='{2}' and MaChuong='{3}'", pc.NgayBatDau, pc.NgayKetThuc, pc.MaNV, pc.MaChuong));
             }
             catch (Exception)
             {
