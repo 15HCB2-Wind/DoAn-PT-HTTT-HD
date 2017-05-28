@@ -17,8 +17,8 @@ namespace Service.BusinessHandler
         {
             if (!Configs.DEBUG_MODE)
             {
-                var thread = new Thread((object t) =>
-                {
+                //var thread = new Thread((object t) =>
+                //{
                     int times = 3;
                     bool fail = true;
                     var client = new HttpClient();
@@ -47,9 +47,9 @@ namespace Service.BusinessHandler
                         }
                         catch { }
                     } while (fail && --times > 0);
-                    (t as Thread).Abort();
-                });
-                thread.Start(thread);
+                   //(t as Thread).Abort();
+                //});
+                //thread.Start(thread);
             }
             return !response.IsError && !response.IsTokenTimeout;
         }
@@ -59,8 +59,8 @@ namespace Service.BusinessHandler
             TokenData tokenData = null;
             if (!Configs.DEBUG_MODE)
             {
-                var thread = new Thread((object t) =>
-                {
+                //var thread = new Thread((object t) =>
+                //{
                     int times = 3;
                     bool fail = true;
                     var client = new HttpClient();
@@ -93,9 +93,9 @@ namespace Service.BusinessHandler
                         }
                         catch { }
                     } while (fail && --times > 0);
-                    (t as Thread).Abort();
-                });
-                thread.Start(thread);
+                    //(t as Thread).Abort();
+                //});
+                //thread.Start(thread);
             }
             return tokenData;
         }

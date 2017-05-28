@@ -20,6 +20,12 @@ namespace Service.BusinessHandler
                 response.IsError = true;
                 response.Errors.Add("Chưa dọn dẹp vệ sinh bò " + request.Data.MaBo);
             }
+            if (request.Data.CanNang1==0 || request.Data.ChieuCao1==0)
+            {
+                response.IsError = true;
+                response.Errors.Add("Chiều cao hoặc cân nặng lần 1 của " + request.Data.MaBo + " chưa nhập. ");
+            }
+
             if (!response.IsError)
             {
                 request.Data.DaVatSua = request.Data.LuongSua <= 0;
@@ -38,6 +44,11 @@ namespace Service.BusinessHandler
             {
                 response.IsError = true;
                 response.Errors.Add("Chưa dọn dẹp vệ sinh bò " + request.Data.MaBo);
+            }
+            if (request.Data.CanNang2 == 0 || request.Data.ChieuCao2 == 0)
+            {
+                response.IsError = true;
+                response.Errors.Add("Chiều cao hoặc cân nặng lần 2 của " + request.Data.MaBo + " chưa nhập. ");
             }
             if (!response.IsError)
             {

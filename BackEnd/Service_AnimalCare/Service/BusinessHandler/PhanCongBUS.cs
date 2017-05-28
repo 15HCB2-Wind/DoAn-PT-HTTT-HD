@@ -13,6 +13,7 @@ namespace Service.BusinessHandler
         public static bool AddPhanCong(PhanCongRequest request, ref PhanCongResponse response)
         {
             var data = request.Data;
+            CheckValidate(request,ref response);
             if (data.NgayBatDau > data.NgayKetThuc)
             {
                 response.Errors.Add("Ngày bắt đầu không được lớn hơn ngày kết thúc làm việc");
@@ -56,6 +57,7 @@ namespace Service.BusinessHandler
         public static bool UpdatePhanCong(PhanCongRequest request, ref PhanCongResponse response)
         {
             var data = request.Data;
+            CheckValidate(request, ref response);
             if (data.NgayBatDau > data.NgayKetThuc)
             {
                 response.Errors.Add("Ngày bắt đầu không được lớn hơn ngày kết thúc làm việc");
@@ -89,6 +91,15 @@ namespace Service.BusinessHandler
                 return false;
             }
             return true;
+        }
+
+        public static void CheckValidate(PhanCongRequest request, ref PhanCongResponse response)
+        {
+            if (PhanCongRepository.CheckValidate(request.Data)!=null)
+            {
+                response.IsError = true;
+                response.Errors.Add("Nhân viên này đã được phân công cho chuồng này trước đó rồi!");
+            }
         }
 
         public static void GetAllFromNhanVien(PhanCongRequest request, ref PhanCongResponse response)

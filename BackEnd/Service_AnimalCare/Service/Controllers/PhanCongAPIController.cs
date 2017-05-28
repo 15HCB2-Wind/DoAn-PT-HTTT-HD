@@ -22,7 +22,7 @@ namespace Service.Controllers
         public HttpResponseMessage AddPhanCong([FromBody] PhanCongRequest request)
         {
             var response = new PhanCongResponse(); 
-            if (BusinessHandler.TokenBUS.tokenCheck(request, response, 1)) {
+            if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2)) {
                 
                 PhanCongBUS.AddPhanCong(request, ref response);
                 if (response.IsError)
@@ -98,7 +98,7 @@ namespace Service.Controllers
         public HttpResponseMessage GetAllFromAgency([FromBody] ListNhanVienChiNhanh request)
         {
             var response = new PhanCongResponse();
-            if (BusinessHandler.TokenBUS.tokenCheck(request, response, 1))
+            if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2))
             {
                 try
                 {
@@ -119,11 +119,15 @@ namespace Service.Controllers
         [Route("getListAssignmentsOfEmployeer")]
         public HttpResponseMessage GetAllFromNhanVien([FromBody] PhanCongRequest request)
         {
-            var response = new PhanCongResponse();
-            if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2))
+            var response = new PhanCongResponse(); 
+
+            if (BusinessHandler.TokenBUS.tokenCheck(request, response, 1))
             {
                 try
                 {
+                    TokenData tkdata = BusinessHandler.TokenBUS.tokenData(request, response, 1);
+                    request.Data = new PhanCong();
+                    request.Data.MaNV = tkdata.UserId;
                     BusinessHandler.PhanCongBUS.GetAllFromNhanVien(request, ref response);
                 }
                 catch (Exception)
@@ -141,7 +145,7 @@ namespace Service.Controllers
         public HttpResponseMessage GetOneFromPhanCong([FromBody] PhanCongRequest request)
         {
             var response = new PhanCongResponse();
-            if (BusinessHandler.TokenBUS.tokenCheck(request, response, 1))
+            if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2))
             {
                 try
                 {

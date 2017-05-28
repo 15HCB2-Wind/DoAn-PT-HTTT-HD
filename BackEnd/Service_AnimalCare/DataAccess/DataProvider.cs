@@ -215,4 +215,9 @@ public class DataProvider
 		}
 		return result;
 	}
+
+    internal static object ExecuteScalar(string p1, string p2)
+    {
+        throw new NotImplementedException();
+    }
 }
