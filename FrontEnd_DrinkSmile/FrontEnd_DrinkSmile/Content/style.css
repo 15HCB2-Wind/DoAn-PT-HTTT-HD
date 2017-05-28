@@ -1,15 +1,24 @@
 /* YOUR CUSTOM STYLES */
-body { position: relative }
-main {
-    padding-top: calc(56px + 3rem);
-    padding-bottom: calc(50px + 3rem);
+body { 
+    margin-top: 56px;
+    position: relative;
+}
+body.no-login { 
+    background: url(innercowhero.jpg) no-repeat center center;
+    background-size: cover;
+}
+body main { 
+    padding: 3rem;
+}
+body.no-login main { 
+    background-color: rgba(0,0,0,.7);
 }
 footer.page-footer {
     margin-top: 0px;
     padding-top: 0px;
     position: absolute;
     left: 0;
-    bottom: 0;
+    bottom: -50px;
     width: 100%;
 }
 input:-webkit-autofill { -webkit-box-shadow: 0 0 0 50px white inset !important }
