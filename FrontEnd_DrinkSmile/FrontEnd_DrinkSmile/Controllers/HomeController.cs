@@ -30,21 +30,21 @@ namespace FrontEnd_DrinkSmile.Controllers
 
         public ActionResult Index1()
         {
-            if (Request.Cookies["token"] != null)
+            if (Request.Cookies["token"] != null && Request.Cookies["role"].Value == "1")
                 return View();
             return RedirectToAction("Login", "Account", new { ReturnUrl = "/Home/Index" });
         }
 
         public ActionResult Index2()
         {
-            if (Request.Cookies["token"] != null)
+            if (Request.Cookies["token"] != null && Request.Cookies["role"].Value == "2")
                 return View();
             return RedirectToAction("Login", "Account", new { ReturnUrl = "/Home/Index" });
         }
 
         public ActionResult Index3()
         {
-            if (Request.Cookies["token"] != null)
+            if (Request.Cookies["token"] != null && Request.Cookies["role"].Value == "3")
                 return View();
             return RedirectToAction("Login", "Account", new { ReturnUrl = "/Home/Index" });
         }
