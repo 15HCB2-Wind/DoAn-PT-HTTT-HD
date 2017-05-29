@@ -5,9 +5,11 @@
 
 @section Scripts {
     <script>
+        var maphancong;
+        var mabo;
+        var listchuong;
+        var temp;
         $(document).ready(function () {
-            var listchuong;
-            var temp;
             callAjax('post', { Token: Cookies.get('token') }, Cookies.get('area'), "management", "ChuongTrai/getAllBy1", function (data) {
                 listchuong = data.Data;
                 if (listchuong) {
@@ -70,21 +72,22 @@
                                     }
                                 }
                                 var td =
-                                    '<table class="table table-striped table-bordered table-hover" id="' + temp[i].MaChuong + '_table">' +
-                                        '<thead>' +
+                                    '<table class="table table-hover" id="' + temp[i].MaChuong + '_table">' +
+                                        '<thead class="thead-inverse">' +
                                             '<tr>' +
-                                                '<th rowspan="2" class="text-center" style="vertical-align:middle">Bò</th>' +
-                                                '<th rowspan="2" class="text-center" style="vertical-align:middle" width="150px">Lượng sữa</th>' +
-                                                '<th rowspan="2" class="text-center" style="vertical-align:middle">Cho ăn</th>' +
-                                                '<th rowspan="2" class="text-center" style="vertical-align:middle">Vệ sinh</th>' +
-                                                '<th rowspan="2" class="text-center" style="vertical-align:middle" width="300px">Tình trạng công việc</th>' +
-                                                '<th colspan="2" class="text-center" style="vertical-align:middle">Tình trạng bò</th>' +
+                                                '<th rowspan="2" class="text-center align-middle">Bò</th>' +
+                                                '<th rowspan="2" class="text-center align-middle" width="150px">Lượng sữa</th>' +
+                                                '<th rowspan="2" class="text-center align-middle">Cho ăn</th>' +
+                                                '<th rowspan="2" class="text-center align-middle">Vệ sinh</th>' +
+                                                '<th rowspan="2" class="text-center align-middle" width="150px">Tình trạng công việc</th>' +
+                                                '<th colspan="3" class="text-center align-middle" width="300px">Tình trạng bò</th>' +
                                                 '<th rowspan="2" colspan="2"></th>' +
                                                 //'<th rowspan="2"></th>' +
                                             '</tr>' +
                                             '<tr>' +
-                                                '<td align="center" valign="middle">Chiều cao (mét)</td>' +
-                                                '<td align="center" valign="middle">Cân nặng (kg)</td>' +
+                                                '<th class="text-center align-middle"></th>'+
+                                                '<th class="text-center align-middle">Chiều cao (mét)</th>' +
+                                                '<th class="text-center align-middle">Cân nặng (kg)</th>' +
                                             '</tr>' +
                                         '</thead>' +
                                         '<tbody>' +
@@ -122,17 +125,15 @@
                                         for (var k = 0; k < data3.Data.length; k++) {
                                             var code = temp[index].MaPhanCong + data3.Data[k].mabo;
                                             $('#' + data3.Data[0].machuong + '_table').append(
-                                                '<tr>' +
-                                                    '<td class="text-center align-middle" id="idbo' + code + '">' + data3.Data[k].mabo + '</td>' +
-                                                    '<td class="text-center align-middle"><input id="luongsua' + code + '" type="number" min="0" step="1" value="0"/></td>' +
-                                                    '<td class="text-center align-middle"><div class="form-group"><input type="checkbox" id="choan' + code + '"/><label for="choan' + code + '"></label></div></td>' +
-                                                    '<td class="text-center align-middle"><div class="form-group"><input type="checkbox" id="vesinh' + code + '"/><label for="vesinh' + code + '"></label></div></td>' +
-                                                    '<td class="text-center align-middle"><input id="tinhtrang' + code + '" type="text"/></td>' +
-                                                    //'<td class="text-center align-middle"><input id="chieucao' + code + '" type="number" min="0" value="0"/></td>' +
-                                                    //'<td class="text-center align-middle"><input id="cannang' + code + '" type="number" min="0" value="0" /></td>' +
-                                                    '<td colspan="2" class="text-center align-middle"><a href="#">Ghi nhận tình trạng bò</a></td>' +
-                                                    '<td class="text-center align-middle"><span class="spnSelected" onclick="spanClick(\'' + code + '\',\'' + temp[index].MaPhanCong + '\')"><i class="fa fa-save blue-text" aria-hidden="false"></i></span></td>' +
-                                                    '<td class="text-center align-middle"><i id="hidden' + code + '" class="fa fa-check" aria-hidden="true" hidden="hidden"></i></td>' +
+                                                '<tr id="tr' + code + '" class="table-success">' +
+                                                    '<td class="text-center align-middle" id="idbo' + code + '" rowspan="1">' + data3.Data[k].mabo + '</td>' +
+                                                    '<td class="text-center align-middle" id="tdluongsua' + code + '" rowspan="1"><input id="luongsua' + code + '" type="number" min="0" step="1" value="0"/></td>' +
+                                                    '<td class="text-center align-middle" id="tdchoan' + code + '" rowspan="1"><div class="form-group"><input type="checkbox" id="choan' + code + '"/><label for="choan' + code + '"></label></div></td>' +
+                                                    '<td class="text-center align-middle" id="tdvesinh' + code + '" rowspan="1"><div class="form-group"><input type="checkbox" id="vesinh' + code + '"/><label for="vesinh' + code + '"></label></div></td>' +
+                                                    '<td class="text-center align-middle" id="tdtinhtrang' + code + '" rowspan="1"><input id="tinhtrang' + code + '" type="text"/></td>' +
+                                                    '<td colspan="3" class="text-center align-middle"><button type="button" onclick="tempmaphancong(\'' + temp[index].MaPhanCong + '\',\'' + data3.Data[k].mabo + '\')" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#basicExample">Ghi nhận tình trạng bò</button></td>' +
+                                                    '<td class="text-center align-middle" id="tdsave' + code + '" rowspan="1"><span class="spnSelected" onclick="spanClick(\'' + code + '\',\'' + temp[index].MaPhanCong + '\')"><i class="fa fa-save blue-text" aria-hidden="false"></i></span></td>' +
+                                                    '<td class="text-center align-middle" id="tdcheck' + code + '" rowspan="1"><i id="hidden' + code + '" class="fa fa-check" aria-hidden="true" hidden="hidden"></i></td>' +
                                                 '</tr>');
                                         }
                                     }
@@ -147,25 +148,59 @@
             });
         });
 
+
+        function tempmaphancong(mapc, mab) {
+            maphancong = mapc;
+            mabo = mab;
+        }
+
+
         function chuongtrai(mapc) {
             if (!$('#' + mapc).attr('my-loaded')) {
                 $('#' + mapc).attr('my-loaded', true);
                 callAjax('post', { Token: Cookies.get('token'), Data: { MaPhanCong: mapc } }, Cookies.get("area"), "animal_care", "animalcare/getAll", function (data) {
                     if (data.Data) {
+                        //console.log(data);
                         for (var i = 0; i < data.Data.length; i++) {
                             var code = data.Data[i].MaPhanCong+data.Data[i].MaBo;
                             document.getElementById('luongsua' + code).value = data.Data[i].LuongSua;
                             document.getElementById('choan' + code).checked = data.Data[i].DaChoAn;
                             document.getElementById('vesinh' + code).checked = data.Data[i].DaDonVeSinh;
                             document.getElementById('tinhtrang' + code).value = data.Data[i].TinhTrangCongViec;
-                            document.getElementById('chieucao1' + code).value = data.Data[i].ChieuCao1,
-                            document.getElementById('cannang1' + code).value = data.Data[i].CanNang1,
-                            document.getElementById('chieucao2' + code).value = data.Data[i].ChieuCao2,
-                            document.getElementById('cannang2' + code).value = data.Data[i].CanNang2
                             $('#hidden' + code).removeAttr('hidden');
+
+                            callAjax('post', { Token: Cookies.get('token'), Data: { MaChamSoc: data.Data[i].MaChamSoc } }, Cookies.get("area"), "animal_care", "animalcare/getTinhTrangBo", function (data2) {
+                                if (data2.Data) {
+                                    var t = data2.Data.length;
+                                    console.log(data2);
+                                    var code = data2.Data[0].MaPhanCong + data2.Data[0].MaBo;
+                                    $('#idbo' + code).attr('rowspan', t + 1);
+                                    $('#tdluongsua' + code).attr('rowspan', t + 1);
+                                    $('#tdchoan' + code).attr('rowspan', t + 1);
+                                    $('#tdvesinh' + code).attr('rowspan', t + 1);
+                                    $('#tdtinhtrang' + code).attr('rowspan', t + 1);
+                                    $('#tdsave' + code).attr('rowspan', t + 1);
+                                    $('#tdcheck' + code).attr('rowspan', t + 1);
+
+                                    for (var i = 0; i < data2.Data.length; i++) {
+                                        var stt = "Lần " + (i + 1);
+                                        $('#tr' + code).last().after(
+                                            '<tr class="table-success">' +
+                                            '<td class="text-center align-middle">' + stt + '</td>' +
+                                            '<td class="text-center align-middle">' + data2.Data[i].ChieuCao + '</td>' +
+                                            '<td class="text-center align-middle">' + data2.Data[i].CanNang + '</td>' +
+                                            '</tr>'
+                                            );
+                                    }
+                                }
+                            });
                         }
+
+                        
+
                     }
                 });
+                
             }
         }
 
@@ -189,11 +224,7 @@
                     LuongSua: luongsua,
                     DaChoAn: choan,
                     DaDonVeSinh: vesinh,
-                    MaPhanCong: mapc,
-                    ChieuCao1: document.getElementById('chieucao1' + code).value,
-                    CanNang1: document.getElementById('cannang1' + code).value,
-                    ChieuCao2: document.getElementById('chieucao2' + code).value,
-                    CanNang2: document.getElementById('cannang2' + code).value
+                    MaPhanCong: mapc
                 }
             }, Cookies.get("area"), "animal_care", "animalcare/add", function (data) {
                 if (!data.Data) {
@@ -204,9 +235,48 @@
                 }
                 else {
                     toastr["success"](data.Data);
+                    document.getElementById('tinhtrang' + code).value = tinhtrang;
+                    $('#hidden' + code).removeAttr('hidden');
                 }
             });
         }
+
+        function saveclick(chieucao, cannang) {
+            callAjax('post', {
+                Token: Cookies.get('token'), Data: {
+                    MaPhanCong: maphancong,
+                    MaBo:mabo,
+                    ChieuCao: chieucao,
+                    CanNang: cannang
+                }
+            }, Cookies.get("area"), "animal_care", "animalcare/addTinhTrangBo", function (data) {
+                console.log(data);
+                if (data.IsError){
+                    toastr['error'](data.Errors[0]);
+                }
+                else {
+                    var code = data.Data.MaPhanCong + data.Data.MaBo;
+                    var t = parseInt(document.getElementById('idbo' + code).attributes.getNamedItem('rowspan').value);
+                    $('#idbo' + code).attr('rowspan', t + 1);
+                    $('#tdluongsua' + code).attr('rowspan', t + 1);
+                    $('#tdchoan' + code).attr('rowspan', t + 1);
+                    $('#tdvesinh' + code).attr('rowspan', t + 1);
+                    $('#tdtinhtrang' + code).attr('rowspan', t + 1);
+                    $('#tdsave' + code).attr('rowspan', t + 1);
+                    $('#tdcheck' + code).attr('rowspan', t + 1);
+                    var stt = 'Lần ' + t;
+                    $('#tr' + code).last().after(
+                        '<tr class="table-success">' +
+                        '<td class="text-center align-middle">' + stt + '</td>' +
+                        '<td class="text-center align-middle">'+chieucao+'</td>' +
+                        '<td class="text-center align-middle">' + cannang + '</td>'+
+                        '</tr>'
+                        );
+                }
+            });
+        }
+
+
     </script>
 }
 
@@ -223,3 +293,35 @@
     </p>
 </form>
 
+<!-- Button trigger modal -->
+@*<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#basicExample">
+    Launch demo modal
+</button>*@
+
+<!-- Modal -->
+<div class="modal fade" id="basicExample" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <!--Content-->
+        <div class="modal-content">
+            <!--Header-->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title w-100" id="myModalLabel">Tình trạng bò</h4>
+            </div>
+            <!--Body-->
+            <div class="modal-body">
+                <label class="w-25">Chiều cao</label><input id="chieucao" type="number" min="0" value="0" step="0.5" class="w-25" /> mét <br />
+                <label class="w-25">Cân nặng</label><input id="cannang" type="number" min="0" value="0" step="5" class="w-25" /> lít <br/>
+            </div>
+            <!--Footer-->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-primary" onclick="saveclick(document.getElementById('chieucao').value,document.getElementById('chieucao').value, document.getElementById('cannang').value)" data-dismiss="modal">Lưu</button>
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>
+<!-- Modal -->

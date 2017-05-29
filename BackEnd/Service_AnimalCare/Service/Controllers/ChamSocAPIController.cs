@@ -16,7 +16,7 @@ namespace Service.Controllers
     [RoutePrefix("animalcare")]
     public class ChamSocAPIController : ApiController
     {
-        //add new assignment
+        //add cham soc
         [HttpPost]
         [Route("add")]
         public HttpResponseMessage AddChamSoc([FromBody] ChamSocRequest request)
@@ -30,10 +30,10 @@ namespace Service.Controllers
                 else
                 {
                     ChamSoc cs = ChamSocRepository.IsExistsChamSoc(request.Data);
-                    if (cs!=null)
+                    if (cs != null)
                     {
                         request.Data.MaChamSoc = cs.MaChamSoc;
-                        ChamSocBUS.UpdateChamSoc(request,ref response);
+                        ChamSocBUS.UpdateChamSoc(request, ref response);
                         if (response.IsError)
                             return Request.CreateResponse(HttpStatusCode.OK, response);
                         if (ChamSocRepository.Update(request.Data) < 0)
@@ -58,14 +58,65 @@ namespace Service.Controllers
                             response.Data = "Thêm thành công!";
                         }
                     }
-                    
+
                 }
             }
 
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
-        //update assignment
+        //add tinhtrangbo
+        [HttpPost]
+        [Route("addTinhTrangBo")]
+        public HttpResponseMessage AddTinhTrangBo([FromBody] TinhTrangBoRequest request)
+        {
+            var response = new TinhTrangBoResponse();
+            if (BusinessHandler.TokenBUS.tokenCheck(request, response, 1))
+            {
+                ChamSocBUS.AddTinhTrangBo(request, ref response);
+                if (response.IsError)
+                {
+                    return Request.CreateResponse(HttpStatusCode.OK, response);
+                }
+                else
+                {
+                    ChamSoc cs = ChamSocRepository.AddTinhTrangBo(request.Data);
+                    if (cs == null)
+                    {
+                        response.Errors.Add("Lỗi hệ thống, hãy chăm sóc bò trước khi đo đạc thông số");
+                        response.IsError = true;
+                    }
+                    else
+                    {
+                        response.Data = cs;
+                    }
+                }
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, response);
+        }
+
+        [HttpPost]
+        [Route("getTinhTrangBo")]
+        public HttpResponseMessage GetTinhTrangBo([FromBody] TinhTrangBoRequest request)
+        {
+            var response = new TinhTrangBoResponse();
+            if (BusinessHandler.TokenBUS.tokenCheck(request, response, 1))
+            {
+                List<TinhTrangBo> cs = ChamSocRepository.GetTinhTrangBo(request.Data);
+                if (cs == null)
+                {
+                    response.Errors.Add("Lỗi hệ thống");
+                    response.IsError = true;
+                }
+                else
+                {
+                    response.Data = cs;
+                }
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, response);
+        }
+
+        //update cham soc
         [HttpPost]
         [Route("update")]
         public HttpResponseMessage UpdateChamSoc([FromBody] ChamSocRequest request)

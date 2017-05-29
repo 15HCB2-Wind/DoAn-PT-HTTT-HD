@@ -36,4 +36,9 @@ namespace Service.Models
     {
         public ChamSoc Data { get; set; }
     }
+
+    public class TinhTrangBoRequest : BodyRequest
+    {
+        public TinhTrangBo Data { get; set; }
+    }
 }
