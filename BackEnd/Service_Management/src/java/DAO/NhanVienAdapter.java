@@ -8,6 +8,7 @@ package DAO;
 import Models.Other.ChangePasswordRequest;
 import Ultility.HibernateUtil;
 import Ultility.Security;
+import java.util.Date;
 import java.util.List;
 import pojos.*;
 
@@ -59,6 +60,7 @@ public class NhanVienAdapter {
 
     public static boolean addNhanVien(Nhanvien obj) {
         getNewID(obj);
+        obj.setNgayvaolam(new Date());
         obj.setMaphanquyen("PQ001");
         obj.setDaxoa(false);
         obj.setTentaikhoan(obj.getEmail());
@@ -100,15 +102,16 @@ public class NhanVienAdapter {
     
      public static String addManager(Nhanvien obj) {
         getNewID(obj);
+        obj.setNgayvaolam(new Date());
         obj.setMaphanquyen("PQ002");
         obj.setDaxoa(false);
         obj.setTentaikhoan(obj.getEmail());
         obj.setMatkhau(Security.Encrypt(obj.getTentaikhoan()));
         if(HibernateUtil.save(obj))
         {
-            return obj.getManhanvien().toString();
+            return obj.getManhanvien();
         }
-        return "false";  
+        return null;  
     }
     
     public static boolean  updateRole(Nhanvien obj) {

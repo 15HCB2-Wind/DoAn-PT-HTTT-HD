@@ -249,7 +249,7 @@ public class NhanVienAPIs {
             //if (NhanVienBUS.validateInformation(request, response, "add")) {
                 try {
                     String id = NhanVienAdapter.addManager(request.Data);
-                    if (!id.equals("false")) {
+                    if (id != null) {
                         //NhanVienBUS.sync(1, request.Data);
                         response.Data = id;
                     } else {

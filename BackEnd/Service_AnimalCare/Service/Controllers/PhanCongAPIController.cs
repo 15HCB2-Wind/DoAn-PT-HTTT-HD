@@ -118,13 +118,12 @@ namespace Service.Controllers
         [Route("getListAssignmentsOfEmployeer")]
         public HttpResponseMessage GetAllFromNhanVien([FromBody] PhanCongRequest request)
         {
-            var response = new PhanCongResponse(); 
-
-            if (BusinessHandler.TokenBUS.tokenCheck(request, response, 1))
+            var response = new PhanCongResponse();
+            TokenData tkdata = BusinessHandler.TokenBUS.tokenData(request, response, 1);
+            if (tkdata != null)
             {
                 try
                 {
-                    TokenData tkdata = BusinessHandler.TokenBUS.tokenData(request, response, 1);
                     request.Data = new PhanCong();
                     request.Data.MaNV = tkdata.UserId;
                     BusinessHandler.PhanCongBUS.GetAllFromNhanVien(request, ref response);

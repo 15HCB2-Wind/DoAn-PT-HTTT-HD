@@ -6,6 +6,7 @@
 package DAO;
 
 import Ultility.HibernateUtil;
+import java.util.Date;
 import java.util.List;
 import pojos.Bo;
 
@@ -38,6 +39,7 @@ public class BoAdapter {
     
     public static boolean add(Bo obj) {
         getNewID(obj);
+        obj.setNgaynhan(new Date());
         obj.setDaxoa(false);
         obj.setTinhtrang("Khỏe mạnh.");
         return HibernateUtil.save(obj);
