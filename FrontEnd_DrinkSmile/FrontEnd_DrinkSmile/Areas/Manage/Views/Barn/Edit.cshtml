@@ -23,8 +23,8 @@
                 </div>
                 <div class="md-form">
                     <i class="fa fa-battery-1 prefix"></i>
-                    <input id="dangchua" class="form-control" type="number" min="0" placeholder="" />
-                    <label id="dangchuaerror" for="dangchua">Đang chứa</label>
+                    <input id="dangchua" class="form-control" type="text" disabled="disabled" placeholder="" />
+                    <label for="dangchua">Đang chứa</label>
                 </div>
                 <div class="md-form">
                     <i class="fa fa-comment-o prefix"></i>
@@ -38,26 +38,6 @@
                     <button type="submit" class="btn btn-primary">
                         Lưu <i id="loader" class="fa fa-circle-o-notch fa-pulse fa-lg fa-fw"></i>
                     </button>
-
-                    <button id="btnAction" type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalAction"></button>
-                    <!-- Modal -->
-                    <div class="modal fade" id="modalAction" tabindex="-1" role="dialog">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-                                    <h4 class="modal-title w-100">Xác nhận</h4>
-                                </div>
-                                <div class="modal-body text-center">
-                                    Bạn thực sự muốn thực hiện?
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
-                                    <button class="btn btn-danger" id="action">Đồng ý</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
                     <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Thoát</button>
                     <!-- Modal -->
@@ -125,10 +105,10 @@
             $("#form_editbarn").submit(function (e) {
                 e.preventDefault();
 
-                if ($("#dangchua").val() > $("#succhua").val()) {
-                    $("#dangchua").addClass("validate invalid");
-                    $("#dangchuaerror").addClass("active");
-                    $("#dangchuaerror").attr("data-error", "Quá sức chứa");
+                if (parseInt($("#dangchua").val()) > parseInt($("#succhua").val())) {
+                    $("#succhua").addClass("validate invalid");
+                    $("#succhuaerror").addClass("active");
+                    $("#succhuaerror").attr("data-error", "Sức chứa không hợp lệ!");
                     return;
                 }
 
@@ -159,12 +139,6 @@
                                 $("#succhuaerror").attr("data-error", result.SlotErrors[0]);
                             }
 
-                            if (result.Slot1Errors.length > 0) {
-                                $("#dangchua").addClass("validate invalid");
-                                $("#dangchuaerror").addClass("active");
-                                $("#dangchuaerror").attr("data-error", result.Slot1Errors[0]);
-                            }
-
                             if (result.Errors.length > 0) {
                                 toastr["error"](result.Errors[0]);
                             }
@@ -174,30 +148,6 @@
                         }
                     }
                 )
-            });
-
-            function actionForBarn(str) {
-                callAjax('post', { Token: Cookies.get("token"), MaCT: $("#mact").val() }, Cookies.get("area"), "management", "ChuongTrai/" + str,
-                    function (result) {
-                        if (result.IsError) {
-                            if (result.Errors.length > 0) {
-                                toastr["error"](result.Errors[0]);
-                            }
-                        }
-                        else {
-                            location.href = "/Manage/Barn/Index";
-                        }
-                    }
-                )
-            };
-
-            $("#action").click(function () {
-                if ($("#daxoa").val() == "false") {
-                    actionForBarn("delete");
-                }
-                else {
-                    actionForBarn("recover");
-                }
             });
         });
     </script>

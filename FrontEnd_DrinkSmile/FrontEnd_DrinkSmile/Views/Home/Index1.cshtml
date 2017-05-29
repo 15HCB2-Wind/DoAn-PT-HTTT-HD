@@ -73,40 +73,39 @@
                                     '<table class="table table-striped table-bordered table-hover" id="' + temp[i].MaChuong + '_table">' +
                                         '<thead>' +
                                             '<tr>' +
-                                                '<th rowspan="3" class="text-center" style="vertical-align:middle">Bò</th>' +
-                                                '<th rowspan="3" class="text-center" style="vertical-align:middle" width="150px">Lượng sữa</th>' +
-                                                '<th rowspan="3" class="text-center" style="vertical-align:middle">Cho ăn</th>' +
-                                                '<th rowspan="3" class="text-center" style="vertical-align:middle">Vệ sinh</th>' +
-                                                '<th rowspan="3" class="text-center" style="vertical-align:middle" width="300px">Tình trạng công việc</th>' +
-                                                '<th colspan="4" class="text-center" style="vertical-align:middle">Tình trạng bò</th>' +
-                                                '<th rowspan="3" colspan="2"></th>' +
+                                                '<th rowspan="2" class="text-center" style="vertical-align:middle">Bò</th>' +
+                                                '<th rowspan="2" class="text-center" style="vertical-align:middle" width="150px">Lượng sữa</th>' +
+                                                '<th rowspan="2" class="text-center" style="vertical-align:middle">Cho ăn</th>' +
+                                                '<th rowspan="2" class="text-center" style="vertical-align:middle">Vệ sinh</th>' +
+                                                '<th rowspan="2" class="text-center" style="vertical-align:middle" width="300px">Tình trạng công việc</th>' +
+                                                '<th colspan="2" class="text-center" style="vertical-align:middle">Tình trạng bò</th>' +
+                                                '<th rowspan="2" colspan="2"></th>' +
                                                 //'<th rowspan="2"></th>' +
                                             '</tr>' +
                                             '<tr>' +
-                                                '<td colspan="2" align="center" valign="middle">Chiều cao(mét)</td>' +
-                                '<td colspan="2" align="center" valign="middle">Cân nặng(kg)</td>' +
-                                            '</tr>' +
-                                            '<tr>' +
-                                                '<td class="text-center align-middle">Lần1</td>' +
-                                                '<td class="text-center align-middle">Lần2</td>' +
-                                                '<td class="text-center align-middle">Lần1</td>' +
-                                                '<td class="text-center align-middle">Lần2</td>' +
+                                                '<td align="center" valign="middle">Chiều cao (mét)</td>' +
+                                                '<td align="center" valign="middle">Cân nặng (kg)</td>' +
                                             '</tr>' +
                                         '</thead>' +
                                         '<tbody>' +
                                         '</tbody>' +
                                     '</table>';
 
+                                var firstExpanded = 'false', firstShow = '';
+                                if (i == 0) {
+                                    firstExpanded = 'true';
+                                    firstShow = 'show';
+                                }
                                 $('#accordion').append(
                                     '<div class="card">' +
                                         '<div class="card-header" role="tab" id="' + temp[i].MaPhanCong + '" onclick="chuongtrai(\'' + temp[i].MaPhanCong + '\')">' +
-                                            '<a data-toggle="collapse" data-parent="#accordion" href="#' + temp[i].MaChuong + '" aria-expanded="false" aria-controls="' + temp[i].MaChuong + '">' +
+                                            '<a data-toggle="collapse" data-parent="#accordion" href="#' + temp[i].MaChuong + '" aria-expanded="' + firstExpanded + '" aria-controls="' + temp[i].MaChuong + '">' +
                                                 '<h5 class="mb-0">' +
                                                     name + '<i class="fa fa-angle-down rotate-icon"></i>' +
                                                 '</h5>' +
                                             '</a>' +
                                         '</div>' +
-                                        '<div id="' + temp[i].MaChuong + '" class="collapse" role="tabpanel" aria-labelledby="' + temp[i].MaPhanCong + '">' +
+                                        '<div id="' + temp[i].MaChuong + '" class="collapse ' + firstShow + '" role="tabpanel" aria-labelledby="' + temp[i].MaPhanCong + '">' +
                                             '<div class="card-block">' +
                                             td +
                                             '</div>' +
@@ -129,10 +128,9 @@
                                                     '<td class="text-center align-middle"><div class="form-group"><input type="checkbox" id="choan' + code + '"/><label for="choan' + code + '"></label></div></td>' +
                                                     '<td class="text-center align-middle"><div class="form-group"><input type="checkbox" id="vesinh' + code + '"/><label for="vesinh' + code + '"></label></div></td>' +
                                                     '<td class="text-center align-middle"><input id="tinhtrang' + code + '" type="text"/></td>' +
-                                                    '<td class="text-center align-middle"><input id="chieucao1' + code + '" type="number" min="0" step="0.5" value="0"/></td>' +
-                                                    '<td class="text-center align-middle"><input id="chieucao2' + code + '" type="number" min="0" step="0.5" value="0"/></td>' +
-                                                    '<td class="text-center align-middle"><input id="cannang1' + code + '" type="number" min="0" step="5" value="0" /></td>' +
-                                                    '<td class="text-center align-middle"><input id="cannang2' + code + '" type="number" min="0" step="5" value="0" /></td>' +
+                                                    //'<td class="text-center align-middle"><input id="chieucao' + code + '" type="number" min="0" value="0"/></td>' +
+                                                    //'<td class="text-center align-middle"><input id="cannang' + code + '" type="number" min="0" value="0" /></td>' +
+                                                    '<td colspan="2" class="text-center align-middle"><a href="#">Ghi nhận tình trạng bò</a></td>' +
                                                     '<td class="text-center align-middle"><span class="spnSelected" onclick="spanClick(\'' + code + '\',\'' + temp[index].MaPhanCong + '\')"><i class="fa fa-save blue-text" aria-hidden="false"></i></span></td>' +
                                                     '<td class="text-center align-middle"><i id="hidden' + code + '" class="fa fa-check" aria-hidden="true" hidden="hidden"></i></td>' +
                                                 '</tr>');
@@ -153,8 +151,7 @@
             if (!$('#' + mapc).attr('my-loaded')) {
                 $('#' + mapc).attr('my-loaded', true);
                 callAjax('post', { Token: Cookies.get('token'), Data: { MaPhanCong: mapc } }, Cookies.get("area"), "animal_care", "animalcare/getAll", function (data) {
-                    //if (data.Data) {
-                        console.log(data);
+                    if (data.Data) {
                         for (var i = 0; i < data.Data.length; i++) {
                             var code = data.Data[i].MaPhanCong+data.Data[i].MaBo;
                             document.getElementById('luongsua' + code).value = data.Data[i].LuongSua;
@@ -167,7 +164,7 @@
                             document.getElementById('cannang2' + code).value = data.Data[i].CanNang2
                             $('#hidden' + code).removeAttr('hidden');
                         }
-                    //}
+                    }
                 });
             }
         }

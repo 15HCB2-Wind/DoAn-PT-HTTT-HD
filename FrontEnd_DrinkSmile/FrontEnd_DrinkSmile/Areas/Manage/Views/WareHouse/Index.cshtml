@@ -5,7 +5,11 @@
 }
 
 <h2><i class="fa fa-list"></i> Danh sách kho sữa</h2>
-<a class="blue-text" href="/Manage/WareHouse/Create"><i class="fa fa-arrow-down" aria-hidden="true"></i> Thêm một kho mới</a>
+@*<a class="blue-text" href="/Manage/WareHouse/Create"><i class="fa fa-arrow-down" aria-hidden="true"></i> Thêm một kho mới</a>*@
+<p>
+    <a class="btn btn-primary" href="@Url.Action("Create")">Thuê kho</a>
+    <a class="btn btn-success" href="@Url.Action("Transfer")">Chuyển kho</a>
+</p>
 <table class="table table-hover">
     <thead class="thead-inverse">
         <tr>
@@ -19,7 +23,24 @@
     </thead>
     <tbody id="tbWarehouses"></tbody>
 </table>
-
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                <h4 class="modal-title w-100">Thoát</h4>
+            </div>
+            <div class="modal-body text-center">
+                Bạn có muốn tiếp tục?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                <button id="deleteModal_btnYes" type="button" class="btn btn-danger" data-dismiss="modal">Tiếp</button>
+            </div>
+        </div>
+    </div>
+</div>
+<p class="text-center" id="loader"><i class="fa fa-circle-o-notch fa-pulse fa-lg fa-fw"></i></p>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script>
@@ -28,42 +49,6 @@
         $(document).ready(function () {
             loadTable();
         });
-
-        function deleteWarehouse(index) {
-            callAjax('post',
-                    { Token: Cookies.get("token"), Predicates: [warehouses[index].makho] },
-                    Cookies.get("area"), "management", "KhoSua/delete",
-                    function (data) {
-                        if (data.IsError) {
-                            toastr["error"](data.Errors[0]);
-                            $("#error").show();
-                            $("#error").text(data.Errors[0]);
-                        }
-                        else {
-                            toastr["success"](data.Data);
-                            loadTable();
-                        }
-                    }
-                );
-        }
-
-        function recoverWarehouse(index) {
-            callAjax('post',
-                    { Token: Cookies.get("token"), Predicates: [warehouses[index].makho] },
-                    Cookies.get("area"), "management", "KhoSua/recover",
-                    function (data) {
-                        if (data.IsError) {
-                            toastr["error"](data.Errors[0]);
-                            $("#error").show();
-                            $("#error").text(data.Errors[0]);
-                        }
-                        else {
-                            toastr["success"](data.Data);
-                            loadTable();
-                        }
-                    }
-                );
-        }
 
         function loadTable() {
             callAjax('post',
@@ -87,7 +72,7 @@
                                     if (item.daxoa) {
                                         trType = '<tr class="table-danger" title="' + item.diachi + '">';
                                     } else {
-                                        trType = '<tr title="' + item.diachi + '">';
+                                        trType = '<tr class="table-success" title="' + item.diachi + '">';
                                     }
 
                                     var td4;
@@ -101,11 +86,11 @@
                                     var deleteButton;
                                     var editButton;
                                     if (item.daxoa) {
-                                        deleteButton = '<a class="red-text" onclick="recoverWarehouse(' + i + ')"><i class="fa fa-refresh" aria-hidden="true"></i></a>';
+                                        deleteButton = '<a class="red-text" data-toggle="modal" data-target="#deleteModal" onclick="setupModal(\'recover\', \'' + item.makho + '\', true)"><i class="fa fa-refresh" aria-hidden="true"></i></a>';
                                         editButton = '';
                                     }
                                     else {
-                                        deleteButton = '<a class="red-text" onclick="deleteWarehouse(' + i + ')"><i class="fa fa-times"></i></a>';
+                                        deleteButton = '<a class="red-text" data-toggle="modal" data-target="#deleteModal" onclick="setupModal(\'delete\', \'' + item.makho + '\', true)"><i class="fa fa-times"></i></a>';
                                         editButton = '<a class="teal-text" href="/Manage/WareHouse/Edit?id=' + item.makho + '&name=' + item.tenkho + '&max=' + item.succhua + '&cur=' + item.luongsuaco + '&addr=' + item.diachi + '&sta=' + item.tinhtrang + '"><i class="fa fa-pencil"></i></a>';
                                     }
 
@@ -131,5 +116,26 @@
                     }
                 );
         }
+
+        function setupModal(str, id, cond) {
+            $('#deleteModal_btnYes').attr('onclick', 'modalAction(\'' + str + '\', \'' + id + '\', ' + cond + ')');
+        }
+        function modalAction(str, id, cond) {
+            if (cond) {
+                callAjax('post', { Token: Cookies.get("token"), Predicates: [id] }, Cookies.get("area"), "management", "KhoSua/" + str,
+                    function (result) {
+                        if (result.IsError) {
+                            if (result.Errors.length > 0) {
+                                toastr["error"](result.Errors[0]);
+                            }
+                        }
+                        else {
+                            toastr["success"](result.Data);
+                            loadTable();
+                        }
+                    }
+                )
+            }
+        };
     </script>
 }

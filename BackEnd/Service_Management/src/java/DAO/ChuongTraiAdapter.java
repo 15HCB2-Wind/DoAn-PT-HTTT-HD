@@ -25,7 +25,7 @@ public class ChuongTraiAdapter {
     }
     
     public static List<Chuongtrai> getAllAvailables(Object id) {
-        return HibernateUtil.getList("from Chuongtrai where machinhanh = :p0 and dangchua < succhua", new Object[]{id});
+        return HibernateUtil.getList("from Chuongtrai where machinhanh = :p0 and dangchua < succhua and daxoa = :p1", new Object[]{id, false});
     }
 
     public static boolean add(Chuongtrai obj) {
@@ -51,7 +51,6 @@ public class ChuongTraiAdapter {
         Chuongtrai c = getSingle(obj.getMachuong());
         c.setTenchuong(obj.getTenchuong());
         c.setSucchua(obj.getSucchua());
-        c.setDangchua(obj.getDangchua());
         c.setTinhtrang(obj.getTinhtrang());
         return HibernateUtil.update(c);
     }

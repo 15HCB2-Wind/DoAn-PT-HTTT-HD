@@ -3,12 +3,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <h2><i class="fa fa-list"></i> Danh sách chuồng trại</h2>
-<p id="addBarn1">
+<p>
     <a class="btn btn-primary" href="@Url.Action("Create")">Thêm chuồng trại</a>
 </p>
-<p class="text-center" id="addBarn2">Chi nhánh của bạn chưa có chuồng trại nào, bấm vào @Html.ActionLink("đây", "Create") để thêm.</p>
-<table class="table table-hover">
-    <thead>
+<p class="text-center" id="empty_message">Chi nhánh của bạn chưa có chuồng trại nào.</p>
+<table id="tableData" class="table table-hover">
+    <thead class="table-inverse">
         <tr>
             <th>Mã chuồng</th>
             <th>Tên chuồng</th>
@@ -18,14 +18,34 @@
             <th></th>
         </tr>
     </thead>
-    <tbody></tbody>
+    <tbody id="tableBody"></tbody>
 </table>
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                <h4 class="modal-title w-100">Thoát</h4>
+            </div>
+            <div class="modal-body text-center">
+                Bạn có muốn tiếp tục?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                <button id="deleteModal_btnYes" type="button" class="btn btn-danger" data-dismiss="modal">Tiếp</button>
+            </div>
+        </div>
+    </div>
+</div>
 <p class="text-center" id="loader"><i class="fa fa-circle-o-notch fa-pulse fa-lg fa-fw"></i></p>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script>
         $(document).ready(function () {
-            $("#addBarn2").hide();
+            loadTable();
+        });
+
+        function loadTable() {
             callAjax('post', { Token: Cookies.get("token") }, Cookies.get("area"), "management", "ChuongTrai/getAll",
                 function (result) {
                     if (result.IsError) {
@@ -34,28 +54,73 @@
                         $("#error").text(result.Errors[0]);
                     }
                     else {
-                        if (result.Data.length > 0) {
+                        if (result.Data && result.Data.length > 0) {
+                            $("#empty_message").hide();
+                            $('#tableBody').html('');
                             for (var i = 0; i < result.Data.length; i++) {
                                 var dahuy = "";
-                                if (result.Data[i].daxoa == true) { dahuy = "Đã hủy"; }
+                                var trType;
+                                if (result.Data[i].daxoa == true) {
+                                    dahuy = "Đã xóa";
+                                    trType = '<tr class="table-danger">';
+                                } else {
+                                    trType = '<tr class="table-success">';
+                                }
 
-                                var html = "<tr>"
+                                var deleteButton;
+                                var editButton;
+                                if (result.Data[i].daxoa) {
+                                    deleteButton = '<a class="red-text" data-toggle="modal" data-target="#deleteModal" onclick="setupModal(\'recover\', \'' + result.Data[i].machuong + '\', true)"><i class="fa fa-refresh" aria-hidden="true"></i></a>';
+                                    editButton = '';
+                                }
+                                else {
+                                    deleteButton = '<a class="red-text" data-toggle="modal" data-target="#deleteModal" onclick="setupModal(\'delete\', \'' + result.Data[i].machuong + '\', ' + (parseInt(result.Data[i].dangchua) <= 0) + ')"><i class="fa fa-times"></i></a>';
+                                    editButton = '<a class="teal-text" href="/Manage/Barn/Edit/' + result.Data[i].machuong + '"><i class="fa fa-pencil"></i></a>';
+                                }
+
+                                var html = trType
                                             + "<td>" + result.Data[i].machuong + "</td>"
                                             + "<td>" + result.Data[i].tenchuong + "</td>"
                                             + "<td>" + result.Data[i].succhua + "</td>"
                                             + "<td>" + result.Data[i].dangchua + "</td>"
                                             + "<td>" + dahuy + "</td>"
-                                            + "<td><a href='/Manage/Barn/Edit/" + result.Data[i].machuong + "'>Cập nhật</a></td>"
+                                            //+ "<td><a href='/Manage/Barn/Edit/" + result.Data[i].machuong + "'>Cập nhật</a></td>"
+                                            + '<td>' +
+                                                editButton +
+                                                deleteButton +
+                                            '</td>'
                                         + "</tr>";
                                 $("tbody").append(html);
                             }
                         }
                         else {
-                            $("#addBarn1").hide();
-                            $("#addBarn2").show();
+                            $("#tableData").hide();
                         }
                     }
                 });
-        });
+        }
+
+        function setupModal(str, id, cond) {
+            $('#deleteModal_btnYes').attr('onclick', 'modalAction(\'' + str + '\', \'' + id + '\', ' + cond + ')');
+        }
+        function modalAction(str, id, cond) {
+            if (cond) {
+                callAjax('post', { Token: Cookies.get("token"), MaCT: id }, Cookies.get("area"), "management", "ChuongTrai/" + str,
+                    function (result) {
+                        if (result.IsError) {
+                            if (result.Errors.length > 0) {
+                                toastr["error"](result.Errors[0]);
+                            }
+                        }
+                        else {
+                            toastr["success"](result.Data);
+                            loadTable();
+                        }
+                    }
+                )
+            } else {
+                toastr['error']("Không thể xóa chuồng có bò.");
+            }
+        };
     </script>
 }

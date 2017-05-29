@@ -18,7 +18,7 @@
                             manv = data.Data[i].manhanvien;
                             $('#btnNV').html(data.Data[i].hoten);
                         }
-                        $("#dropdownNV").append('<a class="dropdown-item" onclick="nhanvienclick(' + i + ')">' + data.Data[i].hoten + '</a>');
+                        $("#dropdownNV").append('<a class="dropdown-item" onclick="nhanvienclick(' + i + ')">' + data.Data[i].hoten + ' (' + data.Data[i].manhanvien + ')</a>');
                     }
                 } else {
                     toastr['error'](data.Errors[0]);
@@ -28,7 +28,7 @@
                 listchuong = data.Data;
                 if (listchuong) {
                     for (var i = 0; i < data.Data.length; i++) {
-                        $("#dropdownCT").append('<a class="dropdown-item" onclick="chuongtraiclick(' + i + ')">' + data.Data[i].tenchuong + '</a>');
+                        $("#dropdownCT").append('<a class="dropdown-item" onclick="chuongtraiclick(' + i + ')">' + data.Data[i].tenchuong + ' (' + data.Data[i].machuong + ')</a>');
                     }
                 } else {
                     toastr['error'](data.Errors[0]);

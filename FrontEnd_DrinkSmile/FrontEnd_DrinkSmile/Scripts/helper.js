@@ -7,9 +7,9 @@ function callAjax(type, data, areaId, whichService, url, successCallback, tempDa
         type: type,
         dataType: 'json',
         data: JSON.stringify(data),
-        url: u,
+        url: getAPI(areaId, whichService, url),
         beforeSend: function (jqXHR) {
-            jqXHR['key-temp-data'] = AjaxCounter++ + u;
+            jqXHR['key-temp-data'] = AjaxCounter++;
             AjaxTempData[jqXHR['key-temp-data']] = tempData;
 
             $('#loader').show();

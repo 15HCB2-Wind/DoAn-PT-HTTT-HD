@@ -16,11 +16,9 @@ public class BarnResponse extends BodyResponse {
 
     public ArrayList<String> NameErrors;
     public ArrayList<String> SlotErrors;
-    public ArrayList<String> Slot1Errors;
 
     public BarnResponse() {
         NameErrors = new ArrayList<>();
         SlotErrors = new ArrayList<>();
-        Slot1Errors = new ArrayList<>();
     }
 }

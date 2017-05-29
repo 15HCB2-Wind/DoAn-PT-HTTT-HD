@@ -68,26 +68,6 @@
                         Lưu <i id="loader" class="fa fa-circle-o-notch fa-pulse fa-lg fa-fw"></i>
                     </button>
 
-                    <button id="btnAction" type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalAction"></button>
-                    <!-- Modal -->
-                    <div class="modal fade" id="modalAction" tabindex="-1" role="dialog">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-                                    <h4 class="modal-title w-100">Xác nhận</h4>
-                                </div>
-                                <div class="modal-body text-center">
-                                    Bạn thực sự muốn thực hiện?
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
-                                    <button class="btn btn-danger" id="action">Đồng ý</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                     <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Thoát</button>
                     <!-- Modal -->
                     <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
@@ -239,30 +219,6 @@
                         }
                     }
                 )
-            });
-
-            function actionForStaff(str) {
-                callAjax('post', { Token: Cookies.get("token"), UserId: $("#manv").val() }, Cookies.get("area"), "management", "NhanVien/" + str,
-                    function (result) {
-                        if (result.IsError) {
-                            if (result.Errors.length > 0) {
-                                toastr["error"](result.Errors[0]);
-                            }
-                        }
-                        else {
-                            location.href = "/Manage/Staff/Index";
-                        }
-                    }
-                )
-            };
-
-            $("#action").click(function () {
-                if ($("#daxoa").val() == "false") {
-                    actionForStaff("delete");
-                }
-                else {
-                    actionForStaff("recover");
-                }
             });
         });
     </script>
