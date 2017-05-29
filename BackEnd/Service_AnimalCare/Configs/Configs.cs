@@ -8,7 +8,7 @@ public class Configs
 {
     public const string CONNECTION_STRING = @"Server=.;Database=Service_AnimalCare;Trusted_Connection=True;";
 
-    public const bool DEBUG_MODE = true;
+    public const bool DEBUG_MODE = false;
 
     public const string TOKEN_PASSWORD = "&YH*hf4JEUFHKEKLRJH93#$i";
 

@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Index1";
+    ViewBag.Title = "Công việc của nhân viên hôm nay";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -11,9 +11,11 @@
             callAjax('post', { Token: Cookies.get('token') }, Cookies.get('area'), "management", "ChuongTrai/getAllBy1", function (data) {
                 listchuong = data.Data;
                 if (listchuong) {
-                    callAjax('post', { Token: Cookies.get('token'), Data: { MaNV: "testNV" } }, Cookies.get('area'), "animal_care", "assignment/getListAssignmentsOfEmployeer", function (data2) {
+                    callAjax('post', { Token: Cookies.get('token') }, Cookies.get('area'), "animal_care", "assignment/getListAssignmentsOfEmployeer", function (data2) {
                         if (!data2.Data) {
                             //nay ko co viec
+                            $('#form').hide();
+                            $('#congviec').text('Hôm nay không có việc.');
                         }
                         else {
                             var index = new Array();
@@ -85,10 +87,10 @@
                                 '<td colspan="2" align="center" valign="middle">Cân nặng(kg)</td>' +
                                             '</tr>' +
                                             '<tr>' +
-                                                '<td align="center" valign="middle">Lần1</td>' +
-                                                '<td align="center" valign="middle">Lần2</td>' +
-                                                '<td align="center" valign="middle">Lần1</td>' +
-                                                '<td align="center" valign="middle">Lần2</td>' +
+                                                '<td class="text-center align-middle">Lần1</td>' +
+                                                '<td class="text-center align-middle">Lần2</td>' +
+                                                '<td class="text-center align-middle">Lần1</td>' +
+                                                '<td class="text-center align-middle">Lần2</td>' +
                                             '</tr>' +
                                         '</thead>' +
                                         '<tbody>' +
@@ -122,17 +124,17 @@
                                             var code = temp[index].MaPhanCong + data3.Data[k].mabo;
                                             $('#' + data3.Data[0].machuong + '_table').append(
                                                 '<tr>' +
-                                                    '<td align="center" valign="middle" id="idbo' + code + '"><br/>' + data3.Data[k].mabo + '</td>' +
-                                                    '<td align="center" valign="middle"><input id="luongsua' + code + '" type="number" min="0" step="1" value="0"/></td>' +
-                                                    '<td align="center" valign="middle"><div class="form-group"><input type="checkbox" id="choan' + code + '"/><label for="choan' + code + '"></label></div></td>' +
-                                                    '<td align="center" valign="middle"><div class="form-group"><input type="checkbox" id="vesinh' + code + '"/><label for="vesinh' + code + '"></label></div></td>' +
-                                                    '<td align="center" valign="middle"><input id="tinhtrang' + code + '" type="text"/></td>' +
-                                                    '<td align="center" valign="middle"><input id="chieucao1' + code + '" type="number" min="0" step="0.5" value="0"/></td>' +
-                                                    '<td align="center" valign="middle"><input id="chieucao2' + code + '" type="number" min="0" step="0.5" value="0"/></td>' +
-                                                    '<td align="center" valign="middle"><input id="cannang1' + code + '" type="number" min="0" step="5" value="0" /></td>' +
-                                                    '<td align="center" valign="middle"><input id="cannang2' + code + '" type="number" min="0" step="5" value="0" /></td>' +
-                                                    '<td align="center" valign="middle"><span class="spnSelected" onclick="spanClick(\'' + code + '\',\'' + temp[index].MaPhanCong + '\')"><i class="fa fa-save blue-text" aria-hidden="false"></i></span></td>' +
-                                                    '<td align="center" valign="middle"><i id="hidden' + code + '" class="fa fa-check" aria-hidden="true" hidden="hidden"></i></td>' +
+                                                    '<td class="text-center align-middle" id="idbo' + code + '">' + data3.Data[k].mabo + '</td>' +
+                                                    '<td class="text-center align-middle"><input id="luongsua' + code + '" type="number" min="0" step="1" value="0"/></td>' +
+                                                    '<td class="text-center align-middle"><div class="form-group"><input type="checkbox" id="choan' + code + '"/><label for="choan' + code + '"></label></div></td>' +
+                                                    '<td class="text-center align-middle"><div class="form-group"><input type="checkbox" id="vesinh' + code + '"/><label for="vesinh' + code + '"></label></div></td>' +
+                                                    '<td class="text-center align-middle"><input id="tinhtrang' + code + '" type="text"/></td>' +
+                                                    '<td class="text-center align-middle"><input id="chieucao1' + code + '" type="number" min="0" step="0.5" value="0"/></td>' +
+                                                    '<td class="text-center align-middle"><input id="chieucao2' + code + '" type="number" min="0" step="0.5" value="0"/></td>' +
+                                                    '<td class="text-center align-middle"><input id="cannang1' + code + '" type="number" min="0" step="5" value="0" /></td>' +
+                                                    '<td class="text-center align-middle"><input id="cannang2' + code + '" type="number" min="0" step="5" value="0" /></td>' +
+                                                    '<td class="text-center align-middle"><span class="spnSelected" onclick="spanClick(\'' + code + '\',\'' + temp[index].MaPhanCong + '\')"><i class="fa fa-save blue-text" aria-hidden="false"></i></span></td>' +
+                                                    '<td class="text-center align-middle"><i id="hidden' + code + '" class="fa fa-check" aria-hidden="true" hidden="hidden"></i></td>' +
                                                 '</tr>');
                                         }
                                     }
@@ -141,7 +143,8 @@
                         }
                     });
                 } else {
-
+                    $('#form').hide();
+                    $('#congviec').text('Hôm nay không có việc.');
                 }
             });
         });
@@ -158,7 +161,10 @@
                             document.getElementById('choan' + code).checked = data.Data[i].DaChoAn;
                             document.getElementById('vesinh' + code).checked = data.Data[i].DaDonVeSinh;
                             document.getElementById('tinhtrang' + code).value = data.Data[i].TinhTrangCongViec;
-                            //document.getElementById('hidden' + code).hidden = "hidden";
+                            document.getElementById('chieucao1' + code).value = data.Data[i].ChieuCao1,
+                            document.getElementById('cannang1' + code).value = data.Data[i].CanNang1,
+                            document.getElementById('chieucao2' + code).value = data.Data[i].ChieuCao2,
+                            document.getElementById('cannang2' + code).value = data.Data[i].CanNang2
                             $('#hidden' + code).removeAttr('hidden');
                         }
                     //}
@@ -174,8 +180,6 @@
             }
             var choan = document.getElementById('choan' + code).checked;
             var vesinh = document.getElementById('vesinh' + code).checked;
-            console.log(choan);
-            console.log(vesinh);
             var tinhtrang = document.getElementById('tinhtrang' + code).value;
             if (!tinhtrang) {
                 tinhtrang = "Tốt";
@@ -188,7 +192,11 @@
                     LuongSua: luongsua,
                     DaChoAn: choan,
                     DaDonVeSinh: vesinh,
-                    MaPhanCong: mapc
+                    MaPhanCong: mapc,
+                    ChieuCao1: document.getElementById('chieucao1' + code).value,
+                    CanNang1: document.getElementById('cannang1' + code).value,
+                    ChieuCao2: document.getElementById('chieucao2' + code).value,
+                    CanNang2: document.getElementById('cannang2' + code).value
                 }
             }, Cookies.get("area"), "animal_care", "animalcare/add", function (data) {
                 if (!data.Data) {
