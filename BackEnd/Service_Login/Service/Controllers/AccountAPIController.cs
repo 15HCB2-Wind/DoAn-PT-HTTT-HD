@@ -195,6 +195,8 @@ namespace Service.Controllers
                             TenTaiKhoan = request.Username,
                             MatKhau = request.Password,
                             CapPQ = request.PermissionLevel,
+                            MaCN = request.AgencyId,
+                            MaPQ = request.PermissionId,
                         });
                         break;
                     case 0:
@@ -206,6 +208,8 @@ namespace Service.Controllers
                             TenTaiKhoan = request.Username,
                             MatKhau = request.Password,
                             CapPQ = request.PermissionLevel,
+                            MaCN = request.AgencyId,
+                            MaPQ = request.PermissionId,
                         });
                         break;
                     case -1:
@@ -247,6 +251,8 @@ namespace Service.Controllers
                             {
                                 UserId = token.MaNV,
                                 PermissionLevel = token.CapPQ,
+                                AgencyId = token.MaCN,
+                                PermissionId = token.MaPQ,
                             };
                         }
                         else

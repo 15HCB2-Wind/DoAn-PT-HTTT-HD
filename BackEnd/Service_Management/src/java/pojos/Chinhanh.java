@@ -1,5 +1,5 @@
 package pojos;
-// Generated May 26, 2017 4:07:04 PM by Hibernate Tools 4.3.1
+// Generated May 29, 2017 11:39:08 AM by Hibernate Tools 4.3.1
 
 
 
@@ -16,6 +16,7 @@ public class Chinhanh  implements java.io.Serializable {
      private String tinhtrang;
      private Boolean daxoa;
      private String quanly;
+     private String khotam;
 
     public Chinhanh() {
     }
@@ -24,7 +25,7 @@ public class Chinhanh  implements java.io.Serializable {
     public Chinhanh(String machinhanh) {
         this.machinhanh = machinhanh;
     }
-    public Chinhanh(String machinhanh, String tenchinhanh, String sodt, String diachi, String tinhtrang, Boolean daxoa, String quanly) {
+    public Chinhanh(String machinhanh, String tenchinhanh, String sodt, String diachi, String tinhtrang, Boolean daxoa, String quanly, String khotam) {
        this.machinhanh = machinhanh;
        this.tenchinhanh = tenchinhanh;
        this.sodt = sodt;
@@ -32,6 +33,7 @@ public class Chinhanh  implements java.io.Serializable {
        this.tinhtrang = tinhtrang;
        this.daxoa = daxoa;
        this.quanly = quanly;
+       this.khotam = khotam;
     }
    
     public String getMachinhanh() {
@@ -82,6 +84,13 @@ public class Chinhanh  implements java.io.Serializable {
     
     public void setQuanly(String quanly) {
         this.quanly = quanly;
+    }
+    public String getKhotam() {
+        return this.khotam;
+    }
+    
+    public void setKhotam(String khotam) {
+        this.khotam = khotam;
     }
 
 

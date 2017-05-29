@@ -7,6 +7,7 @@ package Models.Other;
 
 import Models.BodyResponse;
 import Models.TokenData;
+import java.util.ArrayList;
 
 /**
  *
@@ -14,4 +15,14 @@ import Models.TokenData;
  */
 public class CheckTokenResponse extends BodyResponse {
     public TokenData Data;
+    public boolean IsError;
+    public ArrayList<String> Errors;
+    public boolean IsTokenTimeout;
+    
+    public CheckTokenResponse(){
+        Data = null;
+        IsError = false;
+        Errors = new ArrayList<>();
+        IsTokenTimeout = false;
+    }
 }

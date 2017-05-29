@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated May 29, 2017 11:39:09 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="pojos.TablesCounter" table="tables_counter" catalog="service_management_drinksmile" optimistic-lock="version">
+        <id name="key" type="string">
+            <column name="key" length="3" />
+            <generator class="assigned" />
+        </id>
+        <property name="bo" type="java.lang.Integer">
+            <column name="bo" />
+        </property>
+        <property name="chinhanh" type="java.lang.Integer">
+            <column name="chinhanh" />
+        </property>
+        <property name="chuongtrai" type="java.lang.Integer">
+            <column name="chuongtrai" />
+        </property>
+        <property name="khosua" type="java.lang.Integer">
+            <column name="khosua" />
+        </property>
+        <property name="nhacungcap" type="java.lang.Integer">
+            <column name="nhacungcap" />
+        </property>
+        <property name="nhanvien" type="java.lang.Integer">
+            <column name="nhanvien" />
+        </property>
+    </class>
+</hibernate-mapping>

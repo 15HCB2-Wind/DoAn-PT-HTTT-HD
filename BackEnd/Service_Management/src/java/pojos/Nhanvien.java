@@ -1,5 +1,5 @@
 package pojos;
-// Generated May 26, 2017 4:07:04 PM by Hibernate Tools 4.3.1
+// Generated May 29, 2017 11:39:08 AM by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
@@ -23,6 +23,7 @@ public class Nhanvien  implements java.io.Serializable {
      private Boolean daxoa;
      private String machinhanh;
      private String maphanquyen;
+     private Date ngayvaolam;
 
     public Nhanvien() {
     }
@@ -31,7 +32,7 @@ public class Nhanvien  implements java.io.Serializable {
     public Nhanvien(String manhanvien) {
         this.manhanvien = manhanvien;
     }
-    public Nhanvien(String manhanvien, String hoten, String gioitinh, Date ngaysinh, String sodt, String diachi, String email, String tentaikhoan, String matkhau, String tinhtrang, Boolean daxoa, String machinhanh, String maphanquyen) {
+    public Nhanvien(String manhanvien, String hoten, String gioitinh, Date ngaysinh, String sodt, String diachi, String email, String tentaikhoan, String matkhau, String tinhtrang, Boolean daxoa, String machinhanh, String maphanquyen, Date ngayvaolam) {
        this.manhanvien = manhanvien;
        this.hoten = hoten;
        this.gioitinh = gioitinh;
@@ -45,6 +46,7 @@ public class Nhanvien  implements java.io.Serializable {
        this.daxoa = daxoa;
        this.machinhanh = machinhanh;
        this.maphanquyen = maphanquyen;
+       this.ngayvaolam = ngayvaolam;
     }
    
     public String getManhanvien() {
@@ -137,6 +139,13 @@ public class Nhanvien  implements java.io.Serializable {
     
     public void setMaphanquyen(String maphanquyen) {
         this.maphanquyen = maphanquyen;
+    }
+    public Date getNgayvaolam() {
+        return this.ngayvaolam;
+    }
+    
+    public void setNgayvaolam(Date ngayvaolam) {
+        this.ngayvaolam = ngayvaolam;
     }
 
 

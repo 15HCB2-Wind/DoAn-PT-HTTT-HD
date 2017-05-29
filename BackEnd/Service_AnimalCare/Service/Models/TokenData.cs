@@ -10,5 +10,7 @@ namespace DomainData
     {
         public string UserId { get; set; }
         public int PermissionLevel { get; set; }
+        public string AgencyId { get; set; }
+        public string PermissionId { get; set; }
     }
 }

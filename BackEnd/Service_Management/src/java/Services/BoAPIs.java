@@ -10,7 +10,6 @@ import Models.*;
 import BusinessHandler.BoBUS;
 import DAO.BoAdapter;
 import DAO.ChuongTraiAdapter;
-import DAO.NhanVienAdapter;
 import Models.DataAccess.Cow.CowRequest;
 import Models.DataAccess.Cow.CowResponse;
 import com.google.gson.Gson;
@@ -76,7 +75,7 @@ public class BoAPIs {
         TokenData token = BusinessHandler.TokenBUS.tokenData(request, response, 2);
         if (token != null){
             try{
-                List<Bo> result = BoAdapter.getAllOfAgency(NhanVienAdapter.getSingle(token.UserId).getMachinhanh());
+                List<Bo> result = BoAdapter.getAllOfAgency(token.AgencyId);
                 result.forEach((obj) -> {
                     obj.tenchuong = ChuongTraiAdapter.getSingle(obj.getMachuong()).getTenchuong();
                 });

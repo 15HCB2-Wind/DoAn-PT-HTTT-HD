@@ -32,11 +32,11 @@ namespace DataAccess.Repositories
                     {
                         MaNV = row.GetValueDefault<string>(0),
                         HoTen = row.GetValueDefault<string>(1),
-                        TenTaiKhoan = row.GetValueDefault<string>(2),
-                        Email = row.GetValueDefault<string>(3),
-                        CapPQ = row.GetValueDefault<int>(4),
+                        CapPQ = row.GetValueDefault<int>(2),
+                        MaCN = row.GetValueDefault<string>(3),
+                        MaPQ = row.GetValueDefault<string>(4),
                     };
-                }, string.Format("select top 1 nv.manv, nv.hoten, nv.tentaikhoan, nv.email, nv.cappq from nhanvien nv where nv.tentaikhoan = '{0}' and nv.matkhau = '{1}'", username, password));
+                }, string.Format("select top 1 manv, hoten, cappq, macn, mapq from nhanvien where tentaikhoan = '{0}' and matkhau = '{1}'", username, password));
             }
             catch (Exception ex)
             {
@@ -56,11 +56,11 @@ namespace DataAccess.Repositories
                     {
                         MaNV = row.GetValueDefault<string>(0),
                         HoTen = row.GetValueDefault<string>(1),
-                        TenTaiKhoan = row.GetValueDefault<string>(2),
-                        Email = row.GetValueDefault<string>(3),
-                        CapPQ = row.GetValueDefault<int>(4),
+                        CapPQ = row.GetValueDefault<int>(2),
+                        MaCN = row.GetValueDefault<string>(3),
+                        MaPQ = row.GetValueDefault<string>(4),
                     };
-                }, string.Format("select top 1 nv.manv, nv.hoten, nv.tentaikhoan, nv.email, nv.cappq from nhanvien nv where nv.email = '{0}'", email));
+                }, string.Format("select top 1 manv, hoten, tentaikhoan, email, cappq from nhanvien where email = '{0}'", email));
             }
             catch (Exception ex)
             {

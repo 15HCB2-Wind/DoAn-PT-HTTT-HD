@@ -73,7 +73,7 @@ public class NhanVienAPIs {
         TokenData token = BusinessHandler.TokenBUS.tokenData(request, response, 2);
         if (token != null){
             try {
-                response.Data = NhanVienAdapter.getAll(NhanVienAdapter.getSingle(token.UserId).getMachinhanh());
+                response.Data = NhanVienAdapter.getAll(token.AgencyId);
             } catch (Exception ex) {
                 response.Errors.add("Lỗi hệ thống.");
                 response.IsError = true;
@@ -94,7 +94,7 @@ public class NhanVienAPIs {
         if (token != null){
             if (NhanVienBUS.validateInformation(request, response, "add")) {
                 try {
-                    request.Data.setMachinhanh(NhanVienAdapter.getSingle(token.UserId).getMachinhanh());
+                    request.Data.setMachinhanh(token.AgencyId);
                     if (NhanVienAdapter.addNhanVien(request.Data)) {
                         NhanVienBUS.sync(1, request.Data);
                         response.Data = "Thêm thành công.";
@@ -214,7 +214,7 @@ public class NhanVienAPIs {
         return gson.toJson(response);
     }
     
-     @POST
+    @POST
     @Path("getStaffOfAgency")
     @Produces("application/json")
     @Consumes("application/json")
@@ -225,11 +225,7 @@ public class NhanVienAPIs {
 //        TokenData token = BusinessHandler.TokenBUS.tokenData(request, response, 2);
 //        if (token != null){
             try {
-                List<Nhanvien> result = NhanVienAdapter.getStaffOfAgency(request.Predicates[0]);
-                for(int i = 0; i < result.size(); i++){
-                    result.get(i).setMatkhau(null);
-                }
-                response.Data = result;
+                response.Data = NhanVienAdapter.getStaffOfAgency(request.Predicates[0]);
             } catch (Exception ex) {
                 response.Errors.add("Lỗi hệ thống.");
                 response.IsError = true;
@@ -238,7 +234,7 @@ public class NhanVienAPIs {
         return gson.toJson(response);
     }
     
-     @POST
+    @POST
     @Path("addManager")
     @Produces("application/json")
     @Consumes("application/json")
@@ -272,7 +268,7 @@ public class NhanVienAPIs {
         return gson.toJson(response);
     }
     
-     @POST
+    @POST
     @Path("updateRole")
     @Produces("application/json")
     @Consumes("application/json")

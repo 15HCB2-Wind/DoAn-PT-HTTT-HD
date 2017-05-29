@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<logicalClassDesignerModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm4="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm5="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/ModelStore" dslVersion="1.0.0.0" Id="0f223b0c-099a-467a-be6f-74383a232fb1" name="ClassDiagram_DrinkSmile" linkedPackageId="315e83f1-8470-429d-a379-5dea3f2e8625" xmlns="http://schemas.microsoft.com/dsltools/LogicalClassDesigner">
+<logicalClassDesignerModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm4="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/ModelStore" dslVersion="1.0.0.0" Id="0f223b0c-099a-467a-be6f-74383a232fb1" name="ClassDiagram_DrinkSmile" linkedPackageId="315e83f1-8470-429d-a379-5dea3f2e8625" xmlns="http://schemas.microsoft.com/dsltools/LogicalClassDesigner">
   <packagedElements>
     <logicalClassDesignerModelHasTypes>
       <class Id="ff54a2ab-fcc2-48db-9065-76d29e6fe7a6" name="Tổng giám đốc" isAbstract="false" isLeaf="false" isActiveClass="false">
@@ -518,7 +518,7 @@
       <class Id="8ae780c0-29e5-4a6d-bed1-9a12aecbfdce" name="Kho sữa" isAbstract="false" isLeaf="false" isActiveClass="false">
         <elementDefinition Id="da882b0b-6375-41f8-af91-8debe915a016" />
         <targetEnds>
-          <association Id="8a60699b-4d97-480f-ba04-b820137fa7e0" isDerived="false" sourceEndRoleName="" targetEndRoleName="" isLeaf="false" isAbstract="false">
+          <association Id="8a60699b-4d97-480f-ba04-b820137fa7e0" isDerived="false" sourceEndRoleName="" targetEndRoleName="thuê thêm" isLeaf="false" isAbstract="false">
             <classMoniker Id="dbfe9967-d4cd-4745-922f-75a1bd88c677" LastKnownName="Chi nhánh" />
             <relationshipOwnedElementsInternal>
               <associationHasOwnedEnds>
@@ -537,7 +537,7 @@
                 </memberEnd>
               </associationHasOwnedEnds>
               <associationHasOwnedEnds>
-                <memberEnd Id="94b2b418-0715-4abc-9a70-ca5b417ff46b" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                <memberEnd Id="94b2b418-0715-4abc-9a70-ca5b417ff46b" name="thuê thêm" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
                   <elementDefinition Id="d4622bc0-f15f-45b6-83c8-20925e391075" />
                 </memberEnd>
               </associationHasOwnedEnds>
@@ -569,6 +569,22 @@
               </associationHasOwnedEnds>
             </relationshipOwnedElementsInternal>
             <elementDefinition Id="4bc69751-29de-40f5-b1ca-6da072a3ca1f" />
+          </association>
+          <association Id="1caffa79-0f29-43b3-8f9e-7c8cda431521" isDerived="false" sourceEndRoleName="" targetEndRoleName="có kho trực thuộc" isLeaf="false" isAbstract="false">
+            <classMoniker Id="dbfe9967-d4cd-4745-922f-75a1bd88c677" LastKnownName="Chi nhánh" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="9a3ce3ee-f90d-417d-ac32-36df2526cc0d" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="b037f5d2-4ffc-4628-bfdc-31e5b4535398" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="50f150bd-5d51-454a-b4b0-695a877c68d2" name="có kho trực thuộc" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="c274cdfc-9591-48bc-b50b-8d325b18f089" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="34f348f8-3e78-460a-8fcc-fdee2ec62de8" />
           </association>
         </targetEnds>
         <ownedAttributesInternal>

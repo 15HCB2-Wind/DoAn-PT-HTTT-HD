@@ -24,7 +24,6 @@ namespace Service.Controllers
             var response = new ChamSocResponse();
             if (BusinessHandler.TokenBUS.tokenCheck(request, response, 1))
             {
-
                 ChamSocBUS.AddChamSoc(request, ref response);
                 if (response.IsError)
                     return Request.CreateResponse(HttpStatusCode.OK, response);

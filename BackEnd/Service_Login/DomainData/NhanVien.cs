@@ -14,5 +14,7 @@ namespace DomainData
         public string MatKhau { get; set; }
         public string Email { get; set; }
         public int CapPQ { get; set; }
+        public string MaCN { get; set; }
+        public string MaPQ { get; set; }
     }
 }

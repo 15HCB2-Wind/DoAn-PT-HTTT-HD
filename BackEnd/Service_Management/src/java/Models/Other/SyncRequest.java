@@ -18,5 +18,7 @@ public class SyncRequest extends BodyRequest{
     public String Password;
     public String Email;
     public int PermissionLevel;
+    public String AgencyId;
+    public String PermissionId;
     public int SyncType;
 }

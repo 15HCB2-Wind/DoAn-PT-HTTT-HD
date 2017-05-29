@@ -40,6 +40,8 @@ namespace Service.Models
         public string Password { get; set; }
         public string Email { get; set; }
         public int PermissionLevel { get; set; }
+        public string AgencyId { get; set; }
+        public string PermissionId { get; set; }
         public int SyncType { get; set; }
     }
 

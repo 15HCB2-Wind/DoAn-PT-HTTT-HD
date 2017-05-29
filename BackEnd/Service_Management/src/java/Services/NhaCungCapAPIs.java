@@ -6,12 +6,8 @@
 package Services;
 
 import BusinessHandler.NhaCungCapBUS;
-
 import Models.DataAccess.*;
-
-import BusinessHandler.NhanVienBUS;
 import DAO.NhaCungCapAdapter;
-
 import Models.DataAccess.Provider.InsertProviderRequest;
 import Models.DataAccess.Provider.InsertProviderResponse;
 import Models.DataAccess.Provider.UpdateProviderRequest;
@@ -22,8 +18,6 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Response;
-import pojos.Nhacungcap;
 
 
 
@@ -51,14 +45,15 @@ public class NhaCungCapAPIs {
         Gson gson = new Gson();
         SelectRequest request = gson.fromJson(json, SelectRequest.class);
         SelectResponse response = new SelectResponse();
-        if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)){// kiem tra quyen truy cap 
-                 //NhanVienBUS.getSingleValidate(request, response)
-            try{
-                response.Data = NhaCungCapAdapter.getAll();
-            }catch(Exception ex){
-                response.Errors.add("Lỗi hệ thống.");
-                response.IsError = true;
-            }
+        if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)){
+            //if (true){
+                try{
+                    response.Data = NhaCungCapAdapter.getAll();
+                }catch(Exception ex){
+                    response.Errors.add("Lỗi hệ thống.");
+                    response.IsError = true;
+                }
+            //}
         }
          return gson.toJson(response);
     }
@@ -70,14 +65,15 @@ public class NhaCungCapAPIs {
         Gson gson = new Gson();
         SelectRequest request = gson.fromJson(json, SelectRequest.class);
         SelectResponse response = new SelectResponse();
-        if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)){// kiem tra quyen truy cap 
-                 //NhanVienBUS.getSingleValidate(request, response)
-            try{
-                response.Data = NhaCungCapAdapter.getSingle(request.Predicates[0]);
-            }catch(Exception ex){
-                response.Errors.add("Lỗi hệ thống.");
-                response.IsError = true;
-            }
+        if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)){
+            //if (true){
+                try{
+                    response.Data = NhaCungCapAdapter.getSingle(request.Predicates[0]);
+                }catch(Exception ex){
+                    response.Errors.add("Lỗi hệ thống.");
+                    response.IsError = true;
+                }
+            //}
         }
          return gson.toJson(response);
     }
@@ -90,7 +86,7 @@ public class NhaCungCapAPIs {
         Gson gson = new Gson();
         InsertProviderRequest request = gson.fromJson(json, InsertProviderRequest.class);
         InsertProviderResponse response = new InsertProviderResponse();
-        if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)){// kiem tra quyen truy cap
+        if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)){
             if (NhaCungCapBUS.insertValidate(request, response)){
                 try{
                     if (NhaCungCapAdapter.add(request.Data)){
@@ -119,7 +115,6 @@ public class NhaCungCapAPIs {
             if (NhaCungCapBUS.updateValidate(request, response)){
                 try{
                     if (NhaCungCapAdapter.update(request.Data)){
-                       //NhanVienBUS.sync(0, request.Data);
                         response.Data = "Cập nhật thành công!";
                     }else{
                         response.Errors.add("Cập nhật thất bại!");

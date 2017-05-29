@@ -15,7 +15,6 @@ import Models.DataAccess.DeleteResponse;
 import Models.DataAccess.SelectResponse;
 import Models.TokenData;
 import com.google.gson.Gson;
-import java.util.List;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import pojos.Chuongtrai;
@@ -72,7 +71,7 @@ public class ChuongTraiAPIs {
         TokenData token = BusinessHandler.TokenBUS.tokenData(request, response, 2);
         if (token != null){
             try {
-                response.Data = ChuongTraiAdapter.getAll(NhanVienAdapter.getSingle(token.UserId).getMachinhanh());;
+                response.Data = ChuongTraiAdapter.getAll(token.AgencyId);;
             } catch (Exception ex) {
                 response.Errors.add("Lỗi hệ thống.");
                 response.IsError = true;
@@ -92,7 +91,7 @@ public class ChuongTraiAPIs {
         TokenData token = BusinessHandler.TokenBUS.tokenData(request, response, 1);
         if (token != null){
             try {
-                response.Data = ChuongTraiAdapter.getAll(NhanVienAdapter.getSingle(token.UserId).getMachinhanh());;
+                response.Data = ChuongTraiAdapter.getAll(token.AgencyId);;
             } catch (Exception ex) {
                 response.Errors.add("Lỗi hệ thống.");
                 response.IsError = true;
@@ -112,7 +111,7 @@ public class ChuongTraiAPIs {
         TokenData token = BusinessHandler.TokenBUS.tokenData(request, response, 2);
         if (token != null){
             try {
-                response.Data = ChuongTraiAdapter.getAllAvailables(NhanVienAdapter.getSingle(token.UserId).getMachinhanh());;
+                response.Data = ChuongTraiAdapter.getAllAvailables(token.AgencyId);;
             } catch (Exception ex) {
                 response.Errors.add("Lỗi hệ thống.");
                 response.IsError = true;
@@ -132,7 +131,7 @@ public class ChuongTraiAPIs {
         TokenData token = BusinessHandler.TokenBUS.tokenData(request, response, 2);
         if (token != null){
             if (ChuongTraiBUS.validateInformation(request, response)) {
-                request.Data.setMachinhanh(NhanVienAdapter.getSingle(token.UserId).getMachinhanh());
+                request.Data.setMachinhanh(token.AgencyId);
                 try {
                     if (ChuongTraiAdapter.add(request.Data)) {
                         response.Data = "Thêm thành công.";

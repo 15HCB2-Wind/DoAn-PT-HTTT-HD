@@ -23,7 +23,6 @@ namespace Service.Controllers
         {
             var response = new PhanCongResponse(); 
             if (BusinessHandler.TokenBUS.tokenCheck(request, response, 1)) {
-                
                 PhanCongBUS.AddPhanCong(request, ref response);
                 if (response.IsError)
                     return Request.CreateResponse(HttpStatusCode.OK, response);

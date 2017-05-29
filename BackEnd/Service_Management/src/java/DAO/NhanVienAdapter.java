@@ -91,6 +91,10 @@ public class NhanVienAdapter {
     
     public static List<Nhanvien> getStaffOfAgency(Object MaCN) {
         List<Nhanvien> list = HibernateUtil.getList("from Nhanvien where machinhanh = :p0", new Object[]{MaCN});
+        for (Nhanvien nhanvien : list) {
+            nhanvien.setTentaikhoan(null);
+            nhanvien.setMatkhau(null);
+        }
         return list;
     }
     

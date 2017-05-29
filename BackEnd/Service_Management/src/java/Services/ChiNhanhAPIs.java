@@ -13,8 +13,6 @@ import Models.DataAccess.Agency.InsertAgencyRequest;
 import Models.DataAccess.Agency.InsertAgencyResponse;
 import Models.DataAccess.Agency.UpdateAgencyRequest;
 import Models.DataAccess.Agency.UpdateAgencyResponse;
-import Models.DataAccess.DeleteRequest;
-import Models.DataAccess.DeleteResponse;
 import Models.DataAccess.SelectRequest;
 import Models.DataAccess.SelectResponse;
 import com.google.gson.Gson;
@@ -24,7 +22,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
-import pojos.Chinhanh;
 
 /**
  *
@@ -46,14 +43,14 @@ public class ChiNhanhAPIs {
         SelectRequest request = gson.fromJson(json, SelectRequest.class);
         SelectResponse response = new SelectResponse();
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)){
-            if (true){
+            //if (true){
                 try{
                     response.Data = ChiNhanhAdapter.getAll();
                 }catch(Exception ex){
                     response.Errors.add("Lỗi hệ thống.");
                     response.IsError = true;
                 }
-            }
+            //}
         }
         return gson.toJson(response);
     }
@@ -66,14 +63,14 @@ public class ChiNhanhAPIs {
         SelectRequest request = gson.fromJson(json, SelectRequest.class);
         SelectResponse response = new SelectResponse();
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)){
-            if (true){
+            //if (true){
                 try{
                     response.Data = ChiNhanhAdapter.getSingle(request.Predicates[0]);
                 }catch(Exception ex){
                     response.Errors.add("Lỗi hệ thống.");
                     response.IsError = true;
                 }
-            }
+            //}
         }
         return gson.toJson(response);
     }
@@ -111,7 +108,7 @@ public class ChiNhanhAPIs {
     @Consumes("application/json")
     public String delete(String json) {
         Gson gson = new Gson();
-DeleteAgencyRequest request = gson.fromJson(json, DeleteAgencyRequest.class);   
+        DeleteAgencyRequest request = gson.fromJson(json, DeleteAgencyRequest.class);   
         DeleteAgencyResponse response = new DeleteAgencyResponse();
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)){
             if (ChiNhanhBUS.deleteValidate(request, response)){
@@ -121,7 +118,6 @@ DeleteAgencyRequest request = gson.fromJson(json, DeleteAgencyRequest.class);
                         response.Errors.add("Xóa chi nhánh thất bại.");
                         response.IsError = true;
                     }else{
-                        //ChiNhanhBUS.sync(-1, ChiNhanhAdapter.getSingle(request.Predicates[0]));
                         response.Data = "Xóa chi nhánh thành công.";
                     }
                 }catch(Exception ex){
@@ -149,7 +145,6 @@ DeleteAgencyRequest request = gson.fromJson(json, DeleteAgencyRequest.class);
                         response.Errors.add("Khôi phục nhân viên thất bại.");
                         response.IsError = true;
                     }else{
-                        //ChiNhanhBUS.sync(1, ChiNhanhAdapter.getSingle(request.Predicates[0]));
                         response.Data = "Khôi phục nhân viên thành công.";
                     }
                 }catch(Exception ex){
@@ -173,7 +168,6 @@ DeleteAgencyRequest request = gson.fromJson(json, DeleteAgencyRequest.class);
             if (BusinessHandler.ChiNhanhBUS.updateValidate(request, response)){
                 try{
                     if (ChiNhanhAdapter.update(request.Data)){
-                        //NhanVienBUS.sync(0, request.Data);
                         response.Data = "Cập nhật thành công!";
                     }else{
                         response.Errors.add("Cập nhật thất bại!");
@@ -187,20 +181,4 @@ DeleteAgencyRequest request = gson.fromJson(json, DeleteAgencyRequest.class);
         }
         return gson.toJson(response);
     }
-    
-//    @POST
-//    @Path("sync")
-//    @Produces("application/json")
-//    @Consumes("application/json")
-//    public String sync(String json) {
-//        Gson gson = new Gson();
-//        ChangePasswordRequest request = gson.fromJson(json, ChangePasswordRequest.class);   
-//        ChangePasswordResponse response = new ChangePasswordResponse();
-//        try{
-//            response.IsError = NhanVienAdapter.changePassword(request) != 1;
-//        }catch(Exception ex){
-//            response.IsError = true;
-//        }
-//        return gson.toJson(response);
-//    }
 }

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<logicalClassDesignerModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm4="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm5="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/ModelStore" dslVersion="1.0.0.0" Id="0f223b0c-099a-467a-be6f-74383a232fb1" name="ClassDiagram_DrinkSmile" linkedPackageId="315e83f1-8470-429d-a379-5dea3f2e8625" xmlns="http://schemas.microsoft.com/dsltools/LogicalClassDesigner">
+<logicalClassDesignerModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm4="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/ModelStore" dslVersion="1.0.0.0" Id="0f223b0c-099a-467a-be6f-74383a232fb1" name="ClassDiagram_DrinkSmile" linkedPackageId="315e83f1-8470-429d-a379-5dea3f2e8625" xmlns="http://schemas.microsoft.com/dsltools/LogicalClassDesigner">
   <packagedElements>
     <logicalClassDesignerModelHasTypes>
       <class Id="ff54a2ab-fcc2-48db-9065-76d29e6fe7a6" name="Tổng giám đốc" isAbstract="false" isLeaf="false" isActiveClass="false">
@@ -828,11 +828,11 @@
       <class Id="dbfe9967-d4cd-4745-922f-75a1bd88c677" name="Chi nhánh" isAbstract="false" isLeaf="false" isActiveClass="false">
         <elementDefinition Id="be7a7d5f-07d3-4e93-83f3-8360caaa9a1c" />
         <targetEnds>
-          <association Id="f61313cc-8d90-40f1-986b-085116b63134" isDerived="false" sourceEndRoleName="" targetEndRoleName="" isLeaf="false" isAbstract="false">
+          <association Id="f61313cc-8d90-40f1-986b-085116b63134" isDerived="false" sourceEndRoleName="thuê thêm" targetEndRoleName="" isLeaf="false" isAbstract="false">
             <classMoniker Id="8ae780c0-29e5-4a6d-bed1-9a12aecbfdce" LastKnownName="Kho sữa" />
             <relationshipOwnedElementsInternal>
               <associationHasOwnedEnds>
-                <memberEnd Id="af58b2bc-a512-4c5c-b6e1-21b6185de4e4" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="Shared" isComposite="false" isNavigableOwned="false">
+                <memberEnd Id="af58b2bc-a512-4c5c-b6e1-21b6185de4e4" name="thuê thêm" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="Shared" isComposite="false" isNavigableOwned="false">
                   <elementDefinition Id="9a5ffd4c-bc9f-4c13-8f84-874faf8a73c8" />
                 </memberEnd>
               </associationHasOwnedEnds>
@@ -879,6 +879,22 @@
               </associationHasOwnedEnds>
             </relationshipOwnedElementsInternal>
             <elementDefinition Id="0a4a356e-b49a-4d1d-b8c7-3d8f91d202c5" />
+          </association>
+          <association Id="e2a2f7ea-bc0a-43b6-a59e-c51f1477d866" isDerived="false" sourceEndRoleName="có kho trực thuộc" targetEndRoleName="" isLeaf="false" isAbstract="false">
+            <classMoniker Id="8ae780c0-29e5-4a6d-bed1-9a12aecbfdce" LastKnownName="Kho sữa" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="9d4cce58-1c38-475b-8727-ed8caabd26ab" name="có kho trực thuộc" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="Composite" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="b326987a-48c1-443a-9493-cbe47b329395" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="281b4e9f-fd0f-4c68-a173-9f9b8068ba67" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="true">
+                  <elementDefinition Id="0588b2ba-ae17-4db0-8dc4-2300ebda6ae0" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="775d75ca-0f6f-4c95-bd20-fcbfd8467ed5" />
           </association>
         </targetEnds>
         <ownedAttributesInternal>

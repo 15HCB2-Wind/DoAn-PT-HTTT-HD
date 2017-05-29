@@ -52,6 +52,7 @@ Contributor(s):
     <mapping resource="pojos/Khosua.hbm.xml"/>
     <mapping resource="pojos/Bo.hbm.xml"/>
     <mapping resource="pojos/Chinhanh.hbm.xml"/>
+    <mapping resource="pojos/TablesCounter.hbm.xml"/>
     <mapping resource="pojos/Chuongtrai.hbm.xml"/>
     <mapping resource="pojos/Phanquyen.hbm.xml"/>
   </session-factory>

@@ -12,4 +12,6 @@ package Models;
 public class TokenData {
     public String UserId;
     public int PermissionLevel;
+    public String AgencyId;
+    public String PermissionId;
 }

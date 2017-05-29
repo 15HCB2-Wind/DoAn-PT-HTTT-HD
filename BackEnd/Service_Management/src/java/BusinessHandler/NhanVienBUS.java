@@ -52,6 +52,8 @@ public class NhanVienBUS {
         sRequest.Password = obj.getMatkhau();
         sRequest.Email = obj.getEmail();
         sRequest.PermissionLevel = PhanQuyenAdapter.getSingle(obj.getMaphanquyen()).getCapphanquyen();
+        sRequest.AgencyId = obj.getMachinhanh();
+        sRequest.PermissionId = obj.getMaphanquyen();
         sRequest.SyncType = code;
 
         do {

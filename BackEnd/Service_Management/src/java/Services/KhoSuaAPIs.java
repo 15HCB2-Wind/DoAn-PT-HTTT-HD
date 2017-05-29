@@ -13,7 +13,6 @@ import DAO.NhanVienAdapter;
 import Models.DataAccess.Warehouse.WarehouseRequest;
 import Models.DataAccess.Warehouse.WarehouseResponse;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
@@ -75,7 +74,7 @@ public class KhoSuaAPIs {
         TokenData token = BusinessHandler.TokenBUS.tokenData(request, response, 2);
         if (token != null){
             try{
-                response.Data = KhoSuaAdapter.getAllOfAgency(NhanVienAdapter.getSingle(token.UserId).getMachinhanh());
+                response.Data = KhoSuaAdapter.getAllOfAgency(token.AgencyId);
             }catch(Exception ex){
                 response.Errors.add("Lỗi hệ thống.");
                 response.IsError = true;
@@ -96,7 +95,7 @@ public class KhoSuaAPIs {
         if (token != null){
             if (KhoSuaBUS.insertUpdateValidate(request, response)){
                 try{
-                    request.Data.setMachinhanh(NhanVienAdapter.getSingle(token.UserId).getMachinhanh());
+                    request.Data.setMachinhanh(token.AgencyId);
                     if (KhoSuaAdapter.add(request.Data)){
                         response.Data = "Thêm thành công.";
                     }else{

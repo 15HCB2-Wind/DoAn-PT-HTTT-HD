@@ -24,9 +24,20 @@ namespace Service.Models
 
     public class PhanCongResponse : BodyResponse { }
 
-    public class CheckTokenResponse : BodyResponse
+    public class CheckTokenResponse// : BodyResponse
     {
         public TokenData Data { get; set; }
+        public bool IsError { get; set; }
+        public List<string> Errors { get; set; }
+        public bool IsTokenTimeout { get; set; }
+
+        public CheckTokenResponse()
+        {
+            Data = null;
+            IsError = false;
+            Errors = new List<string>();
+            IsTokenTimeout = false;
+        }
     }
 
     public class ChamSocResponse : BodyResponse { }
