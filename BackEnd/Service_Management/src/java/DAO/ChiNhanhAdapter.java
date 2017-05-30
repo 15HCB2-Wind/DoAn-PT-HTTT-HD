@@ -16,8 +16,14 @@ import pojos.Chinhanh;
  */
 public class ChiNhanhAdapter {
     
+     public static boolean isValidName(String name) {
+        if (HibernateUtil.count("select count(*) from Chinhanh where tenchinhanh = '" + name + "'") == 0) {
+            return true;
+        }
+        return false;
+    }
     
-     private static void getNewID(Chinhanh obj) {
+    private static void getNewID(Chinhanh obj) {
         List<Chinhanh> list = HibernateUtil.getSingle("from Chinhanh order by machinhanh desc",null);//lay ds chinhanh tu duoi len
         String machu= "";
          if (list.size()>0) {
@@ -35,6 +41,7 @@ public class ChiNhanhAdapter {
     public static List<Chinhanh> getAll(){
         return HibernateUtil.getList("from Chinhanh order by machinhanh asc", null);
     }
+    
     public static Chinhanh getSingle(Object userid){
         List<Chinhanh> list = HibernateUtil.getSingle("from Chinhanh where machinhanh = :p0", new Object[]{ userid });
         if (list.size()>0) {
