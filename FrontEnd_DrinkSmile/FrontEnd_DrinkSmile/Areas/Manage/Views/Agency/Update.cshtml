@@ -1,0 +1,281 @@
+﻿@{
+    ViewBag.Title = "Cập nhật Chi nhánh";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="offset-lg-3 col-lg-6 offset-md-2 col-md-8 offset-sm-1 col-sm-10 col-xs-12">
+        <fieldset class="card-block">
+            <form id="form_update" method="post" role="form">
+                <div class="text-center">
+                    <h3><i class="fa fa-pencil-square-o"></i> Cập nhật Chi Nhánh</h3>
+                    <hr class="mt-2 mb-2">
+                </div>
+                <p id="error" class="text-danger text-center"></p>
+                <div class="md-form">
+                    <i class="fa fa-id-card-o prefix"></i>
+                    <input id="ten" class="form-control" type="text" placeholder="" required="required" />
+                    <label id="tenerror" for="ten">Tên Chi Nhánh</label>
+                </div>
+                <div class="col-xs-12">
+                    <div class="row">
+                        <div class="col-sm-6 col-xs-12">
+                            <div class="md-form">
+                                <i class="fa fa-user-o prefix"></i>
+                                <label>Nhân Viên Quản Lý</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-xs-12">
+                            <div class="md-form">
+                                <button id="btnNV" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Nhân viên</button>
+                                <div class="dropdown-menu" id="dropdownNV">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="md-form">
+                    <i class="fa fa-mobile-phone prefix"></i>
+                    <input id="sdt" class="form-control" type="text" placeholder="" />
+                    <label for="sdt">Số Điện Thoại</label>
+                </div>
+                <div class="md-form">
+                    <i class="fa fa-map-marker prefix"></i>
+                    <input id="diachi" class="form-control" type="text" placeholder="" />
+                    <label for="diachi">Địa chỉ</label>
+                </div>
+                <div class="md-form">
+                    <i class="fa fa-comment-o prefix"></i>
+                    <input id="tinhtrang" class="form-control" type="text" placeholder="" />
+                    <label for="tinhtrang">Tình trạng</label>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">
+                        Lưu <i id="loader" class="fa fa-circle-o-notch fa-pulse fa-lg fa-fw"></i>
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="modalAction" tabindex="-1" role="dialog">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                                    <h4 class="modal-title w-100">Xác nhận</h4>
+                                </div>
+                                <div class="modal-body text-center">
+                                    Bạn thực sự muốn thực hiện?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                                    <button class="btn btn-danger" id="action">Đồng ý</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Thoát</button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                                    <h4 class="modal-title w-100">Thoát</h4>
+                                </div>
+                                <div class="modal-body text-center">
+                                    Bạn thực sự muốn thoát?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                                    <a class="btn btn-danger" href="@Url.Action("Index")">Đồng ý</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </fieldset>
+        <p class="text-center">
+            <i id="loader1" class="fa fa-circle-o-notch fa-pulse fa-2x"></i>
+            <a id="back" class="btn btn-danger" href="@Url.Action("Index")">Trở về trang quản lý</a>
+        </p>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        // bien toan cuc
+        var listnv;
+        var listchinhanh;
+        var chinhanh;
+        var nvQuanLyCu;
+        var nvQuanLyMoi;
+        var machinhanh;
+        //
+        $(document).ready(function () {
+
+            //lấy danh sách chi nhánh
+            laylistchinhanh();
+
+            //$("fieldset").hide();
+            $("#loader").hide();
+            $("#back").hide();
+            $('#loader1').hide();
+            machinhanh = QueryString['machinhanh'];
+            //Load chi nhánh lên màn hình
+            loadchinhanh();
+
+
+            //Cập nhật chi nhánh
+            $('#form_update').submit(function (e) {
+                // nếu có đổi tên thì kiểm tra tên mới có tồn tại chưa, nếu chưa thì thêm mới
+                var tenhople = true;
+                if ($("#ten").val() != chinhanh.tenchinhanh) {
+                    // Kiểm tra chi nhánh đã tồn tại chưa
+                    for (var i = 0; i < listchinhanh.length; i++) {
+                        if ($("#ten").val() == listchinhanh[i].tenchinhanh) {
+                            toastr["error"]("Tên chi nhánh đã tồn tại");
+                            $("#error").show();
+                            $("#error").text("Tên chi nhánh đã tồn tại");
+                            tenhople = false;
+                            break;
+                        }
+                    };
+                }
+
+                if (tenhople) { //nếu tên hợp lên
+                    e.preventDefault();
+
+                    var diachi = $("#diachi").val();
+                    if (diachi == "") { diachi = null; }
+
+                    var sdt = $("#sdt").val();
+                    if (sdt == "") { sdt = null; }
+
+                    var tinhtrang = $("#tinhtrang").val();
+                    if (tinhtrang == "") { tinhtrang = null; }
+                    var daxoa = false;
+                    // Cập nhật Chi Nhánh
+                    callAjax('post', {
+                        Token: Cookies.get('token'),
+                        Data: {
+                            machinhanh: machinhanh,
+                            tenchinhanh: $("#ten").val(),
+                            sodt: sdt,
+                            diachi: diachi,
+                            tinhtrang: tinhtrang,
+                            daxoa: daxoa,
+                            quanly: nvQuanLyMoi.manhanvien
+                        }
+                    }, Cookies.get("area"), "management", "ChiNhanh/update",
+                        function (result) {
+                            if (result.IsError) {
+                                if (result.NameErrors.length > 0) {
+                                    $("#ten").addClass("validate invalid");
+                                    $("#tenerror").addClass("active");
+                                    $("#tenerror").attr("data-error", result.NameErrors[0]);
+                                }
+                                if (result.Errors.length > 0) {
+                                    toastr["error"](result.Errors[0]);
+                                }
+                            }
+                            else {
+                                //Cập nhật nhân viên quản lý mới thành quản lý
+                                capnhatnhanvien(nvQuanLyMoi, "PQ002");
+                                ////Cập nhật nhân viên quản lý cũ thành nhân viên 
+                                capnhatnhanvien(nvQuanLyCu, "PQ001");
+                                //
+                                Data = null;
+                                toastr["success"](result.Data);
+                                $('#form_update')[0].reset();
+                                window.location.href = 'http://localhost:8082/Manage/Agency'
+                            }
+                        }
+                    )
+                }
+
+            });
+
+        });
+
+        function capnhatnhanvien(nv,quyen) {
+            callAjax('post', {
+                Token: Cookies.get('token'),
+                Data: {
+                    manhanvien: nv.manhanvien,
+                    hoten: nv.hoten,
+                    gioitinh: "",
+                    email: "",
+                    tentaikhoan: "",
+                    tinhtrang: "",
+                    daxoa: false,
+                    machinhanh: nv.machinhanh,
+                    maphanquyen: quyen
+                }
+            }, Cookies.get("area"), "management", "NhanVien/updateRole",
+            function (result) {
+                if (result.IsError) {
+                    if (result.Errors.length > 0) {
+                        toastr["error"](result.Errors[0]);
+                    }
+                }
+            }
+            )
+        };
+
+        function nhanvienclick(data) {
+            var btnNV = document.getElementById('btnNV');
+            btnNV.innerHTML = listnv[data].hoten;
+            nvQuanLyMoi = listnv[data];
+        };
+
+        function laylistchinhanh() {
+            callAjax('post', { Token: Cookies.get('token')}, Cookies.get("area"), "management", "ChiNhanh/getAll", function (data) {
+                if (data.IsError) {
+                    toastr["error"](data.Errors[0]);
+                    $("#error").show();
+                    $("#error").text(data.Errors[0]);
+                }
+                else {
+                    listchinhanh = data.Data;
+                }
+            })
+        };
+
+        function loadchinhanh() {
+            callAjax('post', { Token: Cookies.get('token'), Predicates: [machinhanh] }, Cookies.get("area"), "management", "ChiNhanh/getSingle", function (data) {
+                if (data.Data == null) { // chi nhánh không tồn tại thì thông báo lỗi và trở về màn hình chính
+                    toastr["error"]("Chi Nhánh không tồn tại!");
+                    window.location.href = 'http://localhost:8082/Manage/Agency'
+                }
+                else {// chi nhánh tồn tại thì load dữ liệu lên màn hình
+                    chinhanh = data.Data;
+                    $("fieldset").show();
+                    $("#ten").val(data.Data.tenchinhanh);
+                    $("#sdt").val(data.Data.sodt);
+                    $("#diachi").val(data.Data.diachi);
+                    $("#tinhtrang").val(data.Data.tinhtrang);
+                    var quanly = document.getElementById('btnNV');
+                    //load nhân viên quản lý
+                    callAjax('post', { Token: Cookies.get('token'), Predicates: [machinhanh] }, Cookies.get("area"), "management", "NhanVien/getStaffOfAgency", function (DSNhanVien) {
+                        listnv = DSNhanVien.Data;
+                        for (var i = 0; i < DSNhanVien.Data.length; i++) {
+                            $("#dropdownNV").append('<a class="dropdown-item" onclick="nhanvienclick(' + i + ')">' + DSNhanVien.Data[i].hoten + '</a>');
+                        }
+                        for (var i = 0; i < DSNhanVien.Data.length; i++) {
+                            if (data.Data.quanly == DSNhanVien.Data[i].manhanvien) {
+                                nvQuanLyCu = DSNhanVien.Data[i];
+                                nvQuanLyMoi = DSNhanVien.Data[i];
+                                quanly.innerHTML = DSNhanVien.Data[i].hoten;
+                            }
+                        }
+                    });
+                }
+            });
+        };
+
+
+
+    </script>
+}
