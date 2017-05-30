@@ -26,11 +26,12 @@ public class NhaCungCapAdapter {
     public static List<Nhacungcap> getAll(){
         return HibernateUtil.getList("from Nhacungcap order by manhacungcap asc", null);
     }
+
     public static boolean isValidName(String name) {
-        if (HibernateUtil.getSingle("from Nhacungcap where ten = :p0", new Object[]{name}) != null) {
-            return false;
+        if (HibernateUtil.count("select count(*) from Nhacungcap where ten = '" + name + "'") == 0) {
+            return true;
         }
-        return true;
+        return false;
     }
     private static void getNewID(Nhacungcap obj) {
         
@@ -69,34 +70,4 @@ public class NhaCungCapAdapter {
             ncc.setTinhtrang(obj.getTinhtrang());
         return HibernateUtil.update(ncc);
     }
-    
-//    public static void sync(int code, Nhacungcap obj){
-//        int times = 3;
-//        boolean fail = true;
-//        
-//        SyncRequest sRequest = new SyncRequest();
-//        sRequest.Id = obj.getManhanvien();
-//        sRequest.FullName = obj.getHoten();
-//        sRequest.Username = obj.getTentaikhoan();
-//        sRequest.Password = obj.getMatkhau();
-//        sRequest.Email = obj.getEmail();
-//        sRequest.PermissionLevel = PhanQuyenAdapter.getSingle(obj.getMaphanquyen()).getCapphanquyen();
-//        sRequest.SyncType = code;
-//        
-//        do{
-//            try{
-//                Client client = ClientBuilder.newClient();
-//                Response res = client
-//                        .target(Configs.SYNC_TO_LOGIN_SERVICE)
-//                        .request(MediaType.APPLICATION_JSON)
-//                        .post(Entity.json(new Gson().toJson(sRequest)));
-//
-//                SyncResponse result = res.readEntity(SyncResponse.class);
-//                fail = result == null;
-//                if (!fail)
-//                    break;
-//            } catch (Exception ex){ }
-//        }while(fail && --times > 0);
-//    }
-
 }
