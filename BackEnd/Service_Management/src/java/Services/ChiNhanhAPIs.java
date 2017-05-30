@@ -13,6 +13,8 @@ import Models.DataAccess.Agency.InsertAgencyRequest;
 import Models.DataAccess.Agency.InsertAgencyResponse;
 import Models.DataAccess.Agency.UpdateAgencyRequest;
 import Models.DataAccess.Agency.UpdateAgencyResponse;
+import Models.DataAccess.DeleteRequest;
+import Models.DataAccess.DeleteResponse;
 import Models.DataAccess.SelectRequest;
 import Models.DataAccess.SelectResponse;
 import com.google.gson.Gson;
@@ -22,6 +24,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
+import pojos.Chinhanh;
 
 /**
  *
@@ -43,14 +46,14 @@ public class ChiNhanhAPIs {
         SelectRequest request = gson.fromJson(json, SelectRequest.class);
         SelectResponse response = new SelectResponse();
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)){
-            //if (true){
+            if (true){
                 try{
                     response.Data = ChiNhanhAdapter.getAll();
                 }catch(Exception ex){
                     response.Errors.add("Lỗi hệ thống.");
                     response.IsError = true;
                 }
-            //}
+            }
         }
         return gson.toJson(response);
     }
@@ -63,14 +66,14 @@ public class ChiNhanhAPIs {
         SelectRequest request = gson.fromJson(json, SelectRequest.class);
         SelectResponse response = new SelectResponse();
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)){
-            //if (true){
+            if (true){
                 try{
                     response.Data = ChiNhanhAdapter.getSingle(request.Predicates[0]);
                 }catch(Exception ex){
                     response.Errors.add("Lỗi hệ thống.");
                     response.IsError = true;
                 }
-            //}
+            }
         }
         return gson.toJson(response);
     }
@@ -118,6 +121,7 @@ public class ChiNhanhAPIs {
                         response.Errors.add("Xóa chi nhánh thất bại.");
                         response.IsError = true;
                     }else{
+                        //ChiNhanhBUS.sync(-1, ChiNhanhAdapter.getSingle(request.Predicates[0]));
                         response.Data = "Xóa chi nhánh thành công.";
                     }
                 }catch(Exception ex){
@@ -145,6 +149,7 @@ public class ChiNhanhAPIs {
                         response.Errors.add("Khôi phục nhân viên thất bại.");
                         response.IsError = true;
                     }else{
+                        //ChiNhanhBUS.sync(1, ChiNhanhAdapter.getSingle(request.Predicates[0]));
                         response.Data = "Khôi phục nhân viên thành công.";
                     }
                 }catch(Exception ex){
