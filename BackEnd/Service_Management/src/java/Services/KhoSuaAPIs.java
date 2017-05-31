@@ -8,8 +8,8 @@ package Services;
 import Models.DataAccess.*;
 import Models.*;
 import BusinessHandler.KhoSuaBUS;
+import DAO.ChiNhanhAdapter;
 import DAO.KhoSuaAdapter;
-import DAO.NhanVienAdapter;
 import Models.DataAccess.Warehouse.WarehouseRequest;
 import Models.DataAccess.Warehouse.WarehouseResponse;
 import Models.DataAccess.Warehouse.WarehouseTransferRequest;
@@ -160,18 +160,26 @@ public class KhoSuaAPIs {
         Gson gson = new Gson();
         DeleteRequest request = gson.fromJson(json, DeleteRequest.class);   
         DeleteResponse response = new DeleteResponse();
-        if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2)){
-            try{
-                int result = KhoSuaAdapter.delete(request.Predicates[0]);
-                if (result != 1){
-                    response.Errors.add("Xóa thất bại.");
+        TokenData token = BusinessHandler.TokenBUS.tokenData(request, response, 2);
+        if (token != null){
+            if (BusinessHandler.KhoSuaBUS.deleteValidate(request, response)){
+                try{    
+                    if (!ChiNhanhAdapter.getSingle(token.AgencyId).getKhotam().equals(request.Predicates[0])){
+                        int result = KhoSuaAdapter.delete(request.Predicates[0]);
+                        if (result != 1){
+                            response.Errors.add("Xóa thất bại.");
+                            response.IsError = true;
+                        }else{
+                            response.Data = "Xóa thành công.";
+                        }
+                    }else{
+                        response.Errors.add("Không thể xóa kho chính của chi nhánh!");
+                        response.IsError = true;
+                    }
+                }catch(Exception ex){
+                    response.Errors.add("Lỗi hệ thống.");
                     response.IsError = true;
-                }else{
-                    response.Data = "Xóa thành công.";
                 }
-            }catch(Exception ex){
-                response.Errors.add("Lỗi hệ thống.");
-                response.IsError = true;
             }
         }
         return gson.toJson(response);
@@ -186,17 +194,19 @@ public class KhoSuaAPIs {
         DeleteRequest request = gson.fromJson(json, DeleteRequest.class);   
         DeleteResponse response = new DeleteResponse();
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2)){
-            try{
-                int result = KhoSuaAdapter.recover(request.Predicates[0]);
-                if (result != 1){
-                    response.Errors.add("Khôi phục thất bại.");
+            if (BusinessHandler.KhoSuaBUS.deleteValidate(request, response)){
+                try{
+                    int result = KhoSuaAdapter.recover(request.Predicates[0]);
+                    if (result != 1){
+                        response.Errors.add("Khôi phục thất bại.");
+                        response.IsError = true;
+                    }else{
+                        response.Data = "Khôi phục thành công.";
+                    }
+                }catch(Exception ex){
+                    response.Errors.add("Lỗi hệ thống.");
                     response.IsError = true;
-                }else{
-                    response.Data = "Khôi phục thành công.";
                 }
-            }catch(Exception ex){
-                response.Errors.add("Lỗi hệ thống.");
-                response.IsError = true;
             }
         }
         return gson.toJson(response);

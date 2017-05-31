@@ -17,76 +17,57 @@
                     $("#error").text(data.Errors[0]);
                 }
                 else {
-                    $('#data_chinhanh').empty();
-                    for (var i = 0; i < data.Data.length; i++) {
-                        var item = data.Data[i];
-                        // lay tên nha quan ly
-                        var tenquanly;
-                        callAjax('post', { Token: Cookies.get("token"), UserId: item.quanly }, Cookies.get("area"), "management", "NhanVien/getbyDirector",
-                            function (result) {
-                                if (result.IsError) {
-                                    toastr["error"](result.Errors[0]);
-                                }
-                                else {
-                                    //alert(result.Data.hoten);
-                                    tenquanly = result.Data.hoten;
-                                }
+                    if (data.Data && data.Data.length > 0) {
+                        $("#empty_message").hide();
+                        $('#data_chinhanh').empty();
+                        for (var i = 0; i < data.Data.length; i++) {
+                            var item = data.Data[i];
+                            //gấn dữ liệu
+                            var trType;
+                            var deleteButton;
+                            var editButton;
+                            var checkdaxoa;
+                            if (item.daxoa) {
+                                trType = '<tr class="table-danger">';
+                                deleteButton = '<a class="green-text" data-toggle="modal" data-target="#deleteModal" onclick="setupModal(\'recover\', \'' + item.machinhanh + '\', true)"><i class="fa fa-refresh" aria-hidden="true"></i></a>';
+                                editButton = '';
                             }
-                        );
-                        // item.quanly = tenquanly;
-                        //gấn dữ liệu
-                        var deleteButton;
-                        var editButton;
-                        var checkdaxoa;
-                        if (item.daxoa) {
-                            deleteButton = '<a class="green-text" onclick="khoiphucchinhanh(\'' + item.machinhanh + '\')"><i class="fa fa-refresh" aria-hidden="true"></i></a>';
-                            editButton = '';
-                            checkdaxoa = '<i class="fa fa-check" aria-hidden="true"></i>';
-                        }
-                        else {
-                            deleteButton = '<a class="red-text" onclick="xoachinhanh(\'' + item.machinhanh + '\')"><i class="fa fa-trash" aria-hidden="true"></i></a>';
-                            editButton = '<a href="/Manage/Agency/Update?machinhanh=' + item.machinhanh + '"><i class="fa fa-edit" aria-hidden="true"></i></a>';
-                            checkdaxoa = '';
-                        }
+                            else {
+                                trType = '<tr class="table-success">';
+                                deleteButton = '<a class="red-text" data-toggle="modal" data-target="#deleteModal" onclick="setupModal(\'delete\', \'' + item.machinhanh + '\', true)"><i class="fa fa-trash" aria-hidden="true"></i></a>';
+                                editButton = '<a class="teal-text" href="/Manage/Agency/Update?machinhanh=' + item.machinhanh + '"><i class="fa fa-pencil"></i></a>';
+                            }
 
-                        $('#data_chinhanh').append('<tr id="" onclick="chinhanhclick(' + i + ')">' +
-                            "<td>" + item.machinhanh + "</td>" +
-                            "<td>" + item.tenchinhanh + "</td>" +
-                            "<td>" + item.sodt + "</td>" +
-                            "<td>" + item.diachi + "</td>" +
-                            "<td>" + item.tinhtrang + "</td>" +
-                            "<td>" + checkdaxoa + "</td>" +
-                            "<td>" + item.quanly + "</td>" +
-                            '<td align="center" valign="middle">' + editButton + deleteButton + '</td>' +
-                            "</tr>");
+                            $('#data_chinhanh').append(
+                                trType +
+                                    "<td>" + item.tenchinhanh + "</td>" +
+                                    "<td>" + item.sodt + "</td>" +
+                                    "<td>" + item.diachi + "</td>" +
+                                    "<td>" + item.tinhtrang + "</td>" +
+                                    '<td id="' + item.quanly + '"></td>' +
+                                    '<td>' + editButton + deleteButton + '</td>' +
+                                "</tr>");
+
+                            // lay tên nha quan ly
+                            callAjax('post', { Token: Cookies.get("token"), UserId: item.quanly }, Cookies.get("area"), "management", "NhanVien/getbyDirector",
+                                function (result, quanlyID) {
+                                    if (!result.Error && result.Data)
+                                        $('#' + quanlyID).html(result.Data.hoten);
+                                }, item.quanly
+                            )
+                        }
+                    } else {
+                        $("#dataTable").hide();
                     }
                 }
             })
         };
-        function laytenquanly(manv) {
-            callAjax('post', { Token: Cookies.get("token"), UserId: manv }, Cookies.get("area"), "management", "NhanVien/getbyDirector",
-                    function (result) {
-                        if (result.IsError) {
-                            toastr["error"](result.Errors[0]);
-                        }
-                        else {
-                            alert(result.Data.hoten);
-                            item.quanly = result.Data.hoten;
-                        }
-                    }
-                );
-        };
+        
         function xoachinhanh(machinhanh) {
             callAjax('post', {
                 Token: Cookies.get('token'),
                 Data: {
-                    machinhanh: machinhanh,
-                    hoten: "",
-                    ngaysinh: "",
-                    gioitinh: "",
-                    diachi: "",
-                    email: "",
-                    sodt: ""
+                    machinhanh: machinhanh
                 }
             }, Cookies.get("area"), "management", "ChiNhanh/delete", function (data) {
                 if (data.IsError) {
@@ -95,21 +76,17 @@
                     $("#error").text(data.Errors[0]);
                 }
                 else {
+                    toastr["success"](data.Data);
                     loaddata();
                 }
             })
         };
+
         function khoiphucchinhanh(machinhanh) {
             callAjax('post', {
                 Token: Cookies.get('token'),
                 Data: {
-                    machinhanh: machinhanh,
-                    hoten: "",
-                    ngaysinh: "",
-                    gioitinh: "",
-                    diachi: "",
-                    email: "",
-                    sodt: ""
+                    machinhanh: machinhanh
                 }
             }, Cookies.get("area"), "management", "ChiNhanh/recover", function (data) {
                 if (data.IsError) {
@@ -118,44 +95,73 @@
                     $("#error").text(data.Errors[0]);
                 }
                 else {
+                    toastr["success"](data.Data);
                     loaddata();
                 }
             })
         };
-        function themchinhanh() {
-            window.location.href = 'http://localhost:8082/Manage/Agency/Create'
+
+        function setupModal(str, id, cond) {
+            $('#deleteModal_btnYes').attr('onclick', 'modalAction(\'' + str + '\', \'' + id + '\', ' + cond + ')');
+        }
+        function modalAction(str, id, cond) {
+            if (cond) {
+                callAjax('post', {
+                    Token: Cookies.get('token'),
+                    Data: {
+                        machinhanh: id
+                    }
+                }, Cookies.get("area"), "management", "ChiNhanh/" + str, function (data) {
+                    if (data.IsError) {
+                        toastr["error"](data.Errors[0]);
+                        $("#error").show();
+                        $("#error").text(data.Errors[0]);
+                    }
+                    else {
+                        toastr["success"](data.Data);
+                        loaddata();
+                    }
+                })
+            }
         }
     </script>
 }
-<h2>Quản lý Chi Nhánh</h2>
-<div id="controller">
-
-</div>
-<div id="list_provider">
-    <div class="panel-body">
-
-        <div id="button_function">
-            <button type="button" class="btn btn-success" onclick="themchinhanh()">Thêm Chi Nhánh</button>
-        </div>
-
-        <div class="dataTable_wrapper">
-            <table class="table table-striped table-bordered table-hover" id="dataTables">
-                <thead>
-                    <tr>
-                        <th>Mã</th>
-                        <th>Tên Chi Nhánh</th>
-                        <th>Số Điện Thoại</th>
-                        <th>Địa chỉ</th>
-                        <th>Tình Trạng</th>
-                        <th>Đã Xóa</th>
-                        <th>NV Quản Lý</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody id="data_chinhanh">
-                    @* hien danh sach nha cung cap *@
-                </tbody>
-            </table>
+<h2><i class="fa fa-list"></i> Danh sách Chi Nhánh</h2>
+<p>
+    <a class="btn btn-primary" href="@Url.Action("Create")">Thêm chi nhánh</a>
+    <a class="btn btn-success" href="@Url.Action("Index", "Import")">Nhập bò</a>
+</p>
+<p class="text-center" id="empty_message">Chưa có chi nhánh nào.</p>
+<table class="table table-hover" id="dataTable">
+    <thead class="table-inverse">
+        <tr>
+            <th>Tên chi nhánh</th>
+            <th>Số điện thoại</th>
+            <th>Địa chỉ</th>
+            <th>Tình trạng</th>
+            <th>Quản lý</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="data_chinhanh">
+        @* hien danh sach nha cung cap *@
+    </tbody>
+</table>
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                <h4 class="modal-title w-100">Xóa chi nhánh</h4>
+            </div>
+            <div class="modal-body text-center">
+                Bạn có muốn tiếp tục?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                <button id="deleteModal_btnYes" type="button" class="btn btn-danger" data-dismiss="modal">Tiếp</button>
+            </div>
         </div>
     </div>
 </div>
+<p class="text-center" id="loader"><i class="fa fa-circle-o-notch fa-pulse fa-lg fa-fw"></i></p>

@@ -28,7 +28,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-                <h4 class="modal-title w-100">Thoát</h4>
+                <h4 class="modal-title w-100">Xóa kho</h4>
             </div>
             <div class="modal-body text-center">
                 Bạn có muốn tiếp tục?
@@ -66,6 +66,7 @@
                         </div>
                     </div>
                 </div>
+                <br />
                 <div class="md-form form-sm">
                     <i class="fa fa-filter prefix"></i>
                     <input id="tfValue" class="form-control" type="text" />
@@ -125,11 +126,11 @@
                                     var deleteButton;
                                     var editButton;
                                     if (item.daxoa) {
-                                        deleteButton = '<a class="red-text" data-toggle="modal" data-target="#deleteModal" onclick="setupModal(\'recover\', \'' + item.makho + '\', true)"><i class="fa fa-refresh" aria-hidden="true"></i></a>';
+                                        deleteButton = '<a class="green-text" data-toggle="modal" data-target="#deleteModal" onclick="setupModal(\'recover\', \'' + item.makho + '\', true)"><i class="fa fa-refresh" aria-hidden="true"></i></a>';
                                         editButton = '';
                                     }
                                     else {
-                                        deleteButton = '<a class="red-text" data-toggle="modal" data-target="#deleteModal" onclick="setupModal(\'delete\', \'' + item.makho + '\', ' + item.luongsuaco <= 0 + ')"><i class="fa fa-times"></i></a>';
+                                        deleteButton = '<a class="red-text" data-toggle="modal" data-target="#deleteModal" onclick="setupModal(\'delete\', \'' + item.makho + '\', ' + (item.luongsuaco <= 0) + ')"><i class="fa fa-trash" aria-hidden="true"></i></a>';
                                         editButton = '<a class="teal-text" href="/Manage/WareHouse/Edit?id=' + item.makho + '&name=' + item.tenkho + '&max=' + item.succhua + '&cur=' + item.luongsuaco + '&addr=' + item.diachi + '&sta=' + item.tinhtrang + '"><i class="fa fa-pencil"></i></a>';
                                     }
 

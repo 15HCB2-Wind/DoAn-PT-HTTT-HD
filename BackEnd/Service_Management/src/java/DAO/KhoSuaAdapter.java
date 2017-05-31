@@ -8,6 +8,7 @@ package DAO;
 import Config.Configs;
 import Ultility.HibernateUtil;
 import java.util.List;
+import pojos.Chinhanh;
 import pojos.Khosua;
 
 

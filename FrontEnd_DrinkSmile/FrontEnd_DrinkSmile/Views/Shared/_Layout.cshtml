@@ -84,9 +84,10 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/js")
     @RenderSection("scripts", required: false)
-    <script type="text/javascript">
+    <script type="text/javascript" class="handle-script">
         $(document).ready(function () {
             fixBottom();
+            $('script').remove();
         });
 
         $(window).resize(function () {

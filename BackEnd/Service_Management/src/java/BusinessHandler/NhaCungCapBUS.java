@@ -17,24 +17,16 @@ import Models.DataAccess.Provider.UpdateProviderResponse;
  */
 public class NhaCungCapBUS {
      public static boolean insertValidate(InsertProviderRequest request, InsertProviderResponse response){
-        if (request.Data.getTen().isEmpty()){
+        if (request.Data.getTen() == null || request.Data.getTen().isEmpty()){
             response.NameErrors.add("Tên không được để trống!");
-            response.IsError = true;
-        }
-        if (NhaCungCapAdapter.isValidName(request.Data.getTen()) == false) {
-            response.NameErrors.add("Tên đã tồn tại");
             response.IsError = true;
         }
         return !response.IsError;
     }
     
     public static boolean updateValidate(UpdateProviderRequest request, UpdateProviderResponse response){
-        if (request.Data.getTen().isEmpty()){
+        if (request.Data.getTen() == null || request.Data.getTen().isEmpty()){
             response.NameErrors.add("Tên không được để trống!");
-            response.IsError = true;
-        }
-        if (NhaCungCapAdapter.isValidName(request.Data.getTen()) == false) {
-            response.NameErrors.add("Tên đã tồn tại");
             response.IsError = true;
         }
         return !response.IsError;

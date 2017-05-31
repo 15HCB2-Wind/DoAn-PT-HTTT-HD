@@ -5,6 +5,7 @@
  */
 package BusinessHandler;
 
+import DAO.KhoSuaAdapter;
 import Models.DataAccess.DeleteRequest;
 import Models.DataAccess.DeleteResponse;
 import Models.DataAccess.Warehouse.WarehouseRequest;
@@ -36,6 +37,14 @@ public class KhoSuaBUS {
         }
         if (request.Value <= 0) {
             response.Errors.add("Giá trị chuyển không hợp lệ!");
+            response.IsError = true;
+        }
+        return !response.IsError;
+    }
+
+    public static boolean deleteValidate(DeleteRequest request, DeleteResponse response) {
+        if (request.Predicates.length <= 0) {
+            response.Errors.add("Kho xóa không hợp lệ!");
             response.IsError = true;
         }
         return !response.IsError;

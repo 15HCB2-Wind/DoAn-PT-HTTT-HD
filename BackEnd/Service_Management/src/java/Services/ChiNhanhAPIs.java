@@ -142,10 +142,10 @@ public class ChiNhanhAPIs {
                 try{
                     int result = ChiNhanhAdapter.recover(request.Data);
                     if (result != 1){
-                        response.Errors.add("Khôi phục nhân viên thất bại.");
+                        response.Errors.add("Khôi phục chi nhánh thất bại.");
                         response.IsError = true;
                     }else{
-                        response.Data = "Khôi phục nhân viên thành công.";
+                        response.Data = "Khôi phục chi nhánh thành công.";
                     }
                 }catch(Exception ex){
                     response.Errors.add("Lỗi hệ thống.");

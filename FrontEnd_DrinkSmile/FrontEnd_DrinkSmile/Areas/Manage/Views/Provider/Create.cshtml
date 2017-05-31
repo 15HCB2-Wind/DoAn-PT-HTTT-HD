@@ -21,10 +21,11 @@
                     <input id="diachi" class="form-control" type="text" />
                     <label for="diachi">Địa chỉ</label>
                 </div>
-                <div class="md-form">
-                    <i class="fa fa-rss prefix"></i>
-                    <input id="tinhtrang" class="form-control" type="tel" />
-                    <label for="tinhtrang">Tình Trạng</label>
+                <div class="btn-group">
+                    <button id="btnSelectArea" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Khu vực</button>
+                    <div class="dropdown-menu" id="areas">
+                        <!--load data danh sach chuong-->
+                    </div>
                 </div>
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary">
@@ -67,15 +68,11 @@
                 var diachi = $("#diachi").val();
                 if (diachi == "") { diachi = " "; }
 
-                var tinhtrang = $("#tinhtrang").val();
-                if (tinhtrang == "") { tinhtrang = " "; }
-
                 callAjax('post', {
                     Token: Cookies.get('token'),
                     Data: {
                         ten: $("#ten").val(),
                         diachi: diachi,
-                        tinhtrang: tinhtrang
                     }
                 }, Cookies.get("area"), "management", "NhaCungCap/add",
                     function (result) {
@@ -90,10 +87,8 @@
                             }
                         }
                         else {
-                            Data = null;
                             toastr["success"](result.Data);
                             $('#form_create')[0].reset();
-                            window.location.href = 'http://localhost:8082/Manage/Provider'
                         }
                     }
                 )

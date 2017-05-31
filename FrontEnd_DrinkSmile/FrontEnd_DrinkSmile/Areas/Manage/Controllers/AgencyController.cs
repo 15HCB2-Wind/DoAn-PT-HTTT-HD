@@ -38,7 +38,7 @@ namespace FrontEnd_DrinkSmile.Areas.Manage.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            return RedirectToAction("Login", "Account", new { area = "", ReturnUrl = "/Manage/Assignment/Index" });
+            return RedirectToAction("Login", "Account", new { area = "", ReturnUrl = "/Manage/Agency/Index" });
         }
     }
 }

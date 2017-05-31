@@ -29,8 +29,8 @@ public class ChiNhanhAdapter {
         return HibernateUtil.getList("from Chinhanh order by machinhanh asc", null);
     }
     
-    public static Chinhanh getSingle(Object userid){
-        List<Chinhanh> list = HibernateUtil.getSingle("from Chinhanh where machinhanh = :p0", new Object[]{ userid });
+    public static Chinhanh getSingle(Object id){
+        List<Chinhanh> list = HibernateUtil.getSingle("from Chinhanh where machinhanh = :p0", new Object[]{ id });
         if (list.size()>0) {
             return list.get(0);
         }
