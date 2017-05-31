@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 29, 2017 at 04:12 AM
+-- Generation Time: May 31, 2017 at 04:39 AM
 -- Server version: 5.7.14
 -- PHP Version: 5.6.25
 
@@ -173,6 +173,30 @@ INSERT INTO `chuongtrai` (`machuong`, `tenchuong`, `succhua`, `dangchua`, `tinht
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `counter`
+--
+
+CREATE TABLE `counter` (
+  `areaid` varchar(3) NOT NULL,
+  `index_bo` int(11) DEFAULT '0',
+  `index_chinhanh` int(11) DEFAULT '0',
+  `index_chuongtrai` int(11) DEFAULT '0',
+  `index_khosua` int(11) DEFAULT '0',
+  `index_nhacungcap` int(11) DEFAULT '0',
+  `index_nhanvien` int(11) DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `counter`
+--
+
+INSERT INTO `counter` (`areaid`, `index_bo`, `index_chinhanh`, `index_chuongtrai`, `index_khosua`, `index_nhacungcap`, `index_nhanvien`) VALUES
+('HCM', 30, 2, 25, 5, 3, 17),
+('HN', 15, 1, 8, 2, 2, 8);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `khosua`
 --
 
@@ -256,7 +280,7 @@ INSERT INTO `nhanvien` (`manhanvien`, `hoten`, `gioitinh`, `ngaysinh`, `sodt`, `
 ('HCMNV00002', 'Test02', 'Nam', '1987-03-01', '7532005537', '002 Any Street, HCM city, the Earth', '002@gmail.com', '002@gmail.com', 'WVs&$^OEWTMO$IFR&$OIFO#$JFK4MRFI*$UT', 'Đang làm.', b'0', 'HCMCN001', 'PQ002', '2017-04-01'),
 ('HCMNV00003', 'Test03', 'Nam', '1985-08-05', '4524272727', '003 Any Street, HCM city, the Earth', '003@gmail.com', '003@gmail.com', 'WVs&$^OEWTMO$IFR&$OIFO#$JFK4MRFI*$UT', 'Đang làm.', b'0', 'HCMCN001', 'PQ001', '2017-04-01'),
 ('HCMNV00004', 'Test04', 'Nữ', '1985-09-19', '72524742737', '004 Any Street, HCM city, the Earth', '004@gmail.com', '004@gmail.com', 'WVs&$^OEWTMO$IFR&$OIFO#$JFK4MRFI*$UT', 'Đang làm.', b'0', 'HCMCN001', 'PQ001', '2017-04-01'),
-('HCMNV00005', 'Test05', 'Nữ', '1989-02-02', '75240404525', '005 Any Street, HCM city, the Earth', '005@gmail.com', '005@gmail.com', 'WVs&$^OEWTMO$IFR&$OIFO#$JFK4MRFI*$UT', 'Đang làm.', b'0', 'HCMCN001', 'PQ001', '2017-04-01'),
+('HCMNV00005', 'Test05', 'Nữ', '2017-05-30', '75240404525', '005 Any Street, HCM city, the Earth', '005@gmail.com', '005@gmail.com', 'WVs&$^OEWTMO$IFR&$OIFO#$JFK4MRFI*$UT', 'Đang làm.', b'0', 'HCMCN001', 'PQ001', '2017-04-01'),
 ('HCMNV00006', 'Test06', 'Nam', '1981-05-18', '7872275347', '006 Any Street, HCM city, the Earth', '006@gmail.com', '006@gmail.com', 'WVs&$^OEWTMO$IFR&$OIFO#$JFK4MRFI*$UT', 'Đang làm.', b'0', 'HCMCN001', 'PQ001', '2017-04-01'),
 ('HCMNV00007', 'Test07', 'Nữ', '1984-11-21', '0138727785', '007 Any Street, HCM city, the Earth', '007@gmail.com', '007@gmail.com', 'WVs&$^OEWTMO$IFR&$OIFO#$JFK4MRFI*$UT', 'Đang làm.', b'0', 'HCMCN001', 'PQ001', '2017-04-01'),
 ('HCMNV00008', 'Test08', 'Nam', '1979-07-28', '707877594', '008 Any Street, HCM city, the Earth', '008@gmail.com', '008@gmail.com', 'WVs&$^OEWTMO$IFR&$OIFO#$JFK4MRFI*$UT', 'Đang làm.', b'0', 'HCMCN001', 'PQ001', '2017-04-01'),
@@ -299,30 +323,6 @@ INSERT INTO `phanquyen` (`maphanquyen`, `tenphanquyen`, `capphanquyen`) VALUES
 ('PQ002', 'Quản lý chi nhánh', 2),
 ('PQ003', 'Tổng giám đốc', 3);
 
--- --------------------------------------------------------
-
---
--- Table structure for table `tables_counter`
---
-
-CREATE TABLE `tables_counter` (
-  `key` varchar(3) NOT NULL,
-  `bo` int(11) DEFAULT '0',
-  `chinhanh` int(11) DEFAULT '0',
-  `chuongtrai` int(11) DEFAULT '0',
-  `khosua` int(11) DEFAULT '0',
-  `nhacungcap` int(11) DEFAULT '0',
-  `nhanvien` int(11) DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `tables_counter`
---
-
-INSERT INTO `tables_counter` (`key`, `bo`, `chinhanh`, `chuongtrai`, `khosua`, `nhacungcap`, `nhanvien`) VALUES
-('HCM', 30, 2, 25, 5, 3, 17),
-('HN', 15, 1, 8, 2, 2, 8);
-
 --
 -- Indexes for dumped tables
 --
@@ -345,6 +345,12 @@ ALTER TABLE `chinhanh`
 --
 ALTER TABLE `chuongtrai`
   ADD PRIMARY KEY (`machuong`);
+
+--
+-- Indexes for table `counter`
+--
+ALTER TABLE `counter`
+  ADD PRIMARY KEY (`areaid`);
 
 --
 -- Indexes for table `khosua`
@@ -372,12 +378,6 @@ ALTER TABLE `nhanvien`
 ALTER TABLE `phanquyen`
   ADD PRIMARY KEY (`maphanquyen`),
   ADD UNIQUE KEY `capphanquyen_UNIQUE` (`capphanquyen`);
-
---
--- Indexes for table `tables_counter`
---
-ALTER TABLE `tables_counter`
-  ADD PRIMARY KEY (`key`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -44,9 +44,17 @@
     @RenderSection("scripts", required: false)
     <script type="text/javascript">
         $(document).ready(function () {
+            fixBottom();
+        });
+
+        $(window).resize(function () {
+            fixBottom();
+        });
+
+        function fixBottom() {
             $("body").css("min-height", $(window).height() - 106);
             $("main").css("min-height", $(window).height() - 106);
-        });
+        }
     </script>
 </body>
 </html>

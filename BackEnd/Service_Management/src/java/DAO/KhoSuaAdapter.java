@@ -5,6 +5,7 @@
  */
 package DAO;
 
+import Config.Configs;
 import Ultility.HibernateUtil;
 import java.util.List;
 import pojos.Khosua;
@@ -16,8 +17,9 @@ import pojos.Khosua;
  */
 public class KhoSuaAdapter {
     private static void getNewID(Khosua obj) {
-        int count = HibernateUtil.count("select count(makho) from Khosua");
-        obj.setMakho(String.format("KS%05d", count + 1));
+        if (CounterAdapter.updateCounter("indexKhosua")){
+            obj.setMakho(String.format("%s%s%04d", Configs.AREA_ID, "KS", CounterAdapter.getAreaCounter().getIndexKhosua()));
+        }
     }
     
     public static Khosua getSingle(Object id){
@@ -56,5 +58,22 @@ public class KhoSuaAdapter {
         updated.setTenkho(obj.getTenkho());
         updated.setTinhtrang(obj.getTinhtrang());
         return HibernateUtil.update(updated);
+    }
+
+    public static boolean transfer(String From, String To, Double Value) {
+        if (getSingle(From).getLuongsuaco() >= Value){
+            HibernateUtil.execute("update Khosua set luongsuaco = (luongsuaco - :p1) where makho = :p0", new Object[]{ From, Value });
+            HibernateUtil.execute("update Khosua set luongsuaco = (luongsuaco + :p1) where makho = :p0", new Object[]{ To, Value });
+            return true;
+        }
+        return false;
+    }
+
+    public static Object getAllAvailables(String id) {
+        return HibernateUtil.getList("from Khosua where machinhanh = :p0 and daxoa = :p1", new Object[]{id, false});
+    }
+    
+    public static Object getAllAvailablesForTransfer(String id) {
+        return HibernateUtil.getList("from Khosua where machinhanh = :p0 and daxoa = :p1 and luongsuaco > 0", new Object[]{id, false});
     }
 }

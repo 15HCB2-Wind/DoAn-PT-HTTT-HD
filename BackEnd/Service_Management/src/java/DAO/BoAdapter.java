@@ -5,6 +5,7 @@
  */
 package DAO;
 
+import Config.Configs;
 import Ultility.HibernateUtil;
 import java.util.Date;
 import java.util.List;
@@ -16,8 +17,9 @@ import pojos.Bo;
  */
 public class BoAdapter {
     private static void getNewID(Bo obj) {
-        int count = HibernateUtil.count("select count(mabo) from Bo");
-        obj.setMabo(String.format("COW%05d", count + 1));
+        if (CounterAdapter.updateCounter("indexBo")){
+            obj.setMabo(String.format("%s%s%06d", Configs.AREA_ID, "B", CounterAdapter.getAreaCounter().getIndexBo()));
+        }
     }
     
     public static Bo getSingle(Object id){

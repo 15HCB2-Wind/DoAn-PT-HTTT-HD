@@ -76,16 +76,16 @@
                                         '<thead class="thead-inverse">' +
                                             '<tr>' +
                                                 '<th rowspan="2" class="text-center align-middle">Bò</th>' +
-                                                '<th rowspan="2" class="text-center align-middle" width="150px">Lượng sữa</th>' +
+                                                '<th rowspan="2" class="text-center align-middle" width="120px">Lượng sữa</th>' +
                                                 '<th rowspan="2" class="text-center align-middle">Cho ăn</th>' +
                                                 '<th rowspan="2" class="text-center align-middle">Vệ sinh</th>' +
-                                                '<th rowspan="2" class="text-center align-middle" width="150px">Tình trạng công việc</th>' +
+                                                '<th rowspan="2" class="text-center align-middle" width="180px">Tình trạng công việc</th>' +
                                                 '<th colspan="3" class="text-center align-middle" width="300px">Tình trạng bò</th>' +
                                                 '<th rowspan="2" colspan="2"></th>' +
                                                 //'<th rowspan="2"></th>' +
                                             '</tr>' +
                                             '<tr>' +
-                                                '<th class="text-center align-middle"></th>'+
+                                                '<th class="text-center align-middle">#</th>'+
                                                 '<th class="text-center align-middle">Chiều cao (mét)</th>' +
                                                 '<th class="text-center align-middle">Cân nặng (kg)</th>' +
                                             '</tr>' +
@@ -268,7 +268,7 @@
                     $('#tr' + code).last().after(
                         '<tr class="table-success">' +
                         '<td class="text-center align-middle">' + stt + '</td>' +
-                        '<td class="text-center align-middle">'+chieucao+'</td>' +
+                        '<td class="text-center align-middle">'+ chieucao +'</td>' +
                         '<td class="text-center align-middle">' + cannang + '</td>'+
                         '</tr>'
                         );
@@ -312,13 +312,13 @@
             </div>
             <!--Body-->
             <div class="modal-body">
-                <label class="w-25">Chiều cao</label><input id="chieucao" type="number" min="0" value="0" step="0.5" class="w-25" /> mét <br />
-                <label class="w-25">Cân nặng</label><input id="cannang" type="number" min="0" value="0" step="5" class="w-25" /> lít <br/>
+                <label class="w-25 text-center">Chiều cao</label><input id="chieucao" type="number" min="0" value="0" step="0.1" class="w-50 text-right" />&nbsp;(mét)<br />
+                <label class="w-25 text-center">Cân nặng</label><input id="cannang" type="number" min="0" value="0" class="w-50 text-right" />&nbsp;(kg)<br/>
             </div>
             <!--Footer-->
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                <button type="button" class="btn btn-primary" onclick="saveclick(document.getElementById('chieucao').value,document.getElementById('chieucao').value, document.getElementById('cannang').value)" data-dismiss="modal">Lưu</button>
+                <button type="button" class="btn btn-primary" onclick="saveclick(document.getElementById('chieucao').value, document.getElementById('cannang').value)" data-dismiss="modal">Lưu</button>
             </div>
         </div>
         <!--/.Content-->

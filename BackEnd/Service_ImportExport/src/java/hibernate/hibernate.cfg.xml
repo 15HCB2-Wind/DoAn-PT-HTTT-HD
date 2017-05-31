@@ -50,6 +50,6 @@ Contributor(s):
     <mapping resource="pojos/Chitietxuatsua.hbm.xml"/>
     <mapping resource="pojos/Phieuxuat.hbm.xml"/>
     <mapping resource="pojos/Phieunhapbo.hbm.xml"/>
-    <mapping resource="pojos/TablesCounter.hbm.xml"/>
+    <mapping resource="pojos/Counter.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

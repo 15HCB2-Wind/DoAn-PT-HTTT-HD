@@ -49,7 +49,7 @@ namespace Service.Controllers
         public HttpResponseMessage UpdatePhanCong([FromBody] PhanCongRequest request)
         {
             var response = new PhanCongResponse();
-            if (BusinessHandler.TokenBUS.tokenCheck(request, response, 1))
+            if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2))
             {
                 PhanCongBUS.UpdatePhanCong(request, ref response);
                 if (response.IsError)

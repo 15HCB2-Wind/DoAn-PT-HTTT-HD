@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 29, 2017 at 04:12 AM
+-- Generation Time: May 31, 2017 at 04:39 AM
 -- Server version: 5.7.14
 -- PHP Version: 5.6.25
 
@@ -31,6 +31,26 @@ CREATE TABLE `chitietxuatsua` (
   `makho` varchar(10) DEFAULT NULL,
   `luongsuaxuat` double DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `counter`
+--
+
+CREATE TABLE `counter` (
+  `areaid` varchar(3) NOT NULL,
+  `index_phieuxuat` int(11) DEFAULT '0',
+  `index_phieunhap` int(11) DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `counter`
+--
+
+INSERT INTO `counter` (`areaid`, `index_phieuxuat`, `index_phieunhap`) VALUES
+('HCM', 0, 2),
+('HN', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -74,26 +94,6 @@ CREATE TABLE `phieuxuat` (
   `manv` varchar(10) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `tables_counter`
---
-
-CREATE TABLE `tables_counter` (
-  `key` varchar(3) NOT NULL,
-  `phieuxuat` int(11) DEFAULT '0',
-  `phieunhap` int(11) DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `tables_counter`
---
-
-INSERT INTO `tables_counter` (`key`, `phieuxuat`, `phieunhap`) VALUES
-('HCM', 0, 2),
-('HN', 0, 1);
-
 --
 -- Indexes for dumped tables
 --
@@ -103,6 +103,12 @@ INSERT INTO `tables_counter` (`key`, `phieuxuat`, `phieunhap`) VALUES
 --
 ALTER TABLE `chitietxuatsua`
   ADD PRIMARY KEY (`machungtu`);
+
+--
+-- Indexes for table `counter`
+--
+ALTER TABLE `counter`
+  ADD PRIMARY KEY (`areaid`);
 
 --
 -- Indexes for table `phieunhapbo`
@@ -115,12 +121,6 @@ ALTER TABLE `phieunhapbo`
 --
 ALTER TABLE `phieuxuat`
   ADD PRIMARY KEY (`machungtu`);
-
---
--- Indexes for table `tables_counter`
---
-ALTER TABLE `tables_counter`
-  ADD PRIMARY KEY (`key`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

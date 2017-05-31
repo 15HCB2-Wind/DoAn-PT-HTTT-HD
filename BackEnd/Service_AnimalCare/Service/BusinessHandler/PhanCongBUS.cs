@@ -57,7 +57,7 @@ namespace Service.BusinessHandler
         public static bool UpdatePhanCong(PhanCongRequest request, ref PhanCongResponse response)
         {
             var data = request.Data;
-            CheckValidate(request, ref response);
+            //CheckValidate(request, ref response);
             if (data.NgayBatDau > data.NgayKetThuc)
             {
                 response.Errors.Add("Ngày bắt đầu không được lớn hơn ngày kết thúc làm việc");

@@ -94,7 +94,7 @@
                             if (data.Data) {
                                 listchuong = data.Data;
                                 for (var i = 0; i < listchuong.length; i++) {
-                                    var row = listchuong[i].tenchuong + '(' + listchuong[i].machuong + ')';
+                                    var row = listchuong[i].tenchuong + ' (' + listchuong[i].machuong + ')';
                                     $("#chuongtrai").append('<a class="dropdown-item" onclick="chuongtrai_click(' + i + ')">' + row + '</a>');
                                     if (listchuong[i].machuong == QueryString['barn']) {
                                         $('#btnCT').html(row);
@@ -136,7 +136,7 @@
         });
 
         function chuongtrai_click(index) {
-            var row = listchuong[index].tenchuong + '(' + listchuong[index].machuong + ')';
+            var row = listchuong[index].tenchuong + ' (' + listchuong[index].machuong + ')';
             $('#btnCT').html(row);
             $('#btnCT').attr('my-data', listchuong[index].machuong);
         };

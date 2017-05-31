@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated May 30, 2017 10:11:39 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="pojos.Counter" table="counter" catalog="service_importexport_drinksmile" optimistic-lock="version">
+        <id name="areaid" type="string">
+            <column name="areaid" length="3" />
+            <generator class="assigned" />
+        </id>
+        <property name="indexPhieuxuat" type="java.lang.Integer">
+            <column name="index_phieuxuat" />
+        </property>
+        <property name="indexPhieunhap" type="java.lang.Integer">
+            <column name="index_phieunhap" />
+        </property>
+    </class>
+</hibernate-mapping>

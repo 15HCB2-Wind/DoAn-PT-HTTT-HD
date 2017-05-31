@@ -49,10 +49,10 @@ Contributor(s):
     <property name="hibernate.connection.characterEncoding">utf8</property>
     <mapping resource="pojos/Nhacungcap.hbm.xml"/>
     <mapping resource="pojos/Nhanvien.hbm.xml"/>
+    <mapping resource="pojos/Counter.hbm.xml"/>
     <mapping resource="pojos/Khosua.hbm.xml"/>
     <mapping resource="pojos/Bo.hbm.xml"/>
     <mapping resource="pojos/Chinhanh.hbm.xml"/>
-    <mapping resource="pojos/TablesCounter.hbm.xml"/>
     <mapping resource="pojos/Chuongtrai.hbm.xml"/>
     <mapping resource="pojos/Phanquyen.hbm.xml"/>
   </session-factory>

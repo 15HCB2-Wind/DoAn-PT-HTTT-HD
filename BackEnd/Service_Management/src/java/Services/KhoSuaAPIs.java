@@ -12,6 +12,7 @@ import DAO.KhoSuaAdapter;
 import DAO.NhanVienAdapter;
 import Models.DataAccess.Warehouse.WarehouseRequest;
 import Models.DataAccess.Warehouse.WarehouseResponse;
+import Models.DataAccess.Warehouse.WarehouseTransferRequest;
 import com.google.gson.Gson;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -76,6 +77,46 @@ public class KhoSuaAPIs {
             try{
                 response.Data = KhoSuaAdapter.getAllOfAgency(token.AgencyId);
             }catch(Exception ex){
+                response.Errors.add("Lỗi hệ thống.");
+                response.IsError = true;
+            }
+        }
+        return gson.toJson(response);
+    }
+    
+    @POST
+    @Path("getAllAvailables")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public String getAllAvailables(String json) {
+        Gson gson = new Gson();
+        SelectRequest request = gson.fromJson(json, SelectRequest.class);
+        SelectResponse response = new SelectResponse();
+        TokenData token = BusinessHandler.TokenBUS.tokenData(request, response, 2);
+        if (token != null){
+            try {
+                response.Data = KhoSuaAdapter.getAllAvailables(token.AgencyId);;
+            } catch (Exception ex) {
+                response.Errors.add("Lỗi hệ thống.");
+                response.IsError = true;
+            }
+        }
+        return gson.toJson(response);
+    }
+    
+    @POST
+    @Path("getAllAvailablesForTransfer")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public String getAllAvailablesForTransfer(String json) {
+        Gson gson = new Gson();
+        SelectRequest request = gson.fromJson(json, SelectRequest.class);
+        SelectResponse response = new SelectResponse();
+        TokenData token = BusinessHandler.TokenBUS.tokenData(request, response, 2);
+        if (token != null){
+            try {
+                response.Data = KhoSuaAdapter.getAllAvailablesForTransfer(token.AgencyId);;
+            } catch (Exception ex) {
                 response.Errors.add("Lỗi hệ thống.");
                 response.IsError = true;
             }
@@ -176,6 +217,32 @@ public class KhoSuaAPIs {
                         response.Data = "Cập nhật thành công!";
                     }else{
                         response.Errors.add("Cập nhật thất bại!");
+                        response.IsError = true;
+                    }
+                }catch(Exception ex){
+                    response.Errors.add("Lỗi hệ thống.");
+                    response.IsError = true;
+                }
+            }
+        }
+        return gson.toJson(response);
+    }
+    
+    @POST
+    @Path("transfer")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public String transfer(String json) {
+        Gson gson = new Gson();
+        WarehouseTransferRequest request = gson.fromJson(json, WarehouseTransferRequest.class);
+        WarehouseResponse response = new WarehouseResponse();
+        if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2)){
+            if (BusinessHandler.KhoSuaBUS.transferValidate(request, response)){
+                try{
+                    if (KhoSuaAdapter.transfer(request.From, request.To, request.Value)){
+                        response.Data = "Chuyển kho thành công!";
+                    }else{
+                        response.Errors.add("Chuyển kho thất bại!");
                         response.IsError = true;
                     }
                 }catch(Exception ex){

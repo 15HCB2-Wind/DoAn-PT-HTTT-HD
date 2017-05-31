@@ -5,8 +5,8 @@
  */
 package DAO;
 
+import Config.Configs;
 import Ultility.HibernateUtil;
-import Ultility.Security;
 import java.util.List;
 import pojos.Chinhanh;
 
@@ -15,21 +15,10 @@ import pojos.Chinhanh;
  * @author Shin'sLaptop
  */
 public class ChiNhanhAdapter {
-    
-    
      private static void getNewID(Chinhanh obj) {
-        List<Chinhanh> list = HibernateUtil.getSingle("from Chinhanh order by machinhanh desc",null);//lay ds chinhanh tu duoi len
-        String machu= "";
-         if (list.size()>0) {
-            Chinhanh cn = list.get(list.size()-1);
-            machu = cn.getMachinhanh().substring(2);//CN00001 -> 00001
-         }
-         else
-         {
-              machu = "0";
-         }
-        int maso = Integer.parseInt(machu);
-        obj.setMachinhanh(String.format("CN%03d", maso + 1));
+        if (CounterAdapter.updateCounter("indexChinhanh")){
+            obj.setMachinhanh(String.format("%s%s%03d", Configs.AREA_ID, "CN", CounterAdapter.getAreaCounter().getIndexChinhanh()));
+        }
     }
     
     public static List<Chinhanh> getAll(){

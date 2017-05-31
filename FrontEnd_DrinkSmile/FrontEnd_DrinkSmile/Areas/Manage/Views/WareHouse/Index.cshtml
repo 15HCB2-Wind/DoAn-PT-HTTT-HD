@@ -8,7 +8,7 @@
 @*<a class="blue-text" href="/Manage/WareHouse/Create"><i class="fa fa-arrow-down" aria-hidden="true"></i> Thêm một kho mới</a>*@
 <p>
     <a class="btn btn-primary" href="@Url.Action("Create")">Thuê kho</a>
-    <a class="btn btn-success" href="@Url.Action("Transfer")">Chuyển kho</a>
+    <a class="btn btn-success" data-toggle="modal" data-target="#transferModal" onclick="setupTransferModal()">Chuyển kho</a>
 </p>
 <table class="table table-hover">
     <thead class="thead-inverse">
@@ -36,6 +36,45 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
                 <button id="deleteModal_btnYes" type="button" class="btn btn-danger" data-dismiss="modal">Tiếp</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="transferModal" tabindex="-1" role="dialog" aria-labelledby="transferModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title w-100" id="transferModalLabel">Chuyển kho</h4>
+            </div>
+            <div class="modal-body">
+                <div class="text-center">
+                    From&nbsp;
+                    <div class="btn-group">
+                        <button id="btnTransferFrom" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Kho gửi</button>
+                        <div class="dropdown-menu" id="tfFrom">
+                            <!--load data danh sach kho-->
+                        </div>
+                    </div>
+                    &nbsp;to&nbsp;
+                    <div class="btn-group">
+                        <button id="btnTransferTo" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Kho nhận</button>
+                        <div class="dropdown-menu" id="tfTo">
+                            <!--load data danh sach kho-->
+                        </div>
+                    </div>
+                </div>
+                <div class="md-form form-sm">
+                    <i class="fa fa-filter prefix"></i>
+                    <input id="tfValue" class="form-control" type="text" />
+                    <label for="tfValue">Lượng sữa chuyển (lít)</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="transfer($('#btnTransferFrom').attr('my-data'), $('#btnTransferTo').attr('my-data'),  $('#tfValue').val())">Chuyển</button>
             </div>
         </div>
     </div>
@@ -90,7 +129,7 @@
                                         editButton = '';
                                     }
                                     else {
-                                        deleteButton = '<a class="red-text" data-toggle="modal" data-target="#deleteModal" onclick="setupModal(\'delete\', \'' + item.makho + '\', true)"><i class="fa fa-times"></i></a>';
+                                        deleteButton = '<a class="red-text" data-toggle="modal" data-target="#deleteModal" onclick="setupModal(\'delete\', \'' + item.makho + '\', ' + item.luongsuaco <= 0 + ')"><i class="fa fa-times"></i></a>';
                                         editButton = '<a class="teal-text" href="/Manage/WareHouse/Edit?id=' + item.makho + '&name=' + item.tenkho + '&max=' + item.succhua + '&cur=' + item.luongsuaco + '&addr=' + item.diachi + '&sta=' + item.tinhtrang + '"><i class="fa fa-pencil"></i></a>';
                                     }
 
@@ -135,7 +174,80 @@
                         }
                     }
                 )
+            } else {
+                toastr['error']("Không thể xóa kho còn sữa.");
             }
         };
+
+        var fromList, toList;
+        function setupTransferModal() {
+            callAjax('post', { Token: Cookies.get("token") }, Cookies.get("area"), "management", "KhoSua/getAllAvailables",
+                    function (result) {
+                        if (result.IsError) {
+                            if (result.Errors.length > 0) {
+                                toastr["error"](result.Errors[0]);
+                            }
+                        }
+                        else {
+                            if (result.Data) {
+                                toList = result.Data;
+                                $("#tfTo").html('');
+                                $('#btnTransferTo').html('Kho nhận');
+                                $('#btnTransferTo').removeAttr('my-data');
+                                for (var i = 0; i < toList.length; i++) {
+                                    var row = toList[i].tenkho + ' (' + toList[i].makho + ')';
+                                    $("#tfTo").append('<button class="btn btn-primary" type="button" onclick="tf_selectTo(' + i + ')">' + row + '</button>');
+                                }
+                            }
+                        }
+                    }
+                );
+            callAjax('post', { Token: Cookies.get("token") }, Cookies.get("area"), "management", "KhoSua/getAllAvailablesForTransfer",
+                    function (result) {
+                        if (result.IsError) {
+                            if (result.Errors.length > 0) {
+                                toastr["error"](result.Errors[0]);
+                            }
+                        }
+                        else {
+                            if (result.Data) {
+                                fromList = result.Data;
+                                $("#tfFrom").html('');
+                                $('#btnTransferFrom').html('Kho gửi');
+                                $('#btnTransferFrom').removeAttr('my-data');
+                                for (var i = 0; i < fromList.length; i++) {
+                                    var row = fromList[i].tenkho + ' (' + fromList[i].makho + ')';
+                                    $("#tfFrom").append('<button class="btn btn-primary" type="button" onclick="tf_selectFrom(' + i + ')">' + row + '</button>');
+                                }
+                            }
+                        }
+                    }
+                );
+        }
+        function transfer(from, to, value) {
+            callAjax('post', { Token: Cookies.get("token"), From: from, To: to, Value: value }, Cookies.get("area"), "management", "KhoSua/transfer",
+                    function (result) {
+                        if (result.IsError) {
+                            if (result.Errors.length > 0) {
+                                toastr["error"](result.Errors[0]);
+                            }
+                        }
+                        else {
+                            toastr["success"](result.Data);
+                            loadTable();
+                        }
+                    }
+                );
+        }
+        function tf_selectFrom(index) {
+            var row = fromList[index].tenkho;
+            $('#btnTransferFrom').html(row);
+            $('#btnTransferFrom').attr('my-data', fromList[index].makho);
+        }
+        function tf_selectTo(index) {
+            var row = toList[index].tenkho;
+            $('#btnTransferTo').html(row);
+            $('#btnTransferTo').attr('my-data', toList[index].makho);
+        }
     </script>
 }

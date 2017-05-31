@@ -5,6 +5,7 @@
  */
 package DAO;
 
+import Config.Configs;
 import Models.Other.ChangePasswordRequest;
 import Ultility.HibernateUtil;
 import Ultility.Security;
@@ -17,17 +18,14 @@ import pojos.*;
  * @author Shin-Desktop
  */
 public class NhanVienAdapter {
-
     private static void getNewID(Nhanvien obj) {
-        int count = HibernateUtil.count("select count(manhanvien) from Nhanvien");
-        obj.setManhanvien(String.format("NV%05d", count + 1));
+        if (CounterAdapter.updateCounter("indexNhanvien")){
+            obj.setManhanvien(String.format("%s%s%05d", Configs.AREA_ID, "NV", CounterAdapter.getAreaCounter().getIndexNhanvien()));
+        }
     }
 
     public static boolean checkEmail(String email) {
-        if (HibernateUtil.count("select count(*) from Nhanvien where email = '" + email + "'") == 0) {
-            return true;
-        }
-        return false;
+        return HibernateUtil.getSingle("from Nhanvien where email = :p0", new Object[]{email}) == null;
     }
 
     public static Nhanvien getSingle(Object MaNV) {
