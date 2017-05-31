@@ -33,21 +33,26 @@ public class NhaCungCapAdapter {
         }
         return false;
     }
+//    private static void getNewID(Nhacungcap obj) {
+//         List<Nhacungcap> list = HibernateUtil.getSingle("from Nhacungcap order by manhacungcap desc",null);//lay ds chinhanh tu duoi len
+//        String machu= "";
+//         if (list.size()>0) {
+//            Nhacungcap cn = list.get(list.size()-1);
+//            machu = cn.getManhacungcap().substring(3);//NCC00001 -> 00001
+//         }
+//         else
+//         {
+//              machu = "0";
+//         }
+//        int maso = Integer.parseInt(machu);
+//        obj.setManhacungcap(String.format("NCC%03d", maso + 1));
+//    }
+    
     private static void getNewID(Nhacungcap obj) {
-        
-          List<Nhacungcap> list = HibernateUtil.getSingle("from Nhacungcap order by manhacungcap desc",null);//lay ds chinhanh tu duoi len
-        String machu= "";
-         if (list.size()>0) {
-            Nhacungcap cn = list.get(list.size()-1);
-            machu = cn.getManhacungcap().substring(3);//NCC00001 -> 00001
-         }
-         else
-         {
-              machu = "0";
-         }
-        int maso = Integer.parseInt(machu);
-        obj.setManhacungcap(String.format("NCC%03d", maso + 1));
+        int count = HibernateUtil.count("select count(manhacungcap) from Nhacungcap");
+        obj.setManhacungcap(String.format("NCC%05d", count + 1));
     }
+    
     public static boolean add(Nhacungcap obj) {
         getNewID(obj);
         return HibernateUtil.save(obj);
