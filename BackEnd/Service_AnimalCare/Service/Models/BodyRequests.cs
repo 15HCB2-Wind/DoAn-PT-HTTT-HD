@@ -40,5 +40,17 @@ namespace Service.Models
     public class TinhTrangBoRequest : BodyRequest
     {
         public TinhTrangBo Data { get; set; }
+        public string TinhTrang { get; set; }
+    }
+
+    public class UpdateMilkRequest : BodyRequest
+    {
+        public float Value { get; set; }
+    }
+
+    public class UpdateCow : BodyRequest
+    {
+        public string Id { get; set; }
+        public string NewState { get; set; }
     }
 }

@@ -65,4 +65,8 @@ public class BoAdapter {
         updated.setTinhtrang(obj.getTinhtrang());
         return HibernateUtil.update(updated);
     }
+    
+    public static boolean updateState(String id, String newState) {
+        return HibernateUtil.execute("update Bo set tinhtrang = :p1 where mabo = :p0", new Object[]{ id, newState }) > 0;
+    }
 }

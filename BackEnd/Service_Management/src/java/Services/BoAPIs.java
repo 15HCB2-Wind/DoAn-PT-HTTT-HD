@@ -12,6 +12,7 @@ import DAO.BoAdapter;
 import DAO.ChuongTraiAdapter;
 import Models.DataAccess.Cow.CowRequest;
 import Models.DataAccess.Cow.CowResponse;
+import Models.DataAccess.Cow.CowUpdateStateRequest;
 import com.google.gson.Gson;
 import java.util.List;
 import javax.ws.rs.core.Context;
@@ -228,6 +229,30 @@ public class BoAPIs {
                     response.Errors.add("Lỗi hệ thống.");
                     response.IsError = true;
                 }
+            }
+        }
+        return gson.toJson(response);
+    }
+    
+    @POST
+    @Path("updateState")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public String updateState(String json) {
+        Gson gson = new Gson();
+        CowUpdateStateRequest request = gson.fromJson(json, CowUpdateStateRequest.class);
+        CowResponse response = new CowResponse();
+        if (BusinessHandler.TokenBUS.tokenCheck(request, response, 1)){
+            try{
+                if (BoAdapter.updateState(request.Id, request.NewState)){
+                    response.Data = "Cập nhật thành công!";
+                }else{
+                    response.Errors.add("Cập nhật thất bại!");
+                    response.IsError = true;
+                }
+            }catch(Exception ex){
+                response.Errors.add("Lỗi hệ thống.");
+                response.IsError = true;
             }
         }
         return gson.toJson(response);
