@@ -11,16 +11,34 @@ namespace FrontEnd_DrinkSmile.Areas.Manage.Controllers
         // GET: Manage/Agency
         public ActionResult Index()
         {
-            return View();
+            if (Request.Cookies["token"] != null)
+            {
+                if (Request.Cookies["role"].Value == "3") return View();
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Login", "Account", new { area = "", ReturnUrl = "/Manage/Agency/Index" });
         }
         public ActionResult Create()
         {
-            return View();
+            if (Request.Cookies["token"] != null)
+            {
+                if (Request.Cookies["role"].Value == "3") return View();
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Login", "Account", new { area = "", ReturnUrl = "/Manage/Agency/Create" });
         }
         public ActionResult Update(string getchinhanh)
         {
-            ViewBag.getchinhanh = getchinhanh;
-            return View();
+            if (Request.Cookies["token"] != null)
+            {
+                if (Request.Cookies["role"].Value == "3")
+                {
+                    ViewBag.getchinhanh = getchinhanh;
+                    return View();
+                }
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Login", "Account", new { area = "", ReturnUrl = "/Manage/Assignment/Index" });
         }
     }
 }

@@ -24,9 +24,9 @@ public class NhaCungCapAdapter {
     public static List<Nhacungcap> getAll(){
         return HibernateUtil.getList("from Nhacungcap order by manhacungcap asc", null);
     }
-    
+	
     public static boolean isValidName(String name) {
-        return HibernateUtil.getSingle("from Nhacungcap where ten = :p0", new Object[]{name}) == null;
+        return HibernateUtil.getSingle("from Nhacungcap where ten = :p0", new Object[]{name}).size() <= 0;
     }
     
     public static boolean add(Nhacungcap obj) {

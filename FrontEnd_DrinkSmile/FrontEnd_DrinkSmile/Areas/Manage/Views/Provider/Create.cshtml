@@ -71,12 +71,13 @@
                 if (tinhtrang == "") { tinhtrang = " "; }
 
                 callAjax('post', {
+                    Token: Cookies.get('token'),
                     Data: {
                         ten: $("#ten").val(),
                         diachi: diachi,
                         tinhtrang: tinhtrang
                     }
-                }, "hcm", "management", "NhaCungCap/add",
+                }, Cookies.get("area"), "management", "NhaCungCap/add",
                     function (result) {
                         if (result.IsError) {
                             if (result.NameErrors.length > 0) {

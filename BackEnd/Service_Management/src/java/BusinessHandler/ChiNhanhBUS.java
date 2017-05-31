@@ -5,6 +5,7 @@
  */
 package BusinessHandler;
 
+import DAO.ChiNhanhAdapter;
 import Models.DataAccess.Agency.DeleteAgencyRequest;
 import Models.DataAccess.Agency.DeleteAgencyResponse;
 import Models.DataAccess.Agency.InsertAgencyRequest;
@@ -21,21 +22,30 @@ import Models.DataAccess.DeleteResponse;
 public class ChiNhanhBUS {
     public static boolean insertValidate(InsertAgencyRequest request, InsertAgencyResponse response){
         if (request.Data.getTenchinhanh().isEmpty()){
-            response.NameErrors.add("Tên Chi Nhánh không được để trống!");
+            response.NameErrors.add("Tên không được để trống!");
             response.IsError = true;
         }
+        
+        if (ChiNhanhAdapter.isValidName(request.Data.getTenchinhanh()) == false) {
+            response.NameErrors.add("Tên đã tồn tại");
+            response.IsError = true;
+        }
+        
         if (request.Data.getQuanly().isEmpty()){
             response.ManagerErrors.add("Vui lòng chọn nhân viên quản lý");
             response.IsError = true;
         }
+        
+        
         return !response.IsError;
     }
     
     public static boolean updateValidate(UpdateAgencyRequest request, UpdateAgencyResponse response){
         if (request.Data.getTenchinhanh().isEmpty()){
-            response.NameErrors.add("Tên Chi Nhánh không được để trống!");
+            response.NameErrors.add("Tên không được để trống!");
             response.IsError = true;
         }
+                
          if (request.Data.getQuanly().isEmpty()){
             response.ManagerErrors.add("Vui lòng chọn nhân viên quản lý");
             response.IsError = true;

@@ -6,6 +6,7 @@
 package Services;
 
 import BusinessHandler.NhaCungCapBUS;
+
 import Models.DataAccess.*;
 import DAO.NhaCungCapAdapter;
 import Models.DataAccess.Provider.InsertProviderRequest;
@@ -46,14 +47,12 @@ public class NhaCungCapAPIs {
         SelectRequest request = gson.fromJson(json, SelectRequest.class);
         SelectResponse response = new SelectResponse();
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)){
-            //if (true){
-                try{
-                    response.Data = NhaCungCapAdapter.getAll();
-                }catch(Exception ex){
-                    response.Errors.add("Lỗi hệ thống.");
-                    response.IsError = true;
-                }
-            //}
+            try{
+                response.Data = NhaCungCapAdapter.getAll();
+            }catch(Exception ex){
+                response.Errors.add("Lỗi hệ thống.");
+                response.IsError = true;
+            }
         }
          return gson.toJson(response);
     }
@@ -66,14 +65,12 @@ public class NhaCungCapAPIs {
         SelectRequest request = gson.fromJson(json, SelectRequest.class);
         SelectResponse response = new SelectResponse();
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)){
-            //if (true){
-                try{
-                    response.Data = NhaCungCapAdapter.getSingle(request.Predicates[0]);
-                }catch(Exception ex){
-                    response.Errors.add("Lỗi hệ thống.");
-                    response.IsError = true;
-                }
-            //}
+            try{
+                response.Data = NhaCungCapAdapter.getSingle(request.Predicates[0]);
+            }catch(Exception ex){
+                response.Errors.add("Lỗi hệ thống.");
+                response.IsError = true;
+            }
         }
          return gson.toJson(response);
     }
@@ -86,7 +83,7 @@ public class NhaCungCapAPIs {
         Gson gson = new Gson();
         InsertProviderRequest request = gson.fromJson(json, InsertProviderRequest.class);
         InsertProviderResponse response = new InsertProviderResponse();
-        if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)){
+        if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)){// kiem tra quyen truy cap
             if (NhaCungCapBUS.insertValidate(request, response)){
                 try{
                     if (NhaCungCapAdapter.add(request.Data)){

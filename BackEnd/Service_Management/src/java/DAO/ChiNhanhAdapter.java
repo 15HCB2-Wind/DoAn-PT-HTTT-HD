@@ -15,20 +15,24 @@ import pojos.Chinhanh;
  * @author Shin'sLaptop
  */
 public class ChiNhanhAdapter {
-     private static void getNewID(Chinhanh obj) {
+    private static void getNewID(Chinhanh obj) {
         if (CounterAdapter.updateCounter("indexChinhanh")){
             obj.setMachinhanh(String.format("%s%s%03d", Configs.AREA_ID, "CN", CounterAdapter.getAreaCounter().getIndexChinhanh()));
         }
     }
     
+    public static boolean isValidName(String name) {
+        return HibernateUtil.getSingle("from Chinhanh where tenchinhanh = :p0", new Object[]{name}).size() <= 0;
+    }
+    
     public static List<Chinhanh> getAll(){
         return HibernateUtil.getList("from Chinhanh order by machinhanh asc", null);
     }
+    
     public static Chinhanh getSingle(Object userid){
         List<Chinhanh> list = HibernateUtil.getSingle("from Chinhanh where machinhanh = :p0", new Object[]{ userid });
         if (list.size()>0) {
-            Chinhanh cn = list.get(0);
-            return cn;
+            return list.get(0);
         }
         return null;
     }
@@ -39,7 +43,7 @@ public class ChiNhanhAdapter {
          {
              return obj.getMachinhanh();
          }
-         return "false";
+         return null;
     }
 
     public static int delete(Chinhanh id) {

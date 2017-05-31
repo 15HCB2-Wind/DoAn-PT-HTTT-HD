@@ -25,7 +25,7 @@ public class NhanVienAdapter {
     }
 
     public static boolean checkEmail(String email) {
-        return HibernateUtil.getSingle("from Nhanvien where email = :p0", new Object[]{email}) == null;
+        return HibernateUtil.getSingle("from Nhanvien where email = :p0", new Object[]{email}).size() <= 0;
     }
 
     public static Nhanvien getSingle(Object MaNV) {

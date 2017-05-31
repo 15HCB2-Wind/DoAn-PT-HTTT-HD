@@ -1,4 +1,4 @@
-@{
+﻿@{
     ViewBag.Title = "Cập nhật Chi nhánh";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -105,22 +105,152 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script type="text/javascript">
+        // bien toan cuc
         var listnv;
+        var listchinhanh;
+        var chinhanh;
         var nvQuanLyCu;
         var nvQuanLyMoi;
+        var machinhanh;
+        //
         $(document).ready(function () {
+
+            //lấy danh sách chi nhánh
+            laylistchinhanh();
+
             //$("fieldset").hide();
             $("#loader").hide();
             $("#back").hide();
             $('#loader1').hide();
-            var machinhanh = QueryString['machinhanh'];
-            callAjax('post', { Predicates: [machinhanh] }, "hcm", "management", "ChiNhanh/getSingle", function (data) {
-                if (data.Data == null) {
-                    toastr["error"]("Chi Nhánh không tồn tại!");
-                    //alert("Lỗi Hệ Thống");
-                    window.location.href = 'http://localhost:8082/Manage/Agency'
+            machinhanh = QueryString['machinhanh'];
+            //Load chi nhánh lên màn hình
+            loadchinhanh();
+
+
+            //Cập nhật chi nhánh
+            $('#form_update').submit(function (e) {
+                // nếu có đổi tên thì kiểm tra tên mới có tồn tại chưa, nếu chưa thì thêm mới
+                var tenhople = true;
+                if ($("#ten").val() != chinhanh.tenchinhanh) {
+                    // Kiểm tra chi nhánh đã tồn tại chưa
+                    for (var i = 0; i < listchinhanh.length; i++) {
+                        if ($("#ten").val() == listchinhanh[i].tenchinhanh) {
+                            toastr["error"]("Tên chi nhánh đã tồn tại");
+                            $("#error").show();
+                            $("#error").text("Tên chi nhánh đã tồn tại");
+                            tenhople = false;
+                            break;
+                        }
+                    };
+                }
+
+                if (tenhople) { //nếu tên hợp lên
+                    e.preventDefault();
+
+                    var diachi = $("#diachi").val();
+                    if (diachi == "") { diachi = null; }
+
+                    var sdt = $("#sdt").val();
+                    if (sdt == "") { sdt = null; }
+
+                    var tinhtrang = $("#tinhtrang").val();
+                    if (tinhtrang == "") { tinhtrang = null; }
+                    var daxoa = false;
+                    // Cập nhật Chi Nhánh
+                    callAjax('post', {
+                        Token: Cookies.get('token'),
+                        Data: {
+                            machinhanh: machinhanh,
+                            tenchinhanh: $("#ten").val(),
+                            sodt: sdt,
+                            diachi: diachi,
+                            tinhtrang: tinhtrang,
+                            daxoa: daxoa,
+                            quanly: nvQuanLyMoi.manhanvien
+                        }
+                    }, Cookies.get("area"), "management", "ChiNhanh/update",
+                        function (result) {
+                            if (result.IsError) {
+                                if (result.NameErrors.length > 0) {
+                                    $("#ten").addClass("validate invalid");
+                                    $("#tenerror").addClass("active");
+                                    $("#tenerror").attr("data-error", result.NameErrors[0]);
+                                }
+                                if (result.Errors.length > 0) {
+                                    toastr["error"](result.Errors[0]);
+                                }
+                            }
+                            else {
+                                //Cập nhật nhân viên quản lý mới thành quản lý
+                                capnhatnhanvien(nvQuanLyMoi, "PQ002");
+                                ////Cập nhật nhân viên quản lý cũ thành nhân viên 
+                                capnhatnhanvien(nvQuanLyCu, "PQ001");
+                                //
+                                Data = null;
+                                toastr["success"](result.Data);
+                                $('#form_update')[0].reset();
+                                window.location.href = 'http://localhost:8082/Manage/Agency'
+                            }
+                        }
+                    )
+                }
+
+            });
+
+        });
+
+        function capnhatnhanvien(nv,quyen) {
+            callAjax('post', {
+                Token: Cookies.get('token'),
+                Data: {
+                    manhanvien: nv.manhanvien,
+                    hoten: nv.hoten,
+                    gioitinh: "",
+                    email: "",
+                    tentaikhoan: "",
+                    tinhtrang: "",
+                    daxoa: false,
+                    machinhanh: nv.machinhanh,
+                    maphanquyen: quyen
+                }
+            }, Cookies.get("area"), "management", "NhanVien/updateRole",
+            function (result) {
+                if (result.IsError) {
+                    if (result.Errors.length > 0) {
+                        toastr["error"](result.Errors[0]);
+                    }
+                }
+            }
+            )
+        };
+
+        function nhanvienclick(data) {
+            var btnNV = document.getElementById('btnNV');
+            btnNV.innerHTML = listnv[data].hoten;
+            nvQuanLyMoi = listnv[data];
+        };
+
+        function laylistchinhanh() {
+            callAjax('post', { Token: Cookies.get('token')}, Cookies.get("area"), "management", "ChiNhanh/getAll", function (data) {
+                if (data.IsError) {
+                    toastr["error"](data.Errors[0]);
+                    $("#error").show();
+                    $("#error").text(data.Errors[0]);
                 }
                 else {
+                    listchinhanh = data.Data;
+                }
+            })
+        };
+
+        function loadchinhanh() {
+            callAjax('post', { Token: Cookies.get('token'), Predicates: [machinhanh] }, Cookies.get("area"), "management", "ChiNhanh/getSingle", function (data) {
+                if (data.Data == null) { // chi nhánh không tồn tại thì thông báo lỗi và trở về màn hình chính
+                    toastr["error"]("Chi Nhánh không tồn tại!");
+                    window.location.href = 'http://localhost:8082/Manage/Agency'
+                }
+                else {// chi nhánh tồn tại thì load dữ liệu lên màn hình
+                    chinhanh = data.Data;
                     $("fieldset").show();
                     $("#ten").val(data.Data.tenchinhanh);
                     $("#sdt").val(data.Data.sodt);
@@ -128,7 +258,7 @@
                     $("#tinhtrang").val(data.Data.tinhtrang);
                     var quanly = document.getElementById('btnNV');
                     //load nhân viên quản lý
-                    callAjax('post', { Predicates: [machinhanh] }, "hcm", "management", "NhanVien/getStaffOfAgency", function (DSNhanVien) {
+                    callAjax('post', { Token: Cookies.get('token'), Predicates: [machinhanh] }, Cookies.get("area"), "management", "NhanVien/getStaffOfAgency", function (DSNhanVien) {
                         listnv = DSNhanVien.Data;
                         for (var i = 0; i < DSNhanVien.Data.length; i++) {
                             $("#dropdownNV").append('<a class="dropdown-item" onclick="nhanvienclick(' + i + ')">' + DSNhanVien.Data[i].hoten + '</a>');
@@ -143,104 +273,9 @@
                     });
                 }
             });
-
-            $('#form_update').submit(function (e) {
-                e.preventDefault();
-
-                var diachi = $("#diachi").val();
-                if (diachi == "") { diachi = null; }
-
-                var sdt = $("#sdt").val();
-                if (sdt == "") { sdt = null; }
-
-                var tinhtrang = $("#tinhtrang").val();
-                if (tinhtrang == "") { tinhtrang = null; }
-                var daxoa = false;
-                // Cập nhật Chi Nhánh
-                callAjax('post', {
-                    Data: {
-                        machinhanh: machinhanh,
-                        tenchinhanh: $("#ten").val(),
-                        sodt: sdt,
-                        diachi: diachi,
-                        tinhtrang: tinhtrang,
-                        daxoa: daxoa,
-                        quanly: nvQuanLyMoi.manhanvien
-                    }
-                }, "hcm", "management", "ChiNhanh/update",
-                    function (result) {
-                        if (result.IsError) {
-                            if (result.NameErrors.length > 0) {
-                                $("#ten").addClass("validate invalid");
-                                $("#tenerror").addClass("active");
-                                $("#tenerror").attr("data-error", result.NameErrors[0]);
-                            }
-                            if (result.Errors.length > 0) {
-                                toastr["error"](result.Errors[0]);
-                            }
-                        }
-                        else {
-                            //Cập nhật nhân viên quản lý mới thành quản lý
-                            callAjax('post', {
-                                Token: Cookies.get("token"),
-                                Data: {
-                                    manhanvien: nvQuanLyMoi.manhanvien,
-                                    hoten: nvQuanLyMoi.hoten,
-                                    gioitinh: "",
-                                    email: "",
-                                    tentaikhoan: "",
-                                    tinhtrang: "",
-                                    daxoa: false,
-                                    machinhanh: nvQuanLyMoi.machinhanh,
-                                    maphanquyen: "PQ002"
-                                }
-                            }, "hcm", "management", "NhanVien/updateRole",
-                                    function (result) {
-                                        if (result.IsError) {
-                                            if (result.Errors.length > 0) {
-                                                toastr["error"](result.Errors[0]);
-                                            }
-                                        }
-                                    }
-                                )
-                            ////Cập nhật nhân viên quản lý cũ thành nhân viên
-                            callAjax('post', {
-                                Token: Cookies.get("token"),
-                                Data: {
-                                    manhanvien: nvQuanLyCu.manhanvien,
-                                    hoten: nvQuanLyCu.hoten,
-                                    gioitinh: "",
-                                    email: "",
-                                    tentaikhoan: "",
-                                    tinhtrang: "",
-                                    daxoa: false,
-                                    machinhanh: nvQuanLyCu.machinhanh,
-                                    maphanquyen: "PQ001"
-                                }
-                            }, "hcm", "management", "NhanVien/updateRole",
-                                    function (result) {
-                                        if (result.IsError) {
-                                            if (result.Errors.length > 0) {
-                                                toastr["error"](result.Errors[0]);
-                                            }
-                                        }
-                                    }
-                                )
-                            //
-                            Data = null;
-                            toastr["success"](result.Data);
-                            $('#form_update')[0].reset();
-                            window.location.href = 'http://localhost:8082/Manage/Agency'
-                        }
-                    }
-                )
-            });
-
-        });
-        function nhanvienclick(data) {
-            var btnNV = document.getElementById('btnNV');
-            btnNV.innerHTML = listnv[data].hoten;
-            nvQuanLyMoi = listnv[data];
         };
+
+
+
     </script>
 }

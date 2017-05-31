@@ -1,4 +1,4 @@
-@{
+﻿@{
     ViewBag.Title = "Chi Nhánh";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -6,29 +6,123 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script>
         $(document).ready(function () {
-            callAjax('post', {}, "hcm", "management", "ChiNhanh/getAll", function (data) {
+            loaddata();
+        });
+
+        function loaddata() {
+            callAjax('post', { Token: Cookies.get('token') }, Cookies.get("area"), "management", "ChiNhanh/getAll", function (data) {
                 if (data.IsError) {
                     toastr["error"](data.Errors[0]);
                     $("#error").show();
                     $("#error").text(data.Errors[0]);
                 }
                 else {
+                    $('#data_chinhanh').empty();
                     for (var i = 0; i < data.Data.length; i++) {
+                        var item = data.Data[i];
+                        // lay tên nha quan ly
+                        var tenquanly;
+                        callAjax('post', { Token: Cookies.get("token"), UserId: item.quanly }, Cookies.get("area"), "management", "NhanVien/getbyDirector",
+                            function (result) {
+                                if (result.IsError) {
+                                    toastr["error"](result.Errors[0]);
+                                }
+                                else {
+                                    //alert(result.Data.hoten);
+                                    tenquanly = result.Data.hoten;
+                                }
+                            }
+                        );
+                        // item.quanly = tenquanly;
+                        //gấn dữ liệu
+                        var deleteButton;
+                        var editButton;
+                        var checkdaxoa;
+                        if (item.daxoa) {
+                            deleteButton = '<a class="green-text" onclick="khoiphucchinhanh(\'' + item.machinhanh + '\')"><i class="fa fa-refresh" aria-hidden="true"></i></a>';
+                            editButton = '';
+                            checkdaxoa = '<i class="fa fa-check" aria-hidden="true"></i>';
+                        }
+                        else {
+                            deleteButton = '<a class="red-text" onclick="xoachinhanh(\'' + item.machinhanh + '\')"><i class="fa fa-trash" aria-hidden="true"></i></a>';
+                            editButton = '<a href="/Manage/Agency/Update?machinhanh=' + item.machinhanh + '"><i class="fa fa-edit" aria-hidden="true"></i></a>';
+                            checkdaxoa = '';
+                        }
+
                         $('#data_chinhanh').append('<tr id="" onclick="chinhanhclick(' + i + ')">' +
-                            "<td>" + data.Data[i].machinhanh + "</td>" +
-                            "<td>" + data.Data[i].tenchinhanh + "</td>" +
-                            "<td>" + data.Data[i].sodt + "</td>" +
-                            "<td>" + data.Data[i].diachi + "</td>" +
-                            "<td>" + data.Data[i].tinhtrang + "</td>" +
-                            "<td>" + data.Data[i].daxoa + "</td>" +
-                            "<td>" + data.Data[i].quanly + "</td>" +
-                            '<td align="center" valign="middle"><a href="/Manage/Agency/Update?machinhanh=' + data.Data[i].machinhanh + '"><i class="fa fa-edit" aria-hidden="true"></i></a></td>' +
+                            "<td>" + item.machinhanh + "</td>" +
+                            "<td>" + item.tenchinhanh + "</td>" +
+                            "<td>" + item.sodt + "</td>" +
+                            "<td>" + item.diachi + "</td>" +
+                            "<td>" + item.tinhtrang + "</td>" +
+                            "<td>" + checkdaxoa + "</td>" +
+                            "<td>" + item.quanly + "</td>" +
+                            '<td align="center" valign="middle">' + editButton + deleteButton + '</td>' +
                             "</tr>");
                     }
                 }
             })
-        });
-        function addclick() {
+        };
+        function laytenquanly(manv) {
+            callAjax('post', { Token: Cookies.get("token"), UserId: manv }, Cookies.get("area"), "management", "NhanVien/getbyDirector",
+                    function (result) {
+                        if (result.IsError) {
+                            toastr["error"](result.Errors[0]);
+                        }
+                        else {
+                            alert(result.Data.hoten);
+                            item.quanly = result.Data.hoten;
+                        }
+                    }
+                );
+        };
+        function xoachinhanh(machinhanh) {
+            callAjax('post', {
+                Token: Cookies.get('token'),
+                Data: {
+                    machinhanh: machinhanh,
+                    hoten: "",
+                    ngaysinh: "",
+                    gioitinh: "",
+                    diachi: "",
+                    email: "",
+                    sodt: ""
+                }
+            }, Cookies.get("area"), "management", "ChiNhanh/delete", function (data) {
+                if (data.IsError) {
+                    toastr["error"](data.Errors[0]);
+                    $("#error").show();
+                    $("#error").text(data.Errors[0]);
+                }
+                else {
+                    loaddata();
+                }
+            })
+        };
+        function khoiphucchinhanh(machinhanh) {
+            callAjax('post', {
+                Token: Cookies.get('token'),
+                Data: {
+                    machinhanh: machinhanh,
+                    hoten: "",
+                    ngaysinh: "",
+                    gioitinh: "",
+                    diachi: "",
+                    email: "",
+                    sodt: ""
+                }
+            }, Cookies.get("area"), "management", "ChiNhanh/recover", function (data) {
+                if (data.IsError) {
+                    toastr["error"](data.Errors[0]);
+                    $("#error").show();
+                    $("#error").text(data.Errors[0]);
+                }
+                else {
+                    loaddata();
+                }
+            })
+        };
+        function themchinhanh() {
             window.location.href = 'http://localhost:8082/Manage/Agency/Create'
         }
     </script>
@@ -41,7 +135,7 @@
     <div class="panel-body">
 
         <div id="button_function">
-            <button type="button" class="btn btn-success" onclick="addclick()">Thêm Chi Nhánh</button>
+            <button type="button" class="btn btn-success" onclick="themchinhanh()">Thêm Chi Nhánh</button>
         </div>
 
         <div class="dataTable_wrapper">
@@ -65,4 +159,3 @@
         </div>
     </div>
 </div>
-

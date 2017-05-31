@@ -43,14 +43,14 @@ public class ChiNhanhAPIs {
         SelectRequest request = gson.fromJson(json, SelectRequest.class);
         SelectResponse response = new SelectResponse();
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)){
-            //if (true){
+            if (true){
                 try{
                     response.Data = ChiNhanhAdapter.getAll();
                 }catch(Exception ex){
                     response.Errors.add("Lỗi hệ thống.");
                     response.IsError = true;
                 }
-            //}
+            }
         }
         return gson.toJson(response);
     }
@@ -63,14 +63,14 @@ public class ChiNhanhAPIs {
         SelectRequest request = gson.fromJson(json, SelectRequest.class);
         SelectResponse response = new SelectResponse();
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)){
-            //if (true){
+            if (true){
                 try{
                     response.Data = ChiNhanhAdapter.getSingle(request.Predicates[0]);
                 }catch(Exception ex){
                     response.Errors.add("Lỗi hệ thống.");
                     response.IsError = true;
                 }
-            //}
+            }
         }
         return gson.toJson(response);
     }
@@ -86,9 +86,9 @@ public class ChiNhanhAPIs {
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)){
             if (ChiNhanhBUS.insertValidate(request, response)){
                 try{
-                    String resulf = ChiNhanhAdapter.add(request.Data);
-                    if (!resulf.equals("false")){ 
-                        response.Data = resulf;
+                    String result = ChiNhanhAdapter.add(request.Data);
+                    if (result != null){ 
+                        response.Data = result;
                     }else{
                         response.Errors.add("Thêm thất bại.");
                         response.IsError = true;

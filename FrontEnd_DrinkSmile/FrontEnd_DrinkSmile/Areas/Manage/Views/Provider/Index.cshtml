@@ -1,11 +1,11 @@
-@{
+﻿@{
     ViewBag.Title = "Nhà Cung Cấp";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section Scripts {
     <script>
         $(document).ready(function () {
-            callAjax('post', {}, "hcm", "management", "NhaCungCap/getAll", function (data) {
+            callAjax('post', { Token: Cookies.get('token') }, Cookies.get("area"), "management", "NhaCungCap/getAll", function (data) {
                 if (data.IsError) {
                     toastr["error"](data.Errors[0]);
                     $("#error").show();
