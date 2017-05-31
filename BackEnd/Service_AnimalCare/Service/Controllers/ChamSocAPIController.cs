@@ -36,6 +36,17 @@ namespace Service.Controllers
                         ChamSocBUS.UpdateChamSoc(request, ref response);
                         if (response.IsError)
                             return Request.CreateResponse(HttpStatusCode.OK, response);
+
+                        if (cs.LuongSua != request.Data.LuongSua)
+                        {
+                            if (!ChamSocBUS.UpdateMilk(request.Token, request.Data.LuongSua - cs.LuongSua))
+                            {
+                                response.Errors.Add("Lỗi hệ thống");
+                                response.IsError = true;
+                                return Request.CreateResponse(HttpStatusCode.OK, response);
+                            }
+                        }
+
                         if (ChamSocRepository.Update(request.Data) < 0)
                         {
                             response.Errors.Add("Lỗi hệ thống");
@@ -48,15 +59,25 @@ namespace Service.Controllers
                     }
                     else
                     {
-                        if (ChamSocRepository.Insert(request.Data) < 0)
+                        if (ChamSocBUS.UpdateMilk(request.Token, request.Data.LuongSua))
+                        {
+                            if (ChamSocRepository.Insert(request.Data) < 0)
+                            {
+                                response.Errors.Add("Lỗi hệ thống");
+                                response.IsError = true;
+                            }
+                            else
+                            {
+                                response.Data = "Thêm thành công!";
+                            }
+                        }
+
+                        else
                         {
                             response.Errors.Add("Lỗi hệ thống");
                             response.IsError = true;
                         }
-                        else
-                        {
-                            response.Data = "Thêm thành công!";
-                        }
+
                     }
 
                 }
@@ -88,6 +109,7 @@ namespace Service.Controllers
                     }
                     else
                     {
+                        ChamSocBUS.UpdateCowState(request.Token, cs.MaBo, request.TinhTrang);
                         response.Data = cs;
                     }
                 }
@@ -129,6 +151,7 @@ namespace Service.Controllers
                     return Request.CreateResponse(HttpStatusCode.OK, response);
                 else
                 {
+
                     if (ChamSocRepository.Update(request.Data) < 0)
                     {
                         response.Errors.Add("Lỗi hệ thống");

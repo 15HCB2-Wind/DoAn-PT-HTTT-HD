@@ -8,17 +8,21 @@ package Services;
 import Models.DataAccess.*;
 import Models.*;
 import BusinessHandler.KhoSuaBUS;
+import BusinessHandler.TokenBUS;
+import DAO.ChiNhanhAdapter;
 import DAO.KhoSuaAdapter;
 import DAO.NhanVienAdapter;
 import Models.DataAccess.Warehouse.WarehouseRequest;
 import Models.DataAccess.Warehouse.WarehouseResponse;
 import Models.DataAccess.Warehouse.WarehouseTransferRequest;
+import Models.DataAccess.Warehouse.WarehouseUpdateMilkRequest;
 import com.google.gson.Gson;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.*;
+import pojos.Chinhanh;
 import pojos.Khosua;
 
 
@@ -223,6 +227,32 @@ public class KhoSuaAPIs {
                     response.Errors.add("Lỗi hệ thống.");
                     response.IsError = true;
                 }
+            }
+        }
+        return gson.toJson(response);
+    }
+    
+    //tin
+    @POST
+    @Path("updateMilk")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public String updateMilk(String json) {
+        Gson gson = new Gson();
+        WarehouseUpdateMilkRequest request = gson.fromJson(json, WarehouseUpdateMilkRequest.class);
+        WarehouseResponse response = new WarehouseResponse();
+        TokenData tkdata = TokenBUS.tokenData(request, response, 1);
+        if (tkdata!=null){
+            try{
+                if (KhoSuaAdapter.updateMilk(ChiNhanhAdapter.getSingle(tkdata.AgencyId).getKhotam(), request.Value)){
+                    response.Data = "Cập nhật thành công!";
+                }else{
+                    response.Errors.add("Cập nhật thất bại!");
+                    response.IsError = true;
+                }
+            }catch(Exception ex){
+                response.Errors.add("Lỗi hệ thống.");
+                response.IsError = true;
             }
         }
         return gson.toJson(response);

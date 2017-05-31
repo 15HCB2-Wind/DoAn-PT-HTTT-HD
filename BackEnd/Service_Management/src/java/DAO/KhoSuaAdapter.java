@@ -76,4 +76,8 @@ public class KhoSuaAdapter {
     public static Object getAllAvailablesForTransfer(String id) {
         return HibernateUtil.getList("from Khosua where machinhanh = :p0 and daxoa = :p1 and luongsuaco > 0", new Object[]{id, false});
     }
+
+    public static boolean updateMilk(String id, Double value) {
+        return HibernateUtil.execute("update Khosua set luongsuaco = luongsuaco + :p1 where makho = :p0", new Object[]{ id, value }) > 0;
+    }
 }
