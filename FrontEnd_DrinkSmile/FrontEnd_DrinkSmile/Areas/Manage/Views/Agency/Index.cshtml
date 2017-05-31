@@ -1,4 +1,4 @@
-@{
+﻿@{
     ViewBag.Title = "Chi Nhánh";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -8,7 +8,7 @@
         $(document).ready(function () {
             loaddata();
         });
-       
+
         function loaddata() {
             callAjax('post', { Token: Cookies.get('token') }, Cookies.get("area"), "management", "ChiNhanh/getAll", function (data) {
                 if (data.IsError) {
@@ -33,8 +33,8 @@
                                 }
                             }
                         );
-                       // item.quanly = tenquanly;
-                        //gấn dữ liệu                       
+                        // item.quanly = tenquanly;
+                        //gấn dữ liệu
                         var deleteButton;
                         var editButton;
                         var checkdaxoa;
@@ -48,7 +48,7 @@
                             editButton = '<a href="/Manage/Agency/Update?machinhanh=' + item.machinhanh + '"><i class="fa fa-edit" aria-hidden="true"></i></a>';
                             checkdaxoa = '';
                         }
-                       
+
                         $('#data_chinhanh').append('<tr id="" onclick="chinhanhclick(' + i + ')">' +
                             "<td>" + item.machinhanh + "</td>" +
                             "<td>" + item.tenchinhanh + "</td>" +
