@@ -17,7 +17,7 @@
                         $('#data_nhacungcap').empty();
                         for (var i = 0; i < data.Data.length; i++) {
                             $('#data_nhacungcap').append("<tr>" +
-                                "<td>" + data.Data[i].ten + "</td>" +
+                                "<td>" + data.Data[i].ten + ' (' + data.Data[i].manhacungcap.split('NCC', 1)[0] + ")</td>" +
                                 "<td>" + data.Data[i].diachi + "</td>" +
                                 "<td>" + data.Data[i].tinhtrang + "</td>" +
                                 '<td><a class="teal-text" href="/Manage/Provider/Update?manhacungcap=' + data.Data[i].manhacungcap + '"><i class="fa fa-pencil"></i></a></td>' +

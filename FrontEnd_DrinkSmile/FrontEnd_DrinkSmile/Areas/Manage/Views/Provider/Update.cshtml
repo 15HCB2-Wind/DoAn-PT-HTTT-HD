@@ -11,10 +11,21 @@
                     <hr class="mt-2 mb-2">
                 </div>
                 <p id="error" class="text-danger text-center"></p>
-                <div class="md-form">
-                    <i class="fa fa-id-card-o prefix"></i>
-                    <input id="ten" class="form-control" type="text" placeholder="" required="required" />
-                    <label id="tenerror" for="ten">Tên</label>
+                <div class="col-xs-12">
+                    <div class="row">
+                        <div class="col-sm-8 col-xs-12">
+                            <div class="md-form">
+                                <i class="fa fa-id-card-o prefix"></i>
+                                <input id="ten" class="form-control" type="text" required="required" placeholder="" />
+                                <label id="tenerror" for="ten">Tên</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 col-xs-12">
+                            <div class="btn-group">
+                                <button id="area" class="btn btn-primary" type="button"></button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="md-form">
                     <i class="fa fa-map-marker prefix"></i>
@@ -90,10 +101,9 @@
             $("#loader").hide();
             $("#back").hide();
             manhacungcap = QueryString['manhacungcap'];
+            $('#area').html(QueryString['manhacungcap'].split('NCC', 1)[0]);
             //load nhà cung cấp
             loadnhacungcap();
-
-
             //update nhà cung cấp
             $('#form_update').submit(function (e) {
                 e.preventDefault();
@@ -129,21 +139,17 @@
                         }
                     }
                     else {
-                        Data = null;
                         toastr["success"](result.Data);
-                        $('#form_update')[0].reset();
-                        window.location.href = 'http://localhost:8082/Manage/Provider'
                     }
                 }
             )
         };
+
         function loadnhacungcap() {
             callAjax('post', { Token: Cookies.get('token'), Predicates: [manhacungcap] }, Cookies.get("area"), "management", "NhaCungCap/getSingle", function (data) {
                 $('#loader1').hide();
                 if (data.Data == null) {
-                    toastr["error"]("Nhà Cung Cấp không tồn tại!");
-                    //alert("Lỗi Hệ Thống");
-                    window.location.href = 'http://localhost:8082/Manage/Provider'
+                    toastr["error"]("Nhà cung cấp không tồn tại!");
                 }
                 else {
                     $("fieldset").show();

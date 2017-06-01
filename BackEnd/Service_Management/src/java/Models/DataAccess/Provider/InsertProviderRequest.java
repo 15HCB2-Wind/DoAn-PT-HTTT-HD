@@ -14,4 +14,5 @@ import pojos.Nhacungcap;
  */
 public class InsertProviderRequest extends InsertRequest{
     public Nhacungcap Data;
+    public String AreaId;
 }

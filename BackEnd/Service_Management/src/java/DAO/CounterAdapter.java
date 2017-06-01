@@ -23,7 +23,23 @@ public class CounterAdapter {
         return null;
     }
     
+    public static Counter getAreaCounter(String areaid){
+        List<Counter> list = HibernateUtil.getSingle("from Counter where areaid = :p0", new Object[]{ areaid });
+        if (list.size()>0) {
+            return list.get(0);
+        }
+        return null;
+    }
+    
     public static boolean updateCounter(String col_name){
         return HibernateUtil.execute(String.format("update Counter set %1$s = (%1$s + 1) where areaid = :p0", col_name), new Object[]{ Configs.AREA_ID }) > 0;
+    }
+    
+    public static boolean updateCounter(String areaid, String col_name){
+        return HibernateUtil.execute(String.format("update Counter set %1$s = (%1$s + 1) where areaid = :p0", col_name), new Object[]{ areaid }) > 0;
+    }
+
+    public static List<Counter> getAllAreas() {
+        return HibernateUtil.getList("from Counter", null);
     }
 }

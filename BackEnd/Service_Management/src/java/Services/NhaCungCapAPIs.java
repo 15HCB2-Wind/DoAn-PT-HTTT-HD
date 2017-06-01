@@ -6,6 +6,7 @@
 package Services;
 
 import BusinessHandler.NhaCungCapBUS;
+import DAO.CounterAdapter;
 
 import Models.DataAccess.*;
 import DAO.NhaCungCapAdapter;
@@ -54,9 +55,29 @@ public class NhaCungCapAPIs {
                 response.IsError = true;
             }
         }
-         return gson.toJson(response);
+        return gson.toJson(response);
     }
-     @POST
+    
+    @POST
+    @Path("getAllAreas")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public String getAllAreas(String json){
+        Gson gson = new Gson();
+        SelectRequest request = gson.fromJson(json, SelectRequest.class);
+        SelectResponse response = new SelectResponse();
+        if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)){
+            try{
+                response.Data = CounterAdapter.getAllAreas();
+            }catch(Exception ex){
+                response.Errors.add("Lỗi hệ thống.");
+                response.IsError = true;
+            }
+        }
+        return gson.toJson(response);
+    }
+    
+    @POST
     @Path("getSingle")
     @Produces("application/json")
     @Consumes("application/json")
@@ -86,7 +107,7 @@ public class NhaCungCapAPIs {
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)){// kiem tra quyen truy cap
             if (NhaCungCapBUS.insertValidate(request, response)){
                 try{
-                    if (NhaCungCapAdapter.add(request.Data)){
+                    if (NhaCungCapAdapter.add(request.AreaId, request.Data)){
                         response.Data = "Thêm thành công.";
                     }else{
                         response.Errors.add("Thêm thất bại.");

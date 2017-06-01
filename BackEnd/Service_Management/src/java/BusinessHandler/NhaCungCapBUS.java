@@ -5,7 +5,7 @@
  */
 package BusinessHandler;
 
-import DAO.NhaCungCapAdapter;
+import DAO.CounterAdapter;
 import Models.DataAccess.Provider.InsertProviderRequest;
 import Models.DataAccess.Provider.InsertProviderResponse;
 import Models.DataAccess.Provider.UpdateProviderRequest;
@@ -19,6 +19,10 @@ public class NhaCungCapBUS {
      public static boolean insertValidate(InsertProviderRequest request, InsertProviderResponse response){
         if (request.Data.getTen() == null || request.Data.getTen().isEmpty()){
             response.NameErrors.add("Tên không được để trống!");
+            response.IsError = true;
+        }
+        if (CounterAdapter.getAreaCounter(request.AreaId) == null){
+            response.Errors.add("Khu vực cung cấp không hợp lệ!");
             response.IsError = true;
         }
         return !response.IsError;

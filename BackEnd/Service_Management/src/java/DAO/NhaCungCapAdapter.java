@@ -15,9 +15,9 @@ import pojos.Nhacungcap;
  * @author Shin'sLaptop
  */
 public class NhaCungCapAdapter {
-    private static void getNewID(Nhacungcap obj) {
-        if (CounterAdapter.updateCounter("indexNhacungcap")){
-            obj.setManhacungcap(String.format("%s%s%04d", Configs.AREA_ID, "NCC", CounterAdapter.getAreaCounter().getIndexNhacungcap()));
+    private static void getNewID(String areaid, Nhacungcap obj) {
+        if (CounterAdapter.updateCounter(areaid, "indexNhacungcap")){
+            obj.setManhacungcap(String.format("%s%s%04d", areaid, "NCC", CounterAdapter.getAreaCounter().getIndexNhacungcap()));
         }
     }
     
@@ -25,8 +25,8 @@ public class NhaCungCapAdapter {
         return HibernateUtil.getList("from Nhacungcap order by manhacungcap asc", null);
     }
     
-    public static boolean add(Nhacungcap obj) {
-        getNewID(obj);
+    public static boolean add(String areaid, Nhacungcap obj) {
+        getNewID(areaid, obj);
         obj.setTinhtrang("Đang hoạt động.");
         return HibernateUtil.save(obj);
     }   
