@@ -2,10 +2,10 @@
 -- version 4.6.4
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: May 31, 2017 at 04:39 AM
--- Server version: 5.7.14
--- PHP Version: 5.6.25
+-- Máy chủ: 127.0.0.1
+-- Thời gian đã tạo: Th6 02, 2017 lúc 11:45 SA
+-- Phiên bản máy phục vụ: 5.7.14
+-- Phiên bản PHP: 5.6.25
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,13 +17,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `service_management_drinksmile`
+-- Cơ sở dữ liệu: `service_management_drinksmile`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `bo`
+-- Cấu trúc bảng cho bảng `bo`
 --
 
 CREATE TABLE `bo` (
@@ -39,7 +39,7 @@ CREATE TABLE `bo` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `bo`
+-- Đang đổ dữ liệu cho bảng `bo`
 --
 
 INSERT INTO `bo` (`mabo`, `machip`, `mausac`, `coditat`, `nhandang`, `tinhtrang`, `daxoa`, `machuong`, `ngaynhan`) VALUES
@@ -92,7 +92,7 @@ INSERT INTO `bo` (`mabo`, `machip`, `mausac`, `coditat`, `nhandang`, `tinhtrang`
 -- --------------------------------------------------------
 
 --
--- Table structure for table `chinhanh`
+-- Cấu trúc bảng cho bảng `chinhanh`
 --
 
 CREATE TABLE `chinhanh` (
@@ -107,7 +107,7 @@ CREATE TABLE `chinhanh` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `chinhanh`
+-- Đang đổ dữ liệu cho bảng `chinhanh`
 --
 
 INSERT INTO `chinhanh` (`machinhanh`, `tenchinhanh`, `sodt`, `diachi`, `tinhtrang`, `daxoa`, `quanly`, `khotam`) VALUES
@@ -118,7 +118,7 @@ INSERT INTO `chinhanh` (`machinhanh`, `tenchinhanh`, `sodt`, `diachi`, `tinhtran
 -- --------------------------------------------------------
 
 --
--- Table structure for table `chuongtrai`
+-- Cấu trúc bảng cho bảng `chuongtrai`
 --
 
 CREATE TABLE `chuongtrai` (
@@ -132,7 +132,7 @@ CREATE TABLE `chuongtrai` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `chuongtrai`
+-- Đang đổ dữ liệu cho bảng `chuongtrai`
 --
 
 INSERT INTO `chuongtrai` (`machuong`, `tenchuong`, `succhua`, `dangchua`, `tinhtrang`, `daxoa`, `machinhanh`) VALUES
@@ -173,7 +173,7 @@ INSERT INTO `chuongtrai` (`machuong`, `tenchuong`, `succhua`, `dangchua`, `tinht
 -- --------------------------------------------------------
 
 --
--- Table structure for table `counter`
+-- Cấu trúc bảng cho bảng `counter`
 --
 
 CREATE TABLE `counter` (
@@ -187,7 +187,7 @@ CREATE TABLE `counter` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `counter`
+-- Đang đổ dữ liệu cho bảng `counter`
 --
 
 INSERT INTO `counter` (`areaid`, `index_bo`, `index_chinhanh`, `index_chuongtrai`, `index_khosua`, `index_nhacungcap`, `index_nhanvien`) VALUES
@@ -197,7 +197,7 @@ INSERT INTO `counter` (`areaid`, `index_bo`, `index_chinhanh`, `index_chuongtrai
 -- --------------------------------------------------------
 
 --
--- Table structure for table `khosua`
+-- Cấu trúc bảng cho bảng `khosua`
 --
 
 CREATE TABLE `khosua` (
@@ -212,7 +212,7 @@ CREATE TABLE `khosua` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `khosua`
+-- Đang đổ dữ liệu cho bảng `khosua`
 --
 
 INSERT INTO `khosua` (`makho`, `tenkho`, `succhua`, `luongsuaco`, `diachi`, `daxoa`, `tinhtrang`, `machinhanh`) VALUES
@@ -227,7 +227,7 @@ INSERT INTO `khosua` (`makho`, `tenkho`, `succhua`, `luongsuaco`, `diachi`, `dax
 -- --------------------------------------------------------
 
 --
--- Table structure for table `nhacungcap`
+-- Cấu trúc bảng cho bảng `nhacungcap`
 --
 
 CREATE TABLE `nhacungcap` (
@@ -238,7 +238,7 @@ CREATE TABLE `nhacungcap` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `nhacungcap`
+-- Đang đổ dữ liệu cho bảng `nhacungcap`
 --
 
 INSERT INTO `nhacungcap` (`manhacungcap`, `ten`, `diachi`, `tinhtrang`) VALUES
@@ -251,7 +251,7 @@ INSERT INTO `nhacungcap` (`manhacungcap`, `ten`, `diachi`, `tinhtrang`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `nhanvien`
+-- Cấu trúc bảng cho bảng `nhanvien`
 --
 
 CREATE TABLE `nhanvien` (
@@ -272,7 +272,7 @@ CREATE TABLE `nhanvien` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `nhanvien`
+-- Đang đổ dữ liệu cho bảng `nhanvien`
 --
 
 INSERT INTO `nhanvien` (`manhanvien`, `hoten`, `gioitinh`, `ngaysinh`, `sodt`, `diachi`, `email`, `tentaikhoan`, `matkhau`, `tinhtrang`, `daxoa`, `machinhanh`, `maphanquyen`, `ngayvaolam`) VALUES
@@ -305,7 +305,7 @@ INSERT INTO `nhanvien` (`manhanvien`, `hoten`, `gioitinh`, `ngaysinh`, `sodt`, `
 -- --------------------------------------------------------
 
 --
--- Table structure for table `phanquyen`
+-- Cấu trúc bảng cho bảng `phanquyen`
 --
 
 CREATE TABLE `phanquyen` (
@@ -315,7 +315,7 @@ CREATE TABLE `phanquyen` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `phanquyen`
+-- Đang đổ dữ liệu cho bảng `phanquyen`
 --
 
 INSERT INTO `phanquyen` (`maphanquyen`, `tenphanquyen`, `capphanquyen`) VALUES
@@ -324,48 +324,48 @@ INSERT INTO `phanquyen` (`maphanquyen`, `tenphanquyen`, `capphanquyen`) VALUES
 ('PQ003', 'Tổng giám đốc', 3);
 
 --
--- Indexes for dumped tables
+-- Chỉ mục cho các bảng đã đổ
 --
 
 --
--- Indexes for table `bo`
+-- Chỉ mục cho bảng `bo`
 --
 ALTER TABLE `bo`
   ADD PRIMARY KEY (`mabo`),
   ADD UNIQUE KEY `machip_UNIQUE` (`machip`);
 
 --
--- Indexes for table `chinhanh`
+-- Chỉ mục cho bảng `chinhanh`
 --
 ALTER TABLE `chinhanh`
   ADD PRIMARY KEY (`machinhanh`);
 
 --
--- Indexes for table `chuongtrai`
+-- Chỉ mục cho bảng `chuongtrai`
 --
 ALTER TABLE `chuongtrai`
   ADD PRIMARY KEY (`machuong`);
 
 --
--- Indexes for table `counter`
+-- Chỉ mục cho bảng `counter`
 --
 ALTER TABLE `counter`
   ADD PRIMARY KEY (`areaid`);
 
 --
--- Indexes for table `khosua`
+-- Chỉ mục cho bảng `khosua`
 --
 ALTER TABLE `khosua`
   ADD PRIMARY KEY (`makho`);
 
 --
--- Indexes for table `nhacungcap`
+-- Chỉ mục cho bảng `nhacungcap`
 --
 ALTER TABLE `nhacungcap`
   ADD PRIMARY KEY (`manhacungcap`);
 
 --
--- Indexes for table `nhanvien`
+-- Chỉ mục cho bảng `nhanvien`
 --
 ALTER TABLE `nhanvien`
   ADD PRIMARY KEY (`manhanvien`),
@@ -373,7 +373,7 @@ ALTER TABLE `nhanvien`
   ADD UNIQUE KEY `tentaikhoan_UNIQUE` (`tentaikhoan`);
 
 --
--- Indexes for table `phanquyen`
+-- Chỉ mục cho bảng `phanquyen`
 --
 ALTER TABLE `phanquyen`
   ADD PRIMARY KEY (`maphanquyen`),
