@@ -16,7 +16,7 @@ import pojos.Bo;
  * @author 19101994
  */
 public class BoAdapter {
-    private static void getNewID(Bo obj) {
+    public static void getNewID(Bo obj) {
         if (CounterAdapter.updateCounter("indexBo")){
             obj.setMabo(String.format("%s%s%06d", Configs.AREA_ID, "B", CounterAdapter.getAreaCounter().getIndexBo()));
         }

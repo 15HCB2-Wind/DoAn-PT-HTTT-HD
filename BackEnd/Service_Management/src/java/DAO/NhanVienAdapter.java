@@ -18,9 +18,15 @@ import pojos.*;
  * @author Shin-Desktop
  */
 public class NhanVienAdapter {
-    private static void getNewID(Nhanvien obj) {
+    public static void getNewID(Nhanvien obj) {
         if (CounterAdapter.updateCounter("indexNhanvien")){
             obj.setManhanvien(String.format("%s%s%05d", Configs.AREA_ID, "NV", CounterAdapter.getAreaCounter().getIndexNhanvien()));
+        }
+    }
+    
+    public static void getNewID(String areaid, Nhanvien obj) {
+        if (CounterAdapter.updateCounter(areaid, "indexNhanvien")){
+            obj.setManhanvien(String.format("%s%s%05d", areaid, "NV", CounterAdapter.getAreaCounter().getIndexNhanvien()));
         }
     }
 
@@ -81,7 +87,6 @@ public class NhanVienAdapter {
         nv.setNgaysinh(obj.getNgaysinh());
         nv.setSodt(obj.getSodt());
         nv.setDiachi(obj.getDiachi());
-        nv.setTinhtrang(obj.getTinhtrang());
         return HibernateUtil.update(nv);
     }
 
@@ -97,26 +102,4 @@ public class NhanVienAdapter {
         }
         return list;
     }
-    
-     public static String addManager(Nhanvien obj) {
-        getNewID(obj);
-        obj.setNgayvaolam(new Date());
-        obj.setMaphanquyen("PQ002");
-        obj.setDaxoa(false);
-        obj.setTentaikhoan(obj.getEmail());
-        obj.setMatkhau(Security.Encrypt(obj.getTentaikhoan()));
-        if(HibernateUtil.save(obj))
-        {
-            return obj.getManhanvien();
-        }
-        return null;  
-    }
-    
-    public static boolean  updateRole(Nhanvien obj) {
-        Nhanvien nv = getSingleFullInfo(obj.getManhanvien());
-        nv.setMaphanquyen(obj.getMaphanquyen());
-        nv.setMachinhanh(obj.getMachinhanh());
-        return HibernateUtil.update(nv);
-    }
-
 }

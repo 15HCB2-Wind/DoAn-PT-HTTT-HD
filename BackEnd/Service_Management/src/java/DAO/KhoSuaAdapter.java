@@ -17,9 +17,15 @@ import pojos.Khosua;
  * @author 19101994
  */
 public class KhoSuaAdapter {
-    private static void getNewID(Khosua obj) {
+    public static void getNewID(Khosua obj) {
         if (CounterAdapter.updateCounter("indexKhosua")){
             obj.setMakho(String.format("%s%s%04d", Configs.AREA_ID, "KS", CounterAdapter.getAreaCounter().getIndexKhosua()));
+        }
+    }
+    
+    public static void getNewID(String areaid, Khosua obj) {
+        if (CounterAdapter.updateCounter(areaid, "indexKhosua")){
+            obj.setMakho(String.format("%s%s%04d", areaid, "KS", CounterAdapter.getAreaCounter().getIndexKhosua()));
         }
     }
     

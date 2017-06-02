@@ -26,16 +26,18 @@
                             var trType;
                             var deleteButton;
                             var editButton;
-                            var checkdaxoa;
+                            var importButton;
                             if (item.daxoa) {
                                 trType = '<tr class="table-danger">';
                                 deleteButton = '<a class="green-text" data-toggle="modal" data-target="#deleteModal" onclick="setupModal(\'recover\', \'' + item.machinhanh + '\', true)"><i class="fa fa-refresh" aria-hidden="true"></i></a>';
                                 editButton = '';
+                                importButton = '';
                             }
                             else {
                                 trType = '<tr class="table-success">';
                                 deleteButton = '<a class="red-text" data-toggle="modal" data-target="#deleteModal" onclick="setupModal(\'delete\', \'' + item.machinhanh + '\', true)"><i class="fa fa-trash" aria-hidden="true"></i></a>';
                                 editButton = '<a class="teal-text" href="/Manage/Agency/Update?machinhanh=' + item.machinhanh + '"><i class="fa fa-pencil"></i></a>';
+                                importButton = '<a class="teal-text" href="/Manage/Import/Create?machinhanh=' + item.machinhanh + '"><i class="fa fa-cubes" aria-hidden="true"></i></a>';
                             }
 
                             $('#data_chinhanh').append(
@@ -45,7 +47,7 @@
                                     "<td>" + item.diachi + "</td>" +
                                     "<td>" + item.tinhtrang + "</td>" +
                                     '<td id="' + item.quanly + '"></td>' +
-                                    '<td>' + editButton + deleteButton + '</td>' +
+                                    '<td>' + editButton + importButton + deleteButton + '</td>' +
                                 "</tr>");
 
                             // lay tên nha quan ly

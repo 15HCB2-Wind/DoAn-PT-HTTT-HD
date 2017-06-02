@@ -6,18 +6,11 @@
 package Models.DataAccess.Agency;
 
 import Models.DataAccess.InsertResponse;
-import java.util.ArrayList;
 
 /**
  *
  * @author Ut Hieu
  */
-public class InsertAgencyResponse extends InsertResponse {
-    public ArrayList<String> NameErrors;
-      public ArrayList<String> ManagerErrors;
+public class AgencyResponse extends InsertResponse {
     
-    public InsertAgencyResponse(){
-        NameErrors = new ArrayList<>();
-        ManagerErrors = new ArrayList<>();
-    }
 }

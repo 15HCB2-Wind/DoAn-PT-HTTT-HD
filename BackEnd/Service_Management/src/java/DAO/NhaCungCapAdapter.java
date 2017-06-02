@@ -5,7 +5,6 @@
  */
 package DAO;
 
-import Config.Configs;
 import Ultility.HibernateUtil;
 import java.util.List;
 import pojos.Nhacungcap;
@@ -15,7 +14,7 @@ import pojos.Nhacungcap;
  * @author Shin'sLaptop
  */
 public class NhaCungCapAdapter {
-    private static void getNewID(String areaid, Nhacungcap obj) {
+    public static void getNewID(String areaid, Nhacungcap obj) {
         if (CounterAdapter.updateCounter(areaid, "indexNhacungcap")){
             obj.setManhacungcap(String.format("%s%s%04d", areaid, "NCC", CounterAdapter.getAreaCounter().getIndexNhacungcap()));
         }

@@ -6,7 +6,7 @@ import java.util.List;
 import pojos.*;
 
 public class ChuongTraiAdapter {
-    private static void getNewID(Chuongtrai obj) {
+    public static void getNewID(Chuongtrai obj) {
         if (CounterAdapter.updateCounter("indexChuongtrai")){
             obj.setMachuong(String.format("%s%s%05d", Configs.AREA_ID, "CT", CounterAdapter.getAreaCounter().getIndexChuongtrai()));
         }

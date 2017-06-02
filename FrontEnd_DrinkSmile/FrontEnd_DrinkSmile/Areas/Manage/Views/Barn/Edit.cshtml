@@ -143,8 +143,8 @@
                                 toastr["error"](result.Errors[0]);
                             }
                         }
-                        else {
-                            location.href = "/Manage/Barn/Index";
+                        else if (result.Data) {
+                            toastr["success"](result.Data);
                         }
                     }
                 )

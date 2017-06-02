@@ -157,8 +157,7 @@
                                 toastr["error"](result.Errors[0]);
                             }
                         }
-                        else {
-                            Data = null;
+                        else if (result.Data) {
                             toastr["success"](result.Data);
                             $('#form_addstaff')[0].reset();
                         }

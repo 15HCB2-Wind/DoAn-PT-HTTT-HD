@@ -18,6 +18,7 @@ namespace FrontEnd_DrinkSmile.Areas.Manage.Controllers
             }
             return RedirectToAction("Login", "Account", new { area = "", ReturnUrl = "/Manage/Provider/Index" });
         }
+
         public ActionResult Create()
         {
             if (Request.Cookies["token"] != null)
@@ -27,6 +28,7 @@ namespace FrontEnd_DrinkSmile.Areas.Manage.Controllers
             }
             return RedirectToAction("Login", "Account", new { area = "", ReturnUrl = "/Manage/Provider/Create" });
         }
+
         public ActionResult Update(string getmanhacungcap)
         {
             if (Request.Cookies["token"] != null)

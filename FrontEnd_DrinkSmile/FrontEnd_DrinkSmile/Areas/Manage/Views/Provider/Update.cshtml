@@ -112,12 +112,6 @@
         });
 
         function updatenhacungcap() {
-            var diachi = $("#diachi").val();
-            if (diachi == "") { diachi = " "; }
-
-            var tinhtrang = $("#tinhtrang").val();
-            if (tinhtrang == "") { tinhtrang = " "; }
-
             callAjax('post', {
                 Token: Cookies.get('token'),
                 Data: {
@@ -138,7 +132,7 @@
                             toastr["error"](result.Errors[0]);
                         }
                     }
-                    else {
+                    else if (result.Data) {
                         toastr["success"](result.Data);
                     }
                 }

@@ -74,7 +74,7 @@
                 {
                     Token: Cookies.get('token'),
                 },
-                Cookies.get('area'), 'management', 'NhaCungCap/getAllAreas',
+                Cookies.get('area'), 'management', 'Counter/getAllAreas',
                 function (data) {
                     if (data.IsError) {
                         toastr["error"](data.Errors[0]);
@@ -94,14 +94,11 @@
             $('#form_create').submit(function (e) {
                 e.preventDefault();
 
-                var diachi = $("#diachi").val();
-                if (diachi == "") { diachi = " "; }
-
                 callAjax('post', {
                     Token: Cookies.get('token'),
                     Data: {
                         ten: $("#ten").val(),
-                        diachi: diachi,
+                        diachi: $("#diachi").val(),
                     },
                     AreaId: $('#btnSelectArea').attr('my-data')
                 }, Cookies.get("area"), "management", "NhaCungCap/add",
@@ -116,7 +113,7 @@
                                 toastr["error"](result.Errors[0]);
                             }
                         }
-                        else {
+                        else if (result.Data) {
                             toastr["success"](result.Data);
                             $('#form_create')[0].reset();
                         }

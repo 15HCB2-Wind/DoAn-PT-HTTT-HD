@@ -5,13 +5,18 @@
  */
 package Models.DataAccess.Agency;
 
-import Models.DataAccess.UpdateRequest;
+import Models.DataAccess.InsertRequest;
 import pojos.Chinhanh;
+import pojos.Nhanvien;
 
 /**
  *
  * @author Ut Hieu
  */
-public class UpdateAgencyRequest extends UpdateRequest {
-    public Chinhanh Data;
+public class AgencyRequest  extends InsertRequest{
+    public Chinhanh CN_Data;
+    public String AreaId;
+    public String QL_Data1;
+    public Nhanvien QL_Data2;
+    public boolean Mode;
 }
