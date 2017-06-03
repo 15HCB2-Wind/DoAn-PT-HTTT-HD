@@ -40,12 +40,12 @@ public class PhieuNhapBoAdapter {
         return HibernateUtil.save(obj);
     }
 
-    public static int delete(Phieunhapbo userid) {
+    public static int delete(Object userid) {
         return HibernateUtil.execute("update Phieunhapbo set dahuy = :p1 where machungtu = :p0", new Object[]{ userid, true });
     }
     
     public static int recover(Object userid) {
-        return HibernateUtil.execute("update Nhanvien set dahuy = :p1 where machungtu = :p0", new Object[]{ userid, false });
+        return HibernateUtil.execute("update Phieunhapbo set dahuy = :p1 where machungtu = :p0", new Object[]{ userid, false });
     }
 
     public static boolean update(Phieunhapbo obj) {
@@ -58,6 +58,7 @@ public class PhieuNhapBoAdapter {
         pnb.setMancc(obj.getMancc());
         pnb.setSoluong(obj.getSoluong());
         pnb.setManv(obj.getManv());
+        pnb.setMacn(obj.getMacn());
         return HibernateUtil.update(pnb);
     }
 

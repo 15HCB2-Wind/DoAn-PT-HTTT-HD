@@ -1,0 +1,229 @@
+﻿
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.machungtu</h2>
+
+<div class="row">
+    <div class="offset-lg-3 col-lg-6 offset-md-2 col-md-8 offset-sm-1 col-sm-10 col-xs-12">
+        <form id="form_edit" method="post" role="form">
+            <div class="text-center">
+                <h3><i class="fa fa-weixin" aria-hidden="true"></i> Cập nhật phiếu xuất sữa</h3>
+                <hr class="mt-2 mb-2">
+            </div>
+            <div class="md-form form-sm">
+                <i class="fa fa-github-alt prefix" aria-hidden="true"></i>
+                <input id="mact" class="form-control" type="hidden" />
+            </div>
+            @*<div class="md-form form-sm" >
+                    <i>Ngày Lập</i>
+                    <input id="ngaylap" type="date" />
+                </div>*@
+            <div class="col-sm-6 col-xs-12">
+                <div class="md-form">
+                    <i class="fa fa-calendar prefix"></i>
+                    <input type="text" id="ngaylap" class="form-control datepicker" placeholder="" name="ngaylap">
+                    <label for="ngaylap">Ngày Lập</label>
+                </div>
+            </div>
+            <div class="col-sm-6 col-xs-12">
+                <div class="md-form">
+                    <i class="fa fa-calendar prefix"></i>
+                    <input type="text" id="ngayxuat" class="form-control datepicker" placeholder="" name="ngaynhap">
+                    <label for="ngayxuat">Ngày Xuất</label>
+                </div>
+            </div>
+            <br />
+            <div class="md-form form-sm">
+                <i aria-hidden="true">Tổng Lượng Sữa</i>
+                <input id="tongluongsua" class="form-control" type="text" />
+                @*<label for="tongluongsua">Tổng lương sữa</label>*@
+            </div>
+            <br />
+
+            <br />
+            <div class="md-form form-sm">
+                <i  aria-hidden="true">Lý do</i>
+                <input id="lydo" class="form-control" type="text" />
+                @*<label for="lydo">Lý do</label>*@
+            </div>
+            <br />
+
+            @*<div class="btn-group">
+                <!--
+                <button id="btnNCC" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Chuồng trại</button>
+                <ul class="dropdown-menu" id="nhacungcap">
+
+                </ul>
+                    <!--load data danh sach chuong-->
+                <select class="form-control" id="nhacungcap"></select>
+            </div>
+            <br />
+            <br />
+            <br />
+            <div class="btn-group">
+                <!--
+                <button id="btnNC" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Mã Nhân Viên</button>
+                <div class="dropdown-menu" id="nhanvien">
+
+                </div>
+                    <!--load data danh sach chuong-->
+                <select class="form-control" id="nhanvien"></select>
+            </div>
+            <br />
+            <br />
+            <br />
+            <div class="btn-group">
+                <!--
+                <button id="btnCN" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Mã Chi Nhánh</button>
+                <div class="dropdown-menu" id="chinhanh">
+
+                </div>
+                    <!--load data danh sach chuong-->
+                <select class="form-control" id="chinhanh"></select>
+            </div>*@
+            <br />
+            <br />
+            <br />
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Cập Nhật <i id="loader" class="fa fa-circle-o-notch fa-pulse fa-lg fa-fw"></i></button>
+                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Thoát</button>
+                <!-- Modal -->
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                                <h4 class="modal-title w-100">Thoát</h4>
+                            </div>
+                            <div class="modal-body text-center">
+                                Bạn thực sự muốn thoát?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                                <a class="btn btn-danger" href="@Url.Action("Index")">Đồng ý</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @*<script>
+            $(document).ready(function () {
+                callAjax('post',
+                    { Token: Cookies.get("token"), machungtu: '@ViewBag.machungtu'  },
+                    Cookies.get("area"), "import_export", "NhaCungCap/getSingle",
+                    function (result) {
+                        if (result.IsError) {
+                            toastr["error"](result.Errors[0]);
+                        }
+                        else {
+                            $("#ngaylap").val(result.Data.ngaylap);
+                            $("#soluong").val(result.Data.soluong);
+                            alert("hihi");
+                        }
+                    });
+            }
+        </script>*@
+    <script>
+        $(document).ready(function () {
+
+            $(function () {
+                $('#datetimepicker1').datetimepicker();
+            });
+
+
+            callAjax('post',
+                { Token: Cookies.get("token"), machungtu: '@ViewBag.machungtu' },
+                Cookies.get("area"), "import_export", "PhieuXuat/getSingle",
+                function (result) {
+                    if (result.IsError) {
+                        toastr["error"](result.Errors[0]);
+                    }
+                    else {
+                        $("#ngaylap").attr("data-value", result.Data.ngaylap);
+                        $("#ngayxuat").attr("data-value", result.Data.ngayxuat);
+                        $('.datepicker').pickadate({
+                            monthsFull: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+                            monthsShort: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+                            weekdaysFull: ['Chủ nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'],
+                            weekdaysShort: ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'],
+
+                            showMonthsShort: true,
+                            showWeekdaysFull: false,
+
+                            today: 'Hôm nay',
+                            clear: '',
+                            close: 'Đóng',
+
+                            labelMonthNext: 'Tháng sau',
+                            labelMonthPrev: 'Tháng trước',
+                            labelMonthSelect: 'Chọn tháng',
+                            labelYearSelect: 'Chọn năm',
+
+                            firstDay: 1,
+                            format: 'dd-mm-yyyy',
+                            formatSubmit: 'yyyy-mm-dd',
+                            hiddenPrefix: 'prefix_',
+
+                            min: new Date(1752, 0, 1),
+                            max: new Date(9998, 11, 31)
+                        });
+                        //document.getElementById('ngaylap').valueOf(result.Data.ngaylap)
+                        $("#tongluongsua").val(result.Data.tongluongsua);
+                        $("#lydo").val(result.Data.lydo);
+                        //$("#manv").val(result.Data.manv);
+                        //$("#macn").val(result.Data.macn);
+                        $("#mact").val(result.Data.machungtu);
+                    }
+                });
+
+            //hành động edit bắt từ from from_edit
+            $('#form_edit').submit(function (e) {
+                e.preventDefault();
+                var ngaylap = $("input[name=prefix_ngaylap_submit]").val();
+                if (ngaylap == "") { ngaylap = null; }
+
+                var ngayxuat = $("input[name=prefix_ngayxuat_submit]").val();
+                if (ngayxuat == "") { ngayxuat = null; }
+
+                var tongluongsua = $("#tongluongsua").val();
+                if (tongluongsua == "") { diachi = null; }
+
+                callAjax('post',
+                    {
+                        Token: Cookies.get('token'),
+                        Data: {
+                            ngaylap: ngaylap,
+                            ngayxuat: ngayxuat,
+                            tongluongsua: $('#tongluongsua').val(),
+                            lydo: $('#lydo').val(),
+                            //manv: $('#nhanvien').val(),
+                            //macn: $('#chinhanh').val(),
+                            machungtu: $('#mact').val()
+                        }
+                    },
+                    Cookies.get('area'), 'import_export', 'PhieuXuat/update',
+                    function (data) {
+                        if (data.IsError) {
+                            toastr["error"](data.Errors[0]);
+                            $("#error").show();
+                            $("#error").text(data.Errors[0]);
+                        }
+                        else {
+                            toastr["success"](data.Data);
+                            $('#form_action')[0].reset();
+                        }
+                    });
+            })
+
+        });
+    </script>
+}

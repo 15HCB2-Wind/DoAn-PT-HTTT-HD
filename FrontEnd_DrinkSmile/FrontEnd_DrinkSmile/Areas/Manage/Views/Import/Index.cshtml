@@ -1,0 +1,137 @@
+﻿
+@{
+    ViewBag.Title = "Phiếu Nhập Bò";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>hiển thị danh sách phiếu nhập bò</h2>
+<a class="blue-text" href="@Url.Action("ImportCow")"><i class="fa fa-arrow-down" aria-hidden="true"></i>thêm phiếu nhập bò</a>
+<br /><i>danh sách phiếu nhập bò</i>
+<table class="table table-hover" id="hihi">
+    <thead class="thead-inverse">
+        <tr>
+            <th>Mã phiếu</th>
+            <th>Ngày lập</th>
+            <th>Ngày nhập</th>
+            <th>Số Lượng</th>
+            @*<th>Đã Hủy</th>*@
+            @*<th>Mã Nhà Cung Cấp</th>
+            <th>Mã Nhân Viên</th>
+            <th>Mã Chi Nhánh</th>*@
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="tbBillIndex"></tbody>
+</table>
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                <h4 class="modal-title w-100">Thoát</h4>
+            </div>
+            <div class="modal-body text-center">
+                Bạn có muốn tiếp tục?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                <button id="deleteModal_btnYes" type="button" class="btn btn-danger" data-dismiss="modal">Tiếp</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<a href="@Url.Action("ImportCow")" class="btn btn-primary">Nhập bò</a>*@
+
+@section Scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(document).ready(function () {
+            
+            loadTable();
+        });
+
+        function loadTable() {
+            callAjax('post',
+                { Token: Cookies.get("token") },
+                Cookies.get("area"), "import_export", "PhieuNhapBo/getAll",
+                function (data) {
+                    if (data.IsError) {
+                        toastr["error"](data.Errors[0]);
+                        $("error").show();
+                        $("error").text(data.Errors[0]);
+                    }
+                    else {
+                        if (data.Data) {
+                            var deletebuton;
+                            for (var i = 0; i < data.Data.length; i++) {
+                                if (data.Data[i].dahuy == 0) {
+                                    $('#tbBillIndex').append(
+                                    '<tr>' +
+                                        '<td>' + data.Data[i].machungtu + '</td>' +
+                                        '<td>' + data.Data[i].ngaylap + '</td>' +
+                                        '<td>' + data.Data[i].ngaynhap + '</td>' +
+                                        '<td>' + data.Data[i].soluong + '</td>' +
+                                        //'<td>' + data.Data[i].dahuy + '</td>' +
+                                        //'<td>' + data.Data[i].mancc + '</td>' +
+                                        //'<td>' + data.Data[i].manv + '</td>' +
+                                        //'<td>' + data.Data[i].macn + '</td>' +
+                                        "<td><a href='/Manage/Import/Edit/" + data.Data[i].machungtu + "'>Cập nhật</a></td>" +
+                                        "<td>" + '<a class="red-text" data-toggle="modal" data-target="#deleteModal" onclick="setupModal(\'delete\', \'' + data.Data[i].machungtu + '\', true)"><i class="fa fa-times"></i></a>' + "</td>" +
+                                    '</tr>'
+                                );
+                                }
+                                //$('#hihi').html(data.Data);
+                                
+                            }
+                        }
+                    }
+                });
+
+            $('.btnxoa').click(function () {
+                
+                console.log($(this).attr("machungtu"));
+                //callAjax('post', { Token: Cookies.get("token"), machungtu:  },
+                //        Cookies.get("area"), "import_export", "PhieuNhapBo/delete",
+                //        function (result) {
+                //            if (result.IsError) {
+                //                toastr["error"](data.Errors[0]);
+                //                $("error").show();
+                //                $("error").text(data.Errors[0]);
+                //            }
+                //            else {
+                //                toastr["success"](data.Data);
+                //                $('#form_action')[0].reset();
+                //            }
+                //        })
+            })
+
+        }
+
+
+        function setupModal(str, id, cond) {
+            $('#deleteModal_btnYes').attr('onclick', 'modalAction(\'' + str + '\', \'' + id + '\', ' + cond + ')');
+        }
+
+        function modalAction(str, id, cond) {
+            if (cond) {
+                callAjax('post', { Token: Cookies.get("token"), machungtu: id }, Cookies.get("area"), "import_export", "PhieuNhapBo/" + str,
+                    function (result) {
+                        if (result.IsError) {
+                            if (result.Errors.length > 0) {
+                                toastr["error"](result.Errors[0]);
+                            }
+                        }
+                        else {
+                            toastr["success"](result.Data);
+                            //loadTable();
+                            window.location.reload();
+                        }
+                    }
+                )
+            }
+        };
+    </script>
+}
