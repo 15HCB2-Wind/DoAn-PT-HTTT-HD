@@ -55,7 +55,7 @@ public class PhieuXuatAdapter {
         //nv.setTentaikhoan(obj.getTentaikhoan());
         //nv.setMatkhau(obj.getMatkhau());
         pnb.setLydo(obj.getLydo());
-        pnb.setDahuy(obj.getDahuy());
+//        pnb.setDahuy(obj.getDahuy());
         pnb.setTongluongsua(obj.getTongluongsua());
         pnb.setManv(obj.getManv());
         return HibernateUtil.update(pnb);
