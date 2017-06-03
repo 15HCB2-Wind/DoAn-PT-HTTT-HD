@@ -27,7 +27,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-                <h4 class="modal-title w-100">Thoát</h4>
+                <h4 class="modal-title w-100">Xóa bò</h4>
             </div>
             <div class="modal-body text-center">
                 Bạn có muốn tiếp tục?
@@ -108,11 +108,11 @@
                                         var deleteButton;
                                         var editButton;
                                         if (item.daxoa) {
-                                            deleteButton = '<a class="red-text" data-toggle="modal" data-target="#deleteModal" onclick="setupModal(\'recover\', \'' + item.mabo + '\', true)"><i class="fa fa-refresh" aria-hidden="true"></i></a>';
+                                            deleteButton = '<a class="green-text" data-toggle="modal" data-target="#deleteModal" onclick="setupModal(\'recover\', \'' + item.mabo + '\', true)"><i class="fa fa-refresh" aria-hidden="true"></i></a>';
                                             editButton = '';
                                         }
                                         else {
-                                            deleteButton = '<a class="red-text" data-toggle="modal" data-target="#deleteModal" onclick="setupModal(\'delete\', \'' + item.mabo + '\', true)"><i class="fa fa-times"></i></a>';
+                                            deleteButton = '<a class="red-text" data-toggle="modal" data-target="#deleteModal" onclick="setupModal(\'delete\', \'' + item.mabo + '\', true)"><i class="fa fa-trash" aria-hidden="true"></i></a>';
                                             editButton = '<a class="teal-text" href="/Manage/Cow/Edit?id=' + item.mabo + '&chip=' + item.machip + '&color=' + item.mausac + '&hasD=' + item.coditat + '&spe=' + item.nhandang + '&barn=' + item.machuong + '&sta=' + item.tinhtrang + '"><i class="fa fa-pencil"></i></a>';
                                         }
 

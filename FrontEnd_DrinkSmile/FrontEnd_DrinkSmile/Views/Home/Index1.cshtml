@@ -76,16 +76,16 @@
                                         '<thead class="thead-inverse">' +
                                             '<tr>' +
                                                 '<th rowspan="2" class="text-center align-middle">Bò</th>' +
-                                                '<th rowspan="2" class="text-center align-middle" width="150px">Lượng sữa</th>' +
+                                                '<th rowspan="2" class="text-center align-middle" width="120px">Lượng sữa</th>' +
                                                 '<th rowspan="2" class="text-center align-middle">Cho ăn</th>' +
                                                 '<th rowspan="2" class="text-center align-middle">Vệ sinh</th>' +
-                                                '<th rowspan="2" class="text-center align-middle" width="150px">Tình trạng công việc</th>' +
+                                                '<th rowspan="2" class="text-center align-middle" width="200px">Tình trạng công việc</th>' +
                                                 '<th colspan="3" class="text-center align-middle" width="300px">Tình trạng bò</th>' +
                                                 '<th rowspan="2" colspan="2"></th>' +
                                                 //'<th rowspan="2"></th>' +
                                             '</tr>' +
                                             '<tr>' +
-                                                '<th class="text-center align-middle"></th>'+
+                                                '<th class="text-center align-middle">#</th>'+
                                                 '<th class="text-center align-middle">Chiều cao (mét)</th>' +
                                                 '<th class="text-center align-middle">Cân nặng (kg)</th>' +
                                             '</tr>' +
@@ -127,7 +127,7 @@
                                             $('#' + data3.Data[0].machuong + '_table').append(
                                                 '<tr id="tr' + code + '" class="table-success">' +
                                                     '<td class="text-center align-middle" id="idbo' + code + '" rowspan="1">' + data3.Data[k].mabo + '</td>' +
-                                                    '<td class="text-center align-middle" id="tdluongsua' + code + '" rowspan="1"><input id="luongsua' + code + '" type="number" min="0" step="1" value="0"/></td>' +
+                                                    '<td class="text-center align-middle" id="tdluongsua' + code + '" rowspan="1"><input class="text-right" id="luongsua' + code + '" type="number" min="0" step="1" value="0"/></td>' +
                                                     '<td class="text-center align-middle" id="tdchoan' + code + '" rowspan="1"><div class="form-group"><input type="checkbox" id="choan' + code + '"/><label for="choan' + code + '"></label></div></td>' +
                                                     '<td class="text-center align-middle" id="tdvesinh' + code + '" rowspan="1"><div class="form-group"><input type="checkbox" id="vesinh' + code + '"/><label for="vesinh' + code + '"></label></div></td>' +
                                                     '<td class="text-center align-middle" id="tdtinhtrang' + code + '" rowspan="1"><input id="tinhtrang' + code + '" type="text"/></td>' +
@@ -241,20 +241,23 @@
             });
         }
 
-        function saveclick(chieucao, cannang) {
+        function saveclick() {
+            var chieucao = document.getElementById('chieucao').value;
+            var cannang = document.getElementById('cannang').value;
             callAjax('post', {
-                Token: Cookies.get('token'), Data: {
+                Token: Cookies.get('token'),
+                Data: {
                     MaPhanCong: maphancong,
                     MaBo:mabo,
                     ChieuCao: chieucao,
                     CanNang: cannang
-                }
+                },
+                TinhTrang: document.getElementById('tinhtrangbo').value
             }, Cookies.get("area"), "animal_care", "animalcare/addTinhTrangBo", function (data) {
                 console.log(data);
                 if (data.IsError){
                     toastr['error'](data.Errors[0]);
-                }
-                else {
+                } else if (data.Data) {
                     var code = data.Data.MaPhanCong + data.Data.MaBo;
                     var t = parseInt(document.getElementById('idbo' + code).attributes.getNamedItem('rowspan').value);
                     $('#idbo' + code).attr('rowspan', t + 1);
@@ -268,10 +271,11 @@
                     $('#tr' + code).last().after(
                         '<tr class="table-success">' +
                         '<td class="text-center align-middle">' + stt + '</td>' +
-                        '<td class="text-center align-middle">'+chieucao+'</td>' +
+                        '<td class="text-center align-middle">'+ chieucao +'</td>' +
                         '<td class="text-center align-middle">' + cannang + '</td>'+
                         '</tr>'
                         );
+                    toastr['success']("Ghi nhận tình trạng thành công.");
                 }
             });
         }
@@ -312,13 +316,19 @@
             </div>
             <!--Body-->
             <div class="modal-body">
-                <label class="w-25">Chiều cao</label><input id="chieucao" type="number" min="0" value="0" step="0.5" class="w-25" /> mét <br />
-                <label class="w-25">Cân nặng</label><input id="cannang" type="number" min="0" value="0" step="5" class="w-25" /> lít <br/>
+                <label class="w-25 text-center">Chiều cao</label><input id="chieucao" type="number" min="0" value="0" step="0.1" class="w-50 text-right" />&nbsp;(mét)<br />
+                <label class="w-25 text-center">Cân nặng</label><input id="cannang" type="number" min="0" value="0" class="w-50 text-right" />&nbsp;(kg)<br/>
+                <br />
+                <div class="md-form form-sm">
+                    <i class="fa fa-pencil-square-o prefix"></i>
+                    <input id="tinhtrangbo" class="form-control" type="text" />
+                    <label for="tinhtrangbo">Tình trạng bò</label>
+                </div>
             </div>
             <!--Footer-->
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                <button type="button" class="btn btn-primary" onclick="saveclick(document.getElementById('chieucao').value,document.getElementById('chieucao').value, document.getElementById('cannang').value)" data-dismiss="modal">Lưu</button>
+                <button type="button" class="btn btn-primary" onclick="saveclick()" data-dismiss="modal">Lưu</button>
             </div>
         </div>
         <!--/.Content-->

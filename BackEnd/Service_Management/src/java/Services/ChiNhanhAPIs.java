@@ -7,12 +7,10 @@ package Services;
 
 import BusinessHandler.ChiNhanhBUS;
 import DAO.ChiNhanhAdapter;
+import Models.DataAccess.Agency.AgencyRequest;
+import Models.DataAccess.Agency.AgencyResponse;
 import Models.DataAccess.Agency.DeleteAgencyRequest;
 import Models.DataAccess.Agency.DeleteAgencyResponse;
-import Models.DataAccess.Agency.InsertAgencyRequest;
-import Models.DataAccess.Agency.InsertAgencyResponse;
-import Models.DataAccess.Agency.UpdateAgencyRequest;
-import Models.DataAccess.Agency.UpdateAgencyResponse;
 import Models.DataAccess.SelectRequest;
 import Models.DataAccess.SelectResponse;
 import com.google.gson.Gson;
@@ -43,14 +41,14 @@ public class ChiNhanhAPIs {
         SelectRequest request = gson.fromJson(json, SelectRequest.class);
         SelectResponse response = new SelectResponse();
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)){
-            //if (true){
+            if (true){
                 try{
                     response.Data = ChiNhanhAdapter.getAll();
                 }catch(Exception ex){
                     response.Errors.add("Lỗi hệ thống.");
                     response.IsError = true;
                 }
-            //}
+            }
         }
         return gson.toJson(response);
     }
@@ -63,14 +61,14 @@ public class ChiNhanhAPIs {
         SelectRequest request = gson.fromJson(json, SelectRequest.class);
         SelectResponse response = new SelectResponse();
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)){
-            //if (true){
+            if (true){
                 try{
                     response.Data = ChiNhanhAdapter.getSingle(request.Predicates[0]);
                 }catch(Exception ex){
                     response.Errors.add("Lỗi hệ thống.");
                     response.IsError = true;
                 }
-            //}
+            }
         }
         return gson.toJson(response);
     }
@@ -81,14 +79,13 @@ public class ChiNhanhAPIs {
     @Consumes("application/json")
     public String add(String json) {
         Gson gson = new Gson();
-        InsertAgencyRequest request = gson.fromJson(json, InsertAgencyRequest.class);
-        InsertAgencyResponse response = new InsertAgencyResponse();
+        AgencyRequest request = gson.fromJson(json, AgencyRequest.class);
+        AgencyResponse response = new AgencyResponse();
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)){
             if (ChiNhanhBUS.insertValidate(request, response)){
                 try{
-                    String resulf = ChiNhanhAdapter.add(request.Data);
-                    if (!resulf.equals("false")){ 
-                        response.Data = resulf;
+                    if (ChiNhanhAdapter.add(request)){ 
+                        response.Data = "Thêm thành công.";
                     }else{
                         response.Errors.add("Thêm thất bại.");
                         response.IsError = true;
@@ -142,10 +139,10 @@ public class ChiNhanhAPIs {
                 try{
                     int result = ChiNhanhAdapter.recover(request.Data);
                     if (result != 1){
-                        response.Errors.add("Khôi phục nhân viên thất bại.");
+                        response.Errors.add("Khôi phục chi nhánh thất bại.");
                         response.IsError = true;
                     }else{
-                        response.Data = "Khôi phục nhân viên thành công.";
+                        response.Data = "Khôi phục chi nhánh thành công.";
                     }
                 }catch(Exception ex){
                     response.Errors.add("Lỗi hệ thống.");
@@ -162,12 +159,12 @@ public class ChiNhanhAPIs {
     @Consumes("application/json")
     public String update(String json) {
         Gson gson = new Gson();
-        UpdateAgencyRequest request = gson.fromJson(json, UpdateAgencyRequest.class);
-        UpdateAgencyResponse response = new UpdateAgencyResponse();
+        AgencyRequest request = gson.fromJson(json, AgencyRequest.class);
+        AgencyResponse response = new AgencyResponse();
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)){
             if (BusinessHandler.ChiNhanhBUS.updateValidate(request, response)){
                 try{
-                    if (ChiNhanhAdapter.update(request.Data)){
+                    if (ChiNhanhAdapter.update(request)){
                         response.Data = "Cập nhật thành công!";
                     }else{
                         response.Errors.add("Cập nhật thất bại!");

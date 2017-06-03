@@ -5,17 +5,8 @@
  */
 package DAO;
 
-import Config.Configs;
-import Models.Other.SyncRequest;
-import Models.Other.SyncResponse;
 import Ultility.HibernateUtil;
-import com.google.gson.Gson;
 import java.util.List;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import pojos.Nhacungcap;
 
 /**
@@ -23,39 +14,26 @@ import pojos.Nhacungcap;
  * @author Shin'sLaptop
  */
 public class NhaCungCapAdapter {
+    public static void getNewID(String areaid, Nhacungcap obj) {
+        if (CounterAdapter.updateCounter(areaid, "indexNhacungcap")){
+            obj.setManhacungcap(String.format("%s%s%04d", areaid, "NCC", CounterAdapter.getAreaCounter().getIndexNhacungcap()));
+        }
+    }
+    
     public static List<Nhacungcap> getAll(){
         return HibernateUtil.getList("from Nhacungcap order by manhacungcap asc", null);
     }
-    public static boolean isValidName(String name) {
-        if (HibernateUtil.getSingle("from Nhacungcap where ten = :p0", new Object[]{name}) != null) {
-            return false;
-        }
-        return true;
-    }
-    private static void getNewID(Nhacungcap obj) {
-        
-          List<Nhacungcap> list = HibernateUtil.getSingle("from Nhacungcap order by manhacungcap desc",null);//lay ds chinhanh tu duoi len
-        String machu= "";
-         if (list.size()>0) {
-            Nhacungcap cn = list.get(list.size()-1);
-            machu = cn.getManhacungcap().substring(3);//NCC00001 -> 00001
-         }
-         else
-         {
-              machu = "0";
-         }
-        int maso = Integer.parseInt(machu);
-        obj.setManhacungcap(String.format("NCC%03d", maso + 1));
-    }
-    public static boolean add(Nhacungcap obj) {
-        getNewID(obj);
+    
+    public static boolean add(String areaid, Nhacungcap obj) {
+        getNewID(areaid, obj);
+        obj.setTinhtrang("Đang hoạt động.");
         return HibernateUtil.save(obj);
     }   
+    
      public static Nhacungcap getSingle(Object id){
         List<Nhacungcap> list = HibernateUtil.getSingle("from Nhacungcap where manhacungcap = :p0", new Object[]{ id });
         if (list.size()>0) {
-            Nhacungcap ncc = list.get(0);
-            return ncc;
+            return list.get(0);
         }
         return null;
     }
@@ -69,34 +47,4 @@ public class NhaCungCapAdapter {
             ncc.setTinhtrang(obj.getTinhtrang());
         return HibernateUtil.update(ncc);
     }
-    
-//    public static void sync(int code, Nhacungcap obj){
-//        int times = 3;
-//        boolean fail = true;
-//        
-//        SyncRequest sRequest = new SyncRequest();
-//        sRequest.Id = obj.getManhanvien();
-//        sRequest.FullName = obj.getHoten();
-//        sRequest.Username = obj.getTentaikhoan();
-//        sRequest.Password = obj.getMatkhau();
-//        sRequest.Email = obj.getEmail();
-//        sRequest.PermissionLevel = PhanQuyenAdapter.getSingle(obj.getMaphanquyen()).getCapphanquyen();
-//        sRequest.SyncType = code;
-//        
-//        do{
-//            try{
-//                Client client = ClientBuilder.newClient();
-//                Response res = client
-//                        .target(Configs.SYNC_TO_LOGIN_SERVICE)
-//                        .request(MediaType.APPLICATION_JSON)
-//                        .post(Entity.json(new Gson().toJson(sRequest)));
-//
-//                SyncResponse result = res.readEntity(SyncResponse.class);
-//                fail = result == null;
-//                if (!fail)
-//                    break;
-//            } catch (Exception ex){ }
-//        }while(fail && --times > 0);
-//    }
-
 }

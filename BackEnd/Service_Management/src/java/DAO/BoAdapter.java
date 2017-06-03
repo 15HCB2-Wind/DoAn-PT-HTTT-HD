@@ -5,6 +5,7 @@
  */
 package DAO;
 
+import Config.Configs;
 import Ultility.HibernateUtil;
 import java.util.Date;
 import java.util.List;
@@ -15,9 +16,10 @@ import pojos.Bo;
  * @author 19101994
  */
 public class BoAdapter {
-    private static void getNewID(Bo obj) {
-        int count = HibernateUtil.count("select count(mabo) from Bo");
-        obj.setMabo(String.format("COW%05d", count + 1));
+    public static void getNewID(Bo obj) {
+        if (CounterAdapter.updateCounter("indexBo")){
+            obj.setMabo(String.format("%s%s%06d", Configs.AREA_ID, "B", CounterAdapter.getAreaCounter().getIndexBo()));
+        }
     }
     
     public static Bo getSingle(Object id){
@@ -62,5 +64,9 @@ public class BoAdapter {
         updated.setNhandang(obj.getNhandang());
         updated.setTinhtrang(obj.getTinhtrang());
         return HibernateUtil.update(updated);
+    }
+    
+    public static boolean updateState(String id, String newState) {
+        return HibernateUtil.execute("update Bo set tinhtrang = :p1 where mabo = :p0", new Object[]{ id, newState }) > 0;
     }
 }

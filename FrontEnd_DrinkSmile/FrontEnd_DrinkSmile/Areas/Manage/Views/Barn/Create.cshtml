@@ -18,7 +18,7 @@
                 </div>
                 <div class="md-form">
                     <i class="fa fa-battery-full prefix"></i>
-                    <input id="succhua" class="form-control" type="number" min="1" />
+                    <input id="succhua" class="form-control" type="number" min="1" required="required" />
                     <label id="succhuaerror" for="succhua">Sức chứa</label>
                 </div>
                 <div class="md-form">
@@ -93,8 +93,7 @@
                                 toastr["error"](result.Errors[0]);
                             }
                         }
-                        else {
-                            Data = null;
+                        else if (result.Data) {
                             toastr["success"](result.Data);
                             $('#form_addbarn')[0].reset();
                         }

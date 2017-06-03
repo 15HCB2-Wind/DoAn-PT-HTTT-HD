@@ -35,9 +35,9 @@ function callAjax(type, data, areaId, whichService, url, successCallback, tempDa
             }
         },
         error: function () {
-            toastr["error"]("Không thể kết nối tới máy chủ !");
+            toastr["error"]("Không thể kết nối tới máy chủ!");
             $("#error").show();
-            $("#error").text("Không thể kết nối tới máy chủ");
+            $("#error").text("Không thể kết nối tới máy chủ!");
         }
     });
 }

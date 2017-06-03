@@ -17,4 +17,6 @@ public class Configs {
     public static final String      CHECK_TOKEN             =   "http://localhost:30000/account/checktoken";
     
     public static final String      TOKEN_PASSWORD          =   "&YH*hf4JEUFHKEKLRJH93#$i";
+    
+    public static final String      AREA_ID                 =   "HCM";
 }

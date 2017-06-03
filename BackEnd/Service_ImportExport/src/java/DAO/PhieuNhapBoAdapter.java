@@ -5,6 +5,7 @@
  */
 package DAO;
 
+import Config.Configs;
 import Ultility.HibernateUtil;
 import java.util.List;
 import pojos.Phieunhapbo;
@@ -15,8 +16,9 @@ import pojos.Phieunhapbo;
  */
 public class PhieuNhapBoAdapter {
     private static void getNewID(Phieunhapbo obj) {
-        int count = HibernateUtil.count("select count(machungtu) from Phieunhapbo");
-        obj.setMachungtu(String.format("MCT%05d", count + 1));
+        if (CounterAdapter.updateCounter("indexPhieunhapbo")){
+            obj.setMachungtu(String.format("%s%s%05d", Configs.AREA_ID, "CT", CounterAdapter.getAreaCounter().getIndexPhieunhap()));
+        }
     }
     
     public static Phieunhapbo getSingle(Object userid){

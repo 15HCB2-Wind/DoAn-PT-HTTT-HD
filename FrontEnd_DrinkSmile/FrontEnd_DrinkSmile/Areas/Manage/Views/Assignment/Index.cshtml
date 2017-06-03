@@ -8,8 +8,6 @@
             var listchuong;
             callAjax('post', { Token: Cookies.get('token') }, Cookies.get('area'), "management", "ChuongTrai/getAll", function (data2) {
                 listchuong = data2.Data;
-                console.log(data2);
-                
             });
             callAjax('post', { Token: Cookies.get('token') }, Cookies.get('area'), "management", "NhanVien/getAll", function (data1) {
                 if (!data1.Data || data1.Data.length <= 0) {

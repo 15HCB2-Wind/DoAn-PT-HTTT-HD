@@ -1,14 +1,15 @@
 package DAO;
 
+import Config.Configs;
 import Ultility.HibernateUtil;
 import java.util.List;
 import pojos.*;
 
 public class ChuongTraiAdapter {
-
-    private static void getNewID(Chuongtrai obj) {
-        int count = HibernateUtil.count("select count(machuong) from Chuongtrai");
-        obj.setMachuong(String.format("CT%05d", count + 1));
+    public static void getNewID(Chuongtrai obj) {
+        if (CounterAdapter.updateCounter("indexChuongtrai")){
+            obj.setMachuong(String.format("%s%s%05d", Configs.AREA_ID, "CT", CounterAdapter.getAreaCounter().getIndexChuongtrai()));
+        }
     }
 
     public static Chuongtrai getSingle(Object id) {

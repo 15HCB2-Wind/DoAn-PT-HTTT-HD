@@ -2,10 +2,10 @@
 -- version 4.6.4
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: May 29, 2017 at 04:12 AM
--- Server version: 5.7.14
--- PHP Version: 5.6.25
+-- Máy chủ: 127.0.0.1
+-- Thời gian đã tạo: Th6 02, 2017 lúc 11:45 SA
+-- Phiên bản máy phục vụ: 5.7.14
+-- Phiên bản PHP: 5.6.25
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,13 +17,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `service_management_drinksmile`
+-- Cơ sở dữ liệu: `service_management_drinksmile`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `bo`
+-- Cấu trúc bảng cho bảng `bo`
 --
 
 CREATE TABLE `bo` (
@@ -39,7 +39,7 @@ CREATE TABLE `bo` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `bo`
+-- Đang đổ dữ liệu cho bảng `bo`
 --
 
 INSERT INTO `bo` (`mabo`, `machip`, `mausac`, `coditat`, `nhandang`, `tinhtrang`, `daxoa`, `machuong`, `ngaynhan`) VALUES
@@ -92,7 +92,7 @@ INSERT INTO `bo` (`mabo`, `machip`, `mausac`, `coditat`, `nhandang`, `tinhtrang`
 -- --------------------------------------------------------
 
 --
--- Table structure for table `chinhanh`
+-- Cấu trúc bảng cho bảng `chinhanh`
 --
 
 CREATE TABLE `chinhanh` (
@@ -107,7 +107,7 @@ CREATE TABLE `chinhanh` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `chinhanh`
+-- Đang đổ dữ liệu cho bảng `chinhanh`
 --
 
 INSERT INTO `chinhanh` (`machinhanh`, `tenchinhanh`, `sodt`, `diachi`, `tinhtrang`, `daxoa`, `quanly`, `khotam`) VALUES
@@ -118,7 +118,7 @@ INSERT INTO `chinhanh` (`machinhanh`, `tenchinhanh`, `sodt`, `diachi`, `tinhtran
 -- --------------------------------------------------------
 
 --
--- Table structure for table `chuongtrai`
+-- Cấu trúc bảng cho bảng `chuongtrai`
 --
 
 CREATE TABLE `chuongtrai` (
@@ -132,7 +132,7 @@ CREATE TABLE `chuongtrai` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `chuongtrai`
+-- Đang đổ dữ liệu cho bảng `chuongtrai`
 --
 
 INSERT INTO `chuongtrai` (`machuong`, `tenchuong`, `succhua`, `dangchua`, `tinhtrang`, `daxoa`, `machinhanh`) VALUES
@@ -173,7 +173,31 @@ INSERT INTO `chuongtrai` (`machuong`, `tenchuong`, `succhua`, `dangchua`, `tinht
 -- --------------------------------------------------------
 
 --
--- Table structure for table `khosua`
+-- Cấu trúc bảng cho bảng `counter`
+--
+
+CREATE TABLE `counter` (
+  `areaid` varchar(3) NOT NULL,
+  `index_bo` int(11) DEFAULT '0',
+  `index_chinhanh` int(11) DEFAULT '0',
+  `index_chuongtrai` int(11) DEFAULT '0',
+  `index_khosua` int(11) DEFAULT '0',
+  `index_nhacungcap` int(11) DEFAULT '0',
+  `index_nhanvien` int(11) DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Đang đổ dữ liệu cho bảng `counter`
+--
+
+INSERT INTO `counter` (`areaid`, `index_bo`, `index_chinhanh`, `index_chuongtrai`, `index_khosua`, `index_nhacungcap`, `index_nhanvien`) VALUES
+('HCM', 30, 2, 25, 5, 3, 17),
+('HN', 15, 1, 8, 2, 2, 8);
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `khosua`
 --
 
 CREATE TABLE `khosua` (
@@ -188,7 +212,7 @@ CREATE TABLE `khosua` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `khosua`
+-- Đang đổ dữ liệu cho bảng `khosua`
 --
 
 INSERT INTO `khosua` (`makho`, `tenkho`, `succhua`, `luongsuaco`, `diachi`, `daxoa`, `tinhtrang`, `machinhanh`) VALUES
@@ -203,7 +227,7 @@ INSERT INTO `khosua` (`makho`, `tenkho`, `succhua`, `luongsuaco`, `diachi`, `dax
 -- --------------------------------------------------------
 
 --
--- Table structure for table `nhacungcap`
+-- Cấu trúc bảng cho bảng `nhacungcap`
 --
 
 CREATE TABLE `nhacungcap` (
@@ -214,7 +238,7 @@ CREATE TABLE `nhacungcap` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `nhacungcap`
+-- Đang đổ dữ liệu cho bảng `nhacungcap`
 --
 
 INSERT INTO `nhacungcap` (`manhacungcap`, `ten`, `diachi`, `tinhtrang`) VALUES
@@ -227,7 +251,7 @@ INSERT INTO `nhacungcap` (`manhacungcap`, `ten`, `diachi`, `tinhtrang`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `nhanvien`
+-- Cấu trúc bảng cho bảng `nhanvien`
 --
 
 CREATE TABLE `nhanvien` (
@@ -248,7 +272,7 @@ CREATE TABLE `nhanvien` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `nhanvien`
+-- Đang đổ dữ liệu cho bảng `nhanvien`
 --
 
 INSERT INTO `nhanvien` (`manhanvien`, `hoten`, `gioitinh`, `ngaysinh`, `sodt`, `diachi`, `email`, `tentaikhoan`, `matkhau`, `tinhtrang`, `daxoa`, `machinhanh`, `maphanquyen`, `ngayvaolam`) VALUES
@@ -256,7 +280,7 @@ INSERT INTO `nhanvien` (`manhanvien`, `hoten`, `gioitinh`, `ngaysinh`, `sodt`, `
 ('HCMNV00002', 'Test02', 'Nam', '1987-03-01', '7532005537', '002 Any Street, HCM city, the Earth', '002@gmail.com', '002@gmail.com', 'WVs&$^OEWTMO$IFR&$OIFO#$JFK4MRFI*$UT', 'Đang làm.', b'0', 'HCMCN001', 'PQ002', '2017-04-01'),
 ('HCMNV00003', 'Test03', 'Nam', '1985-08-05', '4524272727', '003 Any Street, HCM city, the Earth', '003@gmail.com', '003@gmail.com', 'WVs&$^OEWTMO$IFR&$OIFO#$JFK4MRFI*$UT', 'Đang làm.', b'0', 'HCMCN001', 'PQ001', '2017-04-01'),
 ('HCMNV00004', 'Test04', 'Nữ', '1985-09-19', '72524742737', '004 Any Street, HCM city, the Earth', '004@gmail.com', '004@gmail.com', 'WVs&$^OEWTMO$IFR&$OIFO#$JFK4MRFI*$UT', 'Đang làm.', b'0', 'HCMCN001', 'PQ001', '2017-04-01'),
-('HCMNV00005', 'Test05', 'Nữ', '1989-02-02', '75240404525', '005 Any Street, HCM city, the Earth', '005@gmail.com', '005@gmail.com', 'WVs&$^OEWTMO$IFR&$OIFO#$JFK4MRFI*$UT', 'Đang làm.', b'0', 'HCMCN001', 'PQ001', '2017-04-01'),
+('HCMNV00005', 'Test05', 'Nữ', '2017-05-30', '75240404525', '005 Any Street, HCM city, the Earth', '005@gmail.com', '005@gmail.com', 'WVs&$^OEWTMO$IFR&$OIFO#$JFK4MRFI*$UT', 'Đang làm.', b'0', 'HCMCN001', 'PQ001', '2017-04-01'),
 ('HCMNV00006', 'Test06', 'Nam', '1981-05-18', '7872275347', '006 Any Street, HCM city, the Earth', '006@gmail.com', '006@gmail.com', 'WVs&$^OEWTMO$IFR&$OIFO#$JFK4MRFI*$UT', 'Đang làm.', b'0', 'HCMCN001', 'PQ001', '2017-04-01'),
 ('HCMNV00007', 'Test07', 'Nữ', '1984-11-21', '0138727785', '007 Any Street, HCM city, the Earth', '007@gmail.com', '007@gmail.com', 'WVs&$^OEWTMO$IFR&$OIFO#$JFK4MRFI*$UT', 'Đang làm.', b'0', 'HCMCN001', 'PQ001', '2017-04-01'),
 ('HCMNV00008', 'Test08', 'Nam', '1979-07-28', '707877594', '008 Any Street, HCM city, the Earth', '008@gmail.com', '008@gmail.com', 'WVs&$^OEWTMO$IFR&$OIFO#$JFK4MRFI*$UT', 'Đang làm.', b'0', 'HCMCN001', 'PQ001', '2017-04-01'),
@@ -281,7 +305,7 @@ INSERT INTO `nhanvien` (`manhanvien`, `hoten`, `gioitinh`, `ngaysinh`, `sodt`, `
 -- --------------------------------------------------------
 
 --
--- Table structure for table `phanquyen`
+-- Cấu trúc bảng cho bảng `phanquyen`
 --
 
 CREATE TABLE `phanquyen` (
@@ -291,7 +315,7 @@ CREATE TABLE `phanquyen` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `phanquyen`
+-- Đang đổ dữ liệu cho bảng `phanquyen`
 --
 
 INSERT INTO `phanquyen` (`maphanquyen`, `tenphanquyen`, `capphanquyen`) VALUES
@@ -299,67 +323,49 @@ INSERT INTO `phanquyen` (`maphanquyen`, `tenphanquyen`, `capphanquyen`) VALUES
 ('PQ002', 'Quản lý chi nhánh', 2),
 ('PQ003', 'Tổng giám đốc', 3);
 
--- --------------------------------------------------------
-
 --
--- Table structure for table `tables_counter`
---
-
-CREATE TABLE `tables_counter` (
-  `key` varchar(3) NOT NULL,
-  `bo` int(11) DEFAULT '0',
-  `chinhanh` int(11) DEFAULT '0',
-  `chuongtrai` int(11) DEFAULT '0',
-  `khosua` int(11) DEFAULT '0',
-  `nhacungcap` int(11) DEFAULT '0',
-  `nhanvien` int(11) DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `tables_counter`
---
-
-INSERT INTO `tables_counter` (`key`, `bo`, `chinhanh`, `chuongtrai`, `khosua`, `nhacungcap`, `nhanvien`) VALUES
-('HCM', 30, 2, 25, 5, 3, 17),
-('HN', 15, 1, 8, 2, 2, 8);
-
---
--- Indexes for dumped tables
+-- Chỉ mục cho các bảng đã đổ
 --
 
 --
--- Indexes for table `bo`
+-- Chỉ mục cho bảng `bo`
 --
 ALTER TABLE `bo`
   ADD PRIMARY KEY (`mabo`),
   ADD UNIQUE KEY `machip_UNIQUE` (`machip`);
 
 --
--- Indexes for table `chinhanh`
+-- Chỉ mục cho bảng `chinhanh`
 --
 ALTER TABLE `chinhanh`
   ADD PRIMARY KEY (`machinhanh`);
 
 --
--- Indexes for table `chuongtrai`
+-- Chỉ mục cho bảng `chuongtrai`
 --
 ALTER TABLE `chuongtrai`
   ADD PRIMARY KEY (`machuong`);
 
 --
--- Indexes for table `khosua`
+-- Chỉ mục cho bảng `counter`
+--
+ALTER TABLE `counter`
+  ADD PRIMARY KEY (`areaid`);
+
+--
+-- Chỉ mục cho bảng `khosua`
 --
 ALTER TABLE `khosua`
   ADD PRIMARY KEY (`makho`);
 
 --
--- Indexes for table `nhacungcap`
+-- Chỉ mục cho bảng `nhacungcap`
 --
 ALTER TABLE `nhacungcap`
   ADD PRIMARY KEY (`manhacungcap`);
 
 --
--- Indexes for table `nhanvien`
+-- Chỉ mục cho bảng `nhanvien`
 --
 ALTER TABLE `nhanvien`
   ADD PRIMARY KEY (`manhanvien`),
@@ -367,17 +373,11 @@ ALTER TABLE `nhanvien`
   ADD UNIQUE KEY `tentaikhoan_UNIQUE` (`tentaikhoan`);
 
 --
--- Indexes for table `phanquyen`
+-- Chỉ mục cho bảng `phanquyen`
 --
 ALTER TABLE `phanquyen`
   ADD PRIMARY KEY (`maphanquyen`),
   ADD UNIQUE KEY `capphanquyen_UNIQUE` (`capphanquyen`);
-
---
--- Indexes for table `tables_counter`
---
-ALTER TABLE `tables_counter`
-  ADD PRIMARY KEY (`key`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -1,4 +1,4 @@
-@{
+﻿@{
     ViewBag.Title = "Cập nhật Nhà Cung Cấp";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -11,10 +11,21 @@
                     <hr class="mt-2 mb-2">
                 </div>
                 <p id="error" class="text-danger text-center"></p>
-                <div class="md-form">
-                    <i class="fa fa-id-card-o prefix"></i>
-                    <input id="ten" class="form-control" type="text" placeholder="" required="required" />
-                    <label id="tenerror" for="ten">Tên</label>
+                <div class="col-xs-12">
+                    <div class="row">
+                        <div class="col-sm-8 col-xs-12">
+                            <div class="md-form">
+                                <i class="fa fa-id-card-o prefix"></i>
+                                <input id="ten" class="form-control" type="text" required="required" placeholder="" />
+                                <label id="tenerror" for="ten">Tên</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 col-xs-12">
+                            <div class="btn-group">
+                                <button id="area" class="btn btn-primary" type="button"></button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="md-form">
                     <i class="fa fa-map-marker prefix"></i>
@@ -28,8 +39,6 @@
                 </div>
                 <input type="hidden" id="manv" />
                 <input type="hidden" id="daxoa" />
-                @*<input type="hidden" id="macn" />*@
-                @*<input type="hidden" id="mapq" />*@
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary">
                         Lưu <i id="loader" class="fa fa-circle-o-notch fa-pulse fa-lg fa-fw"></i>
@@ -86,70 +95,63 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script type="text/javascript">
+        var manhacungcap;
         $(document).ready(function () {
             $("fieldset").hide();
             $("#loader").hide();
             $("#back").hide();
-            var manhacungcap = QueryString['manhacungcap'];
-            callAjax('post', { Predicates: [manhacungcap] }, "hcm", "management", "NhaCungCap/getSingle", function (data) {
+            manhacungcap = QueryString['manhacungcap'];
+            $('#area').html(QueryString['manhacungcap'].split('NCC', 1)[0]);
+            //load nhà cung cấp
+            loadnhacungcap();
+            //update nhà cung cấp
+            $('#form_update').submit(function (e) {
+                e.preventDefault();
+                updatenhacungcap();
+            });
+        });
+
+        function updatenhacungcap() {
+            callAjax('post', {
+                Token: Cookies.get('token'),
+                Data: {
+                    manhacungcap: manhacungcap,
+                    ten: $("#ten").val(),
+                    diachi: diachi,
+                    tinhtrang: tinhtrang
+                }
+            }, Cookies.get("area"), "management", "NhaCungCap/update",
+                function (result) {
+                    if (result.IsError) {
+                        if (result.NameErrors.length > 0) {
+                            $("#ten").addClass("validate invalid");
+                            $("#tenerror").addClass("active");
+                            $("#tenerror").attr("data-error", result.NameErrors[0]);
+                        }
+                        if (result.Errors.length > 0) {
+                            toastr["error"](result.Errors[0]);
+                        }
+                    }
+                    else if (result.Data) {
+                        toastr["success"](result.Data);
+                    }
+                }
+            )
+        };
+
+        function loadnhacungcap() {
+            callAjax('post', { Token: Cookies.get('token'), Predicates: [manhacungcap] }, Cookies.get("area"), "management", "NhaCungCap/getSingle", function (data) {
                 $('#loader1').hide();
                 if (data.Data == null) {
-                    toastr["error"]("Nhà Cung Cấp không tồn tại!");
-                    //alert("Lỗi Hệ Thống");
-                    window.location.href = 'http://localhost:8082/Manage/Provider'
+                    toastr["error"]("Nhà cung cấp không tồn tại!");
                 }
                 else {
                     $("fieldset").show();
                     $("#ten").val(data.Data.ten);
                     $("#diachi").val(data.Data.diachi);
                     $("#tinhtrang").val(data.Data.tinhtrang);
-                    //var ten = document.getElementById('ten');
-                    //ten.value = data.Data.ten;
-                    //var diachi = document.getElementById('diachi');
-                    //diachi.value = data.Data.diachi;
-                    //var tinhtrang = document.getElementById('tinhtrang');
-                    //tinhtrang.value = data.Data.tinhtrang;
                 }
             });
-
-            $('#form_update').submit(function (e) {
-                e.preventDefault();
-
-                var diachi = $("#diachi").val();
-                if (diachi == "") { diachi = " "; }
-
-                var tinhtrang = $("#tinhtrang").val();
-                if (tinhtrang == "") { tinhtrang = " "; }
-
-                callAjax('post', {
-                    Data: {
-                        manhacungcap: manhacungcap,
-                        ten: $("#ten").val(),
-                        diachi: diachi,
-                        tinhtrang: tinhtrang
-                    }
-                }, "hcm", "management", "NhaCungCap/update",
-                    function (result) {
-                        if (result.IsError) {
-                            if (result.NameErrors.length > 0) {
-                                $("#ten").addClass("validate invalid");
-                                $("#tenerror").addClass("active");
-                                $("#tenerror").attr("data-error", result.NameErrors[0]);
-                            }
-                            if (result.Errors.length > 0) {
-                                toastr["error"](result.Errors[0]);
-                            }
-                        }
-                        else {
-                            Data = null;
-                            toastr["success"](result.Data);
-                            $('#form_update')[0].reset();
-                            window.location.href = 'http://localhost:8082/Manage/Provider'
-                        }
-                    }
-                )
-            });
-
-        });
+        };
     </script>
 }

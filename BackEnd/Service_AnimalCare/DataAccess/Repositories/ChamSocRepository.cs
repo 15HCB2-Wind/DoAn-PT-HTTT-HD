@@ -7,22 +7,25 @@ using System.Text;
 
 namespace DataAccess.Repositories
 {
-    public class ChamSocRepository :DataAccessOrigin<ChamSoc>
+    public class ChamSocRepository : DataAccessOrigin<ChamSoc>
     {
         public static bool createIDAssignment(ChamSoc cs)
         {
-            //tạo mã phân công
-            object result = -1;
             try
             {
-                result = DataProvider.ExecuteScalar("select count(MaChamSoc) as Count from ChamSoc");
+                if (CounterRepository.updateCounter("index_chamsoc"))
+                {
+                    var index = CounterRepository.getIndex("index_chamsoc");
+                    if (index != -1)
+                    {
+                        cs.MaChamSoc = string.Format("{0}{1}{2:D10}", Configs.AREA_ID, "CS", index);
+                        return true;
+                    }
+                    return false;
+                }
             }
-            catch (Exception ex)
-            {
-                return false;
-            }
-            cs.MaChamSoc = String.Format("CS{0:D4}", Convert.ToInt32(result) + 1);
-            return true;
+            catch (Exception ex) { }
+            return false;
         }
 
         public static int Insert(ChamSoc cs)

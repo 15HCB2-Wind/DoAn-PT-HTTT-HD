@@ -3,15 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Models.DataAccess.Agency;
+package Models.DataAccess.Counter;
 
-import Models.DataAccess.InsertRequest;
-import pojos.Chinhanh;
+import Models.BodyRequest;
 
 /**
  *
- * @author Ut Hieu
+ * @author 19101994
  */
-public class InsertAgencyRequest  extends InsertRequest{
-    public Chinhanh Data;
+public class InsertCounterRequest extends BodyRequest{
+    public String Data;
 }

@@ -15,6 +15,14 @@ import Models.DataAccess.Cow.CowResponse;
 public class BoBUS {
     
     public static boolean insertUpdateValidate(CowRequest request, CowResponse response) {
+        if (request.Data.getMachip() == null || request.Data.getMachip().isEmpty()) {
+            response.Errors.add("Mã chip không được để trống!");
+            response.IsError = true;
+        }
+        if (request.Data.getMachuong() == null || request.Data.getMachuong().isEmpty()) {
+            response.Errors.add("Xin hãy chọn chuồng!");
+            response.IsError = true;
+        }
         return !response.IsError;
     }
     

@@ -14,7 +14,7 @@
                 <p id="error" class="text-danger text-center"></p>
                 <div class="md-form form-sm">
                     <i class="fa fa-id-card-o prefix"></i>
-                    <input id="tenkho" class="form-control" type="text" />
+                    <input id="tenkho" class="form-control" type="text" required="required" />
                     <label for="tenkho">Tên kho</label>
                 </div>
                 <div class="col-xs-12">
@@ -22,7 +22,7 @@
                         <div class="col-sm-6 col-xs-12">
                             <div class="md-form form-sm">
                                 <i class="fa fa-filter prefix"></i>
-                                <input id="dungtich" class="form-control" type="number" min="0" step="100" />
+                                <input id="dungtich" class="form-control" type="number" min="0" step="100" required="required" />
                                 <label for="dungtich">Dung tích</label>
                             </div>
                         </div>
@@ -39,7 +39,7 @@
                     <i class="fa fa-map-marker prefix"></i>
                     @*<input id="diachi" class="form-control" type="text" />
                     <label for="diachi">Địa chỉ</label>*@
-                    <textarea id="diachi" class="md-textarea" length="100"></textarea>
+                    <textarea id="diachi" class="md-textarea" length="100" required="required" ></textarea>
                     <label for="diachi">Địa chỉ</label>
                 </div>
                 <br />
@@ -114,7 +114,7 @@
                             $("#error").show();
                             $("#error").text(data.Errors[0]);
                         }
-                        else {
+                        else if (data.Data) {
                             toastr["success"](data.Data);
                         }
                     });

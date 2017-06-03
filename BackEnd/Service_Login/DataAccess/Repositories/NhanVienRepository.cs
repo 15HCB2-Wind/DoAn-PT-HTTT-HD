@@ -74,7 +74,7 @@ namespace DataAccess.Repositories
             int result = -1;
             try
             {
-                result = DataProvider.ExecuteNonQuery(string.Format("insert into nhanvien(manv, tentaikhoan, matkhau, cappq, email, hoten) values ('{0}', '{1}', '{2}', '{3}', '{4}', N'{5}')", obj.MaNV, obj.TenTaiKhoan, obj.MatKhau, obj.CapPQ, obj.Email, obj.HoTen));
+                result = DataProvider.ExecuteNonQuery(string.Format("insert into nhanvien(manv, tentaikhoan, matkhau, cappq, email, hoten, macn, mapq) values ('{0}', '{1}', '{2}', {3}, '{4}', N'{5}', '{6}', '{7}')", obj.MaNV, obj.TenTaiKhoan, obj.MatKhau, obj.CapPQ, obj.Email, obj.HoTen, obj.MaCN, obj.MaPQ));
             }
             catch (Exception ex)
             {
@@ -88,7 +88,7 @@ namespace DataAccess.Repositories
             int result = -1;
             try
             {
-                result = DataProvider.ExecuteNonQuery(string.Format("update nhanvien set tentaikhoan = '{1}', matkhau = '{2}', cappq = '{3}', email = '{4}', hoten = N'{5}' where manv = '{0}'", obj.MaNV, obj.TenTaiKhoan, obj.MatKhau, obj.CapPQ, obj.Email, obj.HoTen));
+                result = DataProvider.ExecuteNonQuery(string.Format("update nhanvien set tentaikhoan = '{1}', matkhau = '{2}', cappq = {3}, email = '{4}', hoten = N'{5}', macn = '{6}', mapq = '{7}' where manv = '{0}'", obj.MaNV, obj.TenTaiKhoan, obj.MatKhau, obj.CapPQ, obj.Email, obj.HoTen, obj.MaCN, obj.MaPQ));
             }
             catch (Exception ex)
             {

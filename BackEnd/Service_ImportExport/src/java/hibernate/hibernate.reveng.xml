@@ -41,8 +41,8 @@ Contributor(s):
 -->
 <hibernate-reverse-engineering>
   <schema-selection match-catalog="service_importexport_drinksmile"/>
-  <table-filter match-name="chitietxuatsua"/>
-  <table-filter match-name="tables_counter"/>
-  <table-filter match-name="phieunhapbo"/>
   <table-filter match-name="phieuxuat"/>
+  <table-filter match-name="chitietxuatsua"/>
+  <table-filter match-name="counter"/>
+  <table-filter match-name="phieunhapbo"/>
 </hibernate-reverse-engineering>

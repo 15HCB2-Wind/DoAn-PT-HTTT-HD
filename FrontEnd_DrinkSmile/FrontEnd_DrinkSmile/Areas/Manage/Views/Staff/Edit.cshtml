@@ -61,8 +61,6 @@
                 </div>
                 <input type="hidden" id="manv" />
                 <input type="hidden" id="daxoa" />
-                @*<input type="hidden" id="macn" />*@
-                @*<input type="hidden" id="mapq" />*@
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary">
                         Lưu <i id="loader" class="fa fa-circle-o-notch fa-pulse fa-lg fa-fw"></i>
@@ -157,8 +155,6 @@
 
                             $("#manv").val(result.Data.manhanvien);
                             $("#daxoa").val(result.Data.daxoa);
-                            //$("#macn").val(result.Data.machinhanh);
-                            //$("#mapq").val(result.Data.maphanquyen);
 
 
                             if (result.Data.daxoa == false) {
@@ -177,15 +173,6 @@
                 var ngaysinh = $("input[name=prefix_ngaysinh_submit]").val();
                 if (ngaysinh == "") { ngaysinh = null; }
 
-                var diachi = $("#diachi").val();
-                if (diachi == "") { diachi = null; }
-
-                var sodt = $("#sodt").val();
-                if (sodt == "") { sodt = null; }
-
-                var tinhtrang = $("#tinhtrang").val();
-                if (tinhtrang == "") { tinhtrang = null; }
-
                 callAjax('post', {
                     Token: Cookies.get("token"),
                     Data: {
@@ -193,13 +180,8 @@
                         ngaysinh: ngaysinh,
                         gioitinh: $("input[name=gioitinh]:checked", "#form_editstaff").val(),
                         diachi: diachi,
-                        //email: $("#email").val(),
                         sodt: sodt,
-                        tinhtrang: tinhtrang,
                         manhanvien: $("#manv").val(),
-                        //machinhanh: $("#macn").val(),
-                        //maphanquyen: $("#mapq").val(),
-                        //daxoa: $("#daxoa").val()
                     }
                 }, Cookies.get("area"), "management", "NhanVien/update",
                     function (result) {
@@ -214,8 +196,8 @@
                                 toastr["error"](result.Errors[0]);
                             }
                         }
-                        else {
-                            location.href = "/Manage/Staff/Index";
+                        else if (result.Data) {
+                            toastr["success"](result.Data);
                         }
                     }
                 )

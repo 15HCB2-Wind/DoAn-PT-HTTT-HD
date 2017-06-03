@@ -150,7 +150,6 @@
     <Content Include="Areas\Manage\Views\Cow\Index.cshtml" />
     <Content Include="Areas\Manage\Views\Barn\Index.cshtml" />
     <Content Include="Areas\Manage\Views\WareHouse\Index.cshtml" />
-    <Content Include="Areas\Manage\Views\Agency\Index.cshtml" />
     <Content Include="Areas\Report\Views\web.config" />
     <Content Include="Areas\Report\Views\Export\Index.cshtml" />
     <Content Include="Areas\Report\Views\AnimalState\Index.cshtml" />
@@ -199,12 +198,16 @@
     <Content Include="Areas\Manage\Views\Agency\Create.cshtml" />
     <Content Include="Areas\Manage\Views\Agency\Update.cshtml" />
     <Content Include="Areas\Manage\Views\Barn\Edit.cshtml" />
+
     <Content Include="Areas\Manage\Views\Import\Edit.cshtml" />
     <Content Include="Areas\Manage\Views\Import\Import.cshtml" />
     <Content Include="Areas\Manage\Views\Import\Index.cshtml" />
     <Content Include="Areas\Manage\Views\SaleMilk\Index.cshtml" />
     <Content Include="Areas\Manage\Views\SaleMilk\Import.cshtml" />
     <Content Include="Areas\Manage\Views\SaleMilk\Edit.cshtml" />
+
+    <Content Include="Areas\Manage\Views\Agency\Index.cshtml" />
+
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

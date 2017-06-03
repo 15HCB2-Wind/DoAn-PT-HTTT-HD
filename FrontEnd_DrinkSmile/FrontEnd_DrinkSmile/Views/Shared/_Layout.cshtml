@@ -51,7 +51,7 @@
                             @if (Request.Cookies["role"].Value == "2" || Request.Cookies["role"].Value == "3")
                             {
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-line-chart fa-fw"></i> Báo cáo</a>
+                                    <a class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-line-chart fa-fw"></i> Thông kê</a>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item" href="@Url.Action("Index", "AnimalCount", new { area = "Report" })">Số lượng bò</a>
                                         <a class="dropdown-item" href="@Url.Action("Index", "AnimalState", new { area = "Report" })">Tình trạng bò</a>
@@ -86,9 +86,17 @@
     @RenderSection("scripts", required: false)
     <script type="text/javascript">
         $(document).ready(function () {
+            fixBottom();
+        });
+
+        $(window).resize(function () {
+            fixBottom();
+        });
+
+        function fixBottom() {
             $("body").css("min-height", $(window).height() - 106);
             $("main").css("min-height", $(window).height() - 106);
-        });
+        }
     </script>
 </body>
 </html>

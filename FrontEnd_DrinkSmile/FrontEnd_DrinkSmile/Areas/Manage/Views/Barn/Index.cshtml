@@ -25,7 +25,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-                <h4 class="modal-title w-100">Thoát</h4>
+                <h4 class="modal-title w-100">Xóa chuồng</h4>
             </div>
             <div class="modal-body text-center">
                 Bạn có muốn tiếp tục?
@@ -70,11 +70,11 @@
                                 var deleteButton;
                                 var editButton;
                                 if (result.Data[i].daxoa) {
-                                    deleteButton = '<a class="red-text" data-toggle="modal" data-target="#deleteModal" onclick="setupModal(\'recover\', \'' + result.Data[i].machuong + '\', true)"><i class="fa fa-refresh" aria-hidden="true"></i></a>';
+                                    deleteButton = '<a class="green-text" data-toggle="modal" data-target="#deleteModal" onclick="setupModal(\'recover\', \'' + result.Data[i].machuong + '\', true)"><i class="fa fa-refresh" aria-hidden="true"></i></a>';
                                     editButton = '';
                                 }
                                 else {
-                                    deleteButton = '<a class="red-text" data-toggle="modal" data-target="#deleteModal" onclick="setupModal(\'delete\', \'' + result.Data[i].machuong + '\', ' + (parseInt(result.Data[i].dangchua) <= 0) + ')"><i class="fa fa-times"></i></a>';
+                                    deleteButton = '<a class="red-text" data-toggle="modal" data-target="#deleteModal" onclick="setupModal(\'delete\', \'' + result.Data[i].machuong + '\', ' + (parseInt(result.Data[i].dangchua) <= 0) + ')"><i class="fa fa-trash" aria-hidden="true"></i></a>';
                                     editButton = '<a class="teal-text" href="/Manage/Barn/Edit/' + result.Data[i].machuong + '"><i class="fa fa-pencil"></i></a>';
                                 }
 

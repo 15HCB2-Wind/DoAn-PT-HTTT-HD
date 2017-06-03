@@ -46,18 +46,17 @@ public class NhaCungCapAPIs {
         SelectRequest request = gson.fromJson(json, SelectRequest.class);
         SelectResponse response = new SelectResponse();
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)){
-            //if (true){
-                try{
-                    response.Data = NhaCungCapAdapter.getAll();
-                }catch(Exception ex){
-                    response.Errors.add("Lỗi hệ thống.");
-                    response.IsError = true;
-                }
-            //}
+            try{
+                response.Data = NhaCungCapAdapter.getAll();
+            }catch(Exception ex){
+                response.Errors.add("Lỗi hệ thống.");
+                response.IsError = true;
+            }
         }
-         return gson.toJson(response);
+        return gson.toJson(response);
     }
-     @POST
+    
+    @POST
     @Path("getSingle")
     @Produces("application/json")
     @Consumes("application/json")
@@ -66,14 +65,12 @@ public class NhaCungCapAPIs {
         SelectRequest request = gson.fromJson(json, SelectRequest.class);
         SelectResponse response = new SelectResponse();
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)){
-            //if (true){
-                try{
-                    response.Data = NhaCungCapAdapter.getSingle(request.Predicates[0]);
-                }catch(Exception ex){
-                    response.Errors.add("Lỗi hệ thống.");
-                    response.IsError = true;
-                }
-            //}
+            try{
+                response.Data = NhaCungCapAdapter.getSingle(request.Predicates[0]);
+            }catch(Exception ex){
+                response.Errors.add("Lỗi hệ thống.");
+                response.IsError = true;
+            }
         }
          return gson.toJson(response);
     }
@@ -89,7 +86,7 @@ public class NhaCungCapAPIs {
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)){
             if (NhaCungCapBUS.insertValidate(request, response)){
                 try{
-                    if (NhaCungCapAdapter.add(request.Data)){
+                    if (NhaCungCapAdapter.add(request.AreaId, request.Data)){
                         response.Data = "Thêm thành công.";
                     }else{
                         response.Errors.add("Thêm thất bại.");
@@ -103,6 +100,7 @@ public class NhaCungCapAPIs {
         }
         return gson.toJson(response);
     }
+    
     @POST
     @Path("update")
     @Produces("application/json")

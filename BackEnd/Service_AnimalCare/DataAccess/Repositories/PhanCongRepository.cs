@@ -10,18 +10,21 @@ namespace DataAccess.Repositories
     public class PhanCongRepository : DataAccessOrigin<PhanCong>
     {
         public static bool createIDAssignment(PhanCong pc){
-            //tạo mã phân công
-            object result = -1;
             try
             {
-                result = DataProvider.ExecuteScalar("select count(MaPhanCong) as Count from PhanCong");
+                if (CounterRepository.updateCounter("index_phancong"))
+                {
+                    var index = CounterRepository.getIndex("index_phancong");
+                    if (index != -1)
+                    {
+                        pc.MaPhanCong = string.Format("{0}{1}{2:D7}", Configs.AREA_ID, "", index);
+                        return true;
+                    }
+                    return false;
+                }
             }
-            catch (Exception ex)
-            {
-                return false;
-            }
-            pc.MaPhanCong = String.Format("PC{0:D4}", Convert.ToInt32(result) + 1);
-            return true;
+            catch (Exception ex) { }
+            return false;
         }
 
         public static int Insert(PhanCong pc)

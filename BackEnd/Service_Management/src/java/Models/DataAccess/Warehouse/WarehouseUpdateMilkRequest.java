@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Models.DataAccess.Agency;
+package Models.DataAccess.Warehouse;
 
-import Models.DataAccess.UpdateRequest;
-import pojos.Chinhanh;
+import Models.BodyRequest;
+import pojos.Khosua;
 
 /**
  *
- * @author Ut Hieu
+ * @author 19101994
  */
-public class UpdateAgencyRequest extends UpdateRequest {
-    public Chinhanh Data;
+public class WarehouseUpdateMilkRequest extends BodyRequest {
+    public Double Value;
 }
