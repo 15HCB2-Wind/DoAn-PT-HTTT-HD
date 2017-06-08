@@ -198,16 +198,13 @@
     <Content Include="Areas\Manage\Views\Agency\Create.cshtml" />
     <Content Include="Areas\Manage\Views\Agency\Update.cshtml" />
     <Content Include="Areas\Manage\Views\Barn\Edit.cshtml" />
-
     <Content Include="Areas\Manage\Views\Import\Edit.cshtml" />
     <Content Include="Areas\Manage\Views\Import\Import.cshtml" />
     <Content Include="Areas\Manage\Views\Import\Index.cshtml" />
     <Content Include="Areas\Manage\Views\SaleMilk\Index.cshtml" />
-    <Content Include="Areas\Manage\Views\SaleMilk\Import.cshtml" />
+    <Content Include="Areas\Manage\Views\SaleMilk\Export.cshtml" />
     <Content Include="Areas\Manage\Views\SaleMilk\Edit.cshtml" />
-
     <Content Include="Areas\Manage\Views\Agency\Index.cshtml" />
-
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

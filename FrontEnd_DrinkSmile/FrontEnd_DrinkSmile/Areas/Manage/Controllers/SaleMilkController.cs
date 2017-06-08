@@ -13,19 +13,37 @@ namespace FrontEnd_DrinkSmile.Areas.Manage.Controllers
         // GET: /Manage/SaleMilk/
         public ActionResult Index()
         {
-            return View();
+            if (Request.Cookies["token"] != null)
+            {
+                if (Request.Cookies["role"].Value == "2") return View();
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Login", "Account", new { area = "", ReturnUrl = "/Manage/SaleMilk/Index" });
         }
 
-        public ActionResult Import()
+        public ActionResult Export()
         {
-            return View();
+            if (Request.Cookies["token"] != null)
+            {
+                if (Request.Cookies["role"].Value == "2") return View();
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Login", "Account", new { area = "", ReturnUrl = "/Manage/SaleMilk/Export" });
         }
 
         public ActionResult Edit(string id)
         {
-            if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            ViewBag.machungtu = id;
-            return View();
+            if (Request.Cookies["token"] != null)
+            {
+                if (Request.Cookies["role"].Value == "2")
+                {
+                    if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                    ViewBag.machungtu = id;
+                    return View();
+                }
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Login", "Account", new { area = "", ReturnUrl = "/Manage/SaleMilk/Index" });
         }
 	}
 }

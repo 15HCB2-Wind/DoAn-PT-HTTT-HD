@@ -13,8 +13,7 @@
                 listnv = data.Data;
                 if (listnv) {
                     for (var i = 0; i < data.Data.length; i++) {
-                        if (QueryString['id'] && QueryString['id'] == data.Data[i].manhanvien)
-                        {
+                        if (QueryString['id'] && QueryString['id'] == data.Data[i].manhanvien) {
                             manv = data.Data[i].manhanvien;
                             $('#btnNV').html(data.Data[i].hoten);
                         }
@@ -59,7 +58,7 @@
             firstDay: 1,
             format: 'dd-mm-yyyy',
             formatSubmit: 'yyyy-mm-dd',
-            hiddenPrefix:'prefix_',
+            hiddenPrefix: 'prefix_',
 
             min: new Date(1752, 0, 1),
             max: new Date(9998, 11, 31)
@@ -98,8 +97,7 @@
                 MaNV: manv,
                 MaChuong: machuong
             };
-            console.log(data);
-            callAjax('post', {Token:Cookies.get('token'), Data: data }, Cookies.get('area'), "animal_care", "assignment/add", function (data2) {
+            callAjax('post', { Token: Cookies.get('token'), Data: data }, Cookies.get('area'), "animal_care", "assignment/add", function (data2) {
                 if (data2.IsError != null && data2.IsError) {
                     for (var i = 0; i < data2.Errors.length; i++) {
                         toastr["error"](data2.Errors[i]);
@@ -129,116 +127,116 @@
 
 }
 
-<h2 id="maphancong"></h2>
+<div class="row">
+    <div class="offset-lg-2 col-lg-8 offset-md-3 col-md-6 offset-sm-1 col-sm-10 col-xs-12">
+        <h2 id="title"><i class="fa fa-bookmark" aria-hidden="true"></i> Phân công nhân viên chăm sóc</h2>
 
-<div id="controller">
+        <form>
+            <div id="list_provider">
+                <div class="panel-body">
 
-</div>
-<form>
-    <div id="list_provider">
-        <div class="panel-body">
+                    <div id="button_function">
 
-            <div id="button_function">
+                    </div>
 
+                    <div class="dataTable_wrapper">
+                        <table class="table table-striped table-bordered table-hover" id="dataTables">
+                            <thead>
+                                <tr>
+                                    <td class="font-weight-bold">Thuộc tính</td>
+                                    <td class="font-weight-bold">Giá trị</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Tên nhân viên</td>
+                                    <td id="tennv">
+                                        <div class="btn-group">
+                                            <button id="btnNV" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Nhân viên</button>
+                                            <div class="dropdown-menu" id="dropdownNV">
+                                                <!--load data danh sach chuong-->
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Ngày trong tuần</td>
+                                    <td>
+                                        <div class="form-inline">
+                                            <div class="form-group">
+                                                <input type="checkbox" id="checkbox2">
+                                                <label for="checkbox2">2</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="checkbox" id="checkbox3">
+                                                <label for="checkbox3">3</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="checkbox" id="checkbox4">
+                                                <label for="checkbox4">4</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="checkbox" id="checkbox5">
+                                                <label for="checkbox5">5</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="checkbox" id="checkbox6">
+                                                <label for="checkbox6">6</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="checkbox" id="checkbox7">
+                                                <label for="checkbox7">7</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="checkbox" id="checkboxCN">
+                                                <label for="checkboxCN">CN</label>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Ngày bắt đầu</td>
+                                    <td>
+                                        <div class="md-form form-sm">
+                                            <i class="fa fa-calendar prefix"></i>
+                                            <input name="bd" type="text" id="ngaybatdau" class="form-control datepicker" data-value="@(DateTime.Now.ToShortDateString())">
+                                            <label for="ngaybatdau"></label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Ngày kết thúc</td>
+                                    <td>
+                                        <div class="md-form form-sm">
+                                            <i class="fa fa-calendar prefix"></i>
+                                            <input name="kt" type="text" id="ngayketthuc" class="form-control datepicker" data-value="@(DateTime.Now.ToShortDateString())">
+                                            <label for="ngaykethuc"></label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Mã chuồng</td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button id="btnCT" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Chuồng trại</button>
+                                            <div class="dropdown-menu" id="dropdownCT">
+                                                <!--load data danh sach chuong-->
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <button type="button" class="btn btn-success" onclick="saveclick()">Lưu</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
+        </form>
 
-            <div class="dataTable_wrapper">
-                <table class="table table-striped table-bordered table-hover" id="dataTables">
-                    <thead>
-                        <tr>
-                            <td class="font-weight-bold">Thuộc tính</td>
-                            <td class="font-weight-bold">Giá trị</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Tên nhân viên</td>
-                            <td id="tennv">
-                                <div class="btn-group">
-                                    <button id="btnNV" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Nhân viên</button>
-                                    <div class="dropdown-menu" id="dropdownNV">
-                                        <!--load data danh sach chuong-->
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Ngày trong tuần</td>
-                            <td>
-                                <div class="form-inline">
-                                    <div class="form-group">
-                                        <input type="checkbox" id="checkbox2">
-                                        <label for="checkbox2">2</label>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="checkbox" id="checkbox3">
-                                        <label for="checkbox3">3</label>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="checkbox" id="checkbox4">
-                                        <label for="checkbox4">4</label>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="checkbox" id="checkbox5">
-                                        <label for="checkbox5">5</label>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="checkbox" id="checkbox6">
-                                        <label for="checkbox6">6</label>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="checkbox" id="checkbox7">
-                                        <label for="checkbox7">7</label>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="checkbox" id="checkboxCN">
-                                        <label for="checkboxCN">CN</label>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Ngày bắt đầu</td>
-                            <td>
-                                <div class="md-form form-sm">
-                                    <i class="fa fa-calendar prefix"></i>
-                                    <input name="bd" type="text" id="ngaybatdau" class="form-control datepicker" data-value="@(DateTime.Now.ToShortDateString())">
-                                    <label for="ngaybatdau"></label>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Ngày kết thúc</td>
-                            <td>
-                                <div class="md-form form-sm">
-                                    <i class="fa fa-calendar prefix"></i>
-                                    <input name="kt" type="text" id="ngayketthuc" class="form-control datepicker" data-value="@(DateTime.Now.ToShortDateString())">
-                                    <label for="ngaykethuc"></label>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Mã chuồng</td>
-                            <td>
-                                <div class="btn-group">
-                                    <button id="btnCT" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Chuồng trại</button>
-                                    <div class="dropdown-menu" id="dropdownCT">
-                                        <!--load data danh sach chuong-->
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td>
-                                <button type="button" class="btn btn-success" onclick="saveclick()">Lưu</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
     </div>
-</form>
-
-
+</div>

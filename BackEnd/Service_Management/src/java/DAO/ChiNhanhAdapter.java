@@ -31,7 +31,11 @@ public class ChiNhanhAdapter {
     }
     
     public static List<Chinhanh> getAll(){
-        return HibernateUtil.getList("from Chinhanh order by machinhanh asc", null);
+        return HibernateUtil.getList("from Chinhanh", null);
+    }
+    
+    public static List<Chinhanh> getFromArea(Object areaid){
+        return HibernateUtil.getList("from Chinhanh where machinhanh like :p0", new Object[] { areaid + "%" });
     }
     
     public static Chinhanh getSingle(Object id){

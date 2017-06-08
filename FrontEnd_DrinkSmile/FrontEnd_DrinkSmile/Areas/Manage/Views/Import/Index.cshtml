@@ -4,21 +4,21 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>hiển thị danh sách phiếu nhập bò</h2>
-<a class="blue-text" href="@Url.Action("ImportCow")"><i class="fa fa-arrow-down" aria-hidden="true"></i>thêm phiếu nhập bò</a>
-<br /><i>danh sách phiếu nhập bò</i>
-<table class="table table-hover" id="hihi">
+<h2><i class="fa fa-list"></i> Danh sách phiếu nhập bò</h2>
+<p>
+    <a class="btn btn-primary" href="@Url.Action("Import")">Nhập thêm</a>
+</p>
+<p class="text-center" id="empty_message">Chưa có chi nhánh nào.</p>
+<table class="table table-hover">
     <thead class="thead-inverse">
         <tr>
             <th>Mã phiếu</th>
             <th>Ngày lập</th>
             <th>Ngày nhập</th>
-            <th>Số Lượng</th>
-            @*<th>Đã Hủy</th>*@
-            @*<th>Mã Nhà Cung Cấp</th>
-            <th>Mã Nhân Viên</th>
-            <th>Mã Chi Nhánh</th>*@
-            <th></th>
+            <th>Số lượng</th>
+            <th>Nhà cung cấp</th>
+            <th>Chi nhánh</th>
+            <th>Người lập</th>
             <th></th>
         </tr>
     </thead>
@@ -41,15 +41,12 @@
         </div>
     </div>
 </div>
-
-@*<a href="@Url.Action("ImportCow")" class="btn btn-primary">Nhập bò</a>*@
-
+<p class="text-center" id="loader"><i class="fa fa-circle-o-notch fa-pulse fa-lg fa-fw"></i></p>
 @section Scripts{
     @Scripts.Render("~/bundles/jqueryval")
 
     <script>
         $(document).ready(function () {
-            
             loadTable();
         });
 
@@ -64,50 +61,67 @@
                         $("error").text(data.Errors[0]);
                     }
                     else {
-                        if (data.Data) {
-                            var deletebuton;
+                        if (data.Data && data.Data.length > 0) {
+                            $("#empty_message").hide();
+                            $('#tbBillIndex').empty();
                             for (var i = 0; i < data.Data.length; i++) {
-                                if (data.Data[i].dahuy == 0) {
-                                    $('#tbBillIndex').append(
-                                    '<tr>' +
+
+                                var trType;
+                                var deleteButton;
+                                var editButton;
+                                if (data.Data[i].daxoa) {
+                                    trType = '<tr class="table-danger">';
+                                    deleteButton = '<a class="green-text" data-toggle="modal" data-target="#deleteModal" onclick="setupModal(\'recover\', \'' + data.Data[i].machungtu + '\', true)"><i class="fa fa-refresh" aria-hidden="true"></i></a>';
+                                    editButton = '';
+                                }
+                                else {
+                                    trType = '<tr class="table-success">';
+                                    deleteButton = '<a class="red-text" data-toggle="modal" data-target="#deleteModal" onclick="setupModal(\'delete\', \'' + data.Data[i].machungtu + '\', true)"><i class="fa fa-trash" aria-hidden="true"></i></a>';
+                                    editButton = '<a class="teal-text" href="/Manage/Import/Edit/' + data.Data[i].machungtu + '"><i class="fa fa-pencil"></i></a>';
+                                }
+
+                                $('#tbBillIndex').append(
+                                    trType +
                                         '<td>' + data.Data[i].machungtu + '</td>' +
                                         '<td>' + data.Data[i].ngaylap + '</td>' +
                                         '<td>' + data.Data[i].ngaynhap + '</td>' +
                                         '<td>' + data.Data[i].soluong + '</td>' +
-                                        //'<td>' + data.Data[i].dahuy + '</td>' +
-                                        //'<td>' + data.Data[i].mancc + '</td>' +
-                                        //'<td>' + data.Data[i].manv + '</td>' +
-                                        //'<td>' + data.Data[i].macn + '</td>' +
-                                        "<td><a href='/Manage/Import/Edit/" + data.Data[i].machungtu + "'>Cập nhật</a></td>" +
-                                        "<td>" + '<a class="red-text" data-toggle="modal" data-target="#deleteModal" onclick="setupModal(\'delete\', \'' + data.Data[i].machungtu + '\', true)"><i class="fa fa-times"></i></a>' + "</td>" +
+                                        '<td class="' + data.Data[i].mancc + '"></td>' +
+                                        '<td class="' + data.Data[i].macn + '"></td>' +
+                                        '<td class="' + data.Data[i].manv + '"></td>' +
+                                        '<td>' + editButton + deleteButton + '</td>' +
                                     '</tr>'
                                 );
-                                }
-                                //$('#hihi').html(data.Data);
-                                
+
+                                // lay tên người nhập
+                                callAjax('post', { Token: Cookies.get("token"), UserId: data.Data[i].manv }, Cookies.get("area"), "management", "NhanVien/getbyDirector",
+                                    function (result, id) {
+                                        if (!result.Error && result.Data)
+                                            $('.' + id).html(result.Data.hoten);
+                                    }, data.Data[i].manv
+                                )
+
+                                // lay tên nhà cung cấp
+                                callAjax('post', { Token: Cookies.get("token"), Predicates: [data.Data[i].mancc] }, Cookies.get("area"), "management", "NhaCungCap/getSingle",
+                                    function (result, id) {
+                                        if (!result.Error && result.Data)
+                                            $('.' + id).html(result.Data.ten);
+                                    }, data.Data[i].mancc
+                                )
+
+                                // lay tên chi nhánh nhập
+                                callAjax('post', { Token: Cookies.get("token"), Predicates: [data.Data[i].macn] }, Cookies.get("area"), "management", "ChiNhanh/getSingle",
+                                    function (result, id) {
+                                        if (!result.Error && result.Data)
+                                            $('.' + id).html(result.Data.tenchinhanh);
+                                    }, data.Data[i].macn
+                                )
                             }
+                        } else {
+                            $("#dataTable").hide();
                         }
                     }
                 });
-
-            $('.btnxoa').click(function () {
-                
-                console.log($(this).attr("machungtu"));
-                //callAjax('post', { Token: Cookies.get("token"), machungtu:  },
-                //        Cookies.get("area"), "import_export", "PhieuNhapBo/delete",
-                //        function (result) {
-                //            if (result.IsError) {
-                //                toastr["error"](data.Errors[0]);
-                //                $("error").show();
-                //                $("error").text(data.Errors[0]);
-                //            }
-                //            else {
-                //                toastr["success"](data.Data);
-                //                $('#form_action')[0].reset();
-                //            }
-                //        })
-            })
-
         }
 
 
@@ -126,8 +140,7 @@
                         }
                         else {
                             toastr["success"](result.Data);
-                            //loadTable();
-                            window.location.reload();
+                            loadTable();
                         }
                     }
                 )
