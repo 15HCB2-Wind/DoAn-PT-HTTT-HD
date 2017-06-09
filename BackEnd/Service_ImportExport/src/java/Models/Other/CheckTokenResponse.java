@@ -13,7 +13,7 @@ import java.util.ArrayList;
  *
  * @author 19101994
  */
-public class CheckTokenResponse extends BodyResponse {
+public class CheckTokenResponse/* extends BodyResponse*/{
     public TokenData Data;
     public boolean IsError;
     public ArrayList<String> Errors;

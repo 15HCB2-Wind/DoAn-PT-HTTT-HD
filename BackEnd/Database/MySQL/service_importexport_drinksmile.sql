@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 08, 2017 at 02:27 PM
+-- Generation Time: Jun 09, 2017 at 03:56 AM
 -- Server version: 5.7.14
 -- PHP Version: 5.6.25
 
@@ -50,12 +50,16 @@ CREATE TABLE `chitietxuatsua` (
 --
 
 INSERT INTO `chitietxuatsua` (`machungtu`, `makho`, `luongsuaxuat`) VALUES
-('HCMPX00001', 'HCMKS0001', 5000),
-('HCMPX00002', 'HCMKS0001', 5000),
-('HNPX00001', 'HNKS0001', 5000),
-('HNPX00002', 'HNKS0001', 5000),
-('HCMPX00001', 'HCMKS0004', 5000),
-('HCMPX00002', 'HCMKS0004', 5000);
+('HCMPX00001', 'HCMKS0001', 3000),
+('HCMPX00002', 'HCMKS0004', 4000),
+('HNPX00001', 'HNKS0001', 3000),
+('HNPX00002', 'HNKS0001', 2000),
+('HCMPX00003', 'HCMKS0001', 5000),
+('HCMPX00004', 'HCMKS0004', 5000),
+('HCMPX00001', 'HCMKS0002', 2000),
+('HCMPX00002', 'HCMKS0005', 1000),
+('HNPX00002', 'HNKS0002', 3000),
+('HNPX00001', 'HNKS0002', 2000);
 
 -- --------------------------------------------------------
 
@@ -116,18 +120,21 @@ CREATE TABLE `phieuxuat` (
   `tongluongsua` double DEFAULT NULL,
   `dahuy` bit(1) DEFAULT NULL,
   `lydo` varchar(100) DEFAULT NULL,
-  `manv` varchar(10) DEFAULT NULL
+  `manv` varchar(10) DEFAULT NULL,
+  `macn` varchar(10) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `phieuxuat`
 --
 
-INSERT INTO `phieuxuat` (`machungtu`, `ngaylap`, `ngayxuat`, `tongluongsua`, `dahuy`, `lydo`, `manv`) VALUES
-('HCMPX00001', '2017-01-01', '2017-01-08', 10000, b'0', 'Nguyên vật liệu cho nhà máy kẹo', 'HCMNV00001'),
-('HCMPX00002', '2017-06-01', '2016-06-08', 10000, b'0', 'Nguyên vật liệu cho nhà máy kẹo', 'HCMNV00001'),
-('HNPX00001', '2017-01-01', '2017-01-08', 5000, b'0', 'Nguyên vật liệu cho nhà máy sửa', 'HCMNV00001'),
-('HNPX00002', '2017-06-01', '2016-06-08', 5000, b'0', 'Nguyên vật liệu cho nhà máy sửa', 'HCMNV00001');
+INSERT INTO `phieuxuat` (`machungtu`, `ngaylap`, `ngayxuat`, `tongluongsua`, `dahuy`, `lydo`, `manv`, `macn`) VALUES
+('HCMPX00001', '2016-11-01', '2016-11-08', 5000, b'0', 'Nguyên vật liệu cho nhà máy kẹo', 'HCMNV00002', 'HCMCN001'),
+('HCMPX00002', '2016-11-01', '2016-11-08', 5000, b'0', 'Nguyên vật liệu cho nhà máy kẹo', 'HCMNV00010', 'HCMCN002'),
+('HNPX00001', '2016-12-01', '2016-12-08', 5000, b'0', 'Nguyên vật liệu cho nhà máy kẹo', 'HNNV00001', 'HNCN001'),
+('HNPX00002', '2017-06-01', '2017-06-08', 5000, b'0', 'Nguyên vật liệu cho nhà máy sửa', 'HNNV00001', 'HNCN001'),
+('HCMPX00003', '2017-06-01', '2017-06-08', 5000, b'0', 'Nguyên vật liệu cho nhà máy sửa', 'HCMNV00002', 'HCMCN001'),
+('HCMPX00004', '2017-06-01', '2017-06-08', 5000, b'0', 'Nguyên vật liệu cho nhà máy sửa', 'HCMNV00010', 'HCMCN002');
 
 --
 -- Indexes for dumped tables

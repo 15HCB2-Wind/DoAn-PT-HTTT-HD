@@ -7,7 +7,6 @@ package Services;
 
 import DAO.CounterAdapter;
 import Models.DataAccess.*;
-import Models.DataAccess.Counter.InsertCounterRequest;
 import com.google.gson.Gson;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;

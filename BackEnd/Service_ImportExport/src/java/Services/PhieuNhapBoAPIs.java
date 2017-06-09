@@ -55,7 +55,6 @@ public class PhieuNhapBoAPIs {
         return gson.toJson(response);
     }
     
-    //thêm phiếu nhập bò
     @POST
     @Path("add")
     @Produces("application/json")
@@ -84,13 +83,12 @@ public class PhieuNhapBoAPIs {
         return gson.toJson(response);
     }
     
-    //xem danh sách phiếu nhập bò
     @POST
     @Path("getSingle")
     @Produces("application/json")
     @Consumes("application/json")
     public String getSingle(String json){
-        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+        Gson gson = new GsonBuilder().setDateFormat("dd-MM-yyyy").create();
         SelectBillImportCowRequest request = gson.fromJson(json, SelectBillImportCowRequest.class);
         SelectResponse response = new SelectResponse();
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)){
@@ -104,7 +102,6 @@ public class PhieuNhapBoAPIs {
         return gson.toJson(response);
     }
     
-    //xóa phiếu
     @POST
     @Path("delete")
     @Produces("application/json")
@@ -130,7 +127,6 @@ public class PhieuNhapBoAPIs {
         return gson.toJson(response);
     }
     
-    //recover
     @POST
     @Path("recover")
     @Produces("application/json")
@@ -156,7 +152,6 @@ public class PhieuNhapBoAPIs {
         return gson.toJson(response);
     }
     
-    //cập nhật phiếu
     @POST
     @Path("update")
     @Produces("application/json")

@@ -9,20 +9,20 @@
         
         <form id="form_action" method="post" role="form">
             <div class="text-center">
-                <h3><i class="fa fa-user-plus"></i> Lập Phiếu Nhập</h3>
+                <h3><i class="fa fa-weixin" aria-hidden="true"></i> Lập Phiếu Nhập</h3>
                 <hr class="mt-2 mb-2">
             </div>
             <p id="error" class="text-danger text-center"></p>
 
             <div class="md-form form-sm">
                 <i class="fa fa-github-alt prefix" aria-hidden="true"></i>
-                <input id="soluong" class="form-control" type="number" value="0" min="0" step="1" />
+                <input id="soluong" class="form-control" type="number" value="0" min="0" step="1" required />
                 <label for="soluong">Số lượng</label>
             </div>
 
             <div class="md-form">
                 <i class="fa fa-calendar prefix"></i>
-                <input type="text" id="ngaynhap" class="form-control datepicker" data-value="@(DateTime.Now.ToShortDateString())">
+                <input type="text" id="ngaynhap" class="form-control datepicker" data-value="@(DateTime.Now.ToShortDateString())" required>
                 <label for="ngaynhap">Ngày nhập</label>
             </div>
 

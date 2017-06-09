@@ -117,7 +117,7 @@
     <Compile Include="Areas\Manage\Controllers\CowController.cs" />
     <Compile Include="Areas\Manage\Controllers\ImportController.cs" />
     <Compile Include="Areas\Manage\Controllers\ProviderController.cs" />
-    <Compile Include="Areas\Manage\Controllers\SaleMilkController.cs" />
+    <Compile Include="Areas\Manage\Controllers\ExportController.cs" />
     <Compile Include="Areas\Manage\Controllers\StaffController.cs" />
     <Compile Include="Areas\Manage\Controllers\WareHouseController.cs" />
     <Compile Include="Areas\Manage\ManageAreaRegistration.cs" />
@@ -201,9 +201,9 @@
     <Content Include="Areas\Manage\Views\Import\Edit.cshtml" />
     <Content Include="Areas\Manage\Views\Import\Import.cshtml" />
     <Content Include="Areas\Manage\Views\Import\Index.cshtml" />
-    <Content Include="Areas\Manage\Views\SaleMilk\Index.cshtml" />
-    <Content Include="Areas\Manage\Views\SaleMilk\Export.cshtml" />
-    <Content Include="Areas\Manage\Views\SaleMilk\Edit.cshtml" />
+    <Content Include="Areas\Manage\Views\Export\Index.cshtml" />
+    <Content Include="Areas\Manage\Views\Export\Export.cshtml" />
+    <Content Include="Areas\Manage\Views\Export\Edit.cshtml" />
     <Content Include="Areas\Manage\Views\Agency\Index.cshtml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />

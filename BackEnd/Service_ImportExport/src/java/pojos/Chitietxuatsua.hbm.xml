@@ -1,16 +1,17 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated May 30, 2017 10:11:39 PM by Hibernate Tools 4.3.1 -->
+<!-- Generated Jun 8, 2017 11:11:59 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="pojos.Chitietxuatsua" table="chitietxuatsua" catalog="service_importexport_drinksmile" optimistic-lock="version">
-        <id name="machungtu" type="string">
-            <column name="machungtu" length="10" />
-            <generator class="assigned" />
-        </id>
-        <property name="makho" type="string">
-            <column name="makho" length="10" />
-        </property>
+        <composite-id name="id" class="pojos.ChitietxuatsuaId">
+            <key-property name="machungtu" type="string">
+                <column name="machungtu" length="10" />
+            </key-property>
+            <key-property name="makho" type="string">
+                <column name="makho" length="10" />
+            </key-property>
+        </composite-id>
         <property name="luongsuaxuat" type="java.lang.Double">
             <column name="luongsuaxuat" precision="22" scale="0" />
         </property>

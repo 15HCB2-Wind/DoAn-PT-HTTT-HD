@@ -7,6 +7,7 @@ package DAO;
 
 import Config.Configs;
 import Ultility.HibernateUtil;
+import java.util.Date;
 import java.util.List;
 import pojos.Phieuxuat;
 
@@ -21,22 +22,21 @@ public class PhieuXuatAdapter {
         }
     }
 
-    public static List<Phieuxuat> getAll() {
-        return HibernateUtil.getList("from Phieuxuat", null);
+    public static List<Phieuxuat> getAll(Object id) {
+        return HibernateUtil.getList("from Phieuxuat where macn = :p0", new Object[] { id });
     }
     
     public static Phieuxuat getSingle(Object userid){
         List<Phieuxuat> list = HibernateUtil.getSingle("from Phieuxuat where machungtu = :p0", new Object[]{ userid });
         if (list.size()>0) {
-            Phieuxuat phieuxuat = list.get(0);
-            phieuxuat.setManv(null);
-            return phieuxuat;
+            return list.get(0);
         }
         return null;
     }
     
     public static boolean add(Phieuxuat obj) {
         getNewID(obj);
+        obj.setNgaylap(new Date());
         obj.setDahuy(false);
         return HibernateUtil.save(obj);
     }

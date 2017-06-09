@@ -39,7 +39,9 @@ public class TokenBUS {
                             .request(MediaType.APPLICATION_JSON)
                             .post(Entity.json(new Gson().toJson(ctRequest)));
 
-                    CheckTokenResponse result = res.readEntity(CheckTokenResponse.class);
+                    String json = res.readEntity(String.class);
+                    CheckTokenResponse result = new Gson().fromJson(json, CheckTokenResponse.class);
+//                    CheckTokenResponse result = res.readEntity(CheckTokenResponse.class);
                     fail = result == null;
                     if (!fail){
                         response.IsTokenTimeout = result.IsTokenTimeout;
@@ -74,7 +76,9 @@ public class TokenBUS {
                             .request(MediaType.APPLICATION_JSON)
                             .post(Entity.json(new Gson().toJson(ctRequest)));
 
-                    CheckTokenResponse result = res.readEntity(CheckTokenResponse.class);
+                    String json = res.readEntity(String.class);
+                    CheckTokenResponse result = new Gson().fromJson(json, CheckTokenResponse.class);
+//                    CheckTokenResponse result = res.readEntity(CheckTokenResponse.class);
                     fail = result == null;
                     if (!fail){
                         response.IsTokenTimeout = result.IsTokenTimeout;

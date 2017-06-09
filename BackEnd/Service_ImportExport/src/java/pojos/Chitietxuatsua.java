@@ -1,5 +1,5 @@
 package pojos;
-// Generated May 30, 2017 10:11:37 PM by Hibernate Tools 4.3.1
+// Generated Jun 8, 2017 11:11:57 PM by Hibernate Tools 4.3.1
 
 
 
@@ -9,36 +9,27 @@ package pojos;
 public class Chitietxuatsua  implements java.io.Serializable {
 
 
-     private String machungtu;
-     private String makho;
+     private ChitietxuatsuaId id;
      private Double luongsuaxuat;
 
     public Chitietxuatsua() {
     }
 
 	
-    public Chitietxuatsua(String machungtu) {
-        this.machungtu = machungtu;
+    public Chitietxuatsua(ChitietxuatsuaId id) {
+        this.id = id;
     }
-    public Chitietxuatsua(String machungtu, String makho, Double luongsuaxuat) {
-       this.machungtu = machungtu;
-       this.makho = makho;
+    public Chitietxuatsua(ChitietxuatsuaId id, Double luongsuaxuat) {
+       this.id = id;
        this.luongsuaxuat = luongsuaxuat;
     }
    
-    public String getMachungtu() {
-        return this.machungtu;
+    public ChitietxuatsuaId getId() {
+        return this.id;
     }
     
-    public void setMachungtu(String machungtu) {
-        this.machungtu = machungtu;
-    }
-    public String getMakho() {
-        return this.makho;
-    }
-    
-    public void setMakho(String makho) {
-        this.makho = makho;
+    public void setId(ChitietxuatsuaId id) {
+        this.id = id;
     }
     public Double getLuongsuaxuat() {
         return this.luongsuaxuat;

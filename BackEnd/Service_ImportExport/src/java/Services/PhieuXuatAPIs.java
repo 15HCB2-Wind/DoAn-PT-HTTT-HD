@@ -13,6 +13,7 @@ import Models.DataAccess.SaleMilk.InsertSaleMilkResponse;
 import Models.DataAccess.SaleMilk.SelectSaleMilkRequest;
 import Models.DataAccess.SelectRequest;
 import Models.DataAccess.SelectResponse;
+import Models.TokenData;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import javax.ws.rs.*;
@@ -34,18 +35,18 @@ public class PhieuXuatAPIs {
     public PhieuXuatAPIs() {
     }
     
-    //xem danh sách phiếu nhập bò
     @POST
     @Path("getAll")
     @Produces("application/json")
     @Consumes("application/json")
     public String getAll(String json){
-        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+        Gson gson = new GsonBuilder().setDateFormat("dd-MM-yyyy").create();
         SelectRequest request = gson.fromJson(json, SelectRequest.class);
         SelectResponse response = new SelectResponse();
-        if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2)){
+        TokenData token = BusinessHandler.TokenBUS.tokenData(request, response, 2);
+        if (token != null){
             try{
-                response.Data = PhieuXuatAdapter.getAll();
+                response.Data = PhieuXuatAdapter.getAll(token.AgencyId);
             }catch(Exception ex){
                 response.Errors.add("Lỗi hệ thống.");
                 response.IsError = true;
@@ -54,7 +55,6 @@ public class PhieuXuatAPIs {
         return gson.toJson(response);
     }
     
-    //thêm phiếu xuất sữa
     @POST
     @Path("addMilk")
     @Produces("application/json")
@@ -63,54 +63,44 @@ public class PhieuXuatAPIs {
         Gson gson = new Gson();
         InsertSaleMilkRequest request = gson.fromJson(json, InsertSaleMilkRequest.class);
         InsertSaleMilkResponse response = new InsertSaleMilkResponse();
-        if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2)){
-            if (PhieuXuatBUS.insertValidate(request, response)){
-                try{
-                    if (PhieuXuatAdapter.add(request.Data)){
-                        response.Data = "Thêm thành công.";
-                        
-                        //lấy mã vừa thêm
-                        String t;
-                        t = request.Data.getMachungtu();
-                        System.out.print(t);
-                        
-                    }else{
-                        response.Errors.add("Thêm thất bại.");
-                        response.IsError = true;
-                    }
-                }catch(Exception ex){
-                    response.Errors.add("Lỗi hệ thống.");
+        TokenData token = BusinessHandler.TokenBUS.tokenData(request, response, 2);
+        if (token != null){
+            try{
+                request.Data.setManv(token.UserId);
+                request.Data.setMacn(token.AgencyId);
+                if (PhieuXuatAdapter.add(request.Data)){
+                    response.Data = "Thêm thành công.";
+                }else{
+                    response.Errors.add("Thêm thất bại.");
                     response.IsError = true;
                 }
+            }catch(Exception ex){
+                response.Errors.add("Lỗi hệ thống.");
+                response.IsError = true;
             }
         }
         return gson.toJson(response);
     }
     
-    //xem danh sách phiếu nhập bò
     @POST
     @Path("getSingle")
     @Produces("application/json")
     @Consumes("application/json")
     public String getSingle(String json){
-        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+        Gson gson = new GsonBuilder().setDateFormat("dd-MM-yyyy").create();
         SelectSaleMilkRequest request = gson.fromJson(json, SelectSaleMilkRequest.class);
         SelectResponse response = new SelectResponse();
-        if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2)){// kiem tra quyen truy cap 
-                 //NhanVienBUS.getSingleValidate(request, response)
-//            if (PhieuNhapBoBUS.getSingleValidate(request, response)){
-                try{
-                    response.Data = PhieuXuatAdapter.getSingle(request.machungtu);
-                }catch(Exception ex){
-                    response.Errors.add("Lỗi hệ thống.");
-                    response.IsError = true;
-                }
-//            }
+        if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2)){
+            try{
+                response.Data = PhieuXuatAdapter.getSingle(request.machungtu);
+            }catch(Exception ex){
+                response.Errors.add("Lỗi hệ thống.");
+                response.IsError = true;
+            }
         }
         return gson.toJson(response);
     }
     
-    //xóa phiếu
     @POST
     @Path("delete")
     @Produces("application/json")
@@ -136,7 +126,6 @@ public class PhieuXuatAPIs {
         return gson.toJson(response);
     }
     
-    //recover
     @POST
     @Path("recover")
     @Produces("application/json")
@@ -149,10 +138,10 @@ public class PhieuXuatAPIs {
             try {
                 int result = PhieuXuatAdapter.recover(request.machungtu);
                 if (result != 1) {
-                    response.Errors.add("phục hồi phiếu thất bại.");
+                    response.Errors.add("Phục hồi phiếu thất bại.");
                     response.IsError = true;
                 }else{
-                    response.Data = "phục hồi thành công.";
+                    response.Data = "Phục hồi thành công.";
                 }
             } catch (Exception ex) {
                 response.Errors.add("Lỗi hệ thống.");
@@ -162,7 +151,6 @@ public class PhieuXuatAPIs {
         return gson.toJson(response);
     }
     
-    //cập nhật phiếu
     @POST
     @Path("update")
     @Produces("application/json")
@@ -174,7 +162,6 @@ public class PhieuXuatAPIs {
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2)) {
                 try {
                     if (PhieuXuatAdapter.update(request.Data)) {
-                        //NhanVienBUS.sync(0, request.Data);
                         response.Data = "Cập nhật thành công!";
                     } else {
                         response.Errors.add("Cập nhật thất bại!");

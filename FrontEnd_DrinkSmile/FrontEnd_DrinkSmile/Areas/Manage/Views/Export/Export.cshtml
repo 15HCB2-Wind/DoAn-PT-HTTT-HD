@@ -1,0 +1,180 @@
+﻿
+@{
+    ViewBag.Title = "Lập phiếu xuất kho";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="offset-lg-3 col-lg-6 offset-md-2 col-md-8 offset-sm-1 col-sm-10 col-xs-12">
+
+        <form id="form_action" method="post" role="form">
+            <div class="text-center">
+                <h3><i class="fa fa-truck" aria-hidden="true"></i> Lập phiếu xuất kho</h3>
+                <hr class="mt-2 mb-2">
+            </div>
+
+            <div class="md-form">
+                <i class="fa fa-calendar prefix"></i>
+                <input type="text" id="ngaynhap" class="form-control datepicker" data-value="@(DateTime.Now.ToShortDateString())">
+                <label for="ngaynhap">Ngày xuất</label>
+            </div>
+
+            <div class="md-form form-sm">
+                <i class="fa fa-map-marker prefix"></i>
+                <textarea id="diachi" class="md-textarea" length="100" required="required"></textarea>
+                <label for="lydo">Lý do</label>
+            </div>
+
+            <table class="table table-hover">
+                <thead class="table-inverse">
+                    <tr>
+                        <th>Tên kho</th>
+                        <th>Lượng xuất (lít)</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="dsKhoXuat">
+                    <tr>
+                        <td colspan="3">
+                            <button type="button" class="btn btn-primary w-100" data-toggle="modal" data-target="#addExModal">Thêm kho xuất</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Thêm <i id="loader" class="fa fa-circle-o-notch fa-pulse fa-lg fa-fw"></i></button>
+                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Thoát</button>
+                <!-- Modal -->
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                                <h4 class="modal-title w-100">Thoát</h4>
+                            </div>
+                            <div class="modal-body text-center">
+                                Bạn thực sự muốn thoát?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                                <a class="btn btn-danger" href="@Url.Action("Index")">Đồng ý</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<div class="modal fade" id="addExModal" tabindex="-1" role="dialog" aria-labelledby="addExModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title w-100" id="addExModalLabel">Thêm kho xuất</h4>
+            </div>
+            <div class="modal-body">
+                <div class="btn-group w-100">
+                    <button id="btnSelectWarehouse" class="btn btn-primary dropdown-toggle w-100" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Kho xuất</button>
+                    <div class="dropdown-menu" id="listWarehouse">
+                        <!--load data danh sach kho-->
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div class="md-form form-sm">
+                    <i class="fa fa-filter prefix"></i>
+                    <input id="exValue" class="form-control" type="number" />
+                    <label for="exValue">Lượng sữa xuất (lít)</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="addEx('.......................................')">Chuyển</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+            $('#loader').hide();
+            $('.datepicker').pickadate({
+                monthsFull: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+                monthsShort: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+                weekdaysFull: ['Chủ nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'],
+                weekdaysShort: ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'],
+
+                showMonthsShort: true,
+                showWeekdaysFull: false,
+
+                today: 'Hôm nay',
+                clear: '',
+                close: 'Đóng',
+
+                labelMonthNext: 'Tháng sau',
+                labelMonthPrev: 'Tháng trước',
+                labelMonthSelect: 'Chọn tháng',
+                labelYearSelect: 'Chọn năm',
+
+                firstDay: 1,
+                format: 'dd-mm-yyyy',
+                formatSubmit: 'yyyy-mm-dd',
+                hiddenPrefix: 'prefix_',
+
+                min: new Date(1752, 0, 1),
+                max: new Date(9998, 11, 31)
+            });
+            
+            callAjax('post',
+                    { Token: Cookies.get("token") },
+                    Cookies.get("area"), "management", "KhoSua/getAll",
+                    function (data) {
+                        if (data.Data) {
+                            for (var i = 0; i < data.Data.length; i++) {
+                                var item = data.Data[i];
+                                var row = item.tenkho + ' (' + item.makho + ')';
+                                $("#listWarehouse").append('<button class="btn btn-primary w-100" type="button" onclick="selectWarehouse(\'' + item.makho + '\', \'' + item.tenkho + '\')">' + row + '</button>');
+                            }
+                        }
+                    }
+                );
+
+            $('#form_action').submit(function (e) {
+                e.preventDefault();
+            })
+        });
+
+        var listEx = [];
+        function addEx() {
+            var idEx = $('#btnSelectWarehouse').attr('my-data');
+            listEx.push(idEx);
+            $('#dsKhoXuat').append(
+                '<tr id="' + idEx + '">' +
+                    '<td>' + $('#btnSelectWarehouse').html() + '</td>' +
+                    '<td>' + $('#exValue').val() + ' (L)</td>' +
+                    '<td>' +
+                        '<a class="red-text" onclick="removeEx(\'' + idEx + '\')"><i class="fa fa-trash" aria-hidden="true"></i></a>' +
+                    '</td>' +
+                '</tr>'
+                );
+        }
+
+        function removeEx(id) {
+            listEx.splice(listEx.indexOf(id), 1);
+            $('#' + id).remove();
+        }
+
+        function selectWarehouse(id, name) {
+            $('#btnSelectWarehouse').html(name);
+            $('#btnSelectWarehouse').attr('my-data', id);
+        }
+    </script>
+}

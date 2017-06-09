@@ -84,7 +84,7 @@ public class ChiTietXuatSuaAPIs {
                         
                         //lấy mã vừa thêm
                         String t;
-                        t = request.Data.getMachungtu();
+                        t = request.Data.getId().getMachungtu();
                         System.out.print(t);
                         
                     }else{

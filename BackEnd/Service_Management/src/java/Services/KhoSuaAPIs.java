@@ -21,7 +21,6 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.*;
-import pojos.Chinhanh;
 import pojos.Khosua;
 
 

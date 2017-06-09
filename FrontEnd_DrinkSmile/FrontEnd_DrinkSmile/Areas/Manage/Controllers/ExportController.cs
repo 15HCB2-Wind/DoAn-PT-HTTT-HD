@@ -7,10 +7,10 @@ using System.Web.Mvc;
 
 namespace FrontEnd_DrinkSmile.Areas.Manage.Controllers
 {
-    public class SaleMilkController : Controller
+    public class ExportController : Controller
     {
         //
-        // GET: /Manage/SaleMilk/
+        // GET: /Manage/Export/
         public ActionResult Index()
         {
             if (Request.Cookies["token"] != null)
@@ -18,7 +18,7 @@ namespace FrontEnd_DrinkSmile.Areas.Manage.Controllers
                 if (Request.Cookies["role"].Value == "2") return View();
                 return RedirectToAction("Index");
             }
-            return RedirectToAction("Login", "Account", new { area = "", ReturnUrl = "/Manage/SaleMilk/Index" });
+            return RedirectToAction("Login", "Account", new { area = "", ReturnUrl = "/Manage/Export/Index" });
         }
 
         public ActionResult Export()
@@ -28,7 +28,7 @@ namespace FrontEnd_DrinkSmile.Areas.Manage.Controllers
                 if (Request.Cookies["role"].Value == "2") return View();
                 return RedirectToAction("Index");
             }
-            return RedirectToAction("Login", "Account", new { area = "", ReturnUrl = "/Manage/SaleMilk/Export" });
+            return RedirectToAction("Login", "Account", new { area = "", ReturnUrl = "/Manage/Export/Export" });
         }
 
         public ActionResult Edit(string id)
@@ -43,7 +43,7 @@ namespace FrontEnd_DrinkSmile.Areas.Manage.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            return RedirectToAction("Login", "Account", new { area = "", ReturnUrl = "/Manage/SaleMilk/Index" });
+            return RedirectToAction("Login", "Account", new { area = "", ReturnUrl = "/Manage/Export/Index" });
         }
 	}
 }

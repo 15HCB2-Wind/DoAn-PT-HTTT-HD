@@ -29,7 +29,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-                <h4 class="modal-title w-100">Thoát</h4>
+                <h4 class="modal-title w-100">Hủy phiếu nhập</h4>
             </div>
             <div class="modal-body text-center">
                 Bạn có muốn tiếp tục?
@@ -76,7 +76,7 @@
                                 }
                                 else {
                                     trType = '<tr class="table-success">';
-                                    deleteButton = '<a class="red-text" data-toggle="modal" data-target="#deleteModal" onclick="setupModal(\'delete\', \'' + data.Data[i].machungtu + '\', true)"><i class="fa fa-trash" aria-hidden="true"></i></a>';
+                                    deleteButton = '<a class="red-text" data-toggle="modal" data-target="#deleteModal" onclick="setupModal(\'delete\', \'' + data.Data[i].machungtu + '\', ' + (new Date(data.Data[i].ngaynhap).getTime() > new Date().getTime()) + ')"><i class="fa fa-trash" aria-hidden="true"></i></a>';
                                     editButton = '<a class="teal-text" href="/Manage/Import/Edit/' + data.Data[i].machungtu + '"><i class="fa fa-pencil"></i></a>';
                                 }
 
@@ -144,6 +144,8 @@
                         }
                     }
                 )
+            } else {
+                toastr['error']("Bò đã nhận miễn trả lại.");
             }
         };
     </script>

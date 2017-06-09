@@ -30,7 +30,7 @@ public class ChiTietXuatSuaAdapter {
     
     private static void getNewID(Chitietxuatsua obj) {
         int count = HibernateUtil.count("select count(machungtu) from Phieuxuat");
-        obj.setMachungtu(String.format("PX%05d", count+1));
+        obj.getId().setMachungtu(String.format("PX%05d", count+1));
     }
     
     public static boolean add(Chitietxuatsua obj) {
@@ -48,8 +48,8 @@ public class ChiTietXuatSuaAdapter {
 //    }
 
     public static boolean update(Chitietxuatsua obj) {
-        Chitietxuatsua pnb = getSingle(obj.getMachungtu());
-        pnb.setMakho(obj.getMakho());
+        Chitietxuatsua pnb = getSingle(obj.getId().getMachungtu());
+        pnb.getId().setMakho(obj.getId().getMakho());
         pnb.setLuongsuaxuat(obj.getLuongsuaxuat());
         //nv.setTentaikhoan(obj.getTentaikhoan());
         //nv.setMatkhau(obj.getMatkhau());

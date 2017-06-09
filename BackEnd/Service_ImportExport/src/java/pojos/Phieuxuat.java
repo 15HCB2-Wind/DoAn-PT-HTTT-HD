@@ -1,5 +1,5 @@
 package pojos;
-// Generated May 30, 2017 10:11:37 PM by Hibernate Tools 4.3.1
+// Generated Jun 8, 2017 11:11:57 PM by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
@@ -17,6 +17,7 @@ public class Phieuxuat  implements java.io.Serializable {
      private Boolean dahuy;
      private String lydo;
      private String manv;
+     private String macn;
 
     public Phieuxuat() {
     }
@@ -25,7 +26,7 @@ public class Phieuxuat  implements java.io.Serializable {
     public Phieuxuat(String machungtu) {
         this.machungtu = machungtu;
     }
-    public Phieuxuat(String machungtu, Date ngaylap, Date ngayxuat, Double tongluongsua, Boolean dahuy, String lydo, String manv) {
+    public Phieuxuat(String machungtu, Date ngaylap, Date ngayxuat, Double tongluongsua, Boolean dahuy, String lydo, String manv, String macn) {
        this.machungtu = machungtu;
        this.ngaylap = ngaylap;
        this.ngayxuat = ngayxuat;
@@ -33,6 +34,7 @@ public class Phieuxuat  implements java.io.Serializable {
        this.dahuy = dahuy;
        this.lydo = lydo;
        this.manv = manv;
+       this.macn = macn;
     }
    
     public String getMachungtu() {
@@ -83,6 +85,13 @@ public class Phieuxuat  implements java.io.Serializable {
     
     public void setManv(String manv) {
         this.manv = manv;
+    }
+    public String getMacn() {
+        return this.macn;
+    }
+    
+    public void setMacn(String macn) {
+        this.macn = macn;
     }
 
 

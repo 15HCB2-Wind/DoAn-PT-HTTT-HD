@@ -10,7 +10,7 @@ package Config;
  * @author Shin-Desktop
  */
 public class Configs {
-    public static final boolean     DEBUG_MODE              =   true;
+    public static final boolean     DEBUG_MODE              =   false;
     
     public static final String      CHECK_TOKEN             =   "http://localhost:30000/account/checktoken";
     

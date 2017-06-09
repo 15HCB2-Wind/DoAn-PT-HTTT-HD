@@ -9,7 +9,7 @@
 <p>
     <a class="btn btn-primary" href="@Url.Action("Create")">Thuê kho</a>
     <a class="btn btn-success" data-toggle="modal" data-target="#transferModal" onclick="setupTransferModal()">Chuyển kho</a>
-    <a class="btn btn-warning" href="@Url.Action("Index", "SaleMilk")">Xuất kho</a>
+    <a class="btn btn-warning" href="@Url.Action("Index", "Export")">Xuất kho</a>
 </p>
 <table class="table table-hover">
     <thead class="thead-inverse">
@@ -71,7 +71,7 @@
                 <br />
                 <div class="md-form form-sm">
                     <i class="fa fa-filter prefix"></i>
-                    <input id="tfValue" class="form-control" type="text" />
+                    <input id="tfValue" class="form-control" type="number" />
                     <label for="tfValue">Lượng sữa chuyển (lít)</label>
                 </div>
             </div>
