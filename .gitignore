@@ -18,15 +18,6 @@ BackEnd/Service_ImportExport/dist/
 BackEnd/Service_ImportExport/nbproject/private/
 BackEnd/Service_Management/dist/
 BackEnd/Service_Management/build/
-BackEnd/Service_Report/Configs/bin
-BackEnd/Service_Report/Configs/obj
-BackEnd/Service_Report/DomainData/bin
-BackEnd/Service_Report/DomainData/obj
-BackEnd/Service_Report/DataAccess/bin
-BackEnd/Service_Report/DataAccess/obj
-BackEnd/Service_Report/Service/bin
-BackEnd/Service_Report/Service/obj
-BackEnd/Service_Report/packages
 BackEnd/Service_Login/Configs/bin
 BackEnd/Service_Login/Configs/obj
 BackEnd/Service_Login/DomainData/bin

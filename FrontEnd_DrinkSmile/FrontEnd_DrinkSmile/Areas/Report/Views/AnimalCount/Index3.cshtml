@@ -1,0 +1,227 @@
+﻿@{
+    ViewBag.Title = "Index3";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts {
+    <script>
+        var countcolor = 0;
+        function ThongKeClick() {
+            var DateDiff = {
+
+                inDays: function (d1, d2) {
+                    var t2 = d2.getTime();
+                    var t1 = d1.getTime();
+
+                    return parseInt((t2 - t1) / (24 * 3600 * 1000));
+                },
+
+                inWeeks: function (d1, d2) {
+                    var t2 = d2.getTime();
+                    var t1 = d1.getTime();
+
+                    return parseInt((t2 - t1) / (24 * 3600 * 1000 * 7));
+                },
+
+                inMonths: function (d1, d2) {
+                    var d1Y = d1.getFullYear();
+                    var d2Y = d2.getFullYear();
+                    var d1M = d1.getMonth();
+                    var d2M = d2.getMonth();
+
+                    return (d2M + 12 * d2Y) - (d1M + 12 * d1Y);
+                },
+
+                inYears: function (d1, d2) {
+                    return d2.getFullYear() - d1.getFullYear();
+                }
+            }
+
+            callAjax('post',
+                {
+                    Token: Cookies.get('token'),
+                    ngaybatdau: $('input[name=prefix_bd_submit]').val(),
+                    ngayketthuc: $('input[name=prefix_kt_submit]').val(),
+                    dachet: true
+                }, Cookies.get('area'), "management", "Report/getAllCowOfCompany", function (data) {
+                    if (data.Data.length <= 0) {
+                        $('#a').attr('hidden', 'hidden');
+                        $('#b').attr('hidden', 'hidden');
+                        $('#myChart').attr('hidden', 'hidden');
+                        document.getElementById("notice").removeAttribute("hidden");
+                    } else {
+                        $('#a').removeAttr('hidden');
+                        $('#b').removeAttr('hidden');
+                        $('#myChart').removeAttr('hidden');
+                        document.getElementById("notice").setAttribute("hidden", "hidden");
+                        var colors = [
+                        { normal: "#e65100", hover: "#f57f17" },
+                        { normal: "#4caf50", hover: "#00e676" },
+                        { normal: "#1de9b6", hover: "#64ffda" },
+                        { normal: "#e0e0e0", hover: "#f5f5f5" },
+                        { normal: "#ff3d00", hover: "#ff6e40" },
+                        { normal: "#ffea00", hover: "#ffff00" },
+                        { normal: "#03a9f4", hover: "#81d4fa" }
+                        ]
+                        var namelabel = new Array();
+                        var sobolythuyet = new Array();
+                        var sobothucte = new Array();
+                        var succhuatoida = new Array();
+                        for (var i = 0; i < data.Data.length; i++) {
+                            namelabel.push(data.Data[i][1]);
+                            sobolythuyet.push(data.Data[i][2])
+                            sobothucte.push(data.Data[i][3])
+                            succhuatoida.push(data.Data[i][4])
+                        }
+                        var datachart = {
+                            labels: namelabel,
+                            datasets: [
+                                {
+                                    fillColor: "rgba(187, 222, 251, 1)",
+                                    strokeColor: "rgba(100, 181, 246, 1)",
+                                    pointColor: "rgba(220,220,220,1)",
+                                    pointStrokeColor: "#fff",
+                                    pointHighlightFill: "#fff",
+                                    pointHighlightStroke: "rgba(220,220,220,1)",
+                                    data: sobolythuyet
+                                },
+                                {
+                                    fillColor: "rgba(197, 225, 165, 1)",
+                                    strokeColor: "rgba(174, 213, 129, 1)",
+                                    pointColor: "rgba(151,187,205,1)",
+                                    pointStrokeColor: "#fff",
+                                    pointHighlightFill: "#fff",
+                                    pointHighlightStroke: "rgba(151,187,205,1)",
+                                    data: sobothucte
+                                },
+                                {
+                                    fillColor: "rgba(63, 81, 181, 0.7)",
+                                    strokeColor: "rgba(151,187,205,1)",
+                                    pointColor: "rgba(151,187,205,1)",
+                                    pointStrokeColor: "#fff",
+                                    pointHighlightFill: "#fff",
+                                    pointHighlightStroke: "rgba(151,187,205,1)",
+                                    data: succhuatoida
+                                }
+                            ]
+                        };
+                        var datapiechart = new Array();
+                        $('#chuThich_CircleChart').empty();
+                        for (var i = 0; i < data.Data.length; i++) {
+                            if (countcolor >= colors.length) {
+                                countcolor = 0;
+                            }
+                            datapiechart.push({
+                                value: sobothucte[i],
+                                color: colors[countcolor].normal,
+                                highlight: colors[countcolor].hover,
+                                label: namelabel[i]
+                            })
+                            $('#chuThich_CircleChart').append(
+                                '<tr>' +
+                                    '<td class="row"><div style="width:24px; height:24px; background-color:' + colors[countcolor].normal + '"></div>&nbsp;' + namelabel[i] + '</td>' +
+                                '</tr>'
+                                );
+                            countcolor++;
+                        }
+
+                        var option = {
+                            responsive: true,
+                        };
+
+                        // Get the context of the canvas element we want to select
+                        var ctx = document.getElementById("myChart").getContext('2d');
+                        var myLineChart = new Chart(ctx).Bar(datachart, option);
+                        var ctxPie = document.getElementById("circlechart").getContext('2d');
+                        var myPieChart = new Chart(ctxPie).Pie(datapiechart, option);
+                        document.getElementById("property").removeAttribute("hidden");
+                    }
+                });
+        }
+
+
+        $('.datepicker').pickadate({
+            monthsFull: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+            monthsShort: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+            weekdaysFull: ['Chủ nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'],
+            weekdaysShort: ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'],
+
+            showMonthsShort: true,
+            showWeekdaysFull: false,
+
+            today: 'Hôm nay',
+            clear: '',
+            close: 'Đóng',
+
+            labelMonthNext: 'Tháng sau',
+            labelMonthPrev: 'Tháng trước',
+            labelMonthSelect: 'Chọn tháng',
+            labelYearSelect: 'Chọn năm',
+
+            firstDay: 1,
+            format: 'dd-mm-yyyy',
+            formatSubmit: 'yyyy-mm-dd',
+            hiddenPrefix: 'prefix_',
+
+            min: new Date(1752, 0, 1),
+            max: new Date(9998, 11, 31)
+        });
+    </script>
+}
+
+
+
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h2><i class="fa fa-bar-chart" aria-hidden="true"></i> Báo cáo số lượng bò</h2>
+
+        <div class="row">
+            <table class="table table-hover fa-border" style="width:400px">
+                <tbody>
+                    <tr>
+                        <td>Từ ngày</td>
+                        <td>
+                            <div class="md-form form-sm">
+                                <i class="fa fa-calendar prefix"></i>
+                                <input name="bd" type="text" id="ngaybatdau" class="form-control datepicker" data-value="@(DateTime.Now.ToShortDateString())">
+                                <label for="ngaykethuc"></label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Đến ngày</td>
+                        <td>
+                            <div class="md-form form-sm">
+                                <i class="fa fa-calendar prefix"></i>
+                                <input name="kt" type="text" id="ngayketthuc" class="form-control datepicker" data-value="@(DateTime.Now.ToShortDateString())">
+                                <label for="ngaykethuc"></label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <button type="button" class="btn btn-primary" onclick="ThongKeClick()">Thống kê</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div id="a" hidden="hidden" style="width:450px"><canvas class="align-middle" id="circlechart"></canvas></div>
+            <table id="b" hidden="hidden">
+                <tbody id="chuThich_CircleChart"></tbody>
+            </table>
+        </div>
+
+        <div id="notice" hidden="hidden">
+            <h5>Không có dữ liệu để thống kê!</h5>
+        </div>
+
+        <canvas id="myChart" hidden="hidden"></canvas>
+
+        <div class="row" id="property" hidden="hidden">
+            <div class="offset-1 row"><div class="blue lighten-4" style="width:24px; height:24px;"></div>&nbsp;Số bò lý thuyết</div>
+            <div class="offset-1 row"><div class="light-green lighten-3" style="width:24px; height:24px;"></div>&nbsp;Số bò thực tế</div>
+            <div class="offset-1 row"><div class="rgba-indigo-strong" style="width:24px; height:24px;"></div>&nbsp;Sức chứa tối đa</div>
+        </div>
+    </div>
+</div>

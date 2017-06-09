@@ -121,6 +121,7 @@
     <Compile Include="Areas\Manage\Controllers\StaffController.cs" />
     <Compile Include="Areas\Manage\Controllers\WareHouseController.cs" />
     <Compile Include="Areas\Manage\ManageAreaRegistration.cs" />
+    <Compile Include="Areas\Report\Controllers\AnimalCountController.cs" />
     <Compile Include="Areas\Report\Controllers\AnimalStateController.cs" />
     <Compile Include="Areas\Report\Controllers\ExportController.cs" />
     <Compile Include="Areas\Report\ReportAreaRegistration.cs" />
@@ -204,6 +205,8 @@
     <Content Include="Areas\Manage\Views\Export\Index.cshtml" />
     <Content Include="Areas\Manage\Views\Export\Export.cshtml" />
     <Content Include="Areas\Manage\Views\Agency\Index.cshtml" />
+    <Content Include="Areas\Report\Views\AnimalCount\Index2.cshtml" />
+    <Content Include="Areas\Report\Views\AnimalCount\Index3.cshtml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
