@@ -5,6 +5,7 @@
  */
 package DAO;
 
+import Config.Configs;
 import Ultility.HibernateUtil;
 import java.util.List;
 import pojos.Phieuxuat;
@@ -14,6 +15,11 @@ import pojos.Phieuxuat;
  * @author Shin-Desktop
  */
 public class PhieuXuatAdapter {
+    private static void getNewID(Phieuxuat obj) {
+        if (CounterAdapter.updateCounter("indexPhieuxuat")){
+            obj.setMachungtu(String.format("%s%s%05d", Configs.AREA_ID, "PX", CounterAdapter.getAreaCounter().getIndexPhieuxuat()));
+        }
+    }
 
     public static List<Phieuxuat> getAll() {
         return HibernateUtil.getList("from Phieuxuat", null);
@@ -27,11 +33,6 @@ public class PhieuXuatAdapter {
             return phieuxuat;
         }
         return null;
-    }
-    
-    private static void getNewID(Phieuxuat obj) {
-        int count = HibernateUtil.count("select count(machungtu) from Phieuxuat");
-        obj.setMachungtu(String.format("PX%05d", count + 1));
     }
     
     public static boolean add(Phieuxuat obj) {

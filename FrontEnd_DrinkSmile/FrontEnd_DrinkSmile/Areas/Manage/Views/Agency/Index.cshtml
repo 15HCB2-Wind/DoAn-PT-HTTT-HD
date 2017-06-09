@@ -37,7 +37,7 @@
                                 trType = '<tr class="table-success">';
                                 deleteButton = '<a class="red-text" data-toggle="modal" data-target="#deleteModal" onclick="setupModal(\'delete\', \'' + item.machinhanh + '\', true)"><i class="fa fa-trash" aria-hidden="true"></i></a>';
                                 editButton = '<a class="teal-text" href="/Manage/Agency/Update?machinhanh=' + item.machinhanh + '"><i class="fa fa-pencil"></i></a>';
-                                importButton = '<a class="teal-text" href="/Manage/Import/Create?machinhanh=' + item.machinhanh + '"><i class="fa fa-cubes" aria-hidden="true"></i></a>';
+                                importButton = '<a class="teal-text" href="/Manage/Import/Import?id=' + item.machinhanh + '"><i class="fa fa-cubes" aria-hidden="true"></i></a>';
                             }
 
                             $('#data_chinhanh').append(

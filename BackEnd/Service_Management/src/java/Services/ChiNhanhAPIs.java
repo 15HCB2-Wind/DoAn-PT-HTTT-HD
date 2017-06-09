@@ -32,6 +32,7 @@ public class ChiNhanhAPIs {
      
     public ChiNhanhAPIs() {
     }
+    
     @POST
     @Path("getAll")
     @Produces("application/json")
@@ -41,9 +42,30 @@ public class ChiNhanhAPIs {
         SelectRequest request = gson.fromJson(json, SelectRequest.class);
         SelectResponse response = new SelectResponse();
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)){
-            if (true){
+            //if (true){
                 try{
                     response.Data = ChiNhanhAdapter.getAll();
+                }catch(Exception ex){
+                    response.Errors.add("Lỗi hệ thống.");
+                    response.IsError = true;
+                }
+            //}
+        }
+        return gson.toJson(response);
+    }
+    
+    @POST
+    @Path("getFromArea")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public String getFromArea(String json){
+        Gson gson = new Gson();
+        SelectRequest request = gson.fromJson(json, SelectRequest.class);
+        SelectResponse response = new SelectResponse();
+        if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)){
+            if (true){
+                try{
+                    response.Data = ChiNhanhAdapter.getFromArea(request.Predicates[0]);
                 }catch(Exception ex){
                     response.Errors.add("Lỗi hệ thống.");
                     response.IsError = true;
@@ -52,6 +74,7 @@ public class ChiNhanhAPIs {
         }
         return gson.toJson(response);
     }
+    
     @POST
     @Path("getSingle")
     @Produces("application/json")
@@ -61,14 +84,14 @@ public class ChiNhanhAPIs {
         SelectRequest request = gson.fromJson(json, SelectRequest.class);
         SelectResponse response = new SelectResponse();
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)){
-            if (true){
+            //if (true){
                 try{
                     response.Data = ChiNhanhAdapter.getSingle(request.Predicates[0]);
                 }catch(Exception ex){
                     response.Errors.add("Lỗi hệ thống.");
                     response.IsError = true;
                 }
-            }
+            //}
         }
         return gson.toJson(response);
     }

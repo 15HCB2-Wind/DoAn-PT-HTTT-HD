@@ -33,43 +33,25 @@ public class PhieuXuatAPIs {
      */
     public PhieuXuatAPIs() {
     }
-
-    @GET
-    @Path("getAll")
-    @Produces("application/json")
-    public String getAll(){
-        return new GsonBuilder().setDateFormat("yyyy-MM-dd").create().toJson(PhieuXuatAdapter.getAll());
-    }
     
     //xem danh sách phiếu nhập bò
     @POST
-    @Path("getAllMilk")
+    @Path("getAll")
     @Produces("application/json")
     @Consumes("application/json")
-    public String getAllMilk(String json){
-        Gson gson = new Gson();
+    public String getAll(String json){
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
         SelectRequest request = gson.fromJson(json, SelectRequest.class);
         SelectResponse response = new SelectResponse();
-        if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2)){// kiem tra quyen truy cap 
-                 //NhanVienBUS.getSingleValidate(request, response)
-//            if (PhieuNhapBoBUS.getSingleValidate(request, response)){
-                try{
-                    response.Data = PhieuXuatAdapter.getAll();
-                }catch(Exception ex){
-                    response.Errors.add("Lỗi hệ thống.");
-                    response.IsError = true;
-                }
-//            }
+        if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2)){
+            try{
+                response.Data = PhieuXuatAdapter.getAll();
+            }catch(Exception ex){
+                response.Errors.add("Lỗi hệ thống.");
+                response.IsError = true;
+            }
         }
         return gson.toJson(response);
-        
-//        try{
-//            response.Data = PhieuNhapBoAdapter.getAll();
-//        }catch(Exception ex){
-//            response.Errors.add("Lỗi hệ thống.");
-//            response.IsError = true;
-//        }
-//        return gson.toJson(response);
     }
     
     //thêm phiếu xuất sữa

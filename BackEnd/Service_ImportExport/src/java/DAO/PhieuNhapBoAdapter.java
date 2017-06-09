@@ -7,6 +7,7 @@ package DAO;
 
 import Config.Configs;
 import Ultility.HibernateUtil;
+import java.util.Date;
 import java.util.List;
 import pojos.Phieunhapbo;
 
@@ -17,17 +18,14 @@ import pojos.Phieunhapbo;
 public class PhieuNhapBoAdapter {
     private static void getNewID(Phieunhapbo obj) {
         if (CounterAdapter.updateCounter("indexPhieunhapbo")){
-            obj.setMachungtu(String.format("%s%s%05d", Configs.AREA_ID, "CT", CounterAdapter.getAreaCounter().getIndexPhieunhap()));
+            obj.setMachungtu(String.format("%s%s%05d", Configs.AREA_ID, "PN", CounterAdapter.getAreaCounter().getIndexPhieunhap()));
         }
     }
     
     public static Phieunhapbo getSingle(Object userid){
         List<Phieunhapbo> list = HibernateUtil.getSingle("from Phieunhapbo where machungtu = :p0", new Object[]{ userid });
         if (list.size()>0) {
-            Phieunhapbo phieunhapbo = list.get(0);
-            phieunhapbo.setMancc(null);
-            phieunhapbo.setManv(null);
-            return phieunhapbo;
+            return list.get(0);
         }
         return null;
     }
@@ -38,6 +36,7 @@ public class PhieuNhapBoAdapter {
     
     public static boolean add(Phieunhapbo obj) {
         getNewID(obj);
+        obj.setNgaylap(new Date());
         obj.setDahuy(false);
         return HibernateUtil.save(obj);
     }
@@ -52,15 +51,8 @@ public class PhieuNhapBoAdapter {
 
     public static boolean update(Phieunhapbo obj) {
         Phieunhapbo pnb = getSingle(obj.getMachungtu());
-        pnb.setNgaylap(obj.getNgaylap());
         pnb.setNgaynhap(obj.getNgaynhap());
-        //nv.setTentaikhoan(obj.getTentaikhoan());
-        //nv.setMatkhau(obj.getMatkhau());
-        pnb.setDahuy(obj.getDahuy());
-        pnb.setMancc(obj.getMancc());
         pnb.setSoluong(obj.getSoluong());
-        pnb.setManv(obj.getManv());
-        pnb.setMacn(obj.getMacn());
         return HibernateUtil.update(pnb);
     }
 

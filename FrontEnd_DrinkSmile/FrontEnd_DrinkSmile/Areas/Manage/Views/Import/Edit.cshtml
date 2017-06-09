@@ -1,90 +1,50 @@
 ﻿
 @{
-    ViewBag.Title = "EditCow";
+    ViewBag.Title = "Cập nhật phiếu nhập bò";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h2>@ViewBag.machungtu</h2>
 
 <div class="row">
     <div class="offset-lg-3 col-lg-6 offset-md-2 col-md-8 offset-sm-1 col-sm-10 col-xs-12">
 
-        <form id="form_edit" method="post" role="form">
+        <form id="form_action" method="post" role="form">
             <div class="text-center">
-                <h3><i class="fa fa-weixin" aria-hidden="true"></i> Cập nhật phiếu bò</h3>
+                <h3><i class="fa fa-user-plus"></i> Chỉnh sữa phiếu nhập</h3>
                 <hr class="mt-2 mb-2">
             </div>
+            <p id="error" class="text-danger text-center"></p>
 
             <div class="md-form form-sm">
                 <i class="fa fa-github-alt prefix" aria-hidden="true"></i>
-                <input id="mact" class="form-control" type="hidden" />
-            </div>
-
-            @*<div class="md-form form-sm" >
-                <i>Ngày Lập</i>
-                <input id="ngaylap" type="date" />
-            </div>*@
-            <div class="col-sm-6 col-xs-12">
-                <div class="md-form">
-                    <i class="fa fa-calendar prefix"></i>
-                    <input type="text" id="ngaylap" class="form-control datepicker" placeholder="" name="ngaylap">
-                    <label for="ngaylap">Ngày Lập</label>
-                </div>
-            </div>
-
-            <div class="col-sm-6 col-xs-12">
-                <div class="md-form">
-                    <i class="fa fa-calendar prefix"></i>
-                    <input type="text" id="ngaynhap" class="form-control datepicker" placeholder="" name="ngaynhap">
-                    <label for="ngaynhap">Ngày Nhập</label>
-                </div>
-            </div>
-
-            <br />
-            <div class="md-form form-sm">
-                <i class="fa fa-github-alt prefix" aria-hidden="true"></i>
-                <input id="soluong" class="form-control" type="text" />
+                <input id="soluong" class="form-control" type="number" value="0" min="0" step="1" />
                 <label for="soluong">Số Lượng</label>
             </div>
-            <br />
-            <div class="btn-group">
-                <!--
-                <button id="btnNCC" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Chuồng trại</button>
-                <ul class="dropdown-menu" id="nhacungcap">
 
-                </ul>
-                    <!--load data danh sach chuong-->
-                <select class="form-control" id="nhacungcap"></select>
+            <div class="md-form">
+                <i class="fa fa-calendar prefix"></i>
+                <input type="text" id="ngaynhap" class="form-control datepicker" data-value="@(DateTime.Now.ToShortDateString())" placeholder="">
+                <label for="ngaynhap">Ngày nhập</label>
             </div>
-            <br />
-            <br />
-            <br />
-            <div class="btn-group">
-                <!--
-                <button id="btnNC" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Mã Nhân Viên</button>
-                <div class="dropdown-menu" id="nhanvien">
 
+            <div class="col-xs-12">
+                <div class="row">
+                    <div class="col-sm-6 col-xs-12">
+                        <div class="btn-group w-100">
+                            <button id="btnSelectProvider" class="btn btn-primary w-100" type="button"></button>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xs-12">
+                        <div class="btn-group w-100">
+                            <button id="btnSelectAgency" class="btn btn-primary w-100" type="button"></button>
+                        </div>
+                    </div>
                 </div>
-                    <!--load data danh sach chuong-->
-                <select class="form-control" id="nhanvien"></select>
             </div>
-            <br />
-            <br />
-            <br />
-            <div class="btn-group">
-                <!--
-                <button id="btnCN" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Mã Chi Nhánh</button>
-                <div class="dropdown-menu" id="chinhanh">
 
-                </div>
-                    <!--load data danh sach chuong-->
-                <select class="form-control" id="chinhanh"></select>
-            </div>
             <br />
-            <br />
-            <br />
+
             <div class="text-center">
-                <button type="submit" class="btn btn-primary">Cập Nhật <i id="loader" class="fa fa-circle-o-notch fa-pulse fa-lg fa-fw"></i></button>
+                <button type="submit" class="btn btn-primary">Lưu <i id="loader" class="fa fa-circle-o-notch fa-pulse fa-lg fa-fw"></i></button>
                 <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Thoát</button>
                 <!-- Modal -->
                 <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
@@ -106,199 +66,84 @@
                 </div>
             </div>
         </form>
+
     </div>
 </div>
 
 @section Scripts{
     @Scripts.Render("~/bundles/jqueryval")
-
-    @*<script>
-        $(document).ready(function () {
-            callAjax('post',
-                { Token: Cookies.get("token"), machungtu: '@ViewBag.machungtu'  },
-                Cookies.get("area"), "import_export", "NhaCungCap/getSingle",
-                function (result) {
-                    if (result.IsError) {
-                        toastr["error"](result.Errors[0]);
-                    }
-                    else {
-                        $("#ngaylap").val(result.Data.ngaylap);
-                        $("#soluong").val(result.Data.soluong);
-                        alert("hihi");
-                    }
-                });
-        }
-    </script>*@
     <script>
-        $(document).ready(function () {
-
-            //load dữ liệu ra combobox
-            callAjax('post',
-                { Token: Cookies.get("token") },
-                Cookies.get("area"), "management", "NhaCungCap/getAll",
-                function (data) {
-                    if (data.IsError) {
-                        toastr["error"](data.Errors[0]);
-                        $("error").show();
-                        $("error").text(data.Errors[0]);
-                    }
-                    else {
-                        if (data.Data) {
-
-                            for (var i = 0; i < data.Data.length; i++) {
-                                $('#nhacungcap').append(
-                                        '<option value="' + data.Data[i].manhacungcap + '">' + data.Data[i].ten + '</option>'
-                                        //'<li>'+data.Data[i].manhacungcap+'('+data.Data[i].ten+')'+'</li>'
-                                    );
-                            }
-
-                            //$('#btnNCC').html(data.Data[i].manhacungcap);
-                            //$('#btnNCC').attr('my-data', data.Data[i].manhacungcap);
-                        }
-                    }
-                });
-
-            //ajax cho nhân viên
-            //callAjax('post',
-            //    { Token: Cookies.get("token") },
-            //    Cookies.get("area"), "management", "NhanVien/getAllOfMaster",
-            //    function (data) {
-            //        if (data.IsError) {
-            //            toastr["error"](data.Errors[0]);
-            //            $("error").show();
-            //            $("error").text(data.Errors[0]);
-            //        }
-            //        else {
-            //            if (data.Data) {
-
-            //                for (var i = 0; i < data.Data.length; i++) {
-            //                    $('#nhanvien').append(
-            //                            '<option value="' + data.Data[i].manhanvien + '">' + data.Data[i].hoten + '</option>'
-            //                            //'<li>'+data.Data[i].manhacungcap+'('+data.Data[i].ten+')'+'</li>'
-            //                        );
-            //                }
-
-            //                //$('#btnNCC').html(data.Data[i].manhacungcap);
-            //                //$('#btnNCC').attr('my-data', data.Data[i].manhacungcap);
-            //            }
-            //        }
-            //    })
-
-            //ajax cho chi nhánh
-            callAjax('post',
-                { Token: Cookies.get("token") },
-                Cookies.get("area"), "management", "ChiNhanh/getAll",
-                function (data) {
-                    if (data.IsError) {
-                        toastr["error"](data.Errors[0]);
-                        $("error").show();
-                        $("error").text(data.Errors[0]);
-                    }
-                    else {
-                        if (data.Data) {
-
-                            for (var i = 0; i < data.Data.length; i++) {
-                                $('#chinhanh').append(
-                                        '<option value="' + data.Data[i].machinhanh + '">' + data.Data[i].tenchinhanh + '</option>'
-                                        //'<li>'+data.Data[i].manhacungcap+'('+data.Data[i].ten+')'+'</li>'
-                                    );
-                            }
-
-                            //$('#btnNCC').html(data.Data[i].manhacungcap);
-                            //$('#btnNCC').attr('my-data', data.Data[i].manhacungcap);
-                        }
-                    }
-                });
-
-            $(function () {
-                $('#datetimepicker1').datetimepicker();
-            });
-
-
-            callAjax('post',
-                { Token: Cookies.get("token"), machungtu: '@ViewBag.machungtu' },
+    $(document).ready(function () {
+        callAjax('post',
+            { Token: Cookies.get("token"), machungtu: '@ViewBag.machungtu' },
                 Cookies.get("area"), "import_export", "PhieuNhapBo/getSingle",
                 function (result) {
                     if (result.IsError) {
                         toastr["error"](result.Errors[0]);
+                        $("#error").show();
+                        $("#error").text(result.Errors[0]);
                     }
-                    else {
-                        $("#ngaylap").attr("data-value", result.Data.ngaylap);
-                        $("#ngaynhap").attr("data-value", result.Data.ngaynhap);
-                        $('.datepicker').pickadate({
-                            monthsFull: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
-                            monthsShort: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
-                            weekdaysFull: ['Chủ nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'],
-                            weekdaysShort: ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'],
-
-                            showMonthsShort: true,
-                            showWeekdaysFull: false,
-
-                            today: 'Hôm nay',
-                            clear: '',
-                            close: 'Đóng',
-
-                            labelMonthNext: 'Tháng sau',
-                            labelMonthPrev: 'Tháng trước',
-                            labelMonthSelect: 'Chọn tháng',
-                            labelYearSelect: 'Chọn năm',
-
-                            firstDay: 1,
-                            format: 'dd-mm-yyyy',
-                            formatSubmit: 'yyyy-mm-dd',
-                            hiddenPrefix: 'prefix_',
-
-                            min: new Date(1752, 0, 1),
-                            max: new Date(9998, 11, 31)
-                        });
-                        //document.getElementById('ngaylap').valueOf(result.Data.ngaylap)
+                    else if (result.Data) {
                         $("#soluong").val(result.Data.soluong);
-                        $("#nhacungcap").val(result.Data.mancc);
-                        //$("#manv").val(result.Data.manv);
-                        $("#macn").val(result.Data.macn);
-                        $("#mact").val(result.Data.machungtu);
+                        $("#ngaynhap").val(result.Data.ngaynhap);
+
+                        //get provider
+                        callAjax('post',
+                            { Token: Cookies.get("token"), Predicates: [result.Data.mancc] },
+                            Cookies.get("area"), "management", "NhaCungCap/getSingle",
+                            function (result) {
+                                if (result.IsError) {
+                                    toastr["error"](result.Errors[0]);
+                                    $("#error").show();
+                                    $("#error").text(result.Errors[0]);
+                                }
+                                else if (result.Data) {
+                                    $("#btnSelectProvider").html(result.Data.ten + ' (' + result.Data.manhacungcap + ')');
+                                }
+                            });
+
+                        //get agency
+                        callAjax('post',
+                            { Token: Cookies.get("token"), Predicates: [result.Data.macn] },
+                            Cookies.get("area"), "management", "ChiNhanh/getSingle",
+                            function (result) {
+                                if (result.IsError) {
+                                    toastr["error"](result.Errors[0]);
+                                    $("#error").show();
+                                    $("#error").text(result.Errors[0]);
+                                }
+                                else if (result.Data) {
+                                    $("#btnSelectAgency").html(result.Data.tenchinhanh + ' (' + result.Data.machinhanh + ')');
+                                }
+                            });
                     }
                 });
 
-            //hành động edit bắt từ from from_edit
-            $('#form_edit').submit(function (e) {
-                e.preventDefault();
-                var ngaylap = $("input[name=prefix_ngaylap_submit]").val();
-                if (ngaylap == "") { ngaysinh = null; }
+        $('#form_action').submit(function (e) {
+            e.preventDefault();
+            callAjax('post',
+                {
+                    Token: Cookies.get('token'),
+                    Data: {
+                        ngaynhap: $('#ngaynhap').val(),
+                        soluong: $('#soluong').val(),
+                        machungtu: '@ViewBag.machungtu'
+                    }
+                },
+                Cookies.get('area'), 'import_export', 'PhieuNhapBo/update',
+                function (data) {
+                    if (data.IsError) {
+                        toastr["error"](data.Errors[0]);
+                        $("#error").show();
+                        $("#error").text(data.Errors[0]);
+                    }
+                    else {
+                        toastr["success"](data.Data);
+                        $('#form_action')[0].reset();
+                    }
+                });
+        })
 
-                var ngaynhap = $("input[name=prefix_ngaynhap_submit]").val();
-                if (ngaynhap == "") { ngaysinh = null; }
-
-                var soluong = $("#soluong").val();
-                if (soluong == "") { diachi = null; }
-
-                callAjax('post',
-                    {
-                        Token: Cookies.get('token'),
-                        Data: {
-                            ngaylap: ngaylap,
-                            ngaynhap: ngaynhap,
-                            soluong: $('#soluong').val(),
-                            mancc: $('#nhacungcap').val(),
-                            //manv: $('#nhanvien').val(),
-                            macn: $('#chinhanh').val(),
-                            machungtu: $('#mact').val()
-                        }
-                    },
-                    Cookies.get('area'), 'import_export', 'PhieuNhapBo/update',
-                    function (data) {
-                        if (data.IsError) {
-                            toastr["error"](data.Errors[0]);
-                            $("#error").show();
-                            $("#error").text(data.Errors[0]);
-                        }
-                        else {
-                            toastr["success"](data.Data);
-                            $('#form_action')[0].reset();
-                        }
-                    });
-            })
-
-        });
+    });
     </script>
 }

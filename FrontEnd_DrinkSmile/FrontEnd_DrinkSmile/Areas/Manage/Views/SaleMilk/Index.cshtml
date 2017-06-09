@@ -1,25 +1,19 @@
 ﻿
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Xuất kho";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Phiếu Xuất Sữa</h2>
-<a class="blue-text" href="@Url.Action("Import")"><i class="fa fa-arrow-down" aria-hidden="true"></i>thêm phiếu xuất sữa</a>
+<a class="blue-text" href="@Url.Action("Export")"><i class="fa fa-arrow-down" aria-hidden="true"></i>thêm phiếu xuất sữa</a>
 <br /><center><i>danh sách phiếu nhập bò</i></center>
-<table class="table table-hover" id="hihi">
+<table class="table table-hover">
     <thead class="thead-inverse">
         <tr>
             <th>Mã phiếu</th>
             <th>Ngày lập</th>
             <th>Ngày xuất</th>
-            <th>Tổng lượng sữa</th>
-            <th>Lý do</th>
-            @*<th>Đã Hủy</th>*@
-            @*<th>Mã Nhà Cung Cấp</th>
-                <th>Mã Nhân Viên</th>
-                <th>Mã Chi Nhánh</th>*@
-            <th></th>
+            <th>Tổng lượng sữa (lít)</th>
             <th></th>
         </tr>
     </thead>
@@ -48,15 +42,13 @@
 
     <script>
         $(document).ready(function () {
-
             loadTable();
-            console.log({ Token: Cookies.get("token") });
         });
 
         function loadTable() {
             callAjax('post',
                 { Token: Cookies.get("token") },
-                Cookies.get("area"), "import_export", "PhieuXuat/getAllMilk",
+                Cookies.get("area"), "import_export", "PhieuXuat/getAll",
                 function (data) {
                     if (data.IsError) {
                         toastr["error"](data.Errors[0]);
@@ -64,74 +56,22 @@
                         $("error").text(data.Errors[0]);
                     }
                     else {
-                        if (data.Data) {
-                            var deletebuton;
+                        if (data.Data && data.Data.length > 0) {
                             for (var i = 0; i < data.Data.length; i++) {
                                 if (data.Data[i].dahuy == 0) {
                                     $('#tbBillIndex').append(
-                                    '<tr>' +
-                                        '<td>' + data.Data[i].machungtu + '</td>' +
-                                        '<td>' + data.Data[i].ngaylap + '</td>' +
-                                        '<td>' + data.Data[i].ngayxuat + '</td>' +
-                                        '<td>' + data.Data[i].tongluongsua + '</td>' +
-                                        '<td>' + data.Data[i].lydo + '</td>' +
-                                        //'<td>' + data.Data[i].mancc + '</td>' +
-                                        //'<td>' + data.Data[i].manv + '</td>' +
-                                        //'<td>' + data.Data[i].macn + '</td>' +
-                                        "<td><a href='/Manage/SaleMilk/Edit/" + data.Data[i].machungtu + "'>Cập nhật</a></td>" +
-                                        "<td>" + '<a class="red-text" data-toggle="modal" data-target="#deleteModal" onclick="setupModal(\'delete\', \'' + data.Data[i].machungtu + '\', true)"><i class="fa fa-times"></i></a>' + "</td>" +
-                                    '</tr>'
-                                );
+                                        '<tr>' +
+                                            '<td>' + data.Data[i].machungtu + '</td>' +
+                                            '<td>' + data.Data[i].ngaylap + '</td>' +
+                                            '<td>' + data.Data[i].ngayxuat + '</td>' +
+                                            '<td>' + data.Data[i].tongluongsua + ' (L)</td>' +
+                                        '</tr>'
+                                    );
                                 }
-                                //$('#hihi').html(data.Data);
-
                             }
                         }
                     }
                 });
-
-            $('.btnxoa').click(function () {
-
-                console.log($(this).attr("machungtu"));
-                //callAjax('post', { Token: Cookies.get("token"), machungtu:  },
-                //        Cookies.get("area"), "import_export", "PhieuNhapBo/delete",
-                //        function (result) {
-                //            if (result.IsError) {
-                //                toastr["error"](data.Errors[0]);
-                //                $("error").show();
-                //                $("error").text(data.Errors[0]);
-                //            }
-                //            else {
-                //                toastr["success"](data.Data);
-                //                $('#form_action')[0].reset();
-                //            }
-                //        })
-            })
-
         }
-
-
-        function setupModal(str, id, cond) {
-            $('#deleteModal_btnYes').attr('onclick', 'modalAction(\'' + str + '\', \'' + id + '\', ' + cond + ')');
-        }
-
-        function modalAction(str, id, cond) {
-            if (cond) {
-                callAjax('post', { Token: Cookies.get("token"), machungtu: id }, Cookies.get("area"), "import_export", "PhieuXuat/" + str,
-                    function (result) {
-                        if (result.IsError) {
-                            if (result.Errors.length > 0) {
-                                toastr["error"](result.Errors[0]);
-                            }
-                        }
-                        else {
-                            toastr["success"](result.Data);
-                            //loadTable();
-                            window.location.reload();
-                        }
-                    }
-                )
-            }
-        };
     </script>
 }

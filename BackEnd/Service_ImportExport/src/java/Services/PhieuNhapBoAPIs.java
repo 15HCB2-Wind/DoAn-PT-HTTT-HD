@@ -12,17 +12,15 @@ import Models.DataAccess.BillImportCow.SelectBillImportCowRequest;
 import Models.DataAccess.DeleteResponse;
 import com.google.gson.Gson;
 import javax.ws.rs.Consumes;
-import static javax.ws.rs.HttpMethod.POST;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
-import pojos.Phieunhapbo;
 import Models.DataAccess.SelectRequest;
 import Models.DataAccess.SelectResponse;
+import Models.TokenData;
 import com.google.gson.GsonBuilder;
-import javax.ws.rs.core.Response;
 
 /**
  *
@@ -43,29 +41,18 @@ public class PhieuNhapBoAPIs {
     @Produces("application/json")
     @Consumes("application/json")
     public String getAll(String json){
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().setDateFormat("dd-MM-yyyy").create();
         SelectRequest request = gson.fromJson(json, SelectRequest.class);
         SelectResponse response = new SelectResponse();
-        if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)){// kiem tra quyen truy cap 
-                 //NhanVienBUS.getSingleValidate(request, response)
-//            if (PhieuNhapBoBUS.getSingleValidate(request, response)){
-                try{
-                    response.Data = PhieuNhapBoAdapter.getAll();
-                }catch(Exception ex){
-                    response.Errors.add("Lỗi hệ thống.");
-                    response.IsError = true;
-                }
-//            }
+        if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)){
+            try{
+                response.Data = PhieuNhapBoAdapter.getAll();
+            }catch(Exception ex){
+                response.Errors.add("Lỗi hệ thống.");
+                response.IsError = true;
+            }
         }
         return gson.toJson(response);
-        
-//        try{
-//            response.Data = PhieuNhapBoAdapter.getAll();
-//        }catch(Exception ex){
-//            response.Errors.add("Lỗi hệ thống.");
-//            response.IsError = true;
-//        }
-//        return gson.toJson(response);
     }
     
     //thêm phiếu nhập bò
@@ -77,9 +64,11 @@ public class PhieuNhapBoAPIs {
         Gson gson = new Gson();
         InsertBillImportCowRequest request = gson.fromJson(json, InsertBillImportCowRequest.class);
         InsertBillImportCowReponse response = new InsertBillImportCowReponse();
-        if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)){
+        TokenData token = BusinessHandler.TokenBUS.tokenData(request, response, 3);
+        if (token != null){
             if (PhieuNhapBoBUS.insertValidate(request, response)){
                 try{
+                    request.Data.setManv(token.UserId);
                     if (PhieuNhapBoAdapter.add(request.Data)){
                         response.Data = "Thêm thành công.";
                     }else{
@@ -104,16 +93,13 @@ public class PhieuNhapBoAPIs {
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
         SelectBillImportCowRequest request = gson.fromJson(json, SelectBillImportCowRequest.class);
         SelectResponse response = new SelectResponse();
-        if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)){// kiem tra quyen truy cap 
-                 //NhanVienBUS.getSingleValidate(request, response)
-//            if (PhieuNhapBoBUS.getSingleValidate(request, response)){
-                try{
-                    response.Data = PhieuNhapBoAdapter.getSingle(request.machungtu);
-                }catch(Exception ex){
-                    response.Errors.add("Lỗi hệ thống.");
-                    response.IsError = true;
-                }
-//            }
+        if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)){
+            try{
+                response.Data = PhieuNhapBoAdapter.getSingle(request.machungtu);
+            }catch(Exception ex){
+                response.Errors.add("Lỗi hệ thống.");
+                response.IsError = true;
+            }
         }
         return gson.toJson(response);
     }
@@ -180,18 +166,17 @@ public class PhieuNhapBoAPIs {
         InsertBillImportCowRequest request = gson.fromJson(json, InsertBillImportCowRequest.class);
         InsertBillImportCowReponse response = new InsertBillImportCowReponse();
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)) {
-                try {
-                    if (PhieuNhapBoAdapter.update(request.Data)) {
-                        //NhanVienBUS.sync(0, request.Data);
-                        response.Data = "Cập nhật thành công!";
-                    } else {
-                        response.Errors.add("Cập nhật thất bại!");
-                        response.IsError = true;
-                    }
-                } catch (Exception ex) {
-                    response.Errors.add("Lỗi hệ thống.");
+            try {
+                if (PhieuNhapBoAdapter.update(request.Data)) {
+                    response.Data = "Cập nhật thành công!";
+                } else {
+                    response.Errors.add("Cập nhật thất bại!");
                     response.IsError = true;
                 }
+            } catch (Exception ex) {
+                response.Errors.add("Lỗi hệ thống.");
+                response.IsError = true;
+            }
         }
         return gson.toJson(response);
     }

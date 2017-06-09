@@ -48,4 +48,6 @@ BackEnd/Service_AnimalCare/packages
 BackEnd/Service_Login/Service_Login.v12.suo
 BackEnd/Service_Login/Service_Login.v12.suo
 BackEnd/Service_Management/nbproject/
+BackEnd/Service_AnimalCare/AutoSeed/AutoSeed/bin
+BackEnd/Service_AnimalCare/AutoSeed/AutoSeed/obj
 *.suo

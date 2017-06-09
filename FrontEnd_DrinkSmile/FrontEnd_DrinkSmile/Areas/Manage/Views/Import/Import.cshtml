@@ -4,91 +4,74 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Nhập bò</h2>
-
 <div class="row">
     <div class="offset-lg-3 col-lg-6 offset-md-2 col-md-8 offset-sm-1 col-sm-10 col-xs-12">
         
-            <form id="form_action" method="post" role="form">
-                <div class="text-center">
-                    <h3><i class="fa fa-weixin" aria-hidden="true"></i> thêm phiếu bò</h3>
-                    <hr class="mt-2 mb-2">
-                </div>
-                <div class="md-form form-sm">
-                    <i>Ngày Lập</i>
-                    <input id="ngaylap" type="date" />
-                </div>
-                <div class="md-form form-sm">
-                    <i>Ngày Nhập</i>
-                    <input id="ngaynhap" type="date" />
-                </div>
-                <br />
-                <div class="md-form form-sm">
-                    <i class="fa fa-github-alt prefix" aria-hidden="true"></i>
-                    <input id="soluong" class="form-control" type="text" />
-                    <label for="soluong">Số Lượng</label>
-                </div>
-                <br />
-                <div class="btn-group">
-                    <!--
-                    <button id="btnNCC" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Chuồng trại</button>
-                    <ul class="dropdown-menu" id="nhacungcap">
-                        
-                    </ul>
-                        <!--load data danh sach chuong-->
-                    <select class="form-control" id="nhacungcap">
-                    </select>
-                </div>
-                <br />
-                <br />
-                <br />
-                <div class="btn-group">
-                    <!--
-                    <button id="btnNC" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Mã Nhân Viên</button>
-                    <div class="dropdown-menu" id="nhanvien">
-                        
+        <form id="form_action" method="post" role="form">
+            <div class="text-center">
+                <h3><i class="fa fa-user-plus"></i> Lập Phiếu Nhập</h3>
+                <hr class="mt-2 mb-2">
+            </div>
+            <p id="error" class="text-danger text-center"></p>
+
+            <div class="md-form form-sm">
+                <i class="fa fa-github-alt prefix" aria-hidden="true"></i>
+                <input id="soluong" class="form-control" type="number" value="0" min="0" step="1" />
+                <label for="soluong">Số lượng</label>
+            </div>
+
+            <div class="md-form">
+                <i class="fa fa-calendar prefix"></i>
+                <input type="text" id="ngaynhap" class="form-control datepicker" data-value="@(DateTime.Now.ToShortDateString())">
+                <label for="ngaynhap">Ngày nhập</label>
+            </div>
+
+            <div class="col-xs-12">
+                <div class="row">
+                    <div class="col-sm-6 col-xs-12">
+                        <div class="btn-group w-100">
+                            <button id="btnSelectProvider" class="btn btn-primary dropdown-toggle w-100" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Nhà cung cấp</button>
+                            <div class="dropdown-menu" id="providers">
+                            </div>
+                        </div>
                     </div>
-                        <!--load data danh sach chuong-->
-                    <select class="form-control" id="nhanvien"></select>
-                </div>
-                <br />
-                <br />
-                <br />
-                <div class="btn-group">
-                    <!--
-                    <button id="btnCN" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Mã Chi Nhánh</button>
-                    <div class="dropdown-menu" id="chinhanh">
-                        
-                    </div>
-                        <!--load data danh sach chuong-->
-                    <select class="form-control" id="chinhanh"></select>
-                </div>
-                <br />
-                <br />
-                <br />
-                <div class="text-center">
-                    <button type="submit" class="btn btn-primary">Thêm <i id="loader" class="fa fa-circle-o-notch fa-pulse fa-lg fa-fw"></i></button>
-                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Thoát</button>
-                    <!-- Modal -->
-                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-                                    <h4 class="modal-title w-100">Thoát</h4>
-                                </div>
-                                <div class="modal-body text-center">
-                                    Bạn thực sự muốn thoát?
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
-                                    <a class="btn btn-danger" href="@Url.Action("Index")">Đồng ý</a>
-                                </div>
+                    <div class="col-sm-6 col-xs-12">
+                        <div class="btn-group w-100">
+                            <button id="btnSelectAgency" class="btn btn-primary dropdown-toggle w-100" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Chi nhánh</button>
+                            <div class="dropdown-menu" id="agencies">
+                                <a class="dropdown-item">Chọn nhà cung cấp trước</a>
                             </div>
                         </div>
                     </div>
                 </div>
-            </form>
+            </div>
+
+            <br />
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Lưu <i id="loader" class="fa fa-circle-o-notch fa-pulse fa-lg fa-fw"></i></button>
+                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Thoát</button>
+                <!-- Modal -->
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                                <h4 class="modal-title w-100">Thoát</h4>
+                            </div>
+                            <div class="modal-body text-center">
+                                Bạn thực sự muốn thoát?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                                <a class="btn btn-danger" href="@Url.Action("Index")">Đồng ý</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
     </div>
 </div>
 
@@ -97,80 +80,52 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script>
         $(document).ready(function () {
-            var temp;
+            $('#loader').hide();
+
+            $('.datepicker').pickadate({
+                monthsFull: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+                monthsShort: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+                weekdaysFull: ['Chủ nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'],
+                weekdaysShort: ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'],
+
+                showMonthsShort: true,
+                showWeekdaysFull: false,
+
+                today: 'Hôm nay',
+                clear: '',
+                close: 'Đóng',
+
+                labelMonthNext: 'Tháng sau',
+                labelMonthPrev: 'Tháng trước',
+                labelMonthSelect: 'Chọn tháng',
+                labelYearSelect: 'Chọn năm',
+
+                firstDay: 1,
+                format: 'dd-mm-yyyy',
+                formatSubmit: 'yyyy-mm-dd',
+                hiddenPrefix: 'prefix_',
+
+                min: new Date(1752, 0, 1),
+                max: new Date(9998, 11, 31)
+            });
+
             callAjax('post',
-                { Token: Cookies.get("token") },
-                Cookies.get("area"), "management", "NhaCungCap/getAll",
+                {
+                    Token: Cookies.get('token'),
+                },
+                Cookies.get('area'), 'management', 'NhaCungCap/getAll',
                 function (data) {
                     if (data.IsError) {
                         toastr["error"](data.Errors[0]);
-                        $("error").show();
-                        $("error").text(data.Errors[0]);
+                        $("#error").show();
+                        $("#error").text(data.Errors[0]);
                     }
                     else {
                         if (data.Data) {
-
                             for (var i = 0; i < data.Data.length; i++) {
-                                $('#nhacungcap').append(
-                                        '<option value="' + data.Data[i].manhacungcap + '">' + data.Data[i].ten + '</option>'
-                                        //'<li>'+data.Data[i].manhacungcap+'('+data.Data[i].ten+')'+'</li>'
-                                    );
+                                var row = data.Data[i].ten + ' (' + data.Data[i].manhacungcap + ')';
+                                $("#providers").append('<a class="dropdown-item" onclick="selectProvider(\'' + data.Data[i].manhacungcap + '\', \'' + data.Data[i].ten + '\')">' + row + '</a>');
                             }
-
-                            //$('#btnNCC').html(data.Data[i].manhacungcap);
-                            //$('#btnNCC').attr('my-data', data.Data[i].manhacungcap);
-                        }
-                    }
-                });
-
-            //ajax cho nhân viên
-            callAjax('post',
-                { Token: Cookies.get("token") },
-                Cookies.get("area"), "management", "NhanVien/getAllOfMaster",
-                function (data) {
-                    if (data.IsError) {
-                        toastr["error"](data.Errors[0]);
-                        $("error").show();
-                        $("error").text(data.Errors[0]);
-                    }
-                    else {
-                        if (data.Data) {
-
-                            for (var i = 0; i < data.Data.length; i++) {
-                                $('#nhanvien').append(
-                                        '<option value="' + data.Data[i].manhanvien + '">' + data.Data[i].hoten + '</option>'
-                                        //'<li>'+data.Data[i].manhacungcap+'('+data.Data[i].ten+')'+'</li>'
-                                    );
-                            }
-
-                            //$('#btnNCC').html(data.Data[i].manhacungcap);
-                            //$('#btnNCC').attr('my-data', data.Data[i].manhacungcap);
-                        }
-                    }
-                })
-
-            //ajax cho chi nhánh
-            callAjax('post',
-                { Token: Cookies.get("token") },
-                Cookies.get("area"), "management", "ChiNhanh/getAll",
-                function (data) {
-                    if (data.IsError) {
-                        toastr["error"](data.Errors[0]);
-                        $("error").show();
-                        $("error").text(data.Errors[0]);
-                    }
-                    else {
-                        if (data.Data) {
-
-                            for (var i = 0; i < data.Data.length; i++) {
-                                $('#chinhanh').append(
-                                        '<option value="' + data.Data[i].machinhanh + '">' + data.Data[i].tenchinhanh + '</option>'
-                                        //'<li>'+data.Data[i].manhacungcap+'('+data.Data[i].ten+')'+'</li>'
-                                    );
-                            }
-
-                            //$('#btnNCC').html(data.Data[i].manhacungcap);
-                            //$('#btnNCC').attr('my-data', data.Data[i].manhacungcap);
                         }
                     }
                 });
@@ -181,12 +136,10 @@
                     {
                         Token: Cookies.get('token'),
                         Data: {
-                            ngaylap: $('#ngaylap').val(),
                             ngaynhap: $('#ngaynhap').val(),
                             soluong: $('#soluong').val(),
-                            mancc: $('#nhacungcap').val(),
-                            manv: $('#nhanvien').val(),
-                            macn: $('#chinhanh').val()
+                            mancc: $('#btnSelectProvider').attr('my-data'),
+                            macn: $('#btnSelectAgency').attr('my-data'),
                         }
                     },
                     Cookies.get('area'), 'import_export', 'PhieuNhapBo/add',
@@ -204,10 +157,43 @@
             })
         });
 
-        function abc(id) {
-            event.preventDefault();
+        function selectProvider(id, name) {
+            $('#btnSelectProvider').html(name);
+            $('#btnSelectProvider').attr('my-data', id);
+            selectAgency(null, "Chọn một chi nhánh")
 
-            alert(id);
+            //hiển thị chi nhánh trong khu vực nhà cung cấp
+            callAjax('post',
+                {
+                    Token: Cookies.get('token'),
+                    Predicates: [$('#btnSelectProvider').attr('my-data').split('NCC', 1)[0]]
+                },
+                Cookies.get('area'), 'management', 'ChiNhanh/getFromArea',
+                function (data) {
+                    $("#agencies").empty();
+                    if (data.IsError) {
+                        toastr["error"](data.Errors[0]);
+                        $("#error").show();
+                        $("#error").text(data.Errors[0]);
+
+                        $("#agencies").append('<a class="dropdown-item">Không tìm thấy chi nhánh nào!</a>');
+                    }
+                    else {
+                        if (data.Data && data.Data.length > 0) {
+                            for (var i = 0; i < data.Data.length; i++) {
+                                var row = data.Data[i].tenchinhanh + ' (' + data.Data[i].machinhanh + ')';
+                                $("#agencies").append('<a class="dropdown-item" onclick="selectAgency(\'' + data.Data[i].machinhanh + '\', \'' + data.Data[i].tenchinhanh + '\')">' + row + '</a>');
+                            }
+                        } else {
+                            $("#agencies").append('<a class="dropdown-item">Không tìm thấy chi nhánh nào!</a>');
+                        }
+                    }
+                });
+        }
+
+        function selectAgency(id, name) {
+            $('#btnSelectAgency').html(name);
+            $('#btnSelectAgency').attr('my-data', id);
         }
     </script>
 }
