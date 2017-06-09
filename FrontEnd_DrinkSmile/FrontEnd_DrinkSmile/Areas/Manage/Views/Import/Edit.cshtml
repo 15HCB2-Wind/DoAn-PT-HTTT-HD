@@ -22,7 +22,7 @@
 
             <div class="md-form">
                 <i class="fa fa-calendar prefix"></i>
-                <input type="text" id="ngaynhap" class="form-control datepicker" data-value="@(DateTime.Now.ToShortDateString())" placeholder="" required>
+                <input type="text" id="ngaynhap" name="ngaynhap" class="form-control datepicker" data-value="@(DateTime.Now.ToShortDateString())" placeholder="" required>
                 <label for="ngaynhap">Ngày nhập</label>
             </div>
 
@@ -125,7 +125,7 @@
                 {
                     Token: Cookies.get('token'),
                     Data: {
-                        ngaynhap: $('#ngaynhap').val(),
+                        ngaynhap: $('input[name=prefix_ngaynhap_submit]').val(),
                         soluong: $('#soluong').val(),
                         machungtu: '@ViewBag.machungtu'
                     }

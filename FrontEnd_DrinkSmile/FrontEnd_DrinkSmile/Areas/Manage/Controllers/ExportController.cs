@@ -30,20 +30,5 @@ namespace FrontEnd_DrinkSmile.Areas.Manage.Controllers
             }
             return RedirectToAction("Login", "Account", new { area = "", ReturnUrl = "/Manage/Export/Export" });
         }
-
-        public ActionResult Edit(string id)
-        {
-            if (Request.Cookies["token"] != null)
-            {
-                if (Request.Cookies["role"].Value == "2")
-                {
-                    if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                    ViewBag.machungtu = id;
-                    return View();
-                }
-                return RedirectToAction("Index");
-            }
-            return RedirectToAction("Login", "Account", new { area = "", ReturnUrl = "/Manage/Export/Index" });
-        }
 	}
 }

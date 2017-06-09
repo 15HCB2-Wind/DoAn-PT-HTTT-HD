@@ -6,9 +6,12 @@
 package DAO;
 
 import Config.Configs;
+import Models.DataAccess.SaleMilk.InsertSaleMilkRequest;
 import Ultility.HibernateUtil;
 import java.util.Date;
 import java.util.List;
+import org.hibernate.Session;
+import pojos.Chitietxuatsua;
 import pojos.Phieuxuat;
 
 /**
@@ -23,7 +26,7 @@ public class PhieuXuatAdapter {
     }
 
     public static List<Phieuxuat> getAll(Object id) {
-        return HibernateUtil.getList("from Phieuxuat where macn = :p0", new Object[] { id });
+        return HibernateUtil.getList("from Phieuxuat where macn = :p0 order by ngaylap desc", new Object[] { id });
     }
     
     public static Phieuxuat getSingle(Object userid){
@@ -34,31 +37,37 @@ public class PhieuXuatAdapter {
         return null;
     }
     
-    public static boolean add(Phieuxuat obj) {
-        getNewID(obj);
-        obj.setNgaylap(new Date());
-        obj.setDahuy(false);
-        return HibernateUtil.save(obj);
+    public static boolean add(InsertSaleMilkRequest request) {
+        boolean success = false;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+
+            getNewID(request.Data);
+            request.Data.setNgaylap(new Date());
+            request.Data.setDahuy(false);
+            session.save(request.Data);
+
+            for (Chitietxuatsua Detail : request.Details) {
+                Detail.getId().setMachungtu(request.Data.getMachungtu());
+                session.save(Detail);
+            }
+
+            session.getTransaction().commit();
+            success = true;
+        } catch (Exception ex) {
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
+        }
+        return success;
     }
     
-    public static int delete(Object userid) {
-        return HibernateUtil.execute("update Phieuxuat set dahuy = :p1 where machungtu = :p0", new Object[]{ userid, true });
-    }
-    
-    public static int recover(Object userid) {
-        return HibernateUtil.execute("update Phieuxuat set dahuy = :p1 where machungtu = :p0", new Object[]{ userid, false });
+    public static int delete(Object machungtu) {
+        return HibernateUtil.execute("update Phieuxuat set ngayxuat = :p1 where machungtu = :p0", new Object[]{ machungtu, true });
     }
 
-    public static boolean update(Phieuxuat obj) {
-        Phieuxuat pnb = getSingle(obj.getMachungtu());
-        pnb.setNgaylap(obj.getNgaylap());
-        pnb.setNgayxuat(obj.getNgayxuat());
-        //nv.setTentaikhoan(obj.getTentaikhoan());
-        //nv.setMatkhau(obj.getMatkhau());
-        pnb.setLydo(obj.getLydo());
-//        pnb.setDahuy(obj.getDahuy());
-        pnb.setTongluongsua(obj.getTongluongsua());
-        pnb.setManv(obj.getManv());
-        return HibernateUtil.update(pnb);
+    public static int exportNow(String machungtu) {
+        return HibernateUtil.execute("update Phieuxuat set ngayxuat = :p1 where machungtu = :p0", new Object[]{ machungtu, new Date() });
     }
 }

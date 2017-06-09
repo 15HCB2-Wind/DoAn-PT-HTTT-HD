@@ -76,8 +76,13 @@
                                 }
                                 else {
                                     trType = '<tr class="table-success">';
-                                    deleteButton = '<a class="red-text" data-toggle="modal" data-target="#deleteModal" onclick="setupModal(\'delete\', \'' + data.Data[i].machungtu + '\', ' + (new Date(data.Data[i].ngaynhap).getTime() > new Date().getTime()) + ')"><i class="fa fa-trash" aria-hidden="true"></i></a>';
-                                    editButton = '<a class="teal-text" href="/Manage/Import/Edit/' + data.Data[i].machungtu + '"><i class="fa fa-pencil"></i></a>';
+                                    if (new Date(data.Data[i].ngaynhap).getTime() > new Date().getTime()) {
+                                        deleteButton = '<a class="red-text" data-toggle="modal" data-target="#deleteModal" onclick="setupModal(\'delete\', \'' + data.Data[i].machungtu + '\', true)"><i class="fa fa-trash" aria-hidden="true"></i></a>';
+                                        editButton = '<a class="teal-text" href="/Manage/Import/Edit/' + data.Data[i].machungtu + '"><i class="fa fa-pencil"></i></a>';
+                                    } else {
+                                        deleteButton = '';
+                                        editButton = '';
+                                    }
                                 }
 
                                 $('#tbBillIndex').append(

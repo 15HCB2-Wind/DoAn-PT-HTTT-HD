@@ -20,7 +20,6 @@
                             $('#congviec').text('Chưa có phân công nào!');
                         }
                         else {
-                            console.log(data);
                             var count = 0;
                             for (var i = 0; i < data.Data.length; i++) {
 
@@ -83,16 +82,13 @@
         });
 
         function addclick() {
-            window.location.href = 'http://localhost:8082/Manage/Assignment/Create'
+            window.location.href = '/Manage/Assignment/Create'
         }
     </script>
 }
 
-<h2>Quản lý Phân Công</h2>
-<div id="controller">
-
-</div>
-<button type="button" class="btn btn-success" onclick="addclick()">Thêm mới phân công</button>
+<h2><i class="fa fa-list"></i> Quản lý Phân Công</h2>
+<a class="btn btn-primary" href="@Url.Action("Create")">Thêm mới phân công</a>
 <p id="congviec"></p>
 <form id="form">
     

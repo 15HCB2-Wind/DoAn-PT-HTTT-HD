@@ -65,31 +65,34 @@
                                 var item = data.Data[i];
 
                                 var trType;
+                                var deleteButton;
+                                var exportButton;
+                                var td3;
                                 if (item.dahuy) {
                                     trType = '<tr class="table-danger" title="' + item.lydo + '">';
-                                } else {
+                                    deleteButton = '';
+                                    exportButton = '';
+                                    td3 = '<td></td>';
+                                } else if (item.ngayxuat) {
                                     trType = '<tr class="table-success" title="' + item.lydo + '">';
-                                }
-
-                                var deleteButton;
-                                var editButton;
-                                if (item.dahuy) {
-                                    deleteButton = '<a class="green-text" data-toggle="modal" data-target="#deleteModal" onclick="setupModal(\'recover\', \'' + item.machungtu + '\', true)"><i class="fa fa-refresh" aria-hidden="true"></i></a>';
-                                    editButton = '';
-                                }
-                                else {
-                                    deleteButton = '<a class="red-text" data-toggle="modal" data-target="#deleteModal" onclick="setupModal(\'delete\', \'' + item.machungtu + '\', ' + (new Date(item.ngayxuat).getTime() > new Date().getTime()) + ')"><i class="fa fa-trash" aria-hidden="true"></i></a>';
-                                    editButton = '<a class="teal-text" href="/Manage/Export/Edit/' + item.machungtu + '"><i class="fa fa-pencil"></i></a>';
+                                    deleteButton = '';
+                                    exportButton = '';
+                                    td3 = '<td>' + data.Data[i].ngayxuat + '</td>';
+                                } else {
+                                    trType = '<tr class="table-warning" title="' + item.lydo + '">';
+                                    deleteButton = '<a class="red-text" data-toggle="modal" data-target="#deleteModal" onclick="setupModal(\'delete\', \'' + item.machungtu + '\', true)"><i class="fa fa-trash" aria-hidden="true"></i></a>';
+                                    exportButton = '<a class="teal-text" onclick="exportNow(\'' + item.machungtu + '\')"><i class="fa fa-truck" aria-hidden="true"></i></a>';
+                                    td3 = '<td></td>';
                                 }
 
                                 $('#tbBillIndex').append(
                                     trType +
                                         '<td>' + data.Data[i].machungtu + '</td>' +
                                         '<td>' + data.Data[i].ngaylap + '</td>' +
-                                        '<td>' + data.Data[i].ngayxuat + '</td>' +
+                                        td3 +
                                         '<td>' + data.Data[i].tongluongsua + ' (L)</td>' +
                                         '<td>' +
-                                            editButton + deleteButton +
+                                            exportButton + deleteButton +
                                         '</td>' +
                                     '</tr>'
                                 );
@@ -117,11 +120,25 @@
                             toastr["success"](result.Data);
                             loadTable();
                         }
-                    }
-                )
+                    });
             } else {
                 toastr['error']("Sửa đã xuất kho nên không thể hủy ghi nhận.");
             }
         };
+
+        function exportNow(id){
+            callAjax('post', { Token: Cookies.get("token"), machungtu: id }, Cookies.get("area"), "import_export", "PhieuXuat/exportNow",
+                    function (result) {
+                        if (result.IsError) {
+                            if (result.Errors.length > 0) {
+                                toastr["error"](result.Errors[0]);
+                            }
+                        }
+                        else {
+                            toastr["success"](result.Data);
+                            loadTable();
+                        }
+                    });
+        }
     </script>
 }

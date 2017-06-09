@@ -5,14 +5,16 @@
  */
 package Models.DataAccess.SaleMilk;
 
-import Models.BodyRequest;
 import Models.DataAccess.InsertRequest;
+import java.util.List;
+import pojos.Chitietxuatsua;
 import pojos.Phieuxuat;
 
 /**
  *
  * @author BuaNhot
  */
-public class InsertSaleMilkRequest extends InsertRequest{
+public class InsertSaleMilkRequest extends InsertRequest {
     public Phieuxuat Data;
+    public List<Chitietxuatsua> Details;
 }

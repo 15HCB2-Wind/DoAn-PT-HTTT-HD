@@ -68,7 +68,7 @@ public class PhieuXuatAPIs {
             try{
                 request.Data.setManv(token.UserId);
                 request.Data.setMacn(token.AgencyId);
-                if (PhieuXuatAdapter.add(request.Data)){
+                if (PhieuXuatAdapter.add(request)){
                     response.Data = "Thêm thành công.";
                 }else{
                     response.Errors.add("Thêm thất bại.");
@@ -127,50 +127,26 @@ public class PhieuXuatAPIs {
     }
     
     @POST
-    @Path("recover")
+    @Path("exportNow")
     @Produces("application/json")
     @Consumes("application/json")
-    public String recover(String json) {
+    public String exportNow(String json) {
         Gson gson = new Gson();
         SelectSaleMilkRequest request = gson.fromJson(json, SelectSaleMilkRequest.class);   
         DeleteResponse response = new DeleteResponse();
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2)){
             try {
-                int result = PhieuXuatAdapter.recover(request.machungtu);
+                int result = PhieuXuatAdapter.exportNow(request.machungtu);
                 if (result != 1) {
-                    response.Errors.add("Phục hồi phiếu thất bại.");
+                    response.Errors.add("Ghi nhận thất bại.");
                     response.IsError = true;
                 }else{
-                    response.Data = "Phục hồi thành công.";
+                    response.Data = "Ghi nhận thành công.";
                 }
             } catch (Exception ex) {
                 response.Errors.add("Lỗi hệ thống.");
                 response.IsError = true;
             }
-        }
-        return gson.toJson(response);
-    }
-    
-    @POST
-    @Path("update")
-    @Produces("application/json")
-    @Consumes("application/json")
-    public String update(String json) {
-        Gson gson = new Gson();
-        InsertSaleMilkRequest request = gson.fromJson(json, InsertSaleMilkRequest.class);
-        InsertSaleMilkResponse response = new InsertSaleMilkResponse();
-        if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2)) {
-                try {
-                    if (PhieuXuatAdapter.update(request.Data)) {
-                        response.Data = "Cập nhật thành công!";
-                    } else {
-                        response.Errors.add("Cập nhật thất bại!");
-                        response.IsError = true;
-                    }
-                } catch (Exception ex) {
-                    response.Errors.add("Lỗi hệ thống.");
-                    response.IsError = true;
-                }
         }
         return gson.toJson(response);
     }

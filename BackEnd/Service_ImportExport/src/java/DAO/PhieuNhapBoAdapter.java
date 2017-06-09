@@ -31,7 +31,7 @@ public class PhieuNhapBoAdapter {
     }
     
     public static List<Phieunhapbo> getAll(){
-        return HibernateUtil.getList("from Phieunhapbo", null);
+        return HibernateUtil.getList("from Phieunhapbo order by ngaylap desc", null);
     }
     
     public static boolean add(Phieunhapbo obj) {
