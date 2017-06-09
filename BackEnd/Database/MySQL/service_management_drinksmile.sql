@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 09, 2017 at 03:57 AM
+-- Generation Time: Jun 09, 2017 at 10:15 AM
 -- Server version: 5.7.14
 -- PHP Version: 5.6.25
 
@@ -26,14 +26,14 @@ DELIMITER $$
 --
 CREATE DEFINER=`root`@`localhost` PROCEDURE `tkSoLuongBo` (`maChiNhanh` VARCHAR(10), `tuNgay` DATE, `denNgay` DATE, `baoGomDaChet` BOOL)  BEGIN
 	if baoGomDaChet then
-		select b.machuong, b.tenchuong, count(a.mabo), b.dangchua, b.succhua
+		select b.machuong, b.tenchuong, count(a.mabo) as sobolythuyet, b.dangchua, b.succhua
 		from service_management_drinksmile.bo a, service_management_drinksmile.chuongtrai b
 		where 	a.machuong = b.machuong and
 				b.machinhanh = maChiNhanh and
 				a.ngaynhan between tuNgay and denNgay
 		group by a.machuong;
     else
-		select b.machuong, b.tenchuong, count(a.mabo), b.dangchua, b.succhua
+		select b.machuong, b.tenchuong, count(a.mabo) as sobolythuyet, b.dangchua, b.succhua
 		from service_management_drinksmile.bo a, service_management_drinksmile.chuongtrai b
 		where 	a.machuong = b.machuong and
 				b.machinhanh = maChiNhanh and
@@ -45,18 +45,26 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `tkSoLuongBo_AllAgencies` (`tuNgay` DATE, `denNgay` DATE, `baoGomDaChet` BOOL)  BEGIN
 	if baoGomDaChet then
-		select b.machuong, b.tenchuong, count(a.mabo), b.dangchua, b.succhua
-		from service_management_drinksmile.bo a, service_management_drinksmile.chuongtrai b
-		where 	a.machuong = b.machuong and
-				a.ngaynhan between tuNgay and denNgay
-		group by a.machuong;
+		select t.machinhanh, cn.tenchinhanh, sum(t.sobolythuyet) as sobolythuyet, sum(t.dangchua) as dangchua, sum(t.succhua) as succhuatoida
+        from
+			(select b.machuong, b.machinhanh, count(a.mabo) as sobolythuyet, b.dangchua, b.succhua
+			from service_management_drinksmile.bo a, service_management_drinksmile.chuongtrai b
+			where 	a.machuong = b.machuong and
+					a.ngaynhan between tuNgay and denNgay
+			group by a.machuong) t, service_management_drinksmile.chinhanh cn
+		where t.machinhanh = cn.machinhanh
+		group by t.machinhanh;
     else
-		select b.machuong, b.tenchuong, count(a.mabo), b.dangchua, b.succhua
-		from service_management_drinksmile.bo a, service_management_drinksmile.chuongtrai b
-		where 	a.machuong = b.machuong and
-				a.ngaynhan between tuNgay and denNgay and
-				a.daxoa = false
-		group by a.machuong;
+		select t.machinhanh, cn.tenchinhanh, sum(t.sobolythuyet) as sobolythuyet, sum(t.dangchua) as dangchua, sum(t.succhua) as succhuatoida
+        from
+			(select b.machuong, b.machinhanh, count(a.mabo) as sobolythuyet, b.dangchua, b.succhua
+			from service_management_drinksmile.bo a, service_management_drinksmile.chuongtrai b
+			where 	a.machuong = b.machuong and
+					a.ngaynhan between tuNgay and denNgay and
+                    a.daxoa = false
+			group by a.machuong) t, service_management_drinksmile.chinhanh cn
+		where t.machinhanh = cn.machinhanh
+		group by t.machinhanh;
     end if;
 END$$
 

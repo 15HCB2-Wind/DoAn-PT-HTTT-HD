@@ -229,8 +229,109 @@ public class HibernateUtil {
         }
         return result;
     }
+    
+    //SQL
+    public static <T> List<T> getListSQL(String sql, Object[] params){
+        List<T> result = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            Query q = session.createSQLQuery(sql);
+            if (params != null){
+                int i = 0;
+                for (Object p : params) {
+                    q.setParameter("p" + i++, p);
+                }
+            }
+            result = (List<T>) q.list();
+            session.getTransaction().commit();
+        } catch (Exception ex) {
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
+        }
+        return result;
+    }
 
-    public static List<Nhanvien> getList(String from_Nhanvien) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public static <T> List<T> getListSQL(int skip, int limit, String sql, Object[] params){
+        List<T> result = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            Query q = session.createSQLQuery(sql);
+            if (params != null){
+                int i = 0;
+                for (Object p : params) {
+                    q.setParameter("p" + i++, p);
+                }
+            }
+            result = (List<T>) q.setFirstResult(skip).setMaxResults(limit).list();
+            session.getTransaction().commit();
+        } catch (Exception ex) {
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
+        }
+        return result;
+    }
+
+    public static <T> List<T> getSingleSQL(String sql, Object[] params){
+        List<T> result = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            Query q = session.createSQLQuery(sql);
+            if (params != null){
+                int i = 0;
+                for (Object p : params) {
+                    q.setParameter("p" + i++, p);
+                }
+            }
+            result = q.setMaxResults(1).list();
+            session.getTransaction().commit();
+        } catch (Exception ex) {
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
+        }
+        return result;
+    }
+
+    public static int executeSQL(String sql, Object[] params){
+        int result = -1;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            Query q = session.createSQLQuery(sql);
+            if (params != null){
+                int i = 0;
+                for (Object p : params) {
+                    q.setParameter("p" + i++, p);
+                }
+            }
+            result = q.executeUpdate();
+            session.getTransaction().commit();
+        } catch (Exception ex) {
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
+        }
+        return result;
+    }
+    
+    public static int countSQL(String sql){
+        int result = -1;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            Object obj = session.createSQLQuery(sql).uniqueResult();
+            result = Integer.parseInt(obj.toString());
+            session.getTransaction().commit();
+        } catch (Exception ex) {
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
+        }
+        return result;
     }
 }
