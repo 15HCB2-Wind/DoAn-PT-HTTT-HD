@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Models.DataAccess.SaleMilk;
+package Models.DataAccess.Export;
 
 import Models.BodyResponse;
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
  *
  * @author BuaNhot
  */
-public class InsertSaleMilkResponse extends BodyResponse{
+public class InsertExportResponse extends BodyResponse{
 //    public ArrayList<String> MaNhaChungTuError;
 //    
 //    public InsertSaleMilkResponse(){

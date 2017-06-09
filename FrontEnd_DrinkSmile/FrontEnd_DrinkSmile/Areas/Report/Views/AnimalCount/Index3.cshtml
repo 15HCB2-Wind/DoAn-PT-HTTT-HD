@@ -1,11 +1,13 @@
 ﻿@{
-    ViewBag.Title = "Index3";
+    ViewBag.Title = "Thống kê số lượng";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @section Scripts {
     <script>
+        var dataTK;
         var countcolor = 0;
+
         function ThongKeClick() {
             var DateDiff = {
 
@@ -48,13 +50,29 @@
                         $('#a').attr('hidden', 'hidden');
                         $('#b').attr('hidden', 'hidden');
                         $('#myChart').attr('hidden', 'hidden');
-                        document.getElementById("notice").removeAttribute("hidden");
+                        $('#tableReport').attr('hidden', 'hidden');
+                        $('#showData').attr('hidden', 'hidden');
+                        $('#property').attr('hidden', 'hidden');
+                        $('.empty_message').removeAttr('hidden');
                     } else {
-                        $('#a').removeAttr('hidden');
-                        $('#b').removeAttr('hidden');
-                        $('#myChart').removeAttr('hidden');
-                        document.getElementById("notice").setAttribute("hidden", "hidden");
-                        var colors = [
+                        LapThongKe(data);
+                        dataTK = data;
+                    }
+                });
+        }
+
+        function LapThongKe(data) {
+            $('#a').removeAttr('hidden');
+            $('#b').removeAttr('hidden');
+            $('#myChart').removeAttr('hidden');
+            $('#tableReport').removeAttr('hidden');
+            $('#showData').removeAttr('hidden');
+            $('#property').removeAttr('hidden');
+            $('.empty_message').attr('hidden', 'hidden');
+
+            //==================================================
+            //Tạo biểu đồ (chart)
+            var colors = [
                         { normal: "#e65100", hover: "#f57f17" },
                         { normal: "#4caf50", hover: "#00e676" },
                         { normal: "#1de9b6", hover: "#64ffda" },
@@ -62,81 +80,104 @@
                         { normal: "#ff3d00", hover: "#ff6e40" },
                         { normal: "#ffea00", hover: "#ffff00" },
                         { normal: "#03a9f4", hover: "#81d4fa" }
-                        ]
-                        var namelabel = new Array();
-                        var sobolythuyet = new Array();
-                        var sobothucte = new Array();
-                        var succhuatoida = new Array();
-                        for (var i = 0; i < data.Data.length; i++) {
-                            namelabel.push(data.Data[i][1]);
-                            sobolythuyet.push(data.Data[i][2])
-                            sobothucte.push(data.Data[i][3])
-                            succhuatoida.push(data.Data[i][4])
-                        }
-                        var datachart = {
-                            labels: namelabel,
-                            datasets: [
-                                {
-                                    fillColor: "rgba(187, 222, 251, 1)",
-                                    strokeColor: "rgba(100, 181, 246, 1)",
-                                    pointColor: "rgba(220,220,220,1)",
-                                    pointStrokeColor: "#fff",
-                                    pointHighlightFill: "#fff",
-                                    pointHighlightStroke: "rgba(220,220,220,1)",
-                                    data: sobolythuyet
-                                },
-                                {
-                                    fillColor: "rgba(197, 225, 165, 1)",
-                                    strokeColor: "rgba(174, 213, 129, 1)",
-                                    pointColor: "rgba(151,187,205,1)",
-                                    pointStrokeColor: "#fff",
-                                    pointHighlightFill: "#fff",
-                                    pointHighlightStroke: "rgba(151,187,205,1)",
-                                    data: sobothucte
-                                },
-                                {
-                                    fillColor: "rgba(63, 81, 181, 0.7)",
-                                    strokeColor: "rgba(151,187,205,1)",
-                                    pointColor: "rgba(151,187,205,1)",
-                                    pointStrokeColor: "#fff",
-                                    pointHighlightFill: "#fff",
-                                    pointHighlightStroke: "rgba(151,187,205,1)",
-                                    data: succhuatoida
-                                }
-                            ]
-                        };
-                        var datapiechart = new Array();
-                        $('#chuThich_CircleChart').empty();
-                        for (var i = 0; i < data.Data.length; i++) {
-                            if (countcolor >= colors.length) {
-                                countcolor = 0;
-                            }
-                            datapiechart.push({
-                                value: sobothucte[i],
-                                color: colors[countcolor].normal,
-                                highlight: colors[countcolor].hover,
-                                label: namelabel[i]
-                            })
-                            $('#chuThich_CircleChart').append(
-                                '<tr>' +
-                                    '<td class="row"><div style="width:24px; height:24px; background-color:' + colors[countcolor].normal + '"></div>&nbsp;' + namelabel[i] + '</td>' +
-                                '</tr>'
-                                );
-                            countcolor++;
-                        }
-
-                        var option = {
-                            responsive: true,
-                        };
-
-                        // Get the context of the canvas element we want to select
-                        var ctx = document.getElementById("myChart").getContext('2d');
-                        var myLineChart = new Chart(ctx).Bar(datachart, option);
-                        var ctxPie = document.getElementById("circlechart").getContext('2d');
-                        var myPieChart = new Chart(ctxPie).Pie(datapiechart, option);
-                        document.getElementById("property").removeAttribute("hidden");
+            ]
+            var namelabel = new Array();
+            var sobolythuyet = new Array();
+            var sobothucte = new Array();
+            var succhuatoida = new Array();
+            for (var i = 0; i < data.Data.length; i++) {
+                namelabel.push(data.Data[i][1]);
+                sobolythuyet.push(data.Data[i][2])
+                sobothucte.push(data.Data[i][3])
+                succhuatoida.push(data.Data[i][4])
+            }
+            var datachart = {
+                labels: namelabel,
+                datasets: [
+                    {
+                        fillColor: "rgba(187, 222, 251, 1)",
+                        strokeColor: "rgba(100, 181, 246, 1)",
+                        pointColor: "rgba(220,220,220,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(220,220,220,1)",
+                        data: sobolythuyet
+                    },
+                    {
+                        fillColor: "rgba(197, 225, 165, 1)",
+                        strokeColor: "rgba(174, 213, 129, 1)",
+                        pointColor: "rgba(151,187,205,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(151,187,205,1)",
+                        data: sobothucte
+                    },
+                    {
+                        fillColor: "rgba(63, 81, 181, 0.7)",
+                        strokeColor: "rgba(151,187,205,1)",
+                        pointColor: "rgba(151,187,205,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(151,187,205,1)",
+                        data: succhuatoida
                     }
-                });
+                ]
+            };
+            var datapiechart = new Array();
+            $('#chuThich_CircleChart').empty();
+            for (var i = 0; i < data.Data.length; i++) {
+                if (countcolor >= colors.length) {
+                    countcolor = 0;
+                }
+                datapiechart.push({
+                    value: sobothucte[i],
+                    color: colors[countcolor].normal,
+                    highlight: colors[countcolor].hover,
+                    label: namelabel[i]
+                })
+                $('#chuThich_CircleChart').append(
+                    '<tr>' +
+                        '<td class="row"><div style="width:24px; height:24px; background-color:' + colors[countcolor].normal + '"></div>&nbsp;' + namelabel[i] + '</td>' +
+                    '</tr>'
+                    );
+                countcolor++;
+            }
+
+            var option = {
+                responsive: true,
+            };
+
+            // Get the context of the canvas element we want to select
+            var ctx = document.getElementById("myChart").getContext('2d');
+            var myLineChart = new Chart(ctx).Bar(datachart, option);
+            var ctxPie = document.getElementById("circlechart").getContext('2d');
+            var myPieChart = new Chart(ctxPie).Pie(datapiechart, option);
+            document.getElementById("property").removeAttribute("hidden");
+
+            //==================================================
+            //==================================================
+            //==================================================
+            //Tạo bảng báo cáo (report)
+            $('#showReport').empty();
+            for (var i = 0; i < data.Data.length; i++) {
+                var drow = data.Data[i];
+                $('#showReport').append(
+                    '<tr>' +
+                        '<td>' + drow[0] + '</td>' +
+                        '<td>' + drow[1] + '</td>' +
+                        '<td>' + drow[2] + ' (Chết: ' + (drow[2] - drow[3]) + ')</td>' +
+                        '<td>' + drow[3] + '</td>' +
+                        '<td>' + drow[4] + ' (Trống: ' + (drow[4] - drow[3]) + ')</td>' +
+                    '</tr>'
+                    );
+            }
+
+            //==================================================
+            //==================================================
+            //==================================================
+            //Hiển thị dữ liệu
+            JSON.printToElement('showData', data);
+
         }
 
 
@@ -166,62 +207,137 @@
             min: new Date(1752, 0, 1),
             max: new Date(9998, 11, 31)
         });
+
+        function save() {
+            if (dataTK) {
+                download(JSON.stringify(dataTK), 'Role3 - AnimalCount - ' + new Date() + '.json', 'application/json');
+            } else {
+                toastr['warning']("Cần phải lập báo cáo trước rồi mới lưu được.");
+            }
+        }
+
+        function load() {
+            var files = document.getElementById('fileUpload').files; // FileList object
+            console.log(files);
+            if (!files.length) {
+                return;
+            }
+
+            for (var i = 0; i < files.length; i++) {
+                readFileContent(files[i], function (fileContent) {
+                    LapThongKe(JSON.parse(fileContent));
+                });
+                break; //just one
+            }
+        }
     </script>
 }
 
+<!-- Nav tabs -->
+<ul class="nav nav-tabs md-pills pills-ins" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#panel11" role="tab"><i class="fa fa-area-chart" aria-hidden="true"></i> Thống kê</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#panel12" role="tab"><i class="fa fa-list-ol" aria-hidden="true"></i> Báo cáo</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#panel13" role="tab"><i class="fa fa-file-o" aria-hidden="true"></i> Dữ liệu</a>
+    </li>
+</ul>
 
+<!-- Tab panels -->
+<div class="tab-content">
 
-<div class="row">
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <h2><i class="fa fa-bar-chart" aria-hidden="true"></i> Báo cáo số lượng bò</h2>
+    <!--Panel 1-->
+    <div class="tab-pane fade in show active" id="panel11" role="tabpanel">
 
         <div class="row">
-            <table class="table table-hover fa-border" style="width:400px">
-                <tbody>
-                    <tr>
-                        <td>Từ ngày</td>
-                        <td>
-                            <div class="md-form form-sm">
-                                <i class="fa fa-calendar prefix"></i>
-                                <input name="bd" type="text" id="ngaybatdau" class="form-control datepicker" data-value="@(DateTime.Now.ToShortDateString())">
-                                <label for="ngaykethuc"></label>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Đến ngày</td>
-                        <td>
-                            <div class="md-form form-sm">
-                                <i class="fa fa-calendar prefix"></i>
-                                <input name="kt" type="text" id="ngayketthuc" class="form-control datepicker" data-value="@(DateTime.Now.ToShortDateString())">
-                                <label for="ngaykethuc"></label>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>
-                            <button type="button" class="btn btn-primary" onclick="ThongKeClick()">Thống kê</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <div id="a" hidden="hidden" style="width:450px"><canvas class="align-middle" id="circlechart"></canvas></div>
-            <table id="b" hidden="hidden">
-                <tbody id="chuThich_CircleChart"></tbody>
-            </table>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <h2><i class="fa fa-bar-chart" aria-hidden="true"></i> Thống kê số lượng bò</h2>
+
+                <div class="row">
+                    <table class="table table-hover fa-border" style="width:450px">
+                        <tbody>
+                            <tr>
+                                <td>Từ ngày</td>
+                                <td>
+                                    <div class="md-form form-sm">
+                                        <i class="fa fa-calendar prefix"></i>
+                                        <input name="bd" type="text" id="ngaybatdau" class="form-control datepicker" data-value="@(DateTime.Now.ToShortDateString())">
+                                        <label for="ngaykethuc"></label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Đến ngày</td>
+                                <td>
+                                    <div class="md-form form-sm">
+                                        <i class="fa fa-calendar prefix"></i>
+                                        <input name="kt" type="text" id="ngayketthuc" class="form-control datepicker" data-value="@(DateTime.Now.ToShortDateString())">
+                                        <label for="ngaykethuc"></label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center" colspan="2">
+                                    <button type="button" class="btn btn-primary" onclick="ThongKeClick()">Thống kê</button>
+                                    <button type="button" class="btn btn-danger" onclick="save()">Lưu</button>
+                                    <label for="fileUpload" class="btn btn-success custom-file-upload">Tải</label>
+                                    <input id="fileUpload" type="file" hidden onchange="load()" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="empty_message offset-lg-2">
+                        <h5>Không có dữ liệu thống kê!</h5>
+                    </div>
+                    <div id="a" hidden="hidden" style="width:450px"><canvas class="align-middle" id="circlechart"></canvas></div>
+                    <table id="b" hidden="hidden">
+                        <tbody id="chuThich_CircleChart"></tbody>
+                    </table>
+                </div>
+
+                <canvas id="myChart" hidden="hidden"></canvas>
+
+                <div class="row" id="property" hidden="hidden">
+                    <div class="offset-1 row"><div class="blue lighten-4" style="width:24px; height:24px;"></div>&nbsp;Số bò lý thuyết</div>
+                    <div class="offset-1 row"><div class="light-green lighten-3" style="width:24px; height:24px;"></div>&nbsp;Số bò thực tế</div>
+                    <div class="offset-1 row"><div class="rgba-indigo-strong" style="width:24px; height:24px;"></div>&nbsp;Sức chứa tối đa</div>
+                </div>
+            </div>
         </div>
 
-        <div id="notice" hidden="hidden">
-            <h5>Không có dữ liệu để thống kê!</h5>
-        </div>
-
-        <canvas id="myChart" hidden="hidden"></canvas>
-
-        <div class="row" id="property" hidden="hidden">
-            <div class="offset-1 row"><div class="blue lighten-4" style="width:24px; height:24px;"></div>&nbsp;Số bò lý thuyết</div>
-            <div class="offset-1 row"><div class="light-green lighten-3" style="width:24px; height:24px;"></div>&nbsp;Số bò thực tế</div>
-            <div class="offset-1 row"><div class="rgba-indigo-strong" style="width:24px; height:24px;"></div>&nbsp;Sức chứa tối đa</div>
-        </div>
     </div>
+    <!--/.Panel 1-->
+    <!--Panel 2-->
+    <div class="tab-pane fade" id="panel12" role="tabpanel">
+
+        <div class="empty_message text-center">
+            <h5>Không có dữ liệu thống kê!</h5>
+        </div>
+        <table id="tableReport" class="table table-hover" hidden="hidden">
+            <thead class="table-inverse">
+                <tr>
+                    <th>Mã chi nhánh</th>
+                    <th>Tên chi nhánh</th>
+                    <th>Số bò lý thuyết</th>
+                    <th>Số bò thực tế</th>
+                    <th>Sức chứa tối đa</th>
+                </tr>
+            </thead>
+            <tbody id="showReport"></tbody>
+        </table>
+
+    </div>
+    <!--/.Panel 2-->
+    <!--Panel 3-->
+    <div class="tab-pane fade" id="panel13" role="tabpanel">
+        <div class="empty_message text-center">
+            <h5>Không có dữ liệu thống kê!</h5>
+        </div>
+        <div id="showData" hidden="hidden"></div>
+    </div>
+    <!--/.Panel 3-->
+
 </div>

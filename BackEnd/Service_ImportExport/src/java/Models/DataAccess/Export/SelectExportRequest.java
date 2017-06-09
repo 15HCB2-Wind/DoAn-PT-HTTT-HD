@@ -3,15 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Models.DataAccess.BillImportCow;
+package Models.DataAccess.Export;
 
-import Models.DataAccess.InsertRequest;
-import pojos.Phieunhapbo;
+import Models.BodyRequest;
 
 /**
  *
  * @author BuaNhot
  */
-public class InsertBillImportCowRequest extends InsertRequest{
-    public Phieunhapbo Data;
+public class SelectExportRequest extends BodyRequest{
+    public String machungtu;
 }

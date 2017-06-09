@@ -252,14 +252,8 @@ public class KhoSuaAPIs {
         TokenData tkdata = TokenBUS.tokenData(request, response, 1);
         if (tkdata!=null){
             try{
-                if (KhoSuaAdapter.updateMilk(ChiNhanhAdapter.getSingle(tkdata.AgencyId).getKhotam(), request.Value)){
-                    response.Data = "Cập nhật thành công!";
-                }else{
-                    response.Errors.add("Cập nhật thất bại!");
-                    response.IsError = true;
-                }
+                response.IsError = KhoSuaAdapter.updateMilk(ChiNhanhAdapter.getSingle(tkdata.AgencyId).getKhotam(), request.Value);
             }catch(Exception ex){
-                response.Errors.add("Lỗi hệ thống.");
                 response.IsError = true;
             }
         }
@@ -289,6 +283,42 @@ public class KhoSuaAPIs {
                 }
             }
         }
+        return gson.toJson(response);
+    }
+    
+    @POST
+    @Path("updateMilk2")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public String updateMilk2(String json) {
+        Gson gson = new Gson();
+        WarehouseUpdateMilkRequest request = gson.fromJson(json, WarehouseUpdateMilkRequest.class);
+        WarehouseResponse response = new WarehouseResponse();
+        if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2)){
+            try{
+                response.IsError = KhoSuaAdapter.updateMilk(request.Id, request.Value);
+            }catch(Exception ex){
+                response.IsError = true;
+            }
+        }
+        return gson.toJson(response);
+    }
+    
+    @POST
+    @Path("updateMilk2_isReady2Sub")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public String updateMilk2_isReady2Sub(String json) {
+        Gson gson = new Gson();
+        WarehouseUpdateMilkRequest request = gson.fromJson(json, WarehouseUpdateMilkRequest.class);
+        WarehouseResponse response = new WarehouseResponse();
+        //if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2)){
+            try{
+                response.IsError = !KhoSuaAdapter.updateMilk_isReady2Sub(request.Id, request.Value);
+            }catch(Exception ex){
+                response.IsError = true;
+            }
+        //}
         return gson.toJson(response);
     }
 }

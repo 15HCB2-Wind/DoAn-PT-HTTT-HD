@@ -32,8 +32,7 @@ public class KhoSuaAdapter {
     public static Khosua getSingle(Object id){
         List<Khosua> list = HibernateUtil.getSingle("from Khosua where makho = :p0", new Object[]{ id });
         if (list.size() > 0) {
-            Khosua result = list.get(0);
-            return result;
+            return list.get(0);
         }
         return null;
     }
@@ -86,5 +85,9 @@ public class KhoSuaAdapter {
 
     public static boolean updateMilk(String id, Double value) {
         return HibernateUtil.execute("update Khosua set luongsuaco = luongsuaco + :p1 where makho = :p0", new Object[]{ id, value }) > 0;
+    }
+    
+    public static boolean updateMilk_isReady2Sub(String id, Double value) {
+        return getSingle(id).getLuongsuaco() >= value;
     }
 }

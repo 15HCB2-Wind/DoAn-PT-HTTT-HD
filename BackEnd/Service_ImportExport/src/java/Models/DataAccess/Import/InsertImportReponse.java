@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Models.DataAccess.BillImportCow;
+package Models.DataAccess.Import;
 
 import Models.BodyResponse;
 import java.util.ArrayList;
@@ -12,10 +12,10 @@ import java.util.ArrayList;
  *
  * @author BuaNhot
  */
-public class InsertBillImportCowReponse extends BodyResponse{
+public class InsertImportReponse extends BodyResponse{
     public ArrayList<String> MaNhaCungCapError;
     
-    public InsertBillImportCowReponse(){
+    public InsertImportReponse(){
         MaNhaCungCapError = new ArrayList<>();
     }
 }

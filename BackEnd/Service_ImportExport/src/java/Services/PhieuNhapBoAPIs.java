@@ -6,9 +6,9 @@
 package Services;
 import BusinessHandler.PhieuNhapBoBUS;
 import DAO.PhieuNhapBoAdapter;
-import Models.DataAccess.BillImportCow.InsertBillImportCowReponse;
-import Models.DataAccess.BillImportCow.InsertBillImportCowRequest;
-import Models.DataAccess.BillImportCow.SelectBillImportCowRequest;
+import Models.DataAccess.Import.InsertImportReponse;
+import Models.DataAccess.Import.InsertImportRequest;
+import Models.DataAccess.Import.SelectImportRequest;
 import Models.DataAccess.DeleteResponse;
 import com.google.gson.Gson;
 import javax.ws.rs.Consumes;
@@ -61,8 +61,8 @@ public class PhieuNhapBoAPIs {
     @Consumes("application/json")
     public String add(String json){
         Gson gson = new Gson();
-        InsertBillImportCowRequest request = gson.fromJson(json, InsertBillImportCowRequest.class);
-        InsertBillImportCowReponse response = new InsertBillImportCowReponse();
+        InsertImportRequest request = gson.fromJson(json, InsertImportRequest.class);
+        InsertImportReponse response = new InsertImportReponse();
         TokenData token = BusinessHandler.TokenBUS.tokenData(request, response, 3);
         if (token != null){
             if (PhieuNhapBoBUS.insertValidate(request, response)){
@@ -89,7 +89,7 @@ public class PhieuNhapBoAPIs {
     @Consumes("application/json")
     public String getSingle(String json){
         Gson gson = new GsonBuilder().setDateFormat("dd-MM-yyyy").create();
-        SelectBillImportCowRequest request = gson.fromJson(json, SelectBillImportCowRequest.class);
+        SelectImportRequest request = gson.fromJson(json, SelectImportRequest.class);
         SelectResponse response = new SelectResponse();
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)){
             try{
@@ -108,7 +108,7 @@ public class PhieuNhapBoAPIs {
     @Consumes("application/json")
     public String delete(String json) {
         Gson gson = new Gson();
-        SelectBillImportCowRequest request = gson.fromJson(json, SelectBillImportCowRequest.class);   
+        SelectImportRequest request = gson.fromJson(json, SelectImportRequest.class);   
         DeleteResponse response = new DeleteResponse();
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)){
             try {
@@ -133,7 +133,7 @@ public class PhieuNhapBoAPIs {
     @Consumes("application/json")
     public String recover(String json) {
         Gson gson = new Gson();
-        SelectBillImportCowRequest request = gson.fromJson(json, SelectBillImportCowRequest.class);   
+        SelectImportRequest request = gson.fromJson(json, SelectImportRequest.class);   
         DeleteResponse response = new DeleteResponse();
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)){
             try {
@@ -158,8 +158,8 @@ public class PhieuNhapBoAPIs {
     @Consumes("application/json")
     public String update(String json) {
         Gson gson = new Gson();
-        InsertBillImportCowRequest request = gson.fromJson(json, InsertBillImportCowRequest.class);
-        InsertBillImportCowReponse response = new InsertBillImportCowReponse();
+        InsertImportRequest request = gson.fromJson(json, InsertImportRequest.class);
+        InsertImportReponse response = new InsertImportReponse();
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)) {
             try {
                 if (PhieuNhapBoAdapter.update(request.Data)) {

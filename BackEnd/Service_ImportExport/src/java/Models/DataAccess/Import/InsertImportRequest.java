@@ -3,14 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Models.DataAccess.SaleMilk;
+package Models.DataAccess.Import;
 
-import Models.BodyRequest;
+import Models.DataAccess.InsertRequest;
+import pojos.Phieunhapbo;
 
 /**
  *
  * @author BuaNhot
  */
-public class SelectSaleMilkRequest extends BodyRequest{
-    public String machungtu;
+public class InsertImportRequest extends InsertRequest{
+    public Phieunhapbo Data;
 }

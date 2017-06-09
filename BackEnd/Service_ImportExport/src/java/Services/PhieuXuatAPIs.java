@@ -8,9 +8,9 @@ package Services;
 import BusinessHandler.PhieuXuatBUS;
 import DAO.PhieuXuatAdapter;
 import Models.DataAccess.DeleteResponse;
-import Models.DataAccess.SaleMilk.InsertSaleMilkRequest;
-import Models.DataAccess.SaleMilk.InsertSaleMilkResponse;
-import Models.DataAccess.SaleMilk.SelectSaleMilkRequest;
+import Models.DataAccess.Export.InsertExportRequest;
+import Models.DataAccess.Export.InsertExportResponse;
+import Models.DataAccess.Export.SelectExportRequest;
 import Models.DataAccess.SelectRequest;
 import Models.DataAccess.SelectResponse;
 import Models.TokenData;
@@ -61,8 +61,8 @@ public class PhieuXuatAPIs {
     @Consumes("application/json")
     public String addMilk(String json){
         Gson gson = new Gson();
-        InsertSaleMilkRequest request = gson.fromJson(json, InsertSaleMilkRequest.class);
-        InsertSaleMilkResponse response = new InsertSaleMilkResponse();
+        InsertExportRequest request = gson.fromJson(json, InsertExportRequest.class);
+        InsertExportResponse response = new InsertExportResponse();
         TokenData token = BusinessHandler.TokenBUS.tokenData(request, response, 2);
         if (token != null){
             try{
@@ -88,7 +88,7 @@ public class PhieuXuatAPIs {
     @Consumes("application/json")
     public String getSingle(String json){
         Gson gson = new GsonBuilder().setDateFormat("dd-MM-yyyy").create();
-        SelectSaleMilkRequest request = gson.fromJson(json, SelectSaleMilkRequest.class);
+        SelectExportRequest request = gson.fromJson(json, SelectExportRequest.class);
         SelectResponse response = new SelectResponse();
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2)){
             try{
@@ -107,7 +107,7 @@ public class PhieuXuatAPIs {
     @Consumes("application/json")
     public String delete(String json) {
         Gson gson = new Gson();
-        SelectSaleMilkRequest request = gson.fromJson(json, SelectSaleMilkRequest.class);   
+        SelectExportRequest request = gson.fromJson(json, SelectExportRequest.class);   
         DeleteResponse response = new DeleteResponse();
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2)){
             try {
@@ -132,11 +132,11 @@ public class PhieuXuatAPIs {
     @Consumes("application/json")
     public String exportNow(String json) {
         Gson gson = new Gson();
-        SelectSaleMilkRequest request = gson.fromJson(json, SelectSaleMilkRequest.class);   
+        SelectExportRequest request = gson.fromJson(json, SelectExportRequest.class);   
         DeleteResponse response = new DeleteResponse();
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2)){
             try {
-                int result = PhieuXuatAdapter.exportNow(request.machungtu);
+                int result = PhieuXuatAdapter.exportNow(request, response);
                 if (result != 1) {
                     response.Errors.add("Ghi nhận thất bại.");
                     response.IsError = true;
