@@ -60,6 +60,15 @@ namespace Service.BusinessHandler
             }
         }
 
+        public static void ReportTinhTrangBo(ReportTinhTrangBoRequest request,ref ReportTinhTrangBoResponse response)
+        {
+            if (request.NgayBatDau > request.NgayKetThuc)
+            {
+                response.IsError = true;
+                response.Errors.Add("Lỗi ngày bắt đầu lớn hơn ngày kết thúc");
+            }
+        }
+
         public static void UpdateCowState(string token, string id, string tinhtrang)
         {
             var thread = new Thread((object t) =>

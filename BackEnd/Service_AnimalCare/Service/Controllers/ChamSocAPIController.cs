@@ -185,5 +185,30 @@ namespace Service.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }
+
+        //report tinhtrangbo
+        [HttpPost]
+        [Route("reportTinhTrangBo")]
+        public HttpResponseMessage reportTinhTrangBo([FromBody] ReportTinhTrangBoRequest request)
+        {
+            var response = new ReportTinhTrangBoResponse();
+            if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3))
+            {
+                ChamSocBUS.ReportTinhTrangBo(request,ref response);
+                if (response.IsError)
+                {
+                    Request.CreateResponse(HttpStatusCode.OK, response);
+                }
+                else
+                {
+                    if (request.ThoiGian=="day")
+                    {
+                        response.Data = ChamSocRepository.ReportTinhTrangBo_Day(request.ListBo,request.NgayBatDau,request.NgayKetThuc,request.ThoiGian,request.Value);
+                    }
+                }
+                
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, response);
+        }
     }
 }
