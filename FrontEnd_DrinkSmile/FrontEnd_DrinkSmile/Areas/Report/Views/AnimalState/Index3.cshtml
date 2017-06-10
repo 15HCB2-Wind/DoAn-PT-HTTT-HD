@@ -3,69 +3,116 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section Scripts{
+
     <script>
+
+        var namelabel = new Array();
+
+        var valueofchinhanhs = [[]];
+        var chinhanh;
         var temp = new Array();
         $(document).ready(function () {
             callAjax('post', { Token: Cookies.get('token') }, Cookies.get('area'), "management", "ChiNhanh/getAll", function (data1) {
-                console.log(data1);
                 for (var i = 0; i < data1.Data.length; i++) {
+                    valueofchinhanhs[0].push(data1.Data[i]);
+                    valueofchinhanhs.push(new Array());
                     callAjax('post', { Token: Cookies.get('token'), Predicates: [data1.Data[i].machinhanh] }, Cookies.get('area'), "management", "Bo/getAllOfAgencyBy3", function (data2, index) {
                         for (var j = 0; j < data2.Data.length; j++) {
                             temp.push({
                                 macn: data1.Data[index].machinhanh,
+                                tencn: data1.Data[index].tenchinhanh,
                                 mabo: data2.Data[j].mabo
                             });
                         }
                     }, i);
                 }
             });
-            console.log(temp);
 
-            for (var i = 0; i < temp.length; i++) {
-
-            }
         });
 
-        var DateDiff = {
 
-            inDays: function (d1, d2) {
-                var t2 = d2.getTime();
-                var t1 = d1.getTime();
-
-                return parseInt((t2 - t1) / (24 * 3600 * 1000));
-            },
-
-            inWeeks: function (d1, d2) {
-                var t2 = d2.getTime();
-                var t1 = d1.getTime();
-
-                return parseInt((t2 - t1) / (24 * 3600 * 1000 * 7));
-            },
-
-            inMonths: function (d1, d2) {
-                var d1Y = d1.getFullYear();
-                var d2Y = d2.getFullYear();
-                var d1M = d1.getMonth();
-                var d2M = d2.getMonth();
-
-                return (d2M + 12 * d2Y) - (d1M + 12 * d1Y);
-            },
-
-            inYears: function (d1, d2) {
-                return d2.getFullYear() - d1.getFullYear();
-            }
-        }
 
         function ThongKeClick() {
-           
+
+            var DateDiff = {
+
+                inDays: function (d1, d2) {
+                    var t2 = d2.getTime();
+                    var t1 = d1.getTime();
+
+                    return parseInt((t2 - t1) / (24 * 3600 * 1000));
+                },
+
+                inWeeks: function (d1, d2) {
+                    var t2 = d2.getTime();
+                    var t1 = d1.getTime();
+
+                    return parseInt((t2 - t1) / (24 * 3600 * 1000 * 7));
+                },
+
+                inMonths: function (d1, d2) {
+                    var d1Y = d1.getFullYear();
+                    var d2Y = d2.getFullYear();
+                    var d1M = d1.getMonth();
+                    var d2M = d2.getMonth();
+
+                    return (d2M + 12 * d2Y) - (d1M + 12 * d1Y);
+                },
+
+                inYears: function (d1, d2) {
+                    return d2.getFullYear() - d1.getFullYear();
+                }
+            }
+
             var ngaybatdau = new Date($('input[name=prefix_bd_submit]').val());
             var ngayketthuc = new Date($('input[name=prefix_kt_submit]').val());
-            console.log(ngaybatdau);
-            console.log(ngayketthuc);
-            if (DateDiff.inWeeks(ngaybatdau,ngayketthuc)<=2) {
+            if (DateDiff.inDays(ngaybatdau, ngayketthuc) <= 14) {
+                Date.prototype.addDays = function (days) {
+                    var dat = new Date(this.valueOf());
+                    dat.setDate(dat.getDate() + days);
+                    return dat;
+                }
+                var listbo_cn;
+                var ngaybatdau_temp;
+                for (var i = 0; i < valueofchinhanhs[0].length; i++) {
+                    listbo_cn = new Array();
+                    ngaybatdau_temp = ngaybatdau;
+                    for (var j = 0; j < temp.length; j++) {
+                        if (temp[j].macn == valueofchinhanhs[0][i].machinhanh) {
+                            listbo_cn.push(temp[j]);
+                        }
+                    }
+                    while (ngaybatdau_temp <= ngayketthuc) {
+                        //call
+                        callAjax('post', {
+                            Token: Cookies.get('token'),
+                            NgayBatDau: ngaybatdau_temp,
+                            NgayKetThuc: ngayketthuc,
+                            ListBo: listbo_cn,
+                            ThoiGian: "day",
+                            Value: 0
+                        }, Cookies.get('area'), "animal_care", "animalcare/reportTinhTrangBo", function (dataThongSo, index) {
+                            index = index + 1;
+                            if (valueofchinhanhs[index] == null) {
+                                alert("here");
+                                valueofchinhanhs.push([]);
+                                valueofchinhanhs[index].push(dataThongSo.Data.CanNang);
+                            } else {
+                                valueofchinhanhs[index].push(parseFloat(dataThongSo.Data.CanNang));
+                            }
+                        }, i);
+                        ngaybatdau_temp = ngaybatdau_temp.addDays(1);
+                    }
+                }
+
+                for (var i = 0; i <= DateDiff.inDays(ngaybatdau, ngayketthuc) ; i++) {
+                    namelabel.push((ngaybatdau.addDays(i)).getDate() + '/' +
+                        ((ngaybatdau.addDays(i)).getMonth() + 1) + '/' +
+                        (ngaybatdau.addDays(i)).getFullYear());
+                }
                 console.log("day");
             }
-            else if (DateDiff.inWeeks(ngaybatdau, ngayketthuc) >= 2 && DateDiff.inMonths(ngaybatdau, ngayketthuc)<=2) {
+            else if (DateDiff.inWeeks(ngaybatdau, ngayketthuc) >= 2 && DateDiff.inMonths(ngaybatdau, ngayketthuc) <= 2) {
                 console.log("week");
             }
             else if (DateDiff.inMonths(ngaybatdau, ngayketthuc) > 2 && DateDiff.inYears(ngaybatdau, ngayketthuc) <= 1) {
@@ -86,9 +133,12 @@
             else if (DateDiff.inYears(ngaybatdau, ngayketthuc) > 100) {
                 console.log("10year");
             }
+
+            createchart();
         }
 
-
+    </script>
+    <script>
         $('.datepicker').pickadate({
             monthsFull: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
             monthsShort: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
@@ -116,10 +166,85 @@
             max: new Date(9998, 11, 31)
         });
     </script>
+    <script>
+//chart
+        function createchart() {
+            var datachart = {
+                labels: namelabel,
+                datasets: []
+            };
+
+
+            for (var i = 0; i < valueofchinhanhs[0].length; i++) {
+                if (valueofchinhanhs[i + 1] == null) {
+                    alert("loi roi");
+                } else {
+                    console.log(valueofchinhanhs[i + 1]);
+                    console.log(valueofchinhanhs[i + 1].length);
+                    var datatemp = []
+                    for (var j = 0; j < valueofchinhanhs[i + 1].length; j++) {
+                        console.log(valueofchinhanhs[i + 1][j]);
+                        datatemp.push(valueofchinhanhs[i + 1][j]);
+                    }
+                    console.log(datatemp);
+                    datachart.datasets.push({
+                        fillColor: "rgba(220,220,220,0.2)",
+                        strokeColor: "rgba(220,220,220,1)",
+                        pointColor: "rgba(220,220,220,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(220,220,220,1)",
+                        data: datatemp
+                    });
+                }
+            }
+
+            var data = {
+                labels: namelabel,
+                datasets: [
+                    {
+                        fillColor: "rgba(220,220,220,0.2)",
+                        strokeColor: "rgba(220,220,220,1)",
+                        pointColor: "rgba(220,220,220,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(220,220,220,1)",
+                        data: [65, 59, 80, 81, 56, 55, 40]
+                    },
+                    {
+                        fillColor: "rgba(151,187,205,0.2)",
+                        strokeColor: "rgba(151,187,205,1)",
+                        pointColor: "rgba(151,187,205,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(151,187,205,1)",
+                        data: [28, 48, 40, 19, 86, 27, 90]
+                    }
+                ]
+            };
+            data.datasets.push({
+                fillColor: "rgba(151,187,205,0.2)",
+                strokeColor: "rgba(151,187,205,1)",
+                pointColor: "rgba(151,187,205,1)",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(151,187,205,1)",
+                data: [23, 17, 45, 69, 26, 30, 90]
+            });
+            var option = {
+                responsive: true,
+            };
+
+            // Get the context of the canvas element we want to select
+            var ctx = document.getElementById("myChart").getContext('2d');
+            var myLineChart = new Chart(ctx).Line(data, option); //'Line' defines type of the chart.
+
+            var ctx2 = document.getElementById("myChart2").getContext('2d');
+            var myLineChart2 = new Chart(ctx2).Line(datachart, option);
+        }
+    </script>
+
 }
-
-
-
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <h2><i class="fa fa-bar-chart" aria-hidden="true"></i> Báo cáo tình trạng bò</h2>
@@ -165,7 +290,7 @@
             <h5>Không có dữ liệu để thống kê!</h5>
         </div>
 
-        <canvas id="myChart" hidden="hidden"></canvas>
+
 
         <div class="row" id="property" hidden="hidden">
             <div class="offset-1 row"><div class="blue lighten-4" style="width:24px; height:24px;"></div>&nbsp;Số bò lý thuyết</div>
@@ -174,5 +299,6 @@
         </div>
     </div>
 </div>
-
+<canvas id="myChart"></canvas>
+<canvas id="myChart2"></canvas>
 

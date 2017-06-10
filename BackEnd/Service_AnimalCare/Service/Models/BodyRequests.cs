@@ -53,4 +53,13 @@ namespace Service.Models
         public string Id { get; set; }
         public string NewState { get; set; }
     }
+
+    public class ReportTinhTrangBoRequest : BodyRequest
+    {
+        public List<BoTemp> ListBo { get; set; }
+        public DateTime NgayBatDau { get; set; }
+        public DateTime NgayKetThuc { get; set; }
+        public string ThoiGian { get; set; }
+        public int Value { get; set; }
+    }
 }

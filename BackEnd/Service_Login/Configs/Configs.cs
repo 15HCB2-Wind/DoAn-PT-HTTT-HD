@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 public class Configs
 {
-    public const string CONNECTION_STRING = @"Server=CHIPHONG\SQLEXPRESS_2012;Database=Service_Login;Trusted_Connection=True;";
+    public const string CONNECTION_STRING = @"Server=.;Database=Service_Login;Trusted_Connection=True;";
 
     public const string MAIL_SENDER_NAME = "Drink Smile - Administrator";
 

@@ -43,4 +43,5 @@ namespace Service.Models
     public class ChamSocResponse : BodyResponse { }
     public class TinhTrangBoResponse : BodyResponse { }
     public class KhoSuaResponse : BodyResponse { }
+    public class ReportTinhTrangBoResponse : BodyResponse { }
 }
