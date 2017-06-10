@@ -20,6 +20,27 @@ public class DataProvider
     //==================================================
     //==================================================
     //==================================================
+    //  Log SQL
+
+    public static dynamic Log
+    {
+        get
+        {
+            return new
+            {
+                Enable = true,
+                Period = 10,
+            };
+        }
+    }
+
+    private static string CurrentLog { get; private set; }
+
+    
+
+    //==================================================
+    //==================================================
+    //==================================================
     //  Source
 
 	public static int ExecuteNonQuery(string query)
@@ -33,6 +54,12 @@ public class DataProvider
                 var command = new SqlCommand(query, connector);
                 result = command.ExecuteNonQuery();
                 connector.Close();
+                //log
+                if (Log.Enable)
+                {
+
+                }
+                //
             }
 		}
 		catch (Exception ex)

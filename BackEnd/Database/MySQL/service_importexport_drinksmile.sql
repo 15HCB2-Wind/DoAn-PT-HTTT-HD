@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th6 10, 2017 lúc 06:34 SA
+-- Thời gian đã tạo: Th6 10, 2017 lúc 10:41 SA
 -- Phiên bản máy phục vụ: 5.7.14
 -- Phiên bản PHP: 5.6.25
 
