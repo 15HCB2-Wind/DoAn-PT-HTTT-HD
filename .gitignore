@@ -1,13 +1,3 @@
-Wind_DrinkSmile_MiddleWare/ConsoleTest
-Wind_DrinkSmile_MiddleWare/Configs/bin
-Wind_DrinkSmile_MiddleWare/Configs/obj
-Wind_DrinkSmile_MiddleWare/DataAccess/bin
-Wind_DrinkSmile_MiddleWare/DataAccess/obj
-Wind_DrinkSmile_MiddleWare/DataService/bin
-Wind_DrinkSmile_MiddleWare/DataService/obj
-Wind_DrinkSmile_MiddleWare/DomainData/bin
-Wind_DrinkSmile_MiddleWare/DomainData/obj
-Wind_DrinkSmile_MiddleWare/packages
 FrontEnd_DrinkSmile/packages/
 FrontEnd_DrinkSmile/FrontEnd_DrinkSmile/bin/
 FrontEnd_DrinkSmile/.vs/

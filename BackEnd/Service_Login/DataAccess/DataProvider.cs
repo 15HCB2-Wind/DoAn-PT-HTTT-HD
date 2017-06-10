@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.IO;
 
 public class DataProvider
 {
@@ -22,21 +23,35 @@ public class DataProvider
     //==================================================
     //  Log SQL
 
-    public static dynamic Log
+    public static dynamic LogConfigs
     {
         get
         {
             return new
             {
                 Enable = true,
-                Period = 10,
+                FileName = "ServiceLogin_SQLlog",
             };
         }
     }
 
-    private static string CurrentLog { get; private set; }
-
-    
+    private static void WriteLog(string query)
+    {
+        if (LogConfigs.Enable)
+        {
+            //init
+            var queryLC = query.ToLower();
+            //check query insert/update
+            if (queryLC.Contains("insert") || queryLC.Contains("update"))
+            {
+                //write log
+                using (var writer = File.AppendText(LogConfigs.FileName))
+                {
+                    writer.WriteLine(query);
+                }
+            }
+        }
+    }
 
     //==================================================
     //==================================================
@@ -55,11 +70,7 @@ public class DataProvider
                 result = command.ExecuteNonQuery();
                 connector.Close();
                 //log
-                if (Log.Enable)
-                {
-
-                }
-                //
+                WriteLog(query);
             }
 		}
 		catch (Exception ex)
