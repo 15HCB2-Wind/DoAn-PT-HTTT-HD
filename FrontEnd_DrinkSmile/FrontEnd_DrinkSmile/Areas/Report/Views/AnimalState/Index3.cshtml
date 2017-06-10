@@ -3,19 +3,34 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section Scripts{
-
     <script>
-
         var namelabel = new Array();
-
-        var valueofchinhanhs = [[]];
-        var chinhanh;
+        var listdate = new Array();
+        var corlors;
+        var countcolor = 0;
+        var valueofchinhanhs = [];
+        var cannang = [[]];
+        var chieucao = [[]];
         var temp = new Array();
+      
         $(document).ready(function () {
+            colors = [
+            { normal: "rgba(230,81,0,0.4)", hover: "rgba(245,127,23,1)", hex: "#e65100", hexhover: "#f57f17" },
+            { normal: "rgba(76,175,80,0.4)", hover: "rgba(0,230,118,1)", hex: "#4caf50", hexhover: "#00e676" },
+            { normal: "rgba(29,233,182,0.4)", hover: "rgba(100,255,218,1)", hex: "#1de9b6", hexhover: "#64ffda" },
+            { normal: "rgba(224,224,224,0.4)", hover: "rgba(245,245,245,1)", hex: "#e0e0e0", hexhover: "#f5f5f5" },
+            { normal: "rgba(255,61,0,0.4)", hover: "rgba(255,110,64,1)", hex: "#ff3d00", hexhover: "#ff6e40" },
+            { normal: "rgba(255,234,0,0.4)", hover: "rgba(255,255,0,1)", hex: "#ffea00", hexhover: "#ffff00" },
+            { normal: "rgba(3,169,244,0.4)", hover: "rgba(129,212,250,1)", hex: "#03a9f4", hexhover: "#81d4fa" }
+            ];
+            
+            loadprepare();
+        });
+
+        function loadprepare() {
             callAjax('post', { Token: Cookies.get('token') }, Cookies.get('area'), "management", "ChiNhanh/getAll", function (data1) {
                 for (var i = 0; i < data1.Data.length; i++) {
-                    valueofchinhanhs[0].push(data1.Data[i]);
-                    valueofchinhanhs.push(new Array());
+                    valueofchinhanhs.push(data1.Data[i]);
                     callAjax('post', { Token: Cookies.get('token'), Predicates: [data1.Data[i].machinhanh] }, Cookies.get('area'), "management", "Bo/getAllOfAgencyBy3", function (data2, index) {
                         for (var j = 0; j < data2.Data.length; j++) {
                             temp.push({
@@ -27,63 +42,100 @@
                     }, i);
                 }
             });
+        }
 
-        });
+        function clearChart() {
+            namelabel = new Array();
+            listdate = new Array();
+            countcolor = 0;
+            valueofchinhanhs = [];
+            cannang = [[]];
+            chieucao = [[]];
+            temp = new Array();
+            loadprepare();
+        }
 
+        Date.prototype.addDays = function (days) {
+            var dat = new Date(this.valueOf());
+            dat.setDate(dat.getDate() + days);
+            return dat;
+        }
+        var DateDiff = {
 
+            inDays: function (d1, d2) {
+                var t2 = d2.getTime();
+                var t1 = d1.getTime();
+
+                return parseInt((t2 - t1) / (24 * 3600 * 1000));
+            },
+
+            inWeeks: function (d1, d2) {
+                var t2 = d2.getTime();
+                var t1 = d1.getTime();
+
+                return parseInt((t2 - t1) / (24 * 3600 * 1000 * 7));
+            },
+
+            inMonths: function (d1, d2) {
+                var d1Y = d1.getFullYear();
+                var d2Y = d2.getFullYear();
+                var d1M = d1.getMonth();
+                var d2M = d2.getMonth();
+
+                return (d2M + 12 * d2Y) - (d1M + 12 * d1Y);
+            },
+
+            inYears: function (d1, d2) {
+                return d2.getFullYear() - d1.getFullYear();
+            }
+        }
 
         function ThongKeClick() {
-
-            var DateDiff = {
-
-                inDays: function (d1, d2) {
-                    var t2 = d2.getTime();
-                    var t1 = d1.getTime();
-
-                    return parseInt((t2 - t1) / (24 * 3600 * 1000));
-                },
-
-                inWeeks: function (d1, d2) {
-                    var t2 = d2.getTime();
-                    var t1 = d1.getTime();
-
-                    return parseInt((t2 - t1) / (24 * 3600 * 1000 * 7));
-                },
-
-                inMonths: function (d1, d2) {
-                    var d1Y = d1.getFullYear();
-                    var d2Y = d2.getFullYear();
-                    var d1M = d1.getMonth();
-                    var d2M = d2.getMonth();
-
-                    return (d2M + 12 * d2Y) - (d1M + 12 * d1Y);
-                },
-
-                inYears: function (d1, d2) {
-                    return d2.getFullYear() - d1.getFullYear();
-                }
-            }
-
+           
             var ngaybatdau = new Date($('input[name=prefix_bd_submit]').val());
             var ngayketthuc = new Date($('input[name=prefix_kt_submit]').val());
+            
+            if(DateDiff.inDays(ngaybatdau, ngayketthuc)<0)
+            {
+                toastr["error"]("Ngày bắt đầu không được nhỏ hơn ngày kết thúc");
+                return;
+            }
+            
+
             if (DateDiff.inDays(ngaybatdau, ngayketthuc) <= 14) {
-                Date.prototype.addDays = function (days) {
-                    var dat = new Date(this.valueOf());
-                    dat.setDate(dat.getDate() + days);
-                    return dat;
+                if (namelabel.length == DateDiff.inDays(ngaybatdau, ngayketthuc) + 1) {
+                    
+                }
+                else {
+                    namelabel = [];
+                    for (var i = 0; i <= DateDiff.inDays(ngaybatdau, ngayketthuc) ; i++) {
+                        listdate.push((ngaybatdau.addDays(i)).getFullYear() + '-' +
+                            ((ngaybatdau.addDays(i)).getMonth() + 1) + '-' +
+                            (ngaybatdau.addDays(i)).getDate());
+                        namelabel.push((ngaybatdau.addDays(i)).getDate() + '/' +
+                            ((ngaybatdau.addDays(i)).getMonth() + 1) + '/' +
+                            (ngaybatdau.addDays(i)).getFullYear());
+                    }
                 }
                 var listbo_cn;
                 var ngaybatdau_temp;
-                for (var i = 0; i < valueofchinhanhs[0].length; i++) {
+                for (var i = 0; i < valueofchinhanhs.length; i++) {
+                    if (cannang[i] == null) {
+                        cannang.push(new Array());
+                    }
+                    if (chieucao[i] == null) {
+                        chieucao.push(new Array());
+                    }
+
                     listbo_cn = new Array();
                     ngaybatdau_temp = ngaybatdau;
                     for (var j = 0; j < temp.length; j++) {
-                        if (temp[j].macn == valueofchinhanhs[0][i].machinhanh) {
+                        if (temp[j].macn == valueofchinhanhs[i].machinhanh) {
                             listbo_cn.push(temp[j]);
                         }
                     }
+
                     while (ngaybatdau_temp <= ngayketthuc) {
-                        //call
                         callAjax('post', {
                             Token: Cookies.get('token'),
                             NgayBatDau: ngaybatdau_temp,
@@ -92,25 +144,21 @@
                             ThoiGian: "day",
                             Value: 0
                         }, Cookies.get('area'), "animal_care", "animalcare/reportTinhTrangBo", function (dataThongSo, index) {
-                            index = index + 1;
-                            if (valueofchinhanhs[index] == null) {
-                                alert("here");
-                                valueofchinhanhs.push([]);
-                                valueofchinhanhs[index].push(dataThongSo.Data.CanNang);
-                            } else {
-                                valueofchinhanhs[index].push(parseFloat(dataThongSo.Data.CanNang));
+                            if (!dataThongSo.IsError) {
+                                cannang[index].push({
+                                    Ngay: dataThongSo.Data.Ngay,
+                                    CanNang: dataThongSo.Data.CanNang
+                                });
+                                chieucao[index].push({
+                                    Ngay: dataThongSo.Data.Ngay,
+                                    ChieuCao: dataThongSo.Data.ChieuCao
+                                });
                             }
                         }, i);
                         ngaybatdau_temp = ngaybatdau_temp.addDays(1);
                     }
                 }
 
-                for (var i = 0; i <= DateDiff.inDays(ngaybatdau, ngayketthuc) ; i++) {
-                    namelabel.push((ngaybatdau.addDays(i)).getDate() + '/' +
-                        ((ngaybatdau.addDays(i)).getMonth() + 1) + '/' +
-                        (ngaybatdau.addDays(i)).getFullYear());
-                }
-                console.log("day");
             }
             else if (DateDiff.inWeeks(ngaybatdau, ngayketthuc) >= 2 && DateDiff.inMonths(ngaybatdau, ngayketthuc) <= 2) {
                 console.log("week");
@@ -134,11 +182,11 @@
                 console.log("10year");
             }
 
-            createchart();
+            toastr['warning']('Wait 5s');
+            setTimeout(createchart, 5000);
         }
 
-    </script>
-    <script>
+
         $('.datepicker').pickadate({
             monthsFull: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
             monthsShort: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
@@ -165,86 +213,246 @@
             min: new Date(1752, 0, 1),
             max: new Date(9998, 11, 31)
         });
-    </script>
-    <script>
-//chart
+
+        //chart
         function createchart() {
-            var datachart = {
+            var datachartcannang = {
+                labels: namelabel,
+                datasets: []
+            };
+            var datachartchieucao = {
                 labels: namelabel,
                 datasets: []
             };
 
 
-            for (var i = 0; i < valueofchinhanhs[0].length; i++) {
-                if (valueofchinhanhs[i + 1] == null) {
-                    alert("loi roi");
-                } else {
-                    console.log(valueofchinhanhs[i + 1]);
-                    console.log(valueofchinhanhs[i + 1].length);
-                    var datatemp = []
-                    for (var j = 0; j < valueofchinhanhs[i + 1].length; j++) {
-                        console.log(valueofchinhanhs[i + 1][j]);
-                        datatemp.push(valueofchinhanhs[i + 1][j]);
+            //sort
+            for (var k = 0; k < valueofchinhanhs.length; k++) {
+                for (var i = 0; i < namelabel.length; i++) {
+                    for (var j = 0; j < namelabel.length; j++) {
+                        if (new Date(cannang[k][i].Ngay) < new Date(cannang[k][j].Ngay)) {
+                            var tempcn = cannang[k][i];
+                            cannang[k][i] = cannang[k][j];
+                            cannang[k][j] = tempcn;
+                            j = 0;
+                        }
                     }
-                    console.log(datatemp);
-                    datachart.datasets.push({
-                        fillColor: "rgba(220,220,220,0.2)",
-                        strokeColor: "rgba(220,220,220,1)",
-                        pointColor: "rgba(220,220,220,1)",
-                        pointStrokeColor: "#fff",
-                        pointHighlightFill: "#fff",
-                        pointHighlightStroke: "rgba(220,220,220,1)",
-                        data: datatemp
-                    });
+                    for (var j = 1; j < namelabel.length; j++) {
+                        if (new Date(chieucao[k][i].Ngay) < new Date(chieucao[k][j].Ngay)) {
+                            var tempcc = chieucao[k][i];
+                            chieucao[k][i] = chieucao[k][j];
+                            chieucao[k][j] = tempcc;
+                            j = 0;
+                        }
+                    }
                 }
             }
 
-            var data = {
-                labels: namelabel,
-                datasets: [
-                    {
-                        fillColor: "rgba(220,220,220,0.2)",
-                        strokeColor: "rgba(220,220,220,1)",
-                        pointColor: "rgba(220,220,220,1)",
-                        pointStrokeColor: "#fff",
-                        pointHighlightFill: "#fff",
-                        pointHighlightStroke: "rgba(220,220,220,1)",
-                        data: [65, 59, 80, 81, 56, 55, 40]
-                    },
-                    {
-                        fillColor: "rgba(151,187,205,0.2)",
-                        strokeColor: "rgba(151,187,205,1)",
-                        pointColor: "rgba(151,187,205,1)",
-                        pointStrokeColor: "#fff",
-                        pointHighlightFill: "#fff",
-                        pointHighlightStroke: "rgba(151,187,205,1)",
-                        data: [28, 48, 40, 19, 86, 27, 90]
+
+
+            if (valueofchinhanhs == null) {
+                alert("loi roi");
+            } else {
+                for (var i = 0; i < valueofchinhanhs.length; i++) {
+                    var tempcannang = new Array();
+                    var tempchieucao = new Array();
+                    for (var j = 0; j < namelabel.length; j++) {
+                        tempcannang.push(cannang[i][j].CanNang);
+                        tempchieucao.push(chieucao[i][j].ChieuCao);
                     }
-                ]
-            };
-            data.datasets.push({
-                fillColor: "rgba(151,187,205,0.2)",
-                strokeColor: "rgba(151,187,205,1)",
-                pointColor: "rgba(151,187,205,1)",
-                pointStrokeColor: "#fff",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(151,187,205,1)",
-                data: [23, 17, 45, 69, 26, 30, 90]
-            });
+                    if (countcolor >= colors.length) {
+                        countcolor = 0;
+                    }
+                   
+                    datachartcannang.datasets.push({
+                        fillColor: "rgba(225,225,225,0)",
+                        strokeColor: colors[countcolor].hover,
+                        pointColor: "rgba(220,220,220,1)",
+                        pointStrokeColor: "#333",
+                        pointHighlightFill: "#333",
+                        pointHighlightStroke: "rgba(220,220,220,1)",
+                        data: tempcannang
+                    });
+                    datachartchieucao.datasets.push({
+                        fillColor: "rgba(225,225,225,0)",
+                        strokeColor: colors[countcolor].hover,
+                        pointColor: "rgba(220,220,220,1)",
+                        pointStrokeColor: "#333",
+                        pointHighlightFill: "#333",
+                        pointHighlightStroke: "rgba(220,220,220,1)",
+                        data: tempchieucao
+                    });
+                    countcolor++;
+                }
+            }
+            $('#myChart').empty();
+            $('#myChart2').empty();
+            $('#chuThich_CircleChart').empty();
+            for (var i = 0; i < valueofchinhanhs.length; i++) {
+                for (var j = 0; j < colors.length; j++) {
+                    var string = "";
+                    if (datachartcannang.datasets[i].strokeColor == colors[j].hover) {
+                        string = colors[j].hexhover;
+                        break;
+                    }
+                }
+                $('#chuThich_CircleChart').append(
+                    '<tr>' +
+                        '<td class="row"><div style="width:24px; height:24px; background-color:' + string + '"></div>&nbsp;' + valueofchinhanhs[i].tenchinhanh + '</td>' +
+                    '</tr>'
+                    );
+            }
+
             var option = {
-                responsive: true,
+                responsive: true
             };
 
-            // Get the context of the canvas element we want to select
-            var ctx = document.getElementById("myChart").getContext('2d');
-            var myLineChart = new Chart(ctx).Line(data, option); //'Line' defines type of the chart.
+            // get the context of the canvas element we want to select
+            $('#b').removeAttr("hidden");
+            ctx = document.getElementById("myChart").getContext('2d');
+            $('#chart').removeAttr("hidden");
+            var mylinechart = new Chart(ctx).Line(datachartcannang, option); //'line' defines type of the chart.
+            ctx2 = document.getElementById("myChart2").getContext('2d');
+            var mylinechart2 = new Chart(ctx2).Line(datachartchieucao, option);
 
-            var ctx2 = document.getElementById("myChart2").getContext('2d');
-            var myLineChart2 = new Chart(ctx2).Line(datachart, option);
+        }
+
+
+        Chart.defaults.global = {
+            // Boolean - Whether to animate the chart
+            animation: true,
+
+            // Number - Number of animation steps
+            animationSteps: 60,
+
+            // String - Animation easing effect
+            // Possible effects are:
+            // [easeInOutQuart, linear, easeOutBounce, easeInBack, easeInOutQuad,
+            //  easeOutQuart, easeOutQuad, easeInOutBounce, easeOutSine, easeInOutCubic,
+            //  easeInExpo, easeInOutBack, easeInCirc, easeInOutElastic, easeOutBack,
+            //  easeInQuad, easeInOutExpo, easeInQuart, easeOutQuint, easeInOutCirc,
+            //  easeInSine, easeOutExpo, easeOutCirc, easeOutCubic, easeInQuint,
+            //  easeInElastic, easeInOutSine, easeInOutQuint, easeInBounce,
+            //  easeOutElastic, easeInCubic]
+            animationEasing: "easeOutQuart",
+
+            // Boolean - If we should show the scale at all
+            showScale: true,
+
+            // Boolean - If we want to override with a hard coded scale
+            scaleOverride: false,
+
+            // ** Required if scaleOverride is true **
+            // Number - The number of steps in a hard coded scale
+            scaleSteps: null,
+            // Number - The value jump in the hard coded scale
+            scaleStepWidth: null,
+            // Number - The scale starting value
+            scaleStartValue: null,
+
+            // String - Colour of the scale line
+            scaleLineColor: "rgba(0,0,0,.1)",
+
+            // Number - Pixel width of the scale line
+            scaleLineWidth: 1,
+
+            // Boolean - Whether to show labels on the scale
+            scaleShowLabels: true,
+
+            // Interpolated JS string - can access value
+            scaleLabel: "<%=value%>",
+
+            // Boolean - Whether the scale should stick to integers, not floats even if drawing space is there
+            scaleIntegersOnly: true,
+
+            // Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
+            scaleBeginAtZero: false,
+
+            // String - Scale label font declaration for the scale label
+            scaleFontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+
+            // Number - Scale label font size in pixels
+            scaleFontSize: 12,
+
+            // String - Scale label font weight style
+            scaleFontStyle: "normal",
+
+            // String - Scale label font colour
+            scaleFontColor: "#666",
+
+            // Boolean - whether or not the chart should be responsive and resize when the browser does.
+            responsive: false,
+
+            // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
+            maintainAspectRatio: true,
+
+            // Boolean - Determines whether to draw tooltips on the canvas or not
+            showTooltips: true,
+
+            // Function - Determines whether to execute the customTooltips function instead of drawing the built in tooltips (See [Advanced - External Tooltips](#advanced-usage-custom-tooltips))
+            customTooltips: false,
+
+            // Array - Array of string names to attach tooltip events
+            tooltipEvents: ["touchstart", "touchmove"],
+
+            // String - Tooltip background colour
+            tooltipFillColor: "rgba(0,0,0,0.8)",
+
+            // String - Tooltip label font declaration for the scale label
+            tooltipFontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+
+            // Number - Tooltip label font size in pixels
+            tooltipFontSize: 14,
+
+            // String - Tooltip font weight style
+            tooltipFontStyle: "normal",
+
+            // String - Tooltip label font colour
+            tooltipFontColor: "#fff",
+
+            // String - Tooltip title font declaration for the scale label
+            tooltipTitleFontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+
+            // Number - Tooltip title font size in pixels
+            tooltipTitleFontSize: 14,
+
+            // String - Tooltip title font weight style
+            tooltipTitleFontStyle: "bold",
+
+            // String - Tooltip title font colour
+            tooltipTitleFontColor: "#fff",
+
+            // Number - pixel width of padding around tooltip text
+            tooltipYPadding: 6,
+
+            // Number - pixel width of padding around tooltip text
+            tooltipXPadding: 6,
+
+            // Number - Size of the caret on the tooltip
+            tooltipCaretSize: 8,
+
+            // Number - Pixel radius of the tooltip border
+            tooltipCornerRadius: 6,
+
+            // Number - Pixel offset from point x to tooltip edge
+            tooltipXOffset: 10,
+
+            // String - Template string for single tooltips
+            tooltipTemplate: "<%if (label){%><%=label%>: <%}%><%= value %>",
+
+            // String - Template string for multiple tooltips
+            multiTooltipTemplate: "<%= value %>",
+
+            // Function - Will fire on animation progression.
+            onAnimationProgress: function () { },
+
+            // Function - Will fire on animation completion.
+            onAnimationComplete: function () { }
         }
     </script>
 
 }
+
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <h2><i class="fa fa-bar-chart" aria-hidden="true"></i> Báo cáo tình trạng bò</h2>
@@ -280,25 +488,22 @@
                     </tr>
                 </tbody>
             </table>
-            <div id="a" hidden="hidden" style="width:450px"><canvas class="align-middle" id="circlechart"></canvas></div>
-            <table id="b" hidden="hidden">
-                <tbody id="chuThich_CircleChart"></tbody>
-            </table>
+            
         </div>
 
         <div id="notice" hidden="hidden">
             <h5>Không có dữ liệu để thống kê!</h5>
         </div>
-
-
-
-        <div class="row" id="property" hidden="hidden">
-            <div class="offset-1 row"><div class="blue lighten-4" style="width:24px; height:24px;"></div>&nbsp;Số bò lý thuyết</div>
-            <div class="offset-1 row"><div class="light-green lighten-3" style="width:24px; height:24px;"></div>&nbsp;Số bò thực tế</div>
-            <div class="offset-1 row"><div class="rgba-indigo-strong" style="width:24px; height:24px;"></div>&nbsp;Sức chứa tối đa</div>
-        </div>
     </div>
 </div>
-<canvas id="myChart"></canvas>
-<canvas id="myChart2"></canvas>
 
+<div id="chart" hidden="hidden">
+    <table id="b" hidden="hidden" align="center">
+        <tbody id="chuThich_CircleChart"></tbody>
+    </table>
+    <br />
+    <canvas id="myChart"></canvas>
+    <p class="text-center">Cân nặng trung bình</p>
+    <canvas id="myChart2"></canvas>
+    <p class="text-center">Chiều cao trung bình</p>
+</div>

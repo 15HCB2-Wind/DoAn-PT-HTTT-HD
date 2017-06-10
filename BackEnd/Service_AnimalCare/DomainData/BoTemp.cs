@@ -15,5 +15,6 @@ namespace DomainData
     {
         public double CanNang { get; set; }
         public double ChieuCao { get; set; }
+        public string Ngay { get; set; }
     }
 }

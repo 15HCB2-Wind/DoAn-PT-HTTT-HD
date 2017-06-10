@@ -238,6 +238,7 @@ namespace DataAccess.Repositories
                         ChieuCao = row.GetValueDefault<double>(1)
                     };
                 }, query);
+                result.Ngay = ngaybatdau.Year+"-"+ngaybatdau.Month+"-"+ngaybatdau.Day;
             }
             catch (Exception)
             {
