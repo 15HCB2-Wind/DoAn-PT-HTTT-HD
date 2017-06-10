@@ -18,7 +18,7 @@
                     <div class="md-form form-sm">
                         <i class="fa fa-map-marker prefix"></i>
                         <textarea id="lydo" class="md-textarea" length="100" required="required"></textarea>
-                        <label for="lydo">Địa chỉ</label>
+                        <label for="lydo">Lý do xuất kho</label>
                     </div>
 
                     <div class="text-center">
@@ -124,6 +124,10 @@
 
             $('#form_action').submit(function (e) {
                 e.preventDefault();
+                if (listEx.length <= 0) {
+                    toastr['error']("Xin hãy chọn kho xuất.");
+                    return;
+                }
                 callAjax('post',
                     {
                         Token: Cookies.get('token'),

@@ -6,7 +6,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import javafx.collections.ObservableList;
 import org.hibernate.Query;
-import pojos.Nhanvien;
 
 public class HibernateUtil {
 

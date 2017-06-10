@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Models.DataAccess.SaleMilk;
+package Models.DataAccess.Export;
 
 import Models.DataAccess.InsertRequest;
 import java.util.List;
@@ -14,7 +14,7 @@ import pojos.Phieuxuat;
  *
  * @author BuaNhot
  */
-public class InsertSaleMilkRequest extends InsertRequest {
+public class InsertExportRequest extends InsertRequest {
     public Phieuxuat Data;
     public List<Chitietxuatsua> Details;
 }

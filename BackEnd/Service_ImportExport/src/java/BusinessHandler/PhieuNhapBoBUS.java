@@ -5,8 +5,8 @@
  */
 package BusinessHandler;
 
-import Models.DataAccess.BillImportCow.InsertBillImportCowReponse;
-import Models.DataAccess.BillImportCow.InsertBillImportCowRequest;
+import Models.DataAccess.Import.InsertImportReponse;
+import Models.DataAccess.Import.InsertImportRequest;
 import Models.DataAccess.SelectRequest;
 import Models.DataAccess.SelectResponse;
 
@@ -24,7 +24,7 @@ public class PhieuNhapBoBUS {
         return !response.IsError;
     }
     
-    public static boolean insertValidate(InsertBillImportCowRequest request, InsertBillImportCowReponse response){
+    public static boolean insertValidate(InsertImportRequest request, InsertImportReponse response){
         if (request.Data.getMancc().isEmpty()){
             response.MaNhaCungCapError.add("Họ tên không được để trống!");
             response.IsError = true;

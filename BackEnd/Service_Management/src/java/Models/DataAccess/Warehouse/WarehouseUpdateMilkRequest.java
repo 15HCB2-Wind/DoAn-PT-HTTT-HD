@@ -6,12 +6,12 @@
 package Models.DataAccess.Warehouse;
 
 import Models.BodyRequest;
-import pojos.Khosua;
 
 /**
  *
  * @author 19101994
  */
 public class WarehouseUpdateMilkRequest extends BodyRequest {
+    public String Id;
     public Double Value;
 }

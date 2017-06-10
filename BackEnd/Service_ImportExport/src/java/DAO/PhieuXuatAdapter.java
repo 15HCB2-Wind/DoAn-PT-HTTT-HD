@@ -5,8 +5,11 @@
  */
 package DAO;
 
+import BusinessHandler.PhieuXuatBUS;
 import Config.Configs;
-import Models.DataAccess.SaleMilk.InsertSaleMilkRequest;
+import Models.BodyResponse;
+import Models.DataAccess.Export.InsertExportRequest;
+import Models.DataAccess.Export.SelectExportRequest;
 import Ultility.HibernateUtil;
 import java.util.Date;
 import java.util.List;
@@ -26,7 +29,7 @@ public class PhieuXuatAdapter {
     }
 
     public static List<Phieuxuat> getAll(Object id) {
-        return HibernateUtil.getList("from Phieuxuat where macn = :p0 order by ngaylap desc", new Object[] { id });
+        return HibernateUtil.getList("from Phieuxuat where macn = :p0 order by ngaylap desc, ngayxuat asc, machungtu desc", new Object[] { id });
     }
     
     public static Phieuxuat getSingle(Object userid){
@@ -37,7 +40,7 @@ public class PhieuXuatAdapter {
         return null;
     }
     
-    public static boolean add(InsertSaleMilkRequest request) {
+    public static boolean add(InsertExportRequest request) {
         boolean success = false;
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
@@ -67,7 +70,20 @@ public class PhieuXuatAdapter {
         return HibernateUtil.execute("update Phieuxuat set ngayxuat = :p1 where machungtu = :p0", new Object[]{ machungtu, true });
     }
 
-    public static int exportNow(String machungtu) {
-        return HibernateUtil.execute("update Phieuxuat set ngayxuat = :p1 where machungtu = :p0", new Object[]{ machungtu, new Date() });
+    public static int exportNow(SelectExportRequest req, BodyResponse res) {
+        List<Chitietxuatsua> listCT = HibernateUtil.getList("from Chitietxuatsua where id.machungtu = :p0", new Object[] { req.machungtu });
+        
+        for (Chitietxuatsua ct : listCT) {
+            if (!PhieuXuatBUS.updateMilk_isReady2Sub(ct.getId().getMakho(), ct.getLuongsuaxuat(), req.Token)){
+                res.IsError = true;
+                res.Errors.add(String.format("Kho %s không có đủ sửa để xuất!", ct.getId().getMakho()));
+                return -2;
+            }
+        }
+        
+        for (Chitietxuatsua ct : listCT) {
+            PhieuXuatBUS.updateMilk(ct.getId().getMakho(), ct.getLuongsuaxuat(), req.Token);
+        }
+        return HibernateUtil.execute("update Phieuxuat set ngayxuat = :p1 where machungtu = :p0", new Object[]{ req.machungtu, new Date() });
     }
 }

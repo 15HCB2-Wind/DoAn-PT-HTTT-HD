@@ -3,12 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package DAO;
+package Models.DataAccess.Import;
+
+import Models.BodyRequest;
 
 /**
  *
- * @author Shin-Desktop
+ * @author BuaNhot
  */
-public class ChiTietXuatSuaAdapter {
-    
+public class SelectImportRequest extends BodyRequest{
+    public String machungtu;
 }
