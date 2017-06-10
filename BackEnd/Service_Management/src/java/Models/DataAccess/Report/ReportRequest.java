@@ -14,7 +14,4 @@ import Models.BodyRequest;
  */
 public class ReportRequest extends BodyRequest {
     public String macn;
-    public String ngaybatdau;
-    public String ngayketthuc;
-    public Boolean dachet;
 }

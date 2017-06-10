@@ -135,3 +135,25 @@ JSON.syntaxHighlight = function (json) {
         return '<span class="' + cls + '">' + match + '</span>';
     });
 }
+
+
+//some colors
+var colors = [
+    { normal: "#2E2E2E", hover: "#4E4E4E" },
+    { normal: "#4B515D", hover: "#6B717D" },
+    { normal: "#3F729B", hover: "#5F92BB" },
+    { normal: "#37474F", hover: "#57676F" },
+    { normal: "#b71c1c", hover: "#D73c3c" },
+    { normal: "#880e4f", hover: "#A82e6f" },
+    { normal: "#4a148c", hover: "#6a34Ac" },
+    { normal: "#311b92", hover: "#513bB2" },
+    { normal: "#006064", hover: "#208084" },
+    { normal: "#01579b", hover: "#2177Bb" },
+    { normal: "#004d40", hover: "#206d60" },
+    { normal: "#33691e", hover: "#53893e" },
+    { normal: "#827717", hover: "#A29737" },
+    { normal: "#64dd17", hover: "#84Fd37" },
+    { normal: "#e65100", hover: "#FF7120" },
+    { normal: "#bf360c", hover: "#Df562c" },
+    { normal: "#3e2723", hover: "#5e4743" }
+]

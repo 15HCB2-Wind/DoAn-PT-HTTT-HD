@@ -11,6 +11,9 @@
         $(document).ready(function () {
             //ẩn loader
             $('#loader').hide();
+
+            //auto run statistic
+            ThongKeClick();
         });
 
         function ThongKeClick() {
@@ -46,9 +49,7 @@
 
             callAjax('post',
                 {
-                    Token: Cookies.get('token'),
-                    ngaybatdau: $('input[name=prefix_bd_submit]').val(),
-                    ngayketthuc: $('input[name=prefix_kt_submit]').val()
+                    Token: Cookies.get('token')
                 }, Cookies.get('area'), "management", "Report/getAllCowOfCompany", function (data) {
                     if (data.Data.length <= 0) {
                         $('#a').attr('hidden', 'hidden');
@@ -78,15 +79,6 @@
             //==================================================
             //==================================================
             //Tạo biểu đồ (chart)
-            var colors = [
-                        { normal: "#e65100", hover: "#f57f17" },
-                        { normal: "#4caf50", hover: "#00e676" },
-                        { normal: "#1de9b6", hover: "#64ffda" },
-                        { normal: "#e0e0e0", hover: "#f5f5f5" },
-                        { normal: "#ff3d00", hover: "#ff6e40" },
-                        { normal: "#ffea00", hover: "#ffff00" },
-                        { normal: "#03a9f4", hover: "#81d4fa" }
-            ]
             var namelabel = new Array();
             var sobolythuyet = new Array();
             var sobothucte = new Array();
@@ -168,7 +160,7 @@
             for (var i = 0; i < data.Data.length; i++) {
                 var drow = data.Data[i];
                 $('#showReport').append(
-                    '<tr>' +
+                    '<tr class="text-center align-middle">' +
                         '<td>' + drow[0] + '</td>' +
                         '<td>' + drow[1] + '</td>' +
                         '<td>' + drow[2] + ' (Chết: ' + (drow[2] - drow[3]) + ')</td>' +
@@ -185,34 +177,6 @@
             JSON.printToElement('showData', data);
 
         }
-
-
-        $('.datepicker').pickadate({
-            monthsFull: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
-            monthsShort: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
-            weekdaysFull: ['Chủ nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'],
-            weekdaysShort: ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'],
-
-            showMonthsShort: true,
-            showWeekdaysFull: false,
-
-            today: 'Hôm nay',
-            clear: '',
-            close: 'Đóng',
-
-            labelMonthNext: 'Tháng sau',
-            labelMonthPrev: 'Tháng trước',
-            labelMonthSelect: 'Chọn tháng',
-            labelYearSelect: 'Chọn năm',
-
-            firstDay: 1,
-            format: 'dd-mm-yyyy',
-            formatSubmit: 'yyyy-mm-dd',
-            hiddenPrefix: 'prefix_',
-
-            min: new Date(1752, 0, 1),
-            max: new Date(9998, 11, 31)
-        });
 
         function save() {
             if (dataTK) {
@@ -263,46 +227,24 @@
                 <h2><i class="fa fa-bar-chart" aria-hidden="true"></i> Thống kê số lượng bò</h2>
 
                 <div class="row">
-                    <table class="table table-hover fa-border" style="width:450px">
-                        <tbody>
-                            <tr>
-                                <td>Từ ngày</td>
-                                <td>
-                                    <div class="md-form form-sm">
-                                        <i class="fa fa-calendar prefix"></i>
-                                        <input name="bd" type="text" id="ngaybatdau" class="form-control datepicker" data-value="@(DateTime.Now.ToShortDateString())">
-                                        <label for="ngaykethuc"></label>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Đến ngày</td>
-                                <td>
-                                    <div class="md-form form-sm">
-                                        <i class="fa fa-calendar prefix"></i>
-                                        <input name="kt" type="text" id="ngayketthuc" class="form-control datepicker" data-value="@(DateTime.Now.ToShortDateString())">
-                                        <label for="ngaykethuc"></label>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-center" colspan="2">
-                                    <button type="button" class="btn btn-primary" onclick="ThongKeClick()">Thống kê</button>
-                                    <button type="button" class="btn btn-danger" onclick="save()">Lưu</button>
-                                    <label for="fileUpload" class="btn btn-success custom-file-upload">Tải</label>
-                                    <input id="fileUpload" type="file" hidden onchange="load()" />
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div class="empty_message offset-lg-2 text-center">
-                        <h5>Không có dữ liệu thống kê!</h5>
-                        <i id="loader" class="fa fa-circle-o-notch fa-pulse fa-lg fa-fw"></i>
+                    <div class="col-lg-5 col-md-5 col-sm-5">
+                        <button type="button" class="btn btn-primary" onclick="ThongKeClick()">Thống kê lại</button>
+                        <button type="button" class="btn btn-danger" onclick="save()">Lưu</button>
+                        <label for="fileUpload" class="btn btn-success custom-file-upload">Tải</label>
+                        <input id="fileUpload" type="file" hidden onchange="load()" />
                     </div>
-                    <div id="a" hidden="hidden" style="width:450px"><canvas class="align-middle" id="circlechart"></canvas></div>
-                    <table id="b" hidden="hidden">
-                        <tbody id="chuThich_CircleChart"></tbody>
-                    </table>
+                    <div class="col-lg-7 col-md-7 col-sm-7 row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 row">
+                            <div class="empty_message col-lg-12 col-md-12 col-sm-12 text-center">
+                                <h5>Không có dữ liệu thống kê!</h5>
+                                <i id="loader" class="fa fa-circle-o-notch fa-pulse fa-lg fa-fw"></i>
+                            </div>
+                        </div>
+                        <div id="a" hidden="hidden" style="width:450px"><canvas class="align-middle" id="circlechart"></canvas></div>
+                        <table id="b" hidden="hidden">
+                            <tbody id="chuThich_CircleChart"></tbody>
+                        </table>
+                    </div>
                 </div>
 
                 <canvas id="myChart" hidden="hidden"></canvas>
@@ -323,14 +265,14 @@
         <div class="empty_message text-center">
             <h5>Không có dữ liệu thống kê!</h5>
         </div>
-        <table id="tableReport" class="table table-hover" hidden="hidden">
+        <table id="tableReport" class="table table-hover fa-border table-striped" hidden="hidden">
             <thead class="table-inverse">
                 <tr>
-                    <th>Mã chi nhánh</th>
-                    <th>Tên chi nhánh</th>
-                    <th>Số bò lý thuyết</th>
-                    <th>Số bò thực tế</th>
-                    <th>Sức chứa tối đa</th>
+                    <th class="text-center align-middle">Mã chi nhánh</th>
+                    <th class="text-center align-middle">Tên chi nhánh</th>
+                    <th class="text-center align-middle">Số bò lý thuyết</th>
+                    <th class="text-center align-middle">Số bò thực tế</th>
+                    <th class="text-center align-middle">Sức chứa tối đa</th>
                 </tr>
             </thead>
             <tbody id="showReport"></tbody>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th6 10, 2017 lúc 06:38 SA
+-- Thời gian đã tạo: Th6 10, 2017 lúc 10:41 SA
 -- Phiên bản máy phục vụ: 5.7.14
 -- Phiên bản PHP: 5.6.25
 
@@ -24,22 +24,26 @@ DELIMITER $$
 --
 -- Thủ tục
 --
-CREATE DEFINER=`root`@`localhost` PROCEDURE `tkSoLuongBo` (`maChiNhanh` VARCHAR(10), `tuNgay` DATE, `denNgay` DATE, `baoGomDaChet` BOOL)  BEGIN
-	select b.machuong, b.tenchuong, count(a.mabo) as sobolythuyet, b.dangchua, b.succhua
-	from service_management_drinksmile.bo a, service_management_drinksmile.chuongtrai b
-	where 	a.machuong = b.machuong and
-			b.machinhanh = maChiNhanh and
-			a.ngaynhan between tuNgay and denNgay
-	group by a.machuong;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `tkSoLuongBo` (`maChiNhanh` VARCHAR(10))  BEGIN
+	select x.machuong, x.tenchuong, COALESCE(z.sobolythuyet, 0) as sobolythuyet, x.dangchua, x.succhua
+    from 
+		(select a.machuong, count(a.mabo) as sobolythuyet
+        from service_management_drinksmile.bo a, service_management_drinksmile.chuongtrai b
+        where 	a.machuong = b.machuong and
+				b.machinhanh = maChiNhanh
+		group by b.machuong) z
+        right join
+		(select a.machuong, a.tenchuong, a.dangchua, a.succhua, a.daxoa
+		from service_management_drinksmile.chuongtrai a
+		where a.machinhanh = maChiNhanh) x on z.machuong = x.machuong;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `tkSoLuongBo_AllAgencies` (`tuNgay` DATE, `denNgay` DATE)  BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `tkSoLuongBo_AllAgencies` ()  BEGIN
 	select t.machinhanh, cn.tenchinhanh, sum(t.sobolythuyet) as sobolythuyet, sum(t.dangchua) as dangchua, sum(t.succhua) as succhuatoida
 	from
 		(select b.machuong, b.machinhanh, count(a.mabo) as sobolythuyet, b.dangchua, b.succhua
 		from service_management_drinksmile.bo a, service_management_drinksmile.chuongtrai b
 		where 	a.machuong = b.machuong and
-				a.ngaynhan between tuNgay and denNgay and
 				b.daxoa = false
 		group by a.machuong) t, service_management_drinksmile.chinhanh cn
 	where t.machinhanh = cn.machinhanh
