@@ -89,6 +89,31 @@ public class BoAPIs {
         return gson.toJson(response);
     }
     
+    
+    //tin by 3
+    @POST
+    @Path("getAllOfAgencyBy3")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public String getAllOfAgencyBy3(String json){
+        Gson gson = new Gson();
+        SelectRequest request = gson.fromJson(json, SelectRequest.class);
+        SelectResponse response = new SelectResponse();
+        if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3)){
+            try{
+                List<Bo> result = BoAdapter.getAllOfAgency(request.Predicates[0]);
+                result.forEach((obj) -> {
+                    obj.tenchuong = ChuongTraiAdapter.getSingle(obj.getMachuong()).getTenchuong();
+                });
+                response.Data = result;
+            }catch(Exception ex){
+                response.Errors.add("Lỗi hệ thống.");
+                response.IsError = true;
+            }
+        }
+        return gson.toJson(response);
+    }
+    
     @POST
     @Path("getAllOfBarn")
     @Produces("application/json")

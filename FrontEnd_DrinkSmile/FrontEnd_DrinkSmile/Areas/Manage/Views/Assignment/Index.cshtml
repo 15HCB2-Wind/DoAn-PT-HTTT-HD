@@ -14,7 +14,8 @@
                     $('#form').hide();
                     $('#congviec').text('Không có nhân viên đang làm việc.');
                 } else {
-                    callAjax('post', { Token: Cookies.get('token'), Data: data1.Data}, Cookies.get('area'), "animal_care", "assignment/getListAssignmentsOfAgency", function (data) {
+                    callAjax('post', { Token: Cookies.get('token'), Data: data1.Data }, Cookies.get('area'), "animal_care", "assignment/getListAssignmentsOfAgency", function (data) {
+                        console.log(data);
                         if (!data.Data || data.Data.length <= 0) {
                             $('#form').hide();
                             $('#congviec').text('Chưa có phân công nào!');
