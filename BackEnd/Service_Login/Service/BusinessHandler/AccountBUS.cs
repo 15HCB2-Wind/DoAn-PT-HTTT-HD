@@ -86,5 +86,10 @@ namespace Service.BusinessHandler
             });
             thread.Start(thread);
         }
+
+        public static bool CheckRole3(string id)
+        {
+            return (int)DataProvider.ExecuteScalar(string.Format("select top 1 cappq from nhanvien where manv = '{0}' and cappq = 3", id)) == 3;
+        }
     }
 }

@@ -11,11 +11,21 @@ namespace FrontEnd_DrinkSmile.Areas.Report.Controllers
         // GET: Report/AnimalState
         public ActionResult Index2()
         {
-            return View();
+            if (Request.Cookies["token"] != null)
+            {
+                if (Request.Cookies["role"].Value == "2") return View();
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Login", "Account", new { area = "", ReturnUrl = "/Report/AnimalCount/Index2" });
         }
         public ActionResult Index3()
         {
-            return View();
+            if (Request.Cookies["token"] != null)
+            {
+                if (Request.Cookies["role"].Value == "3") return View();
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Login", "Account", new { area = "", ReturnUrl = "/Report/AnimalCount/Index3" });
         }
     }
 }

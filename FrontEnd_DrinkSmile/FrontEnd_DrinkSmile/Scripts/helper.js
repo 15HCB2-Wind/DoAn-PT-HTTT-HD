@@ -97,7 +97,7 @@ function readFileContent(file, callback, opt_encoding) {
 }
 
 
-//format json
+//print json
 JSON.printToElement = function (elementId, json) {
     $('#' + elementId).empty();
     $('head').append(
@@ -114,6 +114,8 @@ JSON.printToElement = function (elementId, json) {
     document.getElementById(elementId).appendChild(pre).innerHTML = JSON.syntaxHighlight(json);
 }
 
+
+//format json
 JSON.syntaxHighlight = function (json) {
     json = JSON.stringify(json, undefined, 4);
     json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');

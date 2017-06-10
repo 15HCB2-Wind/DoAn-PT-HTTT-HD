@@ -53,4 +53,6 @@ namespace Service.Models
     public class CheckTokenResponse : BodyResponse { }
 
     public class ChangePasswordResponse : BodyResponse { }
+
+    public class ChangeRoleResponse : BodyResponse { }
 }

@@ -56,4 +56,10 @@ namespace Service.Models
         public string UserId { get; set; }
         public string NewPass { get; set; }
     }
+
+    public class ChangeRoleRequest : BodyRequest
+    {
+        public bool IsUp { get; set; }
+        public string AgencyId { get; set; }
+    }
 }

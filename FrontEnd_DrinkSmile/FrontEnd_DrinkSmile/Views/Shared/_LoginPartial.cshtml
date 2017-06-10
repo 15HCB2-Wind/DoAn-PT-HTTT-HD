@@ -7,6 +7,10 @@
     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" data-toggle="dropdown">@HttpUtility.UrlDecode(Request.Cookies["name"].Value)</a>
         <div class="dropdown-menu dropdown-menu-right">
+            @if (Request.Cookies["token"] != null && Request.Cookies["role"].Value == "2" && Request.Cookies["changerole"].Value == "true")
+            {
+                <a class="dropdown-item" onclick="changerole()"><i class="fa fa-bookmark-o" aria-hidden="true"></i> Đăng xuất chi nhánh</a>
+            }
             <a class="dropdown-item" href="@Url.Action("ChangePassword", "Account", new { area = "" })"><i class="fa fa-refresh fa-fw"></i> Đổi mật khẩu</a>
             <a class="dropdown-item" href="javascript:document.getElementById('form_logoff').submit()"><i class="fa fa-sign-out fa-fw"></i> Đăng xuất</a>
         </div>
@@ -17,4 +21,22 @@ else
     <li class="nav-item">
         <a href="@Url.Action("Login", "Account", new { area = "" })" id="loginLink" class="nav-link"><i class="fa fa-sign-in"></i> Đăng nhập</a>
     </li>
+}
+
+@if (Request.Cookies["token"] != null && Request.Cookies["role"].Value == "2" && Request.Cookies["changerole"].Value == "true")
+{
+    <script>
+        function changerole() {
+            callAjax('post', {
+                Token: Cookies.get('token'),
+                IsUp: true
+            }, Cookies.get("area"), "login", "account/changerole", function (data) {
+                if (data.Data) {
+                    window.location.href = '/Home/Index';
+                    Cookies.set('role', 3);
+                    Cookies.remove('changerole');
+                }
+            });
+        }
+    </script>
 }
