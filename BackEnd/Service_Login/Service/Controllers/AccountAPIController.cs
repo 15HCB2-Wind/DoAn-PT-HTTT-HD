@@ -13,6 +13,7 @@ using DomainData;
 using Service.Helpers;
 using System.Net.Mail;
 using System.Text;
+using Service.BusinessHandler;
 
 namespace Service.Controllers
 {
@@ -264,6 +265,52 @@ namespace Service.Controllers
                 else
                 {
                     response.IsError = true;
+                }
+            }
+            catch
+            {
+                response.IsError = true;
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, response);
+        }
+
+        //down role
+        [HttpPost]
+        [Route("changerole")]
+        public HttpResponseMessage ChangeRole([FromBody] ChangeRoleRequest request)
+        {
+            var response = new ChangeRoleResponse();
+            try
+            {
+                var token = Token.Get(request.Token);
+                if (token == null)
+                {
+                    response.IsTokenTimeout = true;
+                }
+                else
+                {
+                    if (AccountBUS.CheckRole3(token.MaNV))
+                    {
+                        response.Data = true;
+                        if (request.IsUp)
+                        {
+                            var temp = NhanVienRepository.GetInstance().GetUserById(token.MaNV);
+                            if (temp != null)
+                            {
+                                token.CapPQ = 3;
+                                token.MaCN = temp.MaCN;
+                            }
+                            else
+                            {
+                                response.IsError = true;
+                            }
+                        }
+                        else
+                        {
+                            token.CapPQ = 2;
+                            token.MaCN = request.AgencyId;
+                        }
+                    }
                 }
             }
             catch

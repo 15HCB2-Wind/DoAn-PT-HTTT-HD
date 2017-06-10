@@ -27,17 +27,20 @@
                             var deleteButton;
                             var editButton;
                             var importButton;
+                            var actAgency;
                             if (item.daxoa) {
                                 trType = '<tr class="table-danger">';
                                 deleteButton = '<a class="green-text" data-toggle="modal" data-target="#deleteModal" onclick="setupModal(\'recover\', \'' + item.machinhanh + '\', true)"><i class="fa fa-refresh" aria-hidden="true"></i></a>';
                                 editButton = '';
                                 importButton = '';
+                                actAgency = '';
                             }
                             else {
                                 trType = '<tr class="table-success">';
                                 deleteButton = '<a class="red-text" data-toggle="modal" data-target="#deleteModal" onclick="setupModal(\'delete\', \'' + item.machinhanh + '\', true)"><i class="fa fa-trash" aria-hidden="true"></i></a>';
                                 editButton = '<a class="teal-text" href="/Manage/Agency/Update?machinhanh=' + item.machinhanh + '"><i class="fa fa-pencil"></i></a>';
                                 importButton = '<a class="teal-text" href="/Manage/Import/Import?id=' + item.machinhanh + '"><i class="fa fa-cubes" aria-hidden="true"></i></a>';
+                                actAgency = '<a class="green-text" onclick="changerole(\'' + item.machinhanh + '\')"><i class="fa fa-code-fork" aria-hidden="true"></i></a>';
                             }
 
                             $('#data_chinhanh').append(
@@ -48,6 +51,7 @@
                                     "<td>" + item.tinhtrang + "</td>" +
                                     '<td id="' + item.quanly + '"></td>' +
                                     '<td>' + editButton + importButton + deleteButton + '</td>' +
+                                    '<td>' + actAgency + '</td>' +
                                 "</tr>");
 
                             // lay tên nha quan ly
@@ -123,8 +127,22 @@
                         toastr["success"](data.Data);
                         loaddata();
                     }
-                })
+                });
             }
+        }
+
+        function changerole(agencyId) {
+            callAjax('post', {
+                Token: Cookies.get('token'),
+                IsUp: false,
+                AgencyId: agencyId
+            }, Cookies.get("area"), "login", "account/changerole", function (data) {
+                if (data.Data) {
+                    window.location.href = '/Home/Index';
+                    Cookies.set('role', 2);
+                    Cookies.set('changerole', true);
+                }
+            });
         }
     </script>
 }
@@ -142,6 +160,7 @@
             <th>Địa chỉ</th>
             <th>Tình trạng</th>
             <th>Quản lý</th>
+            <th></th>
             <th></th>
         </tr>
     </thead>
