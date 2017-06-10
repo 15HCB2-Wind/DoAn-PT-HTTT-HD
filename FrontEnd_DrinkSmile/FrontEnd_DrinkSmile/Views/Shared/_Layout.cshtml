@@ -56,12 +56,14 @@
                                         @if (Request.Cookies["role"].Value == "2")
                                         {
                                             <a class="dropdown-item" href="@Url.Action("Index2", "AnimalCount", new { area = "Report" })">Số lượng bò</a>
+                                            <a class="dropdown-item" href="@Url.Action("Index2", "AnimalState", new { area = "Report" })">Tình trạng bò</a>
                                         }
                                         else
                                         {
                                             <a class="dropdown-item" href="@Url.Action("Index3", "AnimalCount", new { area = "Report" })">Số lượng bò</a>
+                                            <a class="dropdown-item" href="@Url.Action("Index3", "AnimalState", new { area = "Report" })">Tình trạng bò</a>
                                         }
-                                        <a class="dropdown-item" href="@Url.Action("Index", "AnimalState", new { area = "Report" })">Tình trạng bò</a>
+                                        
                                         <a class="dropdown-item" href="@Url.Action("Index", "Import", new { area = "Report" })">Nhập bò</a>
                                         <a class="dropdown-item" href="@Url.Action("Index", "Export", new { area = "Report" })">Xuất nguyên vật liệu</a>
                                     </div>

@@ -1,0 +1,178 @@
+﻿@{
+    ViewBag.Title = "Index3";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Scripts{
+    <script>
+        var temp = new Array();
+        $(document).ready(function () {
+            callAjax('post', { Token: Cookies.get('token') }, Cookies.get('area'), "management", "ChiNhanh/getAll", function (data1) {
+                console.log(data1);
+                for (var i = 0; i < data1.Data.length; i++) {
+                    callAjax('post', { Token: Cookies.get('token'), Predicates: [data1.Data[i].machinhanh] }, Cookies.get('area'), "management", "Bo/getAllOfAgencyBy3", function (data2, index) {
+                        for (var j = 0; j < data2.Data.length; j++) {
+                            temp.push({
+                                macn: data1.Data[index].machinhanh,
+                                mabo: data2.Data[j].mabo
+                            });
+                        }
+                    }, i);
+                }
+            });
+            console.log(temp);
+
+            for (var i = 0; i < temp.length; i++) {
+
+            }
+        });
+
+        var DateDiff = {
+
+            inDays: function (d1, d2) {
+                var t2 = d2.getTime();
+                var t1 = d1.getTime();
+
+                return parseInt((t2 - t1) / (24 * 3600 * 1000));
+            },
+
+            inWeeks: function (d1, d2) {
+                var t2 = d2.getTime();
+                var t1 = d1.getTime();
+
+                return parseInt((t2 - t1) / (24 * 3600 * 1000 * 7));
+            },
+
+            inMonths: function (d1, d2) {
+                var d1Y = d1.getFullYear();
+                var d2Y = d2.getFullYear();
+                var d1M = d1.getMonth();
+                var d2M = d2.getMonth();
+
+                return (d2M + 12 * d2Y) - (d1M + 12 * d1Y);
+            },
+
+            inYears: function (d1, d2) {
+                return d2.getFullYear() - d1.getFullYear();
+            }
+        }
+
+        function ThongKeClick() {
+           
+            var ngaybatdau = new Date($('input[name=prefix_bd_submit]').val());
+            var ngayketthuc = new Date($('input[name=prefix_kt_submit]').val());
+            console.log(ngaybatdau);
+            console.log(ngayketthuc);
+            if (DateDiff.inWeeks(ngaybatdau,ngayketthuc)<=2) {
+                console.log("day");
+            }
+            else if (DateDiff.inWeeks(ngaybatdau, ngayketthuc) >= 2 && DateDiff.inMonths(ngaybatdau, ngayketthuc)<=2) {
+                console.log("week");
+            }
+            else if (DateDiff.inMonths(ngaybatdau, ngayketthuc) > 2 && DateDiff.inYears(ngaybatdau, ngayketthuc) <= 1) {
+                console.log("month");
+            }
+            else if (DateDiff.inYears(ngaybatdau, ngayketthuc) > 1 && DateDiff.inYears(ngaybatdau, ngayketthuc) <= 2) {
+                console.log("2month");
+            }
+            else if (DateDiff.inYears(ngaybatdau, ngayketthuc) > 2 && DateDiff.inYears(ngaybatdau, ngayketthuc) <= 10) {
+                console.log("1year");
+            }
+            else if (DateDiff.inYears(ngaybatdau, ngayketthuc) > 10 && DateDiff.inYears(ngaybatdau, ngayketthuc) <= 20) {
+                console.log("2year");
+            }
+            else if (DateDiff.inYears(ngaybatdau, ngayketthuc) > 20 && DateDiff.inYears(ngaybatdau, ngayketthuc) <= 100) {
+                console.log("5year");
+            }
+            else if (DateDiff.inYears(ngaybatdau, ngayketthuc) > 100) {
+                console.log("10year");
+            }
+        }
+
+
+        $('.datepicker').pickadate({
+            monthsFull: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+            monthsShort: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+            weekdaysFull: ['Chủ nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'],
+            weekdaysShort: ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'],
+
+            showMonthsShort: true,
+            showWeekdaysFull: false,
+
+            today: 'Hôm nay',
+            clear: '',
+            close: 'Đóng',
+
+            labelMonthNext: 'Tháng sau',
+            labelMonthPrev: 'Tháng trước',
+            labelMonthSelect: 'Chọn tháng',
+            labelYearSelect: 'Chọn năm',
+
+            firstDay: 1,
+            format: 'dd-mm-yyyy',
+            formatSubmit: 'yyyy-mm-dd',
+            hiddenPrefix: 'prefix_',
+
+            min: new Date(1752, 0, 1),
+            max: new Date(9998, 11, 31)
+        });
+    </script>
+}
+
+
+
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h2><i class="fa fa-bar-chart" aria-hidden="true"></i> Báo cáo tình trạng bò</h2>
+
+        <div class="row">
+            <table class="table table-hover fa-border" style="width:400px">
+                <tbody>
+                    <tr>
+                        <td>Từ ngày</td>
+                        <td>
+                            <div class="md-form form-sm">
+                                <i class="fa fa-calendar prefix"></i>
+                                <input name="bd" type="text" id="ngaybatdau" class="form-control datepicker" data-value="@(DateTime.Now.ToShortDateString())">
+                                <label for="ngaykethuc"></label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Đến ngày</td>
+                        <td>
+                            <div class="md-form form-sm">
+                                <i class="fa fa-calendar prefix"></i>
+                                <input name="kt" type="text" id="ngayketthuc" class="form-control datepicker" data-value="@(DateTime.Now.ToShortDateString())">
+                                <label for="ngaykethuc"></label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <button type="button" class="btn btn-primary" onclick="ThongKeClick()">Thống kê</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div id="a" hidden="hidden" style="width:450px"><canvas class="align-middle" id="circlechart"></canvas></div>
+            <table id="b" hidden="hidden">
+                <tbody id="chuThich_CircleChart"></tbody>
+            </table>
+        </div>
+
+        <div id="notice" hidden="hidden">
+            <h5>Không có dữ liệu để thống kê!</h5>
+        </div>
+
+        <canvas id="myChart" hidden="hidden"></canvas>
+
+        <div class="row" id="property" hidden="hidden">
+            <div class="offset-1 row"><div class="blue lighten-4" style="width:24px; height:24px;"></div>&nbsp;Số bò lý thuyết</div>
+            <div class="offset-1 row"><div class="light-green lighten-3" style="width:24px; height:24px;"></div>&nbsp;Số bò thực tế</div>
+            <div class="offset-1 row"><div class="rgba-indigo-strong" style="width:24px; height:24px;"></div>&nbsp;Sức chứa tối đa</div>
+        </div>
+    </div>
+</div>
+
+

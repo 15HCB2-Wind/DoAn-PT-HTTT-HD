@@ -13,5 +13,13 @@ namespace FrontEnd_DrinkSmile.Areas.Report.Controllers
         {
             return View();
         }
+        public ActionResult Index2()
+        {
+            return View();
+        }
+        public ActionResult Index3()
+        {
+            return View();
+        }
     }
 }
