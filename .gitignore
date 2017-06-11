@@ -31,4 +31,6 @@ BackEnd/Service_Login/Service_Login.v12.suo
 BackEnd/Service_Management/nbproject/
 BackEnd/Service_AnimalCare/AutoSeed/AutoSeed/bin
 BackEnd/Service_AnimalCare/AutoSeed/AutoSeed/obj
+BackEnd/ServerFileTransfer/ServerFileTransfer/bin
+BackEnd/ServerFileTransfer/ServerFileTransfer/obj
 *.suo
