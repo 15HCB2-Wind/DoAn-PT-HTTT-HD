@@ -153,7 +153,6 @@
     <Content Include="Areas\Manage\Views\WareHouse\Index.cshtml" />
     <Content Include="Areas\Report\Views\web.config" />
     <Content Include="Areas\Report\Views\Export\Index.cshtml" />
-    <Content Include="Areas\Report\Views\AnimalState\Index.cshtml" />
     <Content Include="Areas\Manage\Views\Provider\Index.cshtml" />
     <Content Include="Areas\Manage\Views\Staff\Create.cshtml" />
     <Content Include="fonts\fontawesome-webfont.eot" />

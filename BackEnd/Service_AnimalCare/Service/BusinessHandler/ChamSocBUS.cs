@@ -60,7 +60,7 @@ namespace Service.BusinessHandler
             }
         }
 
-        public static void ReportTinhTrangBo(ReportTinhTrangBoRequest request,ref ReportTinhTrangBoResponse response)
+        public static void ReportTinhTrangBo(ReportTinhTrangBoRequest request, ref ReportTinhTrangBoResponse response)
         {
             if (request.NgayBatDau > DateTime.Now)
             {

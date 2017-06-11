@@ -5,6 +5,7 @@
 
 @section Scripts {
     <script>
+        var STATISTIC_KEY = '^$BJFRFIBF*&WIB$*IJG';
         var dataTK;
         var countcolor = 0;
 
@@ -16,24 +17,34 @@
             ThongKeClick();
         });
 
-        function ThongKeClick() {
-            callAjax('post',
-                {
-                    Token: Cookies.get('token')
-                }, Cookies.get('area'), "management", "Report/getAllCowOfCompany", function (data) {
-                    if (data.Data.length <= 0) {
-                        $('#a').attr('hidden', 'hidden');
-                        $('#b').attr('hidden', 'hidden');
-                        $('#myChart').attr('hidden', 'hidden');
-                        $('#tableReport').attr('hidden', 'hidden');
-                        $('#showData').attr('hidden', 'hidden');
-                        $('#property').attr('hidden', 'hidden');
-                        $('.empty_message').removeAttr('hidden');
-                    } else {
-                        LapThongKe(data);
-                        dataTK = data;
-                    }
-                });
+        function ThongKeClick(data) {
+            if (data) {
+                if (data[STATISTIC_KEY]) {
+                    LapThongKe(data);
+                    dataTK = data;
+                } else {
+                    toastr['error']("Không thể đọc file.");
+                }
+            } else {
+                callAjax('post',
+                    {
+                        Token: Cookies.get('token')
+                    }, Cookies.get('area'), "management", "Report/getAllCowOfCompany", function (data) {
+                        if (data.Data.length <= 0) {
+                            $('#a').attr('hidden', 'hidden');
+                            $('#b').attr('hidden', 'hidden');
+                            $('#myChart').attr('hidden', 'hidden');
+                            $('#tableReport').attr('hidden', 'hidden');
+                            $('#showData').attr('hidden', 'hidden');
+                            $('#property').attr('hidden', 'hidden');
+                            $('.empty_message').removeAttr('hidden');
+                        } else {
+                            LapThongKe(data);
+                            data[STATISTIC_KEY] = true;
+                            dataTK = data;
+                        }
+                    });
+            }
         }
 
         function LapThongKe(data) {
@@ -150,7 +161,7 @@
 
         function save() {
             if (dataTK) {
-                download(JSON.stringify(dataTK), 'Role3 - AnimalCount - ' + new Date() + '.json', 'application/json');
+                download(JSON.stringify(dataTK), 'Role' + Cookies.get('role') + ' - AnimalCount - ' + new Date() + '.json', 'application/json');
             } else {
                 toastr['warning']("Cần phải lập báo cáo trước rồi mới lưu được.");
             }
@@ -158,14 +169,13 @@
 
         function load() {
             var files = document.getElementById('fileUpload').files; // FileList object
-            console.log(files);
             if (!files.length) {
                 return;
             }
 
             for (var i = 0; i < files.length; i++) {
                 readFileContent(files[i], function (fileContent) {
-                    LapThongKe(JSON.parse(fileContent));
+                    ThongKeClick(JSON.parse(fileContent));
                 });
                 break; //just one
             }

@@ -22,7 +22,7 @@ namespace Service.Controllers
         public HttpResponseMessage AddChamSoc([FromBody] ChamSocRequest request)
         {
             var response = new ChamSocResponse();
-            var tokendata = TokenBUS.tokenData(request,response,1);
+            var tokendata = TokenBUS.tokenData(request, response, 1);
             if (!response.IsError)
             {
                 ChamSocBUS.AddChamSoc(request, ref response);
@@ -191,23 +191,44 @@ namespace Service.Controllers
 
         //report tinhtrangbo
         [HttpPost]
-        [Route("reportTinhTrangBo")]
-        public HttpResponseMessage reportTinhTrangBo([FromBody] ReportTinhTrangBoRequest request)
+        [Route("reportTinhTrangBo3")]
+        public HttpResponseMessage reportTinhTrangBo3([FromBody] ReportTinhTrangBoRequest request)
         {
             var response = new ReportTinhTrangBoResponse();
-            var tokendata = TokenBUS.tokenData(request, response, 3);
-            if (!response.IsError)
+            if (TokenBUS.tokenCheck(request, response, 3))
             {
-                ChamSocBUS.ReportTinhTrangBo(request,ref response);
+                ChamSocBUS.ReportTinhTrangBo(request, ref response);
                 if (response.IsError)
                 {
                     return Request.CreateResponse(HttpStatusCode.OK, response);
                 }
                 else
                 {
-                    response.Data = ChamSocRepository.ReportTinhTrangBo_Day(tokendata.AgencyId,request.NgayBatDau);
+                    response.Data = ChamSocRepository.ReportTinhTrangBo(request.NgayBatDau);
                 }
-                
+
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, response);
+        }
+
+        [HttpPost]
+        [Route("reportTinhTrangBo2")]
+        public HttpResponseMessage reportTinhTrangBo2([FromBody] ReportTinhTrangBoRequest request)
+        {
+            var response = new ReportTinhTrangBoResponse();
+            var tokendata = TokenBUS.tokenData(request, response, 2);
+            if (!response.IsError)
+            {
+                ChamSocBUS.ReportTinhTrangBo(request, ref response);
+                if (response.IsError)
+                {
+                    return Request.CreateResponse(HttpStatusCode.OK, response);
+                }
+                else
+                {
+                    response.Data = ChamSocRepository.ReportTinhTrangBo(tokendata.AgencyId, request.NgayBatDau);
+                }
+
             }
             return Request.CreateResponse(HttpStatusCode.OK, response);
         }

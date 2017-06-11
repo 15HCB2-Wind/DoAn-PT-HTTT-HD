@@ -139,8 +139,6 @@ JSON.syntaxHighlight = function (json) {
 
 //some colors
 var colors = [
-    { normal_hex: "#2E2E2E", hover_hex: "#4E4E4E", normal: "rgba(46, 46, 46, 1)",   hover: "rgba(78, 78, 78, 1)" },
-    { normal_hex: "#4B515D", hover_hex: "#6B717D", normal: "rgba(75, 81, 93, 1)",   hover: "rgba(107, 113, 125, 1)" },
     { normal_hex: "#3F729B", hover_hex: "#5F92BB", normal: "rgba(63, 114, 155, 1)", hover: "rgba(95, 146, 187, 1)" },
     { normal_hex: "#37474F", hover_hex: "#57676F", normal: "rgba(55, 71, 79, 1)", hover: "rgba(87, 103, 111, 1)" },
     { normal_hex: "#b71c1c", hover_hex: "#D73c3c", normal: "rgba(183, 28, 28, 1)", hover: "rgba(215, 60, 60, 1)" },
@@ -159,7 +157,13 @@ var colors = [
 ]
 
 
-//date diff
+//date extension
+Date.prototype.addDays = function (days) {
+    var dat = new Date(this.valueOf());
+    dat.setDate(dat.getDate() + days);
+    return dat;
+}
+
 var DateDiff = {
 
     inDays: function (d1, d2) {

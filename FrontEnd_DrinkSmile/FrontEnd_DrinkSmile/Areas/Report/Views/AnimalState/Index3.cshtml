@@ -1,129 +1,10 @@
 ﻿@{
-    ViewBag.Title = "Index3";
+    ViewBag.Title = "Thống kê tình trạng bò";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section Scripts{
     <script>
-        var namelabel = new Array();
-        var corlors;
-        var countcolor = 0;
-        var valueofchinhanhs = [];
-        var cannang = [[]];
-        var chieucao = [[]];
-        var temp = new Array();
-        Date.prototype.addDays = function (days) {
-            var dat = new Date(this.valueOf());
-            dat.setDate(dat.getDate() + days);
-            return dat;
-        }
-
-        $(document).ready(function () {
-            colors = [
-            { normal: "rgba(230,81,0,0.4)", hover: "rgba(245,127,23,1)", hex: "#e65100", hexhover: "#f57f17" },
-            { normal: "rgba(76,175,80,0.4)", hover: "rgba(0,230,118,1)", hex: "#4caf50", hexhover: "#00e676" },
-            { normal: "rgba(29,233,182,0.4)", hover: "rgba(100,255,218,1)", hex: "#1de9b6", hexhover: "#64ffda" },
-            { normal: "rgba(224,224,224,0.4)", hover: "rgba(245,245,245,1)", hex: "#e0e0e0", hexhover: "#f5f5f5" },
-            { normal: "rgba(255,61,0,0.4)", hover: "rgba(255,110,64,1)", hex: "#ff3d00", hexhover: "#ff6e40" },
-            { normal: "rgba(255,234,0,0.4)", hover: "rgba(255,255,0,1)", hex: "#ffea00", hexhover: "#ffff00" },
-            { normal: "rgba(3,169,244,0.4)", hover: "rgba(129,212,250,1)", hex: "#03a9f4", hexhover: "#81d4fa" }
-            ];
-        });
-
-
-        function clearChart() {
-            countcolor = 0;
-            namelabel = new Array();
-            valueofchinhanhs = [];
-            cannang = [[]];
-            chieucao = [[]];
-            temp = new Array();
-        }
-
-
-
-        var DateDiff = {
-
-            inDays: function (d1, d2) {
-                var t2 = d2.getTime();
-                var t1 = d1.getTime();
-
-                return parseInt((t2 - t1) / (24 * 3600 * 1000));
-            },
-
-            inWeeks: function (d1, d2) {
-                var t2 = d2.getTime();
-                var t1 = d1.getTime();
-
-                return parseInt((t2 - t1) / (24 * 3600 * 1000 * 7));
-            },
-
-            inMonths: function (d1, d2) {
-                var d1Y = d1.getFullYear();
-                var d2Y = d2.getFullYear();
-                var d1M = d1.getMonth();
-                var d2M = d2.getMonth();
-
-                return (d2M + 12 * d2Y) - (d1M + 12 * d1Y);
-            },
-
-            inYears: function (d1, d2) {
-                return d2.getFullYear() - d1.getFullYear();
-            }
-        }
-
-        function ThongKeClick() {
-            clearChart();
-
-            var ngaybatdau = new Date($('input[name=prefix_bd_submit]').val()).addDays(parseInt($('#ngaybatdau').attr('delta-date')));
-
-            callAjax('post', { Token: Cookies.get('token') }, Cookies.get('area'), "management", "ChiNhanh/getAll", function (data) {
-                if (data.IsError) {
-                    for (var i = 0; i < data.Errors.length; i++) {
-                        toastr["error"](data.Errors[i]);
-                    }
-                } else if (data.Data) {
-                    for (var i = 0; i < data.Data.length; i++) {
-                        valueofchinhanhs.push(data.Data[i]);
-                    }
-                    callAjax('post', {
-                        Token: Cookies.get('token'),
-                        NgayBatDau: ngaybatdau
-                    }, Cookies.get('area'), "animal_care", "animalcare/reportTinhTrangBo", function (data) {
-                        if (data.IsError) {
-                            toastr["error"](data.Errors[0]);
-                        }
-                        else if (data.Data) {
-                            for (var i = 0; i < valueofchinhanhs.length; i++) {
-                                chieucao[i] = [];
-                                cannang[i] = [];
-                                for (var j = 0; j < data.Data.length; j++) {
-
-                                    if (valueofchinhanhs[i].machinhanh == data.Data[j].MaChiNhanh) {
-                                        chieucao[i].push({
-                                            ChieuCao: data.Data[j].ChieuCao,
-                                            Ngay: new Date(data.Data[j].Ngay)
-                                        });
-                                        cannang[i].push({
-                                            CanNang: data.Data[j].CanNang,
-                                            Ngay: new Date(data.Data[j].Ngay)
-                                        });
-                                    }
-                                }
-                            }
-                            if (cannang[0] != null) {
-                                for (var i = 0; i < cannang[0].length; i++) {
-                                    namelabel.push((ngaybatdau.addDays(i)).getDate() + '/' +
-                                        ((ngaybatdau.addDays(i)).getMonth() + 1) + '/' +
-                                        (ngaybatdau.addDays(i)).getFullYear());
-                                }
-                            }
-                            createchart();
-                        }
-                    });
-                }
-            });
-        }
-
+        var STATISTIC_KEY = 'POURGI*G*$**%H*YFGR';
 
         $('.datepicker').pickadate({
             monthsFull: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
@@ -152,8 +33,117 @@
             max: new Date(9998, 11, 31)
         });
 
+        $(document).ready(function () {
+            //ẩn loader
+            $('#loader').hide();
+
+            //auto run statistic
+            $('input[name=prefix_bd_submit]').val(new Date($('input[name=prefix_bd_submit]').val()).addDays(-13));
+            ThongKeClick();
+        });
+
+        var namelabel = new Array();
+        var countcolor = 0;
+        var valueofchinhanhs = [];
+        var cannang = [[]];
+        var chieucao = [[]];
+        var temp = new Array();
+
+        function clearChart() {
+            countcolor = 0;
+            namelabel = new Array();
+            valueofchinhanhs = [];
+            cannang = [[]];
+            chieucao = [[]];
+            temp = new Array();
+        }
+
+        function ThongKeClick(dataSave) {
+            clearChart();
+
+            callAjax('post', { Token: Cookies.get('token') }, Cookies.get('area'), "management", "ChiNhanh/getAll", function (data) {
+                if (data.IsError) {
+                    for (var i = 0; i < data.Errors.length; i++) {
+                        toastr["error"](data.Errors[i]);
+                    }
+                } else if (data.Data) {
+                    //prepare agency
+                    for (var i = 0; i < data.Data.length; i++) {
+                        valueofchinhanhs.push(data.Data[i]);
+                    }
+                    //get statistic-data
+                    if (dataSave) {
+                        if (dataSave[STATISTIC_KEY]) {
+                            LapThongKe(dataSave);
+                            dataTK = dataSave;
+                        } else {
+                            toastr['error']("Không thể đọc file.");
+                        }
+                    } else {
+                        var ngaybatdau = new Date($('input[name=prefix_bd_submit]').val()).addDays(parseInt($('#ngaybatdau').attr('delta-date')));
+                        callAjax('post', {
+                            Token: Cookies.get('token'),
+                            NgayBatDau: ngaybatdau
+                        }, Cookies.get('area'), "animal_care", "animalcare/reportTinhTrangBo3", function (data) {
+                            if (data.IsError) {
+                                toastr["error"](data.Errors[0]);
+                                $('#tableReport').attr('hidden', 'hidden');
+                                $('#showData').attr('hidden', 'hidden');
+                                $('.empty_message').removeAttr('hidden');
+                            }
+                            else if (data.Data) {
+                                data['start_date'] = ngaybatdau;
+                                LapThongKe(data);
+                                data[STATISTIC_KEY] = true;
+                                dataTK = data;
+                            }
+                        });
+                    }
+                }
+            });
+        }
+
+        function LapThongKe(data) {
+            $('#tableReport').removeAttr('hidden');
+            $('#showData').removeAttr('hidden');
+            $('.empty_message').attr('hidden', 'hidden');
+
+            for (var i = 0; i < valueofchinhanhs.length; i++) {
+                chieucao[i] = [];
+                cannang[i] = [];
+                for (var j = 0; j < data.Data.length; j++) {
+
+                    if (valueofchinhanhs[i].machinhanh == data.Data[j].MaChiNhanh) {
+                        chieucao[i].push({
+                            ChieuCao: data.Data[j].ChieuCao,
+                            Ngay: new Date(data.Data[j].Ngay)
+                        });
+                        cannang[i].push({
+                            CanNang: data.Data[j].CanNang,
+                            Ngay: new Date(data.Data[j].Ngay)
+                        });
+                    }
+                }
+            }
+            if (cannang[0]) {
+                for (var i = 0; i < cannang[0].length; i++) {
+                    namelabel.push(data['start_date'].addDays(i).getDate() + '/' +
+                        (data['start_date'].addDays(i).getMonth() + 1) + '/' +
+                        data['start_date'].addDays(i).getFullYear());
+                }
+            }
+            createchart(data);
+        }
+
         //chart
-        function createchart() {
+        function createchart(data) {
+            $('#chuThich_Chart').empty();
+            $('#showReport').empty();
+
+            //==================================================
+            //==================================================
+            //==================================================
+            //Tạo biểu đồ (chart)
             var datachartcannang = {
                 labels: namelabel,
                 datasets: []
@@ -163,10 +153,7 @@
                 datasets: []
             };
 
-
-            if (valueofchinhanhs == null) {
-                alert("loi roi");
-            } else {
+            //if (valueofchinhanhs) {
                 for (var i = 0; i < valueofchinhanhs.length; i++) {
                     var tempcannang = new Array();
                     var tempchieucao = new Array();
@@ -180,7 +167,7 @@
 
                     datachartcannang.datasets.push({
                         fillColor: "rgba(225,225,225,0)",
-                        strokeColor: colors[countcolor].hover,
+                        strokeColor: colors[countcolor].normal,
                         pointColor: "rgba(220,220,220,1)",
                         pointStrokeColor: "#333",
                         pointHighlightFill: "#333",
@@ -189,33 +176,40 @@
                     });
                     datachartchieucao.datasets.push({
                         fillColor: "rgba(225,225,225,0)",
-                        strokeColor: colors[countcolor].hover,
+                        strokeColor: colors[countcolor].normal,
                         pointColor: "rgba(220,220,220,1)",
                         pointStrokeColor: "#333",
                         pointHighlightFill: "#333",
                         pointHighlightStroke: "rgba(220,220,220,1)",
                         data: tempchieucao
                     });
+
+                    $('#chuThich_Chart').append(
+                            '<div class="offset-1 row"><div style="width:24px; height:24px; background-color:' + colors[countcolor].normal_hex + '"></div>&nbsp;' + valueofchinhanhs[i].tenchinhanh + '</div>'
+                        );
+
                     countcolor++;
-                }
-            }
-            $('#myChart').empty();
-            $('#myChart2').empty();
-            $('#chuThich_CircleChart').empty();
-            for (var i = 0; i < valueofchinhanhs.length; i++) {
-                for (var j = 0; j < colors.length; j++) {
-                    var string = "";
-                    if (datachartcannang.datasets[i].strokeColor == colors[j].hover) {
-                        string = colors[j].hexhover;
-                        break;
+
+                    //==================================================
+                    //==================================================
+                    //==================================================
+                    //Tạo bảng báo cáo (report)
+                    $('#showReport').append(
+                        '<tr>' +
+                            '<td colspan="3">' + valueofchinhanhs[i].tenchinhanh + ' (' + valueofchinhanhs[i].machinhanh + ')</td>' +
+                        '</tr>'
+                        );
+                    for (var j = 0; j < namelabel.length; j++) {
+                        $('#showReport').append(
+                            '<tr class="text-center align-middle">' +
+                                '<td>' + namelabel[j] + '</td>' +
+                                '<td>' + cannang[i][j].CanNang.toLocaleString(undefined, { maximumFractionDigits: 2 }) + '</td>' +
+                                '<td>' + chieucao[i][j].ChieuCao.toLocaleString(undefined, { maximumFractionDigits: 3 }) + '</td>' +
+                            '</tr>'
+                            );
                     }
                 }
-                $('#chuThich_CircleChart').append(
-                    '<tr>' +
-                        '<td class="row"><div style="width:24px; height:24px; background-color:' + string + '"></div>&nbsp;' + valueofchinhanhs[i].tenchinhanh + '</td>' +
-                    '</tr>'
-                    );
-            }
+            //}
 
             var option = {
                 responsive: true
@@ -230,6 +224,12 @@
             var ctx2 = document.getElementById("myChart2").getContext('2d');
             ctx2.clearRect(0, 0, document.getElementById("myChart2").width, document.getElementById("myChart2").height);
             var mylinechart2 = new Chart(ctx2).Line(datachartchieucao, option);
+
+            //==================================================
+            //==================================================
+            //==================================================
+            //Hiển thị dữ liệu
+            JSON.printToElement('showData', data);
 
         }
 
@@ -375,62 +375,140 @@
             $('#ngaybatdau').attr('delta-date', parseInt($('#ngaybatdau').attr('delta-date')) + 7);
             ThongKeClick();
         }
+
+        function save() {
+            if (dataTK) {
+                download(JSON.stringify(dataTK), 'Role' + Cookies.get('role') + ' - AnimalState - ' + new Date() + '.json', 'application/json');
+            } else {
+                toastr['warning']("Cần phải lập báo cáo trước rồi mới lưu được.");
+            }
+        }
+
+        function load() {
+            var files = document.getElementById('fileUpload').files; // FileList object
+            if (!files.length) {
+                return;
+            }
+
+            for (var i = 0; i < files.length; i++) {
+                readFileContent(files[i], function (fileContent) {
+                    var data = JSON.parse(fileContent);
+                    data['start_date'] = new Date(data['start_date']);
+                    ThongKeClick(data);
+                });
+                break; //just one
+            }
+        }
     </script>
 
 }
 
-<div class="row">
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <h2><i class="fa fa-bar-chart" aria-hidden="true"></i> Báo cáo tình trạng bò</h2>
+<!--==================================================================-->
+
+<!-- Nav tabs -->
+<ul class="nav nav-tabs md-pills pills-ins" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#panel11" role="tab"><i class="fa fa-area-chart" aria-hidden="true"></i> Thống kê</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#panel12" role="tab"><i class="fa fa-list-ol" aria-hidden="true"></i> Báo cáo</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#panel13" role="tab"><i class="fa fa-file-o" aria-hidden="true"></i> Dữ liệu</a>
+    </li>
+</ul>
+
+<!-- Tab panels -->
+<div class="tab-content">
+
+    <!--Panel 1-->
+    <div class="tab-pane fade in show active" id="panel11" role="tabpanel">
 
         <div class="row">
-            <table class="table table-hover fa-border" style="width:400px">
-                <tbody>
-                    <tr>
-                        <td>Từ ngày</td>
-                        <td>
-                            <div class="md-form form-sm">
-                                <i class="fa fa-calendar prefix"></i>
-                                <input name="bd" type="text" id="ngaybatdau" class="form-control datepicker" delta-date="0" data-value="@(DateTime.Now.ToShortDateString())">
-                                <label for="ngaybatdau"></label>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <h2><i class="fa fa-bar-chart" aria-hidden="true"></i> Thống kê tình trạng bò</h2>
+
+                <div class="row">
+                    <div class="col-lg-5 col-md-5 col-sm-5">
+                        <div class="col-lg-12 col-md-12 col-sm-12 row">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <div class="md-form form-sm">
+                                    <i class="fa fa-calendar prefix"></i>
+                                    <input name="bd" type="text" id="ngaybatdau" class="form-control datepicker" delta-date="0" value="@(DateTime.Now.AddDays(-13).ToShortDateString())">
+                                    <label for="ngaybatdau"></label>
+                                </div>
                             </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>
-                            <button type="button" class="btn btn-primary" onclick="ThongKeClick()">Thống kê</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                            <button type="button" class="btn btn-primary" onclick="ThongKeClick()">Thống kê lại</button>
+                            <button type="button" class="btn btn-danger" onclick="save()">Lưu</button>
+                            <label for="fileUpload" class="btn btn-success custom-file-upload">Tải</label>
+                            <input id="fileUpload" type="file" hidden onchange="load()" />
+                        </div>
+                    </div>
+                    <div class="col-lg-7 col-md-7 col-sm-7 row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 row">
+                            <div class="empty_message col-lg-12 col-md-12 col-sm-12 text-center">
+                                <h5>Không có dữ liệu thống kê!</h5>
+                                <i id="loader" class="fa fa-circle-o-notch fa-pulse fa-lg fa-fw"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
+                <div id="chart" hidden="hidden">
+                    
+                    <br />
+
+                    <div class="row" id="chuThich_Chart"></div>
+
+                    <br />
+
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <canvas id="myChart"></canvas>
+                            <h4 class="text-center">Cân nặng trung bình</h4>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <canvas id="myChart2"></canvas>
+                            <h4 class="text-center">Chiều cao trung bình</h4>
+                        </div>
+                    </div>
+
+                    <br />
+
+                    <button type="button" class="btn btn-primary" onclick="leftClick()">Lùi 1 tuần</button>
+                    <button type="button" class="btn btn-primary" onclick="rightClick()">Tới 1 tuần</button>
+                </div>
+            </div>
         </div>
 
-        <div id="notice" hidden="hidden">
-            <h5>Không có dữ liệu để thống kê!</h5>
-        </div>
     </div>
-</div>
+    <!--/.Panel 1-->
+    <!--Panel 2-->
+    <div class="tab-pane fade" id="panel12" role="tabpanel">
 
-<div id="chart" hidden="hidden">
+        <div class="empty_message text-center">
+            <h5>Không có dữ liệu thống kê!</h5>
+        </div>
+        <table id="tableReport" class="table table-hover fa-border table-striped" hidden="hidden">
+            <thead class="table-inverse">
+                <tr>
+                    <th class="text-center align-middle">Ngày ghi nhận</th>
+                    <th class="text-center align-middle">Cân nặng (kg)</th>
+                    <th class="text-center align-middle">Chiều cao (m)</th>
+                </tr>
+            </thead>
+            <tbody id="showReport"></tbody>
+        </table>
 
-    <table id="b" align="center">
-        <tbody id="chuThich_CircleChart"></tbody>
-    </table>
-    <br />
-    <canvas id="myChart"></canvas>
-    <p class="text-center">Cân nặng trung bình</p>
-    <canvas id="myChart2"></canvas>
-    <p class="text-center">Chiều cao trung bình</p>
-    <table id="tablechart" class="text-center align-middle">
-        <tbody>
-            <tr>
-                <td>
-                    <button type="button" class="btn btn-primary" onclick="leftClick()"><</button>
-                </td>
-                <td><button type="button" class="btn btn-primary" onclick="rightClick()">></button></td>
-            </tr>
-        </tbody>
-    </table>
+    </div>
+    <!--/.Panel 2-->
+    <!--Panel 3-->
+    <div class="tab-pane fade" id="panel13" role="tabpanel">
+        <div class="empty_message text-center">
+            <h5>Không có dữ liệu thống kê!</h5>
+        </div>
+        <div id="showData" hidden="hidden"></div>
+    </div>
+    <!--/.Panel 3-->
+
 </div>

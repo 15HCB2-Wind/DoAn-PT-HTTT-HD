@@ -13,6 +13,7 @@ import Models.DataAccess.Agency.DeleteAgencyRequest;
 import Models.DataAccess.Agency.DeleteAgencyResponse;
 import Models.DataAccess.SelectRequest;
 import Models.DataAccess.SelectResponse;
+import Models.TokenData;
 import com.google.gson.Gson;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -87,6 +88,28 @@ public class ChiNhanhAPIs {
             //if (true){
                 try{
                     response.Data = ChiNhanhAdapter.getSingle(request.Predicates[0]);
+                }catch(Exception ex){
+                    response.Errors.add("Lỗi hệ thống.");
+                    response.IsError = true;
+                }
+            //}
+        }
+        return gson.toJson(response);
+    }
+    
+    @POST
+    @Path("getMyAgency")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public String getMyAgency(String json){
+        Gson gson = new Gson();
+        SelectRequest request = gson.fromJson(json, SelectRequest.class);
+        SelectResponse response = new SelectResponse();
+        TokenData token = BusinessHandler.TokenBUS.tokenData(request, response, 2);
+        if (token != null){
+            //if (true){
+                try{
+                    response.Data = ChiNhanhAdapter.getSingle(token.AgencyId);
                 }catch(Exception ex){
                     response.Errors.add("Lỗi hệ thống.");
                     response.IsError = true;

@@ -206,7 +206,7 @@ namespace DataAccess.Repositories
             return result;
         }
 
-        public static List<ThongSo> ReportTinhTrangBo_Day(string macn , DateTime ngaybatdau)
+        public static List<ThongSo> ReportTinhTrangBo(DateTime ngaybatdau)
         {
             List<ThongSo> result = null;
             try
@@ -221,6 +221,29 @@ namespace DataAccess.Repositories
                         MaChiNhanh = row.GetValueDefault<string>(3)
                     };
                 }, "db_ReportTinhTrangBo", new SqlParameter("@macn", DBNull.Value), new SqlParameter("@ngaybatdau", ngaybatdau));
+            }
+            catch (Exception)
+            {
+                return result;
+            }
+            return result;
+        }
+
+        public static List<ThongSo> ReportTinhTrangBo(string macn, DateTime ngaybatdau)
+        {
+            List<ThongSo> result = null;
+            try
+            {
+                result = DataProvider.StoredProcedure_ExecuteReader((SqlDataReader row) =>
+                {
+                    return new ThongSo()
+                    {
+                        Ngay = row.GetValueDefault<DateTime>(0),
+                        CanNang = row.GetValueDefault<double>(1),
+                        ChieuCao = row.GetValueDefault<double>(2),
+                        MaChiNhanh = row.GetValueDefault<string>(3)
+                    };
+                }, "db_ReportTinhTrangBo", new SqlParameter("@macn", macn), new SqlParameter("@ngaybatdau", ngaybatdau));
             }
             catch (Exception)
             {

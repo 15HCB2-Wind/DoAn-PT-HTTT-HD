@@ -21,8 +21,9 @@ namespace Service.Controllers
         [Route("add")]
         public HttpResponseMessage AddPhanCong([FromBody] PhanCongRequest request)
         {
-            var response = new PhanCongResponse(); 
-            if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2)) {
+            var response = new PhanCongResponse();
+            if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2))
+            {
                 PhanCongBUS.AddPhanCong(request, ref response);
                 if (response.IsError)
                     return Request.CreateResponse(HttpStatusCode.OK, response);

@@ -107,7 +107,7 @@ namespace AutoSeed
                                 string newId = createId(eachPC.areaId);
                                 bool milk = false;
                                 double milkValue = 0d;
-                                if (new Random().NextDouble() > 0.5)
+                                if (new Random().NextDouble() > 0.6)
                                 {
                                     milk = true;
                                     milkValue = (double)(new Random().Next(500, 1000)) / 100d;
@@ -132,8 +132,8 @@ namespace AutoSeed
                                             string.Format("insert into tinhtrangbo(machamsoc, thoigianghinhan, cannang, chieucao)" +
                                             " values ('{0}', '{1}', {2}, {3})",
                                             newId, a,
-                                            maxWeight + (new Random().NextDouble() > 0.5 ? (double)(new Random().Next(4, 12)) / 100d : 0d),
-                                            maxHeight + (new Random().NextDouble() > 0.5 ? (double)(new Random().Next(0, 5)) / 10000d : 0d)));
+                                            maxWeight + (new Random().NextDouble() > 0.6 ? (double)(new Random().Next(3, 9)) / 100d : 0d),
+                                            maxHeight + (new Random().NextDouble() > 0.6 ? (double)(new Random().Next(0, 3)) / 10000d : 0d)));
                                     }
                                     else
                                     {
@@ -141,8 +141,8 @@ namespace AutoSeed
                                             string.Format("insert into tinhtrangbo(machamsoc, thoigianghinhan, cannang, chieucao)" +
                                             " values ('{0}', '{1}', {2}, {3})",
                                             newId, a,
-                                            (double)(new Random().Next(9000, 13000)) / 100d,
-                                            (double)(new Random().Next(120, 140)) / 100d));
+                                            (double)(new Random().Next(8000, 12000)) / 100d,
+                                            (double)(new Random().Next(100, 120)) / 100d));
                                     }
                                 }
                             }
