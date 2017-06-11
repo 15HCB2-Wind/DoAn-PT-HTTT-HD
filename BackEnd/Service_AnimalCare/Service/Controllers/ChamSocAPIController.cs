@@ -22,7 +22,8 @@ namespace Service.Controllers
         public HttpResponseMessage AddChamSoc([FromBody] ChamSocRequest request)
         {
             var response = new ChamSocResponse();
-            if (BusinessHandler.TokenBUS.tokenCheck(request, response, 1))
+            var tokendata = TokenBUS.tokenData(request,response,1);
+            if (!response.IsError)
             {
                 ChamSocBUS.AddChamSoc(request, ref response);
                 if (response.IsError)
@@ -61,6 +62,7 @@ namespace Service.Controllers
                     {
                         if (ChamSocBUS.UpdateMilk(request.Token, request.Data.LuongSua))
                         {
+                            request.Data.MaChiNhanh = tokendata.AgencyId;
                             if (ChamSocRepository.Insert(request.Data) < 0)
                             {
                                 response.Errors.Add("Lỗi hệ thống");
@@ -92,7 +94,8 @@ namespace Service.Controllers
         public HttpResponseMessage AddTinhTrangBo([FromBody] TinhTrangBoRequest request)
         {
             var response = new TinhTrangBoResponse();
-            if (BusinessHandler.TokenBUS.tokenCheck(request, response, 1))
+            var tokendata = TokenBUS.tokenData(request, response, 1);
+            if (response.IsError)
             {
                 ChamSocBUS.AddTinhTrangBo(request, ref response);
                 if (response.IsError)

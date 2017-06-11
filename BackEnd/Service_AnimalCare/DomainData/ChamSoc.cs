@@ -17,7 +17,7 @@ namespace DomainData
         public string MaPhanCong { get; set; }
         public string MaBo { get; set; }
         public string MaChuong { get; set; }
-
+        public string MaChiNhanh { get; set; }
         public ChamSoc()
         {
             MaChamSoc = "";
