@@ -2,10 +2,10 @@
 -- version 4.6.4
 -- https://www.phpmyadmin.net/
 --
--- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th6 10, 2017 lúc 10:41 SA
--- Phiên bản máy phục vụ: 5.7.14
--- Phiên bản PHP: 5.6.25
+-- Host: 127.0.0.1
+-- Generation Time: Jun 11, 2017 at 06:53 AM
+-- Server version: 5.7.14
+-- PHP Version: 5.6.25
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,12 +17,12 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Cơ sở dữ liệu: `service_importexport_drinksmile`
+-- Database: `service_importexport_drinksmile`
 --
 
 DELIMITER $$
 --
--- Thủ tục
+-- Procedures
 --
 CREATE DEFINER=`root`@`localhost` PROCEDURE `tkNhapBo` (`tuNgay` DATE, `denNgay` DATE)  BEGIN
 	select machungtu, ngaynhap, soluong, mancc, macn, manv
@@ -36,7 +36,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `chitietxuatsua`
+-- Table structure for table `chitietxuatsua`
 --
 
 CREATE TABLE `chitietxuatsua` (
@@ -46,7 +46,7 @@ CREATE TABLE `chitietxuatsua` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Đang đổ dữ liệu cho bảng `chitietxuatsua`
+-- Dumping data for table `chitietxuatsua`
 --
 
 INSERT INTO `chitietxuatsua` (`machungtu`, `makho`, `luongsuaxuat`) VALUES
@@ -64,7 +64,7 @@ INSERT INTO `chitietxuatsua` (`machungtu`, `makho`, `luongsuaxuat`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `counter`
+-- Table structure for table `counter`
 --
 
 CREATE TABLE `counter` (
@@ -74,7 +74,7 @@ CREATE TABLE `counter` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Đang đổ dữ liệu cho bảng `counter`
+-- Dumping data for table `counter`
 --
 
 INSERT INTO `counter` (`areaid`, `index_phieuxuat`, `index_phieunhap`) VALUES
@@ -84,7 +84,7 @@ INSERT INTO `counter` (`areaid`, `index_phieuxuat`, `index_phieunhap`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `phieunhapbo`
+-- Table structure for table `phieunhapbo`
 --
 
 CREATE TABLE `phieunhapbo` (
@@ -99,7 +99,7 @@ CREATE TABLE `phieunhapbo` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Đang đổ dữ liệu cho bảng `phieunhapbo`
+-- Dumping data for table `phieunhapbo`
 --
 
 INSERT INTO `phieunhapbo` (`machungtu`, `ngaylap`, `ngaynhap`, `soluong`, `dahuy`, `mancc`, `manv`, `macn`) VALUES
@@ -110,7 +110,7 @@ INSERT INTO `phieunhapbo` (`machungtu`, `ngaylap`, `ngaynhap`, `soluong`, `dahuy
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `phieuxuat`
+-- Table structure for table `phieuxuat`
 --
 
 CREATE TABLE `phieuxuat` (
@@ -125,7 +125,7 @@ CREATE TABLE `phieuxuat` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Đang đổ dữ liệu cho bảng `phieuxuat`
+-- Dumping data for table `phieuxuat`
 --
 
 INSERT INTO `phieuxuat` (`machungtu`, `ngaylap`, `ngayxuat`, `tongluongsua`, `dahuy`, `lydo`, `manv`, `macn`) VALUES
@@ -137,29 +137,29 @@ INSERT INTO `phieuxuat` (`machungtu`, `ngaylap`, `ngayxuat`, `tongluongsua`, `da
 ('HCMPX00004', '2017-06-01', '2017-06-08', 5000, b'0', 'Nguyên vật liệu cho nhà máy sửa', 'HCMNV00010', 'HCMCN002');
 
 --
--- Chỉ mục cho các bảng đã đổ
+-- Indexes for dumped tables
 --
 
 --
--- Chỉ mục cho bảng `chitietxuatsua`
+-- Indexes for table `chitietxuatsua`
 --
 ALTER TABLE `chitietxuatsua`
   ADD PRIMARY KEY (`machungtu`,`makho`);
 
 --
--- Chỉ mục cho bảng `counter`
+-- Indexes for table `counter`
 --
 ALTER TABLE `counter`
   ADD PRIMARY KEY (`areaid`);
 
 --
--- Chỉ mục cho bảng `phieunhapbo`
+-- Indexes for table `phieunhapbo`
 --
 ALTER TABLE `phieunhapbo`
   ADD PRIMARY KEY (`machungtu`);
 
 --
--- Chỉ mục cho bảng `phieuxuat`
+-- Indexes for table `phieuxuat`
 --
 ALTER TABLE `phieuxuat`
   ADD PRIMARY KEY (`machungtu`);

@@ -44,9 +44,9 @@
       <class Id="91f25169-1b1a-4aeb-8f99-3ab56d7461f4" name="Quản lý chi nhánh" isAbstract="false" isLeaf="false" isActiveClass="false">
         <elementDefinition Id="d40cf047-b3fb-429a-bb16-12d1734d0f82" />
         <generalsInternal>
-          <generalization Id="da4b4d7d-962a-4104-adee-8bef58fff044" isSubstitutable="false">
+          <generalization Id="8ca0c32b-b3ab-4d0e-ad44-2a047289e203" isSubstitutable="false">
             <classMoniker Id="735f3b73-b248-4980-81ef-994d86d52468" LastKnownName="Nhân viên" />
-            <elementDefinition Id="17932b9d-0c52-48c4-b387-5d24ac17aa29" />
+            <elementDefinition Id="025d6ef3-eeff-4f28-9058-bc9d8941091b" />
           </generalization>
         </generalsInternal>
         <targetEnds>
@@ -229,6 +229,12 @@
               <referencedTypeMoniker Id="b1d19aeb-c5ac-48ec-9d30-51bc590c497c" LastKnownName="string" />
             </type_NamedElement>
           </property>
+          <property Id="28440941-7a3f-401f-bce0-d661901fb966" name="Ngày vào làm" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="0031a5ba-b5f8-4467-812d-14ffd69a970d" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="03dfdabd-f5bb-4925-83ed-8ea1a9f1cbd4" LastKnownName="date" />
+            </type_NamedElement>
+          </property>
         </ownedAttributesInternal>
         <ownedOperationsInternal>
           <operation Id="aafb868b-cec2-457a-81e4-26783d6952a9" name="Đăng nhập" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
@@ -258,34 +264,6 @@
     <logicalClassDesignerModelHasTypes>
       <class Id="2c9de05e-ae39-48c6-9c0e-9de94e88a4cd" name="Bò" isAbstract="false" isLeaf="false" isActiveClass="false">
         <elementDefinition Id="f422b418-b72c-4dee-bb3b-8dbed3cf7b45" />
-        <targetEnds>
-          <association Id="359f3693-ae09-4607-809f-223873d3fbf8" isDerived="false" sourceEndRoleName="" targetEndRoleName="" isLeaf="false" isAbstract="false">
-            <classMoniker Id="a95935d4-f248-42d9-95f7-1fa212b2b31f" LastKnownName="Chi tiết báo cáo tình trạng bò" />
-            <relationshipOwnedElementsInternal>
-              <associationHasOwnedEnds>
-                <memberEnd Id="1b289ac5-a8f2-4fca-a65e-e855935f7914" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
-                  <elementDefinition Id="425af39b-f6de-4014-87bc-e33c740904d5" />
-                </memberEnd>
-              </associationHasOwnedEnds>
-              <associationHasOwnedEnds>
-                <memberEnd Id="7fcb4bfa-bdec-4e2d-97c0-68ac6f8a6c0d" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
-                  <lowerValueInternal>
-                    <literalString Id="f9dec708-4cde-4de3-9ae2-d9f6e404a434" name="Lower" value="n">
-                      <elementDefinition Id="11c57092-9d09-4911-ad79-16544773e2b2" />
-                    </literalString>
-                  </lowerValueInternal>
-                  <upperValueInternal>
-                    <literalString Id="f9dea1a2-4fe9-4de9-b4ce-28084d11f9b0" name="Upper" value="n">
-                      <elementDefinition Id="c52a0293-5d06-4191-8345-471e7a41ebbc" />
-                    </literalString>
-                  </upperValueInternal>
-                  <elementDefinition Id="a002e602-a5b8-48a4-83c9-6b098ced68f0" />
-                </memberEnd>
-              </associationHasOwnedEnds>
-            </relationshipOwnedElementsInternal>
-            <elementDefinition Id="33ecddee-df4e-402a-8b0d-1cb30ebcb54c" />
-          </association>
-        </targetEnds>
         <ownedAttributesInternal>
           <property Id="667e3665-5416-4e0a-9486-b5c969b02eb8" name="Mã chip : string" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
             <elementDefinition Id="22a0db05-ca61-442d-841a-e451b2c34636" />
@@ -307,6 +285,12 @@
           </property>
           <property Id="e5db513b-2e5f-4c60-9d69-7bd2c02d065d" name="Đặc điểm nhận diện : string" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
             <elementDefinition Id="53d9eb2b-a85e-400a-96dd-c62c911b6766" />
+          </property>
+          <property Id="80a45525-943a-4c6a-89c7-823aaaa96494" name="Ngày nhập" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="0f3e4675-4b2d-4c73-a1e8-6c0be8905a8b" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="03dfdabd-f5bb-4925-83ed-8ea1a9f1cbd4" LastKnownName="date" />
+            </type_NamedElement>
           </property>
         </ownedAttributesInternal>
         <ownedOperationsInternal>
@@ -590,10 +574,10 @@
           <property Id="fc153d74-6558-4150-b1af-f3627137ee91" name="Thời gian ghi nhận : datetime" isLeaf="false" isStatic="true" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
             <elementDefinition Id="f17b75b7-cd29-4bb2-89a8-1aedccedccd2" />
           </property>
-          <property Id="1660e964-2171-4d52-89dc-520d0b222693" name="Lần ghi nhận" visibility="Private" isLeaf="false" isStatic="true" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+          <property Id="1660e964-2171-4d52-89dc-520d0b222693" name="Lần ghi nhận" isLeaf="false" isStatic="true" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
             <elementDefinition Id="2dfa7a80-0296-42bb-a712-b4e1f89490f4" />
             <type_NamedElement>
-              <referencedTypeMoniker Id="4d9089a7-cf1c-4821-9667-db608f6f7e64" LastKnownName="Chăm sóc" />
+              <referencedTypeMoniker Id="092c10e5-c9b8-4f32-9781-5a512da5c1f9" LastKnownName="Chăm sóc" />
             </type_NamedElement>
           </property>
         </ownedAttributesInternal>
@@ -764,32 +748,6 @@
             </relationshipOwnedElementsInternal>
             <elementDefinition Id="0f289fd2-13b2-4f73-9843-5bddcfbe4925" />
           </association>
-          <association Id="c0078b94-378c-4d6a-8e96-78b4d779c123" isDerived="false" sourceEndRoleName="" targetEndRoleName="" isLeaf="false" isAbstract="false">
-            <classMoniker Id="d7fc05c9-473b-487c-839b-15f1c7607099" LastKnownName="Chi tiết báo cáo xuất" />
-            <relationshipOwnedElementsInternal>
-              <associationHasOwnedEnds>
-                <memberEnd Id="675a0cab-193d-431c-bd83-f8ef76ff35a0" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
-                  <elementDefinition Id="55d25636-70a7-4e1f-8b31-1cef579729b6" />
-                </memberEnd>
-              </associationHasOwnedEnds>
-              <associationHasOwnedEnds>
-                <memberEnd Id="9464c3cd-c618-45bf-91dd-59e9aa97408d" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
-                  <lowerValueInternal>
-                    <literalString Id="5296d080-4dc0-4cb3-85d5-4a822555bc3e" name="Lower" value="n">
-                      <elementDefinition Id="4ddde619-d3ba-42be-9529-89150a0cadec" />
-                    </literalString>
-                  </lowerValueInternal>
-                  <upperValueInternal>
-                    <literalString Id="e8188e57-85ba-42f2-ae45-3de5ad1d2bd3" name="Upper" value="n">
-                      <elementDefinition Id="aca4530f-2930-44d6-8ec2-03287d3f1c08" />
-                    </literalString>
-                  </upperValueInternal>
-                  <elementDefinition Id="c6ccfb84-22cc-4b1e-98d6-0e2e4279406c" />
-                </memberEnd>
-              </associationHasOwnedEnds>
-            </relationshipOwnedElementsInternal>
-            <elementDefinition Id="7bb64828-3ab7-442b-83b4-40f740ef0a27" />
-          </association>
         </targetEnds>
         <ownedAttributesInternal>
           <property Id="d0d79fcd-4bc1-4f80-a6aa-375f8f2b8cbb" name="Sức chứa : float" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
@@ -895,6 +853,32 @@
               </associationHasOwnedEnds>
             </relationshipOwnedElementsInternal>
             <elementDefinition Id="775d75ca-0f6f-4c95-bd20-fcbfd8467ed5" />
+          </association>
+          <association Id="698063ce-1512-4ce5-854e-7381115426a4" isDerived="false" sourceEndRoleName="" targetEndRoleName="" isLeaf="false" isAbstract="false">
+            <classMoniker Id="29b8985b-8542-4be8-90dc-3f75aa90e614" LastKnownName="Phiếu xuất" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="d9ba8024-e84d-421f-9972-c8f4a4b9fc83" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="5f07df99-dd55-45be-a8ac-d3e45f8e1ce5" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="82095679-4768-4abe-849c-942e7a2b6760" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <lowerValueInternal>
+                    <literalString Id="95d2afd9-e008-418a-8c93-b40b8381cc89" name="Lower" value="n">
+                      <elementDefinition Id="28f94562-1daf-4cd5-8ba9-d9d55fcaeb50" />
+                    </literalString>
+                  </lowerValueInternal>
+                  <upperValueInternal>
+                    <literalString Id="7a2f4590-2712-4769-b14b-55df547e2d61" name="Upper" value="n">
+                      <elementDefinition Id="39d36026-9bfb-4566-85cf-b295cd3f1222" />
+                    </literalString>
+                  </upperValueInternal>
+                  <elementDefinition Id="1300ad4b-734e-41c4-881a-f79890ee82f9" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="ca819844-6464-4636-b671-9285426b1e76" />
           </association>
         </targetEnds>
         <ownedAttributesInternal>
@@ -1110,177 +1094,8 @@
         <elementDefinition Id="202aaf42-c8da-4201-ac87-0a1c11a5ab15" />
       </referencedType>
     </packageHasNamedElement>
-    <logicalClassDesignerModelHasTypes>
-      <class Id="784fac69-88d3-4c9f-9716-509e5eb2bde6" name="Báo cáo xuất" isAbstract="false" isLeaf="false" isActiveClass="false">
-        <elementDefinition Id="7f673525-d581-4b95-8473-fb9bbad15d5d" />
-        <generalsInternal>
-          <generalization Id="1e94e4ab-2018-463c-844f-8bd47448017d" isSubstitutable="false">
-            <classMoniker Id="69e29af3-400f-4a5c-b03f-486bbd5a18c8" LastKnownName="Báo cáo" />
-            <elementDefinition Id="cb27bc02-4af5-48f9-9960-190ca2a573c2" />
-          </generalization>
-        </generalsInternal>
-        <ownedAttributesInternal>
-          <property Id="4f8bc190-4a32-4911-bc8d-b7a3bf4fe476" name="Tổng lượng sửa : float" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
-            <elementDefinition Id="8b68a3f6-4baa-4199-bc98-203e8864b160" />
-          </property>
-        </ownedAttributesInternal>
-        <ownedOperationsInternal>
-          <operation Id="2dc4936d-b73b-4571-a6ca-f3f6e41ddd1a" name="Lập báo cáo" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
-            <elementDefinition Id="3912e0f5-0f15-4f7f-8b28-dd39a1ce92b7" />
-          </operation>
-        </ownedOperationsInternal>
-      </class>
-    </logicalClassDesignerModelHasTypes>
-    <logicalClassDesignerModelHasTypes>
-      <class Id="3a73f43f-7d76-477f-8f57-ca67120b5f44" name="Báo cáo tình trạng bò" isAbstract="false" isLeaf="false" isActiveClass="false">
-        <elementDefinition Id="a5b30633-e29e-48a2-9def-f3eb55050b3d" />
-        <generalsInternal>
-          <generalization Id="de8c64a7-0ef4-4208-a054-c7d2044b520d" isSubstitutable="false">
-            <classMoniker Id="69e29af3-400f-4a5c-b03f-486bbd5a18c8" LastKnownName="Báo cáo" />
-            <elementDefinition Id="2aab21a1-f90a-4ae8-aea1-18584fcfc27c" />
-          </generalization>
-        </generalsInternal>
-        <ownedAttributesInternal>
-          <property Id="8f6f6d1e-2767-4bc4-b66d-837c8629b858" name="Tổng số bò" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
-            <elementDefinition Id="dc9baa5e-1b94-4fbe-882c-69f1c0653ce8" />
-            <type_NamedElement>
-              <referencedTypeMoniker Id="938b2c2e-2fed-4f1d-80b9-df2650690e98" LastKnownName="int" />
-            </type_NamedElement>
-          </property>
-          <property Id="feb4dbfc-9497-4f5f-9603-e2a7e4ea0e11" name="Số bò bệnh" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
-            <elementDefinition Id="ad824ba8-7676-4f4f-82d3-191e6aae9f04" />
-            <type_NamedElement>
-              <referencedTypeMoniker Id="938b2c2e-2fed-4f1d-80b9-df2650690e98" LastKnownName="int" />
-            </type_NamedElement>
-          </property>
-        </ownedAttributesInternal>
-        <ownedOperationsInternal>
-          <operation Id="e96c0c38-e892-44ab-8fb4-65f0e8b4d1f9" name="Lập báo cáo" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
-            <elementDefinition Id="1a122f97-7c1d-41cb-887f-a23e25d1985f" />
-          </operation>
-        </ownedOperationsInternal>
-      </class>
-    </logicalClassDesignerModelHasTypes>
-    <logicalClassDesignerModelHasTypes>
-      <class Id="69e29af3-400f-4a5c-b03f-486bbd5a18c8" name="Báo cáo" isAbstract="false" isLeaf="false" isActiveClass="false">
-        <elementDefinition Id="e4db8288-1d47-404f-b0dc-253976064d07" />
-        <ownedAttributesInternal>
-          <property Id="6fcc6773-61f2-4191-9f01-490ab73732e6" name="Mã báo cáo" isLeaf="false" isStatic="true" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
-            <elementDefinition Id="cdc6003d-eb19-4ec4-9fee-9904bc09a7c7" />
-            <type_NamedElement>
-              <referencedTypeMoniker Id="3bafd8f7-4ccf-470a-a3f1-a19647c8df6e" LastKnownName="string" />
-            </type_NamedElement>
-          </property>
-          <property Id="ec3a4a26-0f4c-4b25-b444-ef9f8ce4058b" name="Ngày bắt đầu" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
-            <elementDefinition Id="62423f1d-cb4d-45e2-827d-1a157155e117" />
-            <type_NamedElement>
-              <referencedTypeMoniker Id="03dfdabd-f5bb-4925-83ed-8ea1a9f1cbd4" LastKnownName="date" />
-            </type_NamedElement>
-          </property>
-          <property Id="9b906654-3a48-4778-8d05-b89ec7c5f548" name="Ngày kết thúc" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
-            <elementDefinition Id="2db30365-1e63-4302-b710-0fe8f9f280d7" />
-            <type_NamedElement>
-              <referencedTypeMoniker Id="03dfdabd-f5bb-4925-83ed-8ea1a9f1cbd4" LastKnownName="date" />
-            </type_NamedElement>
-          </property>
-          <property Id="eefae1ed-0225-4ff0-81ed-37819e460a74" name="Ngày lập" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
-            <elementDefinition Id="9c30d6df-3eba-4ed2-a68e-fafc7e3569b5" />
-            <type_NamedElement>
-              <referencedTypeMoniker Id="03dfdabd-f5bb-4925-83ed-8ea1a9f1cbd4" LastKnownName="date" />
-            </type_NamedElement>
-          </property>
-        </ownedAttributesInternal>
-      </class>
-    </logicalClassDesignerModelHasTypes>
-    <logicalClassDesignerModelHasTypes>
-      <class Id="d7fc05c9-473b-487c-839b-15f1c7607099" name="Chi tiết báo cáo xuất" isAbstract="false" isLeaf="false" isActiveClass="false">
-        <elementDefinition Id="331bdcac-e5e0-488c-b9b7-cf69c893b97c" />
-        <targetEnds>
-          <association Id="ca1bb3e0-f021-49ef-8035-725b66c4cdef" isDerived="false" sourceEndRoleName="" targetEndRoleName="" isLeaf="false" isAbstract="false">
-            <classMoniker Id="784fac69-88d3-4c9f-9716-509e5eb2bde6" LastKnownName="Báo cáo xuất" />
-            <relationshipOwnedElementsInternal>
-              <associationHasOwnedEnds>
-                <memberEnd Id="97728970-8e99-49f0-a19a-4a3ee66e936f" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
-                  <lowerValueInternal>
-                    <literalString Id="b86dc2ef-ab46-47e9-9c99-68653fe12c23" name="Lower" value="n">
-                      <elementDefinition Id="8c9380f1-bf1a-4d0b-99dc-06949e639bbf" />
-                    </literalString>
-                  </lowerValueInternal>
-                  <upperValueInternal>
-                    <literalString Id="050edb0d-37af-4ca8-9ff6-2e2c51509316" name="Upper" value="n">
-                      <elementDefinition Id="7fc7ddd2-4976-4461-8e0a-359f4a8008e2" />
-                    </literalString>
-                  </upperValueInternal>
-                  <elementDefinition Id="79c40f3b-fec3-4a26-b0ee-2754e450d7b9" />
-                </memberEnd>
-              </associationHasOwnedEnds>
-              <associationHasOwnedEnds>
-                <memberEnd Id="14bca79f-2783-469f-946c-18925dd32dd3" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
-                  <elementDefinition Id="c75e4acc-d473-41bd-824f-a2a9d931f39d" />
-                </memberEnd>
-              </associationHasOwnedEnds>
-            </relationshipOwnedElementsInternal>
-            <elementDefinition Id="325389c2-4afe-473c-9f67-5682132ca37e" />
-          </association>
-        </targetEnds>
-        <ownedAttributesInternal>
-          <property Id="a1057eb0-fe14-4414-97a5-e9a0a7ee83e8" name="Lượng sửa xuất" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
-            <elementDefinition Id="64123154-babc-4b6a-abf7-23614af31417" />
-            <type_NamedElement>
-              <referencedTypeMoniker Id="3854b6f3-d0d9-415d-a0dc-381151e40ccb" LastKnownName="float" />
-            </type_NamedElement>
-          </property>
-        </ownedAttributesInternal>
-      </class>
-    </logicalClassDesignerModelHasTypes>
-    <logicalClassDesignerModelHasTypes>
-      <class Id="a95935d4-f248-42d9-95f7-1fa212b2b31f" name="Chi tiết báo cáo tình trạng bò" isAbstract="false" isLeaf="false" isActiveClass="false">
-        <elementDefinition Id="8d99d4a5-ae9b-4ed5-ba0c-78c854145b9a" />
-        <targetEnds>
-          <association Id="1ee63e71-ecf4-463e-9fe2-b9af4b379845" isDerived="false" sourceEndRoleName="" targetEndRoleName="" isLeaf="false" isAbstract="false">
-            <classMoniker Id="3a73f43f-7d76-477f-8f57-ca67120b5f44" LastKnownName="Báo cáo tình trạng bò" />
-            <relationshipOwnedElementsInternal>
-              <associationHasOwnedEnds>
-                <memberEnd Id="42fef32f-9dfe-4646-a2fe-f286bccb0087" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
-                  <lowerValueInternal>
-                    <literalString Id="29f5de17-ccff-4ed1-b111-3ddadd54dbcc" name="Lower" value="n">
-                      <elementDefinition Id="a3841d1b-2c2f-4c2e-9787-518d6a6bb521" />
-                    </literalString>
-                  </lowerValueInternal>
-                  <upperValueInternal>
-                    <literalString Id="77931bb4-2a0d-4003-b29f-971787664a9e" name="Upper" value="n">
-                      <elementDefinition Id="9593a4d5-cbad-4f88-a31e-48c01b7e3a5d" />
-                    </literalString>
-                  </upperValueInternal>
-                  <elementDefinition Id="9784d553-759d-4122-9ade-ac4c509f5b8d" />
-                </memberEnd>
-              </associationHasOwnedEnds>
-              <associationHasOwnedEnds>
-                <memberEnd Id="bc29043e-80d2-4d96-8a6b-73cc8de391b3" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
-                  <elementDefinition Id="b5824855-cd6a-446d-be1f-7955e2ac653d" />
-                </memberEnd>
-              </associationHasOwnedEnds>
-            </relationshipOwnedElementsInternal>
-            <elementDefinition Id="8174280d-e841-4a56-99f0-36c1220b6dbf" />
-          </association>
-        </targetEnds>
-        <ownedAttributesInternal>
-          <property Id="6933ccf6-03f0-403d-adc2-c8a0e35b031a" name="Tình trạng bò" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
-            <elementDefinition Id="3895f2f8-293f-42f3-8a31-1b2fe6bec303" />
-            <type_NamedElement>
-              <referencedTypeMoniker Id="b1d19aeb-c5ac-48ec-9d30-51bc590c497c" LastKnownName="string" />
-            </type_NamedElement>
-          </property>
-        </ownedAttributesInternal>
-      </class>
-    </logicalClassDesignerModelHasTypes>
     <packageHasNamedElement>
       <referencedType Id="31487d64-78ec-4cb7-8dec-4348aaa0dfaf" name="string" isAbstract="false" isLeaf="false" cachedFullName="string">
-        <elementDefinition Id="51653549-f806-46ae-8c1f-8c80a1c926b7" />
-      </referencedType>
-    </packageHasNamedElement>
-    <packageHasNamedElement>
-      <referencedType Id="3bafd8f7-4ccf-470a-a3f1-a19647c8df6e" name="string" isAbstract="false" isLeaf="false" cachedFullName="string">
         <elementDefinition Id="51653549-f806-46ae-8c1f-8c80a1c926b7" />
       </referencedType>
     </packageHasNamedElement>
@@ -1295,7 +1110,7 @@
       </referencedType>
     </packageHasNamedElement>
     <packageHasNamedElement>
-      <referencedType Id="4d9089a7-cf1c-4821-9667-db608f6f7e64" name="Chăm sóc" isAbstract="false" isLeaf="false" cachedFullName="ModelingProject1::Chăm sóc">
+      <referencedType Id="092c10e5-c9b8-4f32-9781-5a512da5c1f9" name="Chăm sóc" isAbstract="false" isLeaf="false" cachedFullName="ModelingProject1::Chăm sóc">
         <elementDefinition Id="a937e510-eb76-4bb9-8897-3a26c2a88563" />
       </referencedType>
     </packageHasNamedElement>

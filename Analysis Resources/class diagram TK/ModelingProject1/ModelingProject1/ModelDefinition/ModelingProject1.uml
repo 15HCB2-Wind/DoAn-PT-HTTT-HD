@@ -175,7 +175,7 @@
         isActiveClass="false">
         <generalsInternal>
           <generalization
-            Id="17932b9d-0c52-48c4-b387-5d24ac17aa29"
+            Id="025d6ef3-eeff-4f28-9058-bc9d8941091b"
             isSubstitutable="false">
             <classMoniker
               Id="1f2fb3e1-b7d3-44e9-95e7-77643ebe1784"
@@ -587,6 +587,24 @@
                 LastKnownLocation="ModelingProject1.uml" />
             </type_NamedElement>
           </property>
+          <property
+            Id="0031a5ba-b5f8-4467-812d-14ffd69a970d"
+            name="Ngày vào làm"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <type_NamedElement>
+              <undefinedTypeMoniker
+                Id="6f110a50-e1bb-4866-b5fb-de196abdb565"
+                LastKnownName="date"
+                LastKnownLocation="ModelingProject1.uml" />
+            </type_NamedElement>
+          </property>
         </ownedAttributesInternal>
         <ownedOperationsInternal>
           <operation
@@ -785,6 +803,24 @@
             isDerivedUnion="false"
             aggregation="None"
             isComposite="false" />
+          <property
+            Id="0f3e4675-4b2d-4c73-a1e8-6c0be8905a8b"
+            name="Ngày nhập"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <type_NamedElement>
+              <undefinedTypeMoniker
+                Id="6f110a50-e1bb-4866-b5fb-de196abdb565"
+                LastKnownName="date"
+                LastKnownLocation="ModelingProject1.uml" />
+            </type_NamedElement>
+          </property>
         </ownedAttributesInternal>
         <ownedOperationsInternal>
           <operation
@@ -1447,7 +1483,6 @@
           <property
             Id="2dfa7a80-0296-42bb-a712-b4e1f89490f4"
             name="Lần ghi nhận"
-            visibility="Private"
             isLeaf="false"
             isStatic="true"
             isReadOnly="false"
@@ -2108,6 +2143,56 @@
                   isDerivedUnion="false"
                   aggregation="None"
                   isComposite="true" />
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+          <association
+            Id="ca819844-6464-4636-b671-9285426b1e76"
+            isDerived="false"
+            sourceEndRoleName=""
+            targetEndRoleName=""
+            isLeaf="false"
+            isAbstract="false">
+            <classMoniker
+              Id="f8e8887e-1238-4cd0-a151-66f3891dbc01"
+              LastKnownName="Phiếu xuất"
+              LastKnownLocation="ModelingProject1.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="5f07df99-dd55-45be-a8ac-d3e45f8e1ce5"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="1300ad4b-734e-41c4-881a-f79890ee82f9"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false">
+                  <lowerValueInternal>
+                    <literalString
+                      Id="28f94562-1daf-4cd5-8ba9-d9d55fcaeb50"
+                      name="Lower"
+                      value="n" />
+                  </lowerValueInternal>
+                  <upperValueInternal>
+                    <literalString
+                      Id="39d36026-9bfb-4566-85cf-b295cd3f1222"
+                      name="Upper"
+                      value="n" />
+                  </upperValueInternal>
+                </memberEnd>
               </associationHasOwnedEnds>
             </relationshipOwnedElementsInternal>
           </association>

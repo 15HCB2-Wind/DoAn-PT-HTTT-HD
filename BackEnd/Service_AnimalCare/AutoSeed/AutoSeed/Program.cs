@@ -11,6 +11,10 @@ namespace AutoSeed
 {
     class Program
     {
+        public static DateTime START_DATE { get { return new DateTime(2016, 1, 1); } }
+
+        //=====
+
         //SELECT a.*, b.machinhanh FROM service_management_drinksmile.bo a, service_management_drinksmile.chuongtrai b where a.machuong = b.machuong;
         public static List<dynamic> Cows { get; set; }
         public static Dictionary<dynamic, double> Statistic { get; set; }
@@ -76,7 +80,9 @@ namespace AutoSeed
                 DataProvider.ExecuteNonQuery("delete tinhtrangbo");
                 DataProvider.ExecuteNonQuery("update counter set index_chamsoc = 0");
                 Console.WriteLine("Seeding data...");
-                foreach (var eachPC in DataProvider.ExecuteReader<dynamic>((SqlDataReader row) => {
+
+                var PCs = DataProvider.ExecuteReader<dynamic>((SqlDataReader row) =>
+                {
                     return new
                     {
                         id = row.GetValueDefault<string>(0),
@@ -85,19 +91,20 @@ namespace AutoSeed
                         start = row.GetValueDefault<DateTime>(3),
                         end = row.GetValueDefault<DateTime>(4),
                         daysOfWeek = row.GetValueDefault<string>(5).Replace("CN", "1"),
+                        areaId = row.GetValueDefault<string>(1).Split(new string[] { "NV" }, 2, StringSplitOptions.RemoveEmptyEntries)[0],
                     };
-                }, "select maphancong, manv, machuong, ngaybatdau, ngayketthuc, ngaytrongtuan from phancong")){
-
-                    string areaId = eachPC.userid.Split(new string[] { "NV" }, 2, StringSplitOptions.RemoveEmptyEntries)[0];
-                    DateTime run = new DateTime(eachPC.start.Year, eachPC.start.Month, eachPC.start.Day);
-
-                    while (run.CompareTo(DateTime.Now) == -1 && run.CompareTo(eachPC.end) == -1)
+                }, "select maphancong, manv, machuong, ngaybatdau, ngayketthuc, ngaytrongtuan from phancong");
+                
+                DateTime run = START_DATE;
+                while (run.CompareTo(DateTime.Now) == -1)
+                {
+                    foreach (var eachPC in PCs)
                     {
-                        if (eachPC.daysOfWeek.Contains(((int)run.DayOfWeek + 1).ToString()))
+                        if (run.CompareTo(eachPC.start) == 1 && run.CompareTo(eachPC.end) == -1 && eachPC.daysOfWeek.Contains(((int)run.DayOfWeek + 1).ToString()))
                         {
                             foreach (var cow in Cows.Where(x => x.machuong == eachPC.barnid && x.daxoa == "0"))
                             {
-                                string newId = createId(areaId);
+                                string newId = createId(eachPC.areaId);
                                 bool milk = false;
                                 double milkValue = 0d;
                                 if (new Random().NextDouble() > 0.5)
@@ -108,9 +115,9 @@ namespace AutoSeed
                                 }
 
                                 DataProvider.ExecuteNonQuery(
-                                    string.Format("insert into chamsoc(machamsoc, ngayghinhan, tinhtrangcongviec, luongsua, dachoan, dadonvesinh, davatsua, maphancong, mabo)" + 
-                                    " values ('{0}', '{1}', N'{2}', {3}, '{4}', '{5}', '{6}', '{7}', '{8}')", 
-                                    newId, run, "Đã hoàn thành.", milkValue, true, true, milk, eachPC.id, cow.mabo));
+                                    string.Format("insert into chamsoc(machamsoc, ngayghinhan, tinhtrangcongviec, luongsua, dachoan, dadonvesinh, davatsua, maphancong, mabo, machinhanh)" +
+                                    " values ('{0}', '{1}', N'{2}', {3}, '{4}', '{5}', '{6}', '{7}', '{8}', '{9}')",
+                                    newId, run, "Đã hoàn thành.", milkValue, true, true, milk, eachPC.id, cow.mabo, cow.machinhanh));
 
                                 //loop 2-4 times
                                 DateTime a = new DateTime(run.Year, run.Month, run.Day, 7, 0, 0);
@@ -119,27 +126,29 @@ namespace AutoSeed
                                     a = a.Add(new TimeSpan(new Random().Next(1, 2), new Random().Next(1, 59), new Random().Next(1, 59)));
                                     if ((int)DataProvider.ExecuteScalar(string.Format("select count(mabo) from tinhtrangbo a, chamsoc b where a.machamsoc = b.machamsoc and b.mabo = '{0}'", cow.mabo)) > 0)
                                     {
+                                        double maxWeight = (double)DataProvider.ExecuteScalar(string.Format("select max(a.cannang) from tinhtrangbo a, chamsoc b where a.machamsoc = b.machamsoc and b.mabo = '{0}'", cow.mabo));
+                                        double maxHeight = (double)DataProvider.ExecuteScalar(string.Format("select max(a.chieucao) from tinhtrangbo a, chamsoc b where a.machamsoc = b.machamsoc and b.mabo = '{0}'", cow.mabo));
                                         DataProvider.ExecuteNonQuery(
                                             string.Format("insert into tinhtrangbo(machamsoc, thoigianghinhan, cannang, chieucao)" +
                                             " values ('{0}', '{1}', {2}, {3})",
-                                            newId, a, 
-                                            (double)DataProvider.ExecuteScalar(string.Format("select max(a.cannang) from tinhtrangbo a, chamsoc b where a.machamsoc = b.machamsoc and b.mabo = '{0}'", cow.mabo)) + new Random().NextDouble() > 0.5 ? new Random().Next(40, 120) : 0,
-                                            (double)DataProvider.ExecuteScalar(string.Format("select max(a.chieucao) from tinhtrangbo a, chamsoc b where a.machamsoc = b.machamsoc and b.mabo = '{0}'", cow.mabo)) + new Random().NextDouble() > 0.5 ? new Random().Next(0, 2) : 0));
+                                            newId, a,
+                                            maxWeight + (new Random().NextDouble() > 0.5 ? (double)(new Random().Next(4, 12)) / 100d : 0d),
+                                            maxHeight + (new Random().NextDouble() > 0.5 ? (double)(new Random().Next(0, 5)) / 10000d : 0d)));
                                     }
                                     else
                                     {
                                         DataProvider.ExecuteNonQuery(
                                             string.Format("insert into tinhtrangbo(machamsoc, thoigianghinhan, cannang, chieucao)" +
                                             " values ('{0}', '{1}', {2}, {3})",
-                                            newId, a, 
-                                            (double)(new Random().Next(9000, 13000)) / 100d, 
+                                            newId, a,
+                                            (double)(new Random().Next(9000, 13000)) / 100d,
                                             (double)(new Random().Next(120, 140)) / 100d));
                                     }
                                 }
                             }
                         }
-                        run = run.AddDays(1);
                     }
+                    run = run.AddDays(1);
                 }
             //}
             //catch (Exception ex)
