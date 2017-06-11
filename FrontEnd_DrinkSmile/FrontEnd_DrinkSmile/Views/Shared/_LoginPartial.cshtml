@@ -7,7 +7,7 @@
     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" data-toggle="dropdown">@HttpUtility.UrlDecode(Request.Cookies["name"].Value)</a>
         <div class="dropdown-menu dropdown-menu-right">
-            @if (Request.Cookies["token"] != null && Request.Cookies["role"].Value == "2" && Request.Cookies["changerole"].Value == "true")
+            @if (Request.Cookies["token"] != null && Request.Cookies["role"].Value == "2" && Request.Cookies["changerole"] != null)
             {
                 <a class="dropdown-item" onclick="changerole()"><i class="fa fa-bookmark-o" aria-hidden="true"></i> Đăng xuất chi nhánh</a>
             }
@@ -23,7 +23,7 @@ else
     </li>
 }
 
-@if (Request.Cookies["token"] != null && Request.Cookies["role"].Value == "2" && Request.Cookies["changerole"].Value == "true")
+@if (Request.Cookies["token"] != null && Request.Cookies["role"].Value == "2" && Request.Cookies["changerole"] != null)
 {
     <script>
         function changerole() {

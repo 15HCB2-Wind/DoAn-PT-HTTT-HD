@@ -5,14 +5,13 @@
 @section Scripts{
     <script>
         var namelabel = new Array();
-        var listdate = new Array();
         var corlors;
         var countcolor = 0;
         var valueofchinhanhs = [];
         var cannang = [[]];
         var chieucao = [[]];
         var temp = new Array();
-      
+
         $(document).ready(function () {
             colors = [
             { normal: "rgba(230,81,0,0.4)", hover: "rgba(245,127,23,1)", hex: "#e65100", hexhover: "#f57f17" },
@@ -23,7 +22,7 @@
             { normal: "rgba(255,234,0,0.4)", hover: "rgba(255,255,0,1)", hex: "#ffea00", hexhover: "#ffff00" },
             { normal: "rgba(3,169,244,0.4)", hover: "rgba(129,212,250,1)", hex: "#03a9f4", hexhover: "#81d4fa" }
             ];
-            
+
             loadprepare();
         });
 
@@ -91,27 +90,23 @@
         }
 
         function ThongKeClick() {
-           
+
             var ngaybatdau = new Date($('input[name=prefix_bd_submit]').val());
             var ngayketthuc = new Date($('input[name=prefix_kt_submit]').val());
-            
-            if(DateDiff.inDays(ngaybatdau, ngayketthuc)<0)
-            {
+
+            if (DateDiff.inDays(ngaybatdau, ngayketthuc) < 0) {
                 toastr["error"]("Ngày bắt đầu không được nhỏ hơn ngày kết thúc");
                 return;
             }
-            
 
-            if (DateDiff.inDays(ngaybatdau, ngayketthuc) <= 14) {
+
+            if (DateDiff.inWeeks(ngaybatdau, ngayketthuc) <= 2) {
                 if (namelabel.length == DateDiff.inDays(ngaybatdau, ngayketthuc) + 1) {
-                    
+
                 }
                 else {
                     namelabel = [];
                     for (var i = 0; i <= DateDiff.inDays(ngaybatdau, ngayketthuc) ; i++) {
-                        listdate.push((ngaybatdau.addDays(i)).getFullYear() + '-' +
-                            ((ngaybatdau.addDays(i)).getMonth() + 1) + '-' +
-                            (ngaybatdau.addDays(i)).getDate());
                         namelabel.push((ngaybatdau.addDays(i)).getDate() + '/' +
                             ((ngaybatdau.addDays(i)).getMonth() + 1) + '/' +
                             (ngaybatdau.addDays(i)).getFullYear());
@@ -144,6 +139,7 @@
                             ThoiGian: "day",
                             Value: 0
                         }, Cookies.get('area'), "animal_care", "animalcare/reportTinhTrangBo", function (dataThongSo, index) {
+                            console.log(dataThongSo);
                             if (!dataThongSo.IsError) {
                                 cannang[index].push({
                                     Ngay: dataThongSo.Data.Ngay,
@@ -160,7 +156,81 @@
                 }
 
             }
-            else if (DateDiff.inWeeks(ngaybatdau, ngayketthuc) >= 2 && DateDiff.inMonths(ngaybatdau, ngayketthuc) <= 2) {
+            else if (DateDiff.inWeeks(ngaybatdau, ngayketthuc) > 2 && DateDiff.inMonths(ngaybatdau, ngayketthuc) <= 2) {
+                if (namelabel.length == DateDiff.inWeeks(ngaybatdau, ngayketthuc) + 1) {
+
+                }
+                else {
+                    namelabel = [];
+                    for (var i = 0; i <= DateDiff.inWeeks(ngaybatdau, ngayketthuc) ; i++) {
+                        if ((DateDiff.inDays((ngaybatdau.addDays((i) * 7)), ngayketthuc) <= 7)) {
+                            if (ngaybatdau.addDays((i) * 7).getDate() < ngayketthuc.getDate()) {
+                                namelabel.push((ngaybatdau.addDays(i * 7)).getDate() + '-' +
+                                ngayketthuc.getDate() + '/' +
+                                (ngayketthuc.getMonth() + 1));
+                            } else {
+                                namelabel.push((ngaybatdau.addDays(i * 7)).getDate() + '/' +
+                                ((ngaybatdau.addDays((i) * 7)).getMonth() + 1) + '-' +
+                                ngayketthuc.getDate() + '/' +
+                                (ngayketthuc.getMonth() + 1));
+                            }
+                        }
+                        else {
+                            if ((ngaybatdau.addDays((i + 1) * 7)).getDate() < (ngaybatdau.addDays(i * 7)).getDate()) {
+                                namelabel.push((ngaybatdau.addDays(i * 7)).getDate() + '/' +
+                                    ((ngaybatdau.addDays(i * 7)).getMonth() + 1) + '-' +
+                                    (ngaybatdau.addDays((i + 1) * 7)).getDate() + '/' +
+                                    ((ngaybatdau.addDays((i + 1) * 7)).getMonth() + 1));
+                            } else {
+                                namelabel.push((ngaybatdau.addDays(i * 7)).getDate() + '-' +
+                                    (ngaybatdau.addDays((i + 1) * 7)).getDate() + '/' +
+                                    ((ngaybatdau.addDays(i)).getMonth() + 1));
+                            }
+                        }
+                    }
+                }
+                //var listbo_cn;
+                //var ngaybatdau_temp;
+                //for (var i = 0; i < valueofchinhanhs.length; i++) {
+                //    if (cannang[i] == null) {
+                //        cannang.push(new Array());
+                //    }
+                //    if (chieucao[i] == null) {
+                //        chieucao.push(new Array());
+                //    }
+
+                //    listbo_cn = new Array();
+                //    ngaybatdau_temp = ngaybatdau;
+                //    for (var j = 0; j < temp.length; j++) {
+                //        if (temp[j].macn == valueofchinhanhs[i].machinhanh) {
+                //            listbo_cn.push(temp[j]);
+                //        }
+                //    }
+
+                //    while (ngaybatdau_temp <= ngayketthuc) {
+                //        callAjax('post', {
+                //            Token: Cookies.get('token'),
+                //            NgayBatDau: ngaybatdau_temp,
+                //            NgayKetThuc: ngayketthuc,
+                //            ListBo: listbo_cn,
+                //            ThoiGian: "day",
+                //            Value: 0
+                //        }, Cookies.get('area'), "animal_care", "animalcare/reportTinhTrangBo", function (dataThongSo, index) {
+                //            if (!dataThongSo.IsError) {
+                //                cannang[index].push({
+                //                    Ngay: dataThongSo.Data.Ngay,
+                //                    CanNang: dataThongSo.Data.CanNang
+                //                });
+                //                chieucao[index].push({
+                //                    Ngay: dataThongSo.Data.Ngay,
+                //                    ChieuCao: dataThongSo.Data.ChieuCao
+                //                });
+                //            }
+                //        }, i);
+                //        ngaybatdau_temp = ngaybatdau_temp.addDays(1);
+                //    }
+                //}
+                console.log(namelabel);
                 console.log("week");
             }
             else if (DateDiff.inMonths(ngaybatdau, ngayketthuc) > 2 && DateDiff.inYears(ngaybatdau, ngayketthuc) <= 1) {
@@ -182,8 +252,11 @@
                 console.log("10year");
             }
 
+            namelabel.splice(0, 1);
+
             toastr['warning']('Wait 5s');
             setTimeout(createchart, 5000);
+            $('#tablechart').removeAttr('hidden');
         }
 
 
@@ -263,7 +336,7 @@
                     if (countcolor >= colors.length) {
                         countcolor = 0;
                     }
-                   
+
                     datachartcannang.datasets.push({
                         fillColor: "rgba(225,225,225,0)",
                         strokeColor: colors[countcolor].hover,
@@ -306,7 +379,10 @@
             var option = {
                 responsive: true
             };
-
+            for (var i = 0; i < datachartcannang.datasets.length; i++) {
+                datachartcannang.datasets[i].data.splice(0, 1);
+                datachartchieucao.datasets[i].data.splice(0, 1);
+            }
             // get the context of the canvas element we want to select
             $('#b').removeAttr("hidden");
             ctx = document.getElementById("myChart").getContext('2d');
@@ -488,7 +564,7 @@
                     </tr>
                 </tbody>
             </table>
-            
+
         </div>
 
         <div id="notice" hidden="hidden">
@@ -498,12 +574,24 @@
 </div>
 
 <div id="chart" hidden="hidden">
-    <table id="b" hidden="hidden" align="center">
-        <tbody id="chuThich_CircleChart"></tbody>
+    <table id="tablechart" hidden="hidden" class="text-center align-middle">
+        <tbody>
+            <tr>
+                <td>
+                    <button type="button" class="btn btn-primary"><</button>
+                </td>
+                <td class="w-100">
+                    <table id="b" hidden="hidden" align="center">
+                        <tbody id="chuThich_CircleChart"></tbody>
+                    </table>
+                    <br />
+                    <canvas id="myChart"></canvas>
+                    <p class="text-center">Cân nặng trung bình</p>
+                    <canvas id="myChart2"></canvas>
+                    <p class="text-center">Chiều cao trung bình</p>
+                </td>
+                <td><button type="button" class="btn btn-primary">></button></td>
+            </tr>
+        </tbody>
     </table>
-    <br />
-    <canvas id="myChart"></canvas>
-    <p class="text-center">Cân nặng trung bình</p>
-    <canvas id="myChart2"></canvas>
-    <p class="text-center">Chiều cao trung bình</p>
 </div>

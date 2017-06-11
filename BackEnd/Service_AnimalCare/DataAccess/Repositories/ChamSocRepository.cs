@@ -38,7 +38,7 @@ namespace DataAccess.Repositories
 
                 try
                 {
-                    result = DataProvider.ExecuteNonQuery(string.Format("insert into ChamSoc(MaChamSoc,NgayGhiNhan,TinhTrangCongViec,LuongSua,DaChoAn,DaDonVeSinh,DaVatSua,MaPhanCong,MaBo) values ('{0}', '{1}', N'{2}', {3}, '{4}', '{5}','{6}','{7}','{8}')", cs.MaChamSoc, cs.NgayGhiNhan, cs.TinhTrangCongViec, cs.LuongSua, cs.DaChoAn, cs.DaDonVeSinh, cs.DaVatSua, cs.MaPhanCong, cs.MaBo));
+                    result = DataProvider.ExecuteNonQuery(string.Format("insert into ChamSoc(MaChamSoc,NgayGhiNhan,TinhTrangCongViec,LuongSua,DaChoAn,DaDonVeSinh,DaVatSua,MaPhanCong,MaBo,MaChiNhanh) values ('{0}', '{1}', N'{2}', {3}, '{4}', '{5}','{6}','{7}','{8}','{9}')", cs.MaChamSoc, cs.NgayGhiNhan, cs.TinhTrangCongViec, cs.LuongSua, cs.DaChoAn, cs.DaDonVeSinh, cs.DaVatSua, cs.MaPhanCong, cs.MaBo,cs.MaChiNhanh));
                 }
                 catch (Exception)
                 {
@@ -145,7 +145,7 @@ namespace DataAccess.Repositories
                         MaPhanCong = row.GetValueDefault<string>(7),
                         MaBo = row.GetValueDefault<string>(8)
                     };
-                }, string.Format("select top 1 * from chamsoc where maphancong = '{0}' and mabo = '{1}'", tinhTrangBo.MaPhanCong, tinhTrangBo.MaBo));
+                }, string.Format("select top 1 * from chamsoc where maphancong = '{0}' and mabo = '{1}' and NgayGhiNhan='{2}'", tinhTrangBo.MaPhanCong, tinhTrangBo.MaBo,DateTime.Now));
             }
             catch (Exception)
             {
