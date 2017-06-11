@@ -31,6 +31,7 @@ public class DataProvider
             {
                 Enable = true,
                 FileName = "ServiceLogin_SQLlog",
+                QueryTypes = new string[] { "insert", "delete", "update" },
             };
         }
     }
@@ -42,13 +43,15 @@ public class DataProvider
             //init
             var queryLC = query.ToLower();
             //check query insert/update
-            if (queryLC.Contains("insert") || queryLC.Contains("update"))
+            foreach (var t in LogConfigs.QueryTypes)
             {
-                //write log
-                using (var writer = File.AppendText(LogConfigs.FileName))
-                {
-                    writer.WriteLine(query);
-                }
+                if (queryLC.Contains(t))
+                    return;
+            }
+            //write log
+            using (var writer = File.AppendText(LogConfigs.FileName))
+            {
+                writer.WriteLine(query);
             }
         }
     }
