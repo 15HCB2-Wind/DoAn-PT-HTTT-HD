@@ -206,39 +206,21 @@ namespace DataAccess.Repositories
             return result;
         }
 
-        public static ThongSo ReportTinhTrangBo_Day(List<BoTemp> list, DateTime ngaybatdau, DateTime ngayketthuc, string thoigian, int value)
+        public static List<ThongSo> ReportTinhTrangBo_Day(string macn , DateTime ngaybatdau)
         {
-            string temp = "";
-            for (int i = 0; i < list.Count; i++)
-            {
-                if (i == list.Count - 1)
-                {
-                    temp += "MaBo = '" + list[i].MaBo + "'";
-                }
-                else
-                {
-                    temp += "MaBo = '" + list[i].MaBo + "' or ";
-                }
-            }
-            string query = string.Format("select Avg(CanNang) as CanNangTB,Avg(ChieuCao) as ChieuCaoTB " +
-                                    "from TinhTrangBo,ChamSoc " +
-                                    "where TinhTrangBo.MaChamSoc = ChamSoc.MaChamSoc and ( " +
-                                    "{0}" +
-                                    " ) and DATEDIFF(DAY,ThoiGianGhiNhan,'{1}') = {2}",
-                                    temp, ngaybatdau.Date, value
-                                    );
-            ThongSo result = null;
+            List<ThongSo> result = null;
             try
             {
-                result = DataProvider.ExecuteReaderOne((SqlDataReader row) =>
+                result = DataProvider.StoredProcedure_ExecuteReader((SqlDataReader row) =>
                 {
                     return new ThongSo()
                     {
-                        CanNang = row.GetValueDefault<double>(0),
-                        ChieuCao = row.GetValueDefault<double>(1)
+                        Ngay = row.GetValueDefault<DateTime>(0),
+                        CanNang = row.GetValueDefault<double>(1),
+                        ChieuCao = row.GetValueDefault<double>(2),
+                        MaChiNhanh = row.GetValueDefault<string>(3)
                     };
-                }, query);
-                result.Ngay = ngaybatdau.Year+"-"+ngaybatdau.Month+"-"+ngaybatdau.Day;
+                }, "db_ReportTinhTrangBo", new SqlParameter("@macn", DBNull.Value), new SqlParameter("@ngaybatdau", ngaybatdau));
             }
             catch (Exception)
             {

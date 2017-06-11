@@ -56,10 +56,6 @@ namespace Service.Models
 
     public class ReportTinhTrangBoRequest : BodyRequest
     {
-        public List<BoTemp> ListBo { get; set; }
         public DateTime NgayBatDau { get; set; }
-        public DateTime NgayKetThuc { get; set; }
-        public string ThoiGian { get; set; }
-        public int Value { get; set; }
     }
 }

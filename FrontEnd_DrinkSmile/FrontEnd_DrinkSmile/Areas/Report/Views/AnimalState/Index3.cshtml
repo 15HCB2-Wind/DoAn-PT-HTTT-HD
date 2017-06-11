@@ -11,6 +11,11 @@
         var cannang = [[]];
         var chieucao = [[]];
         var temp = new Array();
+        Date.prototype.addDays = function (days) {
+            var dat = new Date(this.valueOf());
+            dat.setDate(dat.getDate() + days);
+            return dat;
+        }
 
         $(document).ready(function () {
             colors = [
@@ -22,43 +27,20 @@
             { normal: "rgba(255,234,0,0.4)", hover: "rgba(255,255,0,1)", hex: "#ffea00", hexhover: "#ffff00" },
             { normal: "rgba(3,169,244,0.4)", hover: "rgba(129,212,250,1)", hex: "#03a9f4", hexhover: "#81d4fa" }
             ];
-
-            loadprepare();
         });
 
-        function loadprepare() {
-            callAjax('post', { Token: Cookies.get('token') }, Cookies.get('area'), "management", "ChiNhanh/getAll", function (data1) {
-                for (var i = 0; i < data1.Data.length; i++) {
-                    valueofchinhanhs.push(data1.Data[i]);
-                    callAjax('post', { Token: Cookies.get('token'), Predicates: [data1.Data[i].machinhanh] }, Cookies.get('area'), "management", "Bo/getAllOfAgencyBy3", function (data2, index) {
-                        for (var j = 0; j < data2.Data.length; j++) {
-                            temp.push({
-                                macn: data1.Data[index].machinhanh,
-                                tencn: data1.Data[index].tenchinhanh,
-                                mabo: data2.Data[j].mabo
-                            });
-                        }
-                    }, i);
-                }
-            });
-        }
 
         function clearChart() {
-            namelabel = new Array();
-            listdate = new Array();
             countcolor = 0;
+            namelabel = new Array();
             valueofchinhanhs = [];
             cannang = [[]];
             chieucao = [[]];
             temp = new Array();
-            loadprepare();
         }
 
-        Date.prototype.addDays = function (days) {
-            var dat = new Date(this.valueOf());
-            dat.setDate(dat.getDate() + days);
-            return dat;
-        }
+
+
         var DateDiff = {
 
             inDays: function (d1, d2) {
@@ -90,173 +72,56 @@
         }
 
         function ThongKeClick() {
+            clearChart();
 
-            var ngaybatdau = new Date($('input[name=prefix_bd_submit]').val());
-            var ngayketthuc = new Date($('input[name=prefix_kt_submit]').val());
+            var ngaybatdau = new Date($('input[name=prefix_bd_submit]').val()).addDays(parseInt($('#ngaybatdau').attr('delta-date')));
 
-            if (DateDiff.inDays(ngaybatdau, ngayketthuc) < 0) {
-                toastr["error"]("Ngày bắt đầu không được nhỏ hơn ngày kết thúc");
-                return;
-            }
-
-
-            if (DateDiff.inWeeks(ngaybatdau, ngayketthuc) <= 2) {
-                if (namelabel.length == DateDiff.inDays(ngaybatdau, ngayketthuc) + 1) {
-
-                }
-                else {
-                    namelabel = [];
-                    for (var i = 0; i <= DateDiff.inDays(ngaybatdau, ngayketthuc) ; i++) {
-                        namelabel.push((ngaybatdau.addDays(i)).getDate() + '/' +
-                            ((ngaybatdau.addDays(i)).getMonth() + 1) + '/' +
-                            (ngaybatdau.addDays(i)).getFullYear());
+            callAjax('post', { Token: Cookies.get('token') }, Cookies.get('area'), "management", "ChiNhanh/getAll", function (data) {
+                if (data.IsError) {
+                    for (var i = 0; i < data.Errors.length; i++) {
+                        toastr["error"](data.Errors[i]);
                     }
-                }
-                var listbo_cn;
-                var ngaybatdau_temp;
-                for (var i = 0; i < valueofchinhanhs.length; i++) {
-                    if (cannang[i] == null) {
-                        cannang.push(new Array());
+                } else if (data.Data) {
+                    for (var i = 0; i < data.Data.length; i++) {
+                        valueofchinhanhs.push(data.Data[i]);
                     }
-                    if (chieucao[i] == null) {
-                        chieucao.push(new Array());
-                    }
-
-                    listbo_cn = new Array();
-                    ngaybatdau_temp = ngaybatdau;
-                    for (var j = 0; j < temp.length; j++) {
-                        if (temp[j].macn == valueofchinhanhs[i].machinhanh) {
-                            listbo_cn.push(temp[j]);
+                    callAjax('post', {
+                        Token: Cookies.get('token'),
+                        NgayBatDau: ngaybatdau
+                    }, Cookies.get('area'), "animal_care", "animalcare/reportTinhTrangBo", function (data) {
+                        if (data.IsError) {
+                            toastr["error"](data.Errors[0]);
                         }
-                    }
+                        else if (data.Data) {
+                            for (var i = 0; i < valueofchinhanhs.length; i++) {
+                                chieucao[i] = [];
+                                cannang[i] = [];
+                                for (var j = 0; j < data.Data.length; j++) {
 
-                    while (ngaybatdau_temp <= ngayketthuc) {
-                        callAjax('post', {
-                            Token: Cookies.get('token'),
-                            NgayBatDau: ngaybatdau_temp,
-                            NgayKetThuc: ngayketthuc,
-                            ListBo: listbo_cn,
-                            ThoiGian: "day",
-                            Value: 0
-                        }, Cookies.get('area'), "animal_care", "animalcare/reportTinhTrangBo", function (dataThongSo, index) {
-                            console.log(dataThongSo);
-                            if (!dataThongSo.IsError) {
-                                cannang[index].push({
-                                    Ngay: dataThongSo.Data.Ngay,
-                                    CanNang: dataThongSo.Data.CanNang
-                                });
-                                chieucao[index].push({
-                                    Ngay: dataThongSo.Data.Ngay,
-                                    ChieuCao: dataThongSo.Data.ChieuCao
-                                });
+                                    if (valueofchinhanhs[i].machinhanh == data.Data[j].MaChiNhanh) {
+                                        chieucao[i].push({
+                                            ChieuCao: data.Data[j].ChieuCao,
+                                            Ngay: new Date(data.Data[j].Ngay)
+                                        });
+                                        cannang[i].push({
+                                            CanNang: data.Data[j].CanNang,
+                                            Ngay: new Date(data.Data[j].Ngay)
+                                        });
+                                    }
+                                }
                             }
-                        }, i);
-                        ngaybatdau_temp = ngaybatdau_temp.addDays(1);
-                    }
-                }
-
-            }
-            else if (DateDiff.inWeeks(ngaybatdau, ngayketthuc) > 2 && DateDiff.inMonths(ngaybatdau, ngayketthuc) <= 2) {
-                if (namelabel.length == DateDiff.inWeeks(ngaybatdau, ngayketthuc) + 1) {
-
-                }
-                else {
-                    namelabel = [];
-                    for (var i = 0; i <= DateDiff.inWeeks(ngaybatdau, ngayketthuc) ; i++) {
-                        if ((DateDiff.inDays((ngaybatdau.addDays((i) * 7)), ngayketthuc) <= 7)) {
-                            if (ngaybatdau.addDays((i) * 7).getDate() < ngayketthuc.getDate()) {
-                                namelabel.push((ngaybatdau.addDays(i * 7)).getDate() + '-' +
-                                ngayketthuc.getDate() + '/' +
-                                (ngayketthuc.getMonth() + 1));
-                            } else {
-                                namelabel.push((ngaybatdau.addDays(i * 7)).getDate() + '/' +
-                                ((ngaybatdau.addDays((i) * 7)).getMonth() + 1) + '-' +
-                                ngayketthuc.getDate() + '/' +
-                                (ngayketthuc.getMonth() + 1));
+                            if (cannang[0] != null) {
+                                for (var i = 0; i < cannang[0].length; i++) {
+                                    namelabel.push((ngaybatdau.addDays(i)).getDate() + '/' +
+                                        ((ngaybatdau.addDays(i)).getMonth() + 1) + '/' +
+                                        (ngaybatdau.addDays(i)).getFullYear());
+                                }
                             }
+                            createchart();
                         }
-                        else {
-                            if ((ngaybatdau.addDays((i + 1) * 7)).getDate() < (ngaybatdau.addDays(i * 7)).getDate()) {
-                                namelabel.push((ngaybatdau.addDays(i * 7)).getDate() + '/' +
-                                    ((ngaybatdau.addDays(i * 7)).getMonth() + 1) + '-' +
-                                    (ngaybatdau.addDays((i + 1) * 7)).getDate() + '/' +
-                                    ((ngaybatdau.addDays((i + 1) * 7)).getMonth() + 1));
-                            } else {
-                                namelabel.push((ngaybatdau.addDays(i * 7)).getDate() + '-' +
-                                    (ngaybatdau.addDays((i + 1) * 7)).getDate() + '/' +
-                                    ((ngaybatdau.addDays(i)).getMonth() + 1));
-                            }
-                        }
-                    }
+                    });
                 }
-                //var listbo_cn;
-                //var ngaybatdau_temp;
-                //for (var i = 0; i < valueofchinhanhs.length; i++) {
-                //    if (cannang[i] == null) {
-                //        cannang.push(new Array());
-                //    }
-                //    if (chieucao[i] == null) {
-                //        chieucao.push(new Array());
-                //    }
-
-                //    listbo_cn = new Array();
-                //    ngaybatdau_temp = ngaybatdau;
-                //    for (var j = 0; j < temp.length; j++) {
-                //        if (temp[j].macn == valueofchinhanhs[i].machinhanh) {
-                //            listbo_cn.push(temp[j]);
-                //        }
-                //    }
-
-                //    while (ngaybatdau_temp <= ngayketthuc) {
-                //        callAjax('post', {
-                //            Token: Cookies.get('token'),
-                //            NgayBatDau: ngaybatdau_temp,
-                //            NgayKetThuc: ngayketthuc,
-                //            ListBo: listbo_cn,
-                //            ThoiGian: "day",
-                //            Value: 0
-                //        }, Cookies.get('area'), "animal_care", "animalcare/reportTinhTrangBo", function (dataThongSo, index) {
-                //            if (!dataThongSo.IsError) {
-                //                cannang[index].push({
-                //                    Ngay: dataThongSo.Data.Ngay,
-                //                    CanNang: dataThongSo.Data.CanNang
-                //                });
-                //                chieucao[index].push({
-                //                    Ngay: dataThongSo.Data.Ngay,
-                //                    ChieuCao: dataThongSo.Data.ChieuCao
-                //                });
-                //            }
-                //        }, i);
-                //        ngaybatdau_temp = ngaybatdau_temp.addDays(1);
-                //    }
-                //}
-                console.log(namelabel);
-                console.log("week");
-            }
-            else if (DateDiff.inMonths(ngaybatdau, ngayketthuc) > 2 && DateDiff.inYears(ngaybatdau, ngayketthuc) <= 1) {
-                console.log("month");
-            }
-            else if (DateDiff.inYears(ngaybatdau, ngayketthuc) > 1 && DateDiff.inYears(ngaybatdau, ngayketthuc) <= 2) {
-                console.log("2month");
-            }
-            else if (DateDiff.inYears(ngaybatdau, ngayketthuc) > 2 && DateDiff.inYears(ngaybatdau, ngayketthuc) <= 10) {
-                console.log("1year");
-            }
-            else if (DateDiff.inYears(ngaybatdau, ngayketthuc) > 10 && DateDiff.inYears(ngaybatdau, ngayketthuc) <= 20) {
-                console.log("2year");
-            }
-            else if (DateDiff.inYears(ngaybatdau, ngayketthuc) > 20 && DateDiff.inYears(ngaybatdau, ngayketthuc) <= 100) {
-                console.log("5year");
-            }
-            else if (DateDiff.inYears(ngaybatdau, ngayketthuc) > 100) {
-                console.log("10year");
-            }
-
-            namelabel.splice(0, 1);
-
-            toastr['warning']('Wait 5s');
-            setTimeout(createchart, 5000);
-            $('#tablechart').removeAttr('hidden');
+            });
         }
 
 
@@ -297,30 +162,6 @@
                 labels: namelabel,
                 datasets: []
             };
-
-
-            //sort
-            for (var k = 0; k < valueofchinhanhs.length; k++) {
-                for (var i = 0; i < namelabel.length; i++) {
-                    for (var j = 0; j < namelabel.length; j++) {
-                        if (new Date(cannang[k][i].Ngay) < new Date(cannang[k][j].Ngay)) {
-                            var tempcn = cannang[k][i];
-                            cannang[k][i] = cannang[k][j];
-                            cannang[k][j] = tempcn;
-                            j = 0;
-                        }
-                    }
-                    for (var j = 1; j < namelabel.length; j++) {
-                        if (new Date(chieucao[k][i].Ngay) < new Date(chieucao[k][j].Ngay)) {
-                            var tempcc = chieucao[k][i];
-                            chieucao[k][i] = chieucao[k][j];
-                            chieucao[k][j] = tempcc;
-                            j = 0;
-                        }
-                    }
-                }
-            }
-
 
 
             if (valueofchinhanhs == null) {
@@ -379,16 +220,15 @@
             var option = {
                 responsive: true
             };
-            for (var i = 0; i < datachartcannang.datasets.length; i++) {
-                datachartcannang.datasets[i].data.splice(0, 1);
-                datachartchieucao.datasets[i].data.splice(0, 1);
-            }
             // get the context of the canvas element we want to select
-            $('#b').removeAttr("hidden");
-            ctx = document.getElementById("myChart").getContext('2d');
             $('#chart').removeAttr("hidden");
+
+            var ctx = document.getElementById("myChart").getContext('2d');
+            ctx.clearRect(0, 0, document.getElementById("myChart").width, document.getElementById("myChart").height);
             var mylinechart = new Chart(ctx).Line(datachartcannang, option); //'line' defines type of the chart.
-            ctx2 = document.getElementById("myChart2").getContext('2d');
+
+            var ctx2 = document.getElementById("myChart2").getContext('2d');
+            ctx2.clearRect(0, 0, document.getElementById("myChart2").width, document.getElementById("myChart2").height);
             var mylinechart2 = new Chart(ctx2).Line(datachartchieucao, option);
 
         }
@@ -525,6 +365,16 @@
             // Function - Will fire on animation completion.
             onAnimationComplete: function () { }
         }
+
+        function leftClick() {
+            $('#ngaybatdau').attr('delta-date', parseInt($('#ngaybatdau').attr('delta-date')) - 7);
+            ThongKeClick();
+        }
+
+        function rightClick() {
+            $('#ngaybatdau').attr('delta-date', parseInt($('#ngaybatdau').attr('delta-date')) + 7);
+            ThongKeClick();
+        }
     </script>
 
 }
@@ -541,18 +391,8 @@
                         <td>
                             <div class="md-form form-sm">
                                 <i class="fa fa-calendar prefix"></i>
-                                <input name="bd" type="text" id="ngaybatdau" class="form-control datepicker" data-value="@(DateTime.Now.ToShortDateString())">
-                                <label for="ngaykethuc"></label>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Đến ngày</td>
-                        <td>
-                            <div class="md-form form-sm">
-                                <i class="fa fa-calendar prefix"></i>
-                                <input name="kt" type="text" id="ngayketthuc" class="form-control datepicker" data-value="@(DateTime.Now.ToShortDateString())">
-                                <label for="ngaykethuc"></label>
+                                <input name="bd" type="text" id="ngaybatdau" class="form-control datepicker" delta-date="0" data-value="@(DateTime.Now.ToShortDateString())">
+                                <label for="ngaybatdau"></label>
                             </div>
                         </td>
                     </tr>
@@ -574,23 +414,22 @@
 </div>
 
 <div id="chart" hidden="hidden">
-    <table id="tablechart" hidden="hidden" class="text-center align-middle">
+
+    <table id="b" align="center">
+        <tbody id="chuThich_CircleChart"></tbody>
+    </table>
+    <br />
+    <canvas id="myChart"></canvas>
+    <p class="text-center">Cân nặng trung bình</p>
+    <canvas id="myChart2"></canvas>
+    <p class="text-center">Chiều cao trung bình</p>
+    <table id="tablechart" class="text-center align-middle">
         <tbody>
             <tr>
                 <td>
-                    <button type="button" class="btn btn-primary"><</button>
+                    <button type="button" class="btn btn-primary" onclick="leftClick()"><</button>
                 </td>
-                <td class="w-100">
-                    <table id="b" hidden="hidden" align="center">
-                        <tbody id="chuThich_CircleChart"></tbody>
-                    </table>
-                    <br />
-                    <canvas id="myChart"></canvas>
-                    <p class="text-center">Cân nặng trung bình</p>
-                    <canvas id="myChart2"></canvas>
-                    <p class="text-center">Chiều cao trung bình</p>
-                </td>
-                <td><button type="button" class="btn btn-primary">></button></td>
+                <td><button type="button" class="btn btn-primary" onclick="rightClick()">></button></td>
             </tr>
         </tbody>
     </table>

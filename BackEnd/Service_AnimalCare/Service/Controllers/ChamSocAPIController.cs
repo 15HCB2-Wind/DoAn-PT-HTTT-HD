@@ -195,19 +195,17 @@ namespace Service.Controllers
         public HttpResponseMessage reportTinhTrangBo([FromBody] ReportTinhTrangBoRequest request)
         {
             var response = new ReportTinhTrangBoResponse();
-            if (BusinessHandler.TokenBUS.tokenCheck(request, response, 3))
+            var tokendata = TokenBUS.tokenData(request, response, 3);
+            if (!response.IsError)
             {
                 ChamSocBUS.ReportTinhTrangBo(request,ref response);
                 if (response.IsError)
                 {
-                    Request.CreateResponse(HttpStatusCode.OK, response);
+                    return Request.CreateResponse(HttpStatusCode.OK, response);
                 }
                 else
                 {
-                    if (request.ThoiGian=="day")
-                    {
-                        response.Data = ChamSocRepository.ReportTinhTrangBo_Day(request.ListBo,request.NgayBatDau,request.NgayKetThuc,request.ThoiGian,request.Value);
-                    }
+                    response.Data = ChamSocRepository.ReportTinhTrangBo_Day(tokendata.AgencyId,request.NgayBatDau);
                 }
                 
             }

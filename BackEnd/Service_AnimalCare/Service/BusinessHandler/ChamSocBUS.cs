@@ -62,10 +62,10 @@ namespace Service.BusinessHandler
 
         public static void ReportTinhTrangBo(ReportTinhTrangBoRequest request,ref ReportTinhTrangBoResponse response)
         {
-            if (request.NgayBatDau > request.NgayKetThuc)
+            if (request.NgayBatDau > DateTime.Now)
             {
                 response.IsError = true;
-                response.Errors.Add("Lỗi ngày bắt đầu lớn hơn ngày kết thúc");
+                response.Errors.Add("Lỗi ngày bắt đầu lớn hơn hiện tại!");
             }
         }
 
