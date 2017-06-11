@@ -139,21 +139,54 @@ JSON.syntaxHighlight = function (json) {
 
 //some colors
 var colors = [
-    { normal: "#2E2E2E", hover: "#4E4E4E" },
-    { normal: "#4B515D", hover: "#6B717D" },
-    { normal: "#3F729B", hover: "#5F92BB" },
-    { normal: "#37474F", hover: "#57676F" },
-    { normal: "#b71c1c", hover: "#D73c3c" },
-    { normal: "#880e4f", hover: "#A82e6f" },
-    { normal: "#4a148c", hover: "#6a34Ac" },
-    { normal: "#311b92", hover: "#513bB2" },
-    { normal: "#006064", hover: "#208084" },
-    { normal: "#01579b", hover: "#2177Bb" },
-    { normal: "#004d40", hover: "#206d60" },
-    { normal: "#33691e", hover: "#53893e" },
-    { normal: "#827717", hover: "#A29737" },
-    { normal: "#64dd17", hover: "#84Fd37" },
-    { normal: "#e65100", hover: "#FF7120" },
-    { normal: "#bf360c", hover: "#Df562c" },
-    { normal: "#3e2723", hover: "#5e4743" }
+    { normal_hex: "#2E2E2E", hover_hex: "#4E4E4E", normal: "rgba(46, 46, 46, 1)",   hover: "rgba(78, 78, 78, 1)" },
+    { normal_hex: "#4B515D", hover_hex: "#6B717D", normal: "rgba(75, 81, 93, 1)",   hover: "rgba(107, 113, 125, 1)" },
+    { normal_hex: "#3F729B", hover_hex: "#5F92BB", normal: "rgba(63, 114, 155, 1)", hover: "rgba(95, 146, 187, 1)" },
+    { normal_hex: "#37474F", hover_hex: "#57676F", normal: "rgba(55, 71, 79, 1)", hover: "rgba(87, 103, 111, 1)" },
+    { normal_hex: "#b71c1c", hover_hex: "#D73c3c", normal: "rgba(183, 28, 28, 1)", hover: "rgba(215, 60, 60, 1)" },
+    { normal_hex: "#880e4f", hover_hex: "#A82e6f", normal: "rgba(136, 14, 79, 1)", hover: "rgba(168, 46, 111, 1)" },
+    { normal_hex: "#4a148c", hover_hex: "#6a34Ac", normal: "rgba(74, 20, 140, 1)", hover: "rgba(106, 52, 172, 1)" },
+    { normal_hex: "#311b92", hover_hex: "#513bB2", normal: "rgba(49, 27, 146, 1)", hover: "rgba(81, 59, 178, 1)" },
+    { normal_hex: "#006064", hover_hex: "#208084", normal: "rgba(0, 96, 100, 1)", hover: "rgba(32, 128, 132, 1)" },
+    { normal_hex: "#01579b", hover_hex: "#2177Bb", normal: "rgba(1, 87, 155, 1)", hover: "rgba(32, 109, 96, 1)" },
+    { normal_hex: "#004d40", hover_hex: "#206d60", normal: "rgba(0, 77, 64, 1)", hover: "rgba(32, 109, 96, 1)" },
+    { normal_hex: "#33691e", hover_hex: "#53893e", normal: "rgba(51, 105, 30, 1)", hover: "rgba(83, 137, 62, 1)" },
+    { normal_hex: "#827717", hover_hex: "#A29737", normal: "rgba(130, 119, 23, 1)", hover: "rgba(162, 151, 55, 1)" },
+    { normal_hex: "#64dd17", hover_hex: "#84Fd37", normal: "rgba(100, 221, 23, 1)", hover: "rgba(132, 253, 55, 1)" },
+    { normal_hex: "#e65100", hover_hex: "#FF7120", normal: "rgba(230, 81, 0, 1)", hover: "rgba(255, 113, 32, 1)" },
+    { normal_hex: "#bf360c", hover_hex: "#Df562c", normal: "rgba(191, 54, 12, 1)",  hover: "rgba(223, 86, 44, 1)" },
+    { normal_hex: "#3e2723", hover_hex: "#5e4743", normal: "rgba(62, 39, 35, 1)",   hover: "rgba(94, 71, 67, 1)" }
 ]
+
+
+//date diff
+var DateDiff = {
+
+    inDays: function (d1, d2) {
+        var t2 = d2.getTime();
+        var t1 = d1.getTime();
+
+        return parseInt((t2 - t1) / (24 * 3600 * 1000));
+    },
+
+    inWeeks: function (d1, d2) {
+        var t2 = d2.getTime();
+        var t1 = d1.getTime();
+
+        return parseInt((t2 - t1) / (24 * 3600 * 1000 * 7));
+    },
+
+    inMonths: function (d1, d2) {
+        var d1Y = d1.getFullYear();
+        var d2Y = d2.getFullYear();
+        var d1M = d1.getMonth();
+        var d2M = d2.getMonth();
+
+        return (d2M + 12 * d2Y) - (d1M + 12 * d1Y);
+    },
+
+    inYears: function (d1, d2) {
+        return d2.getFullYear() - d1.getFullYear();
+    }
+
+}
