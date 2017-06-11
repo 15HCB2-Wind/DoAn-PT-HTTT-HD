@@ -1,4 +1,4 @@
-﻿@{
+@{
     ViewBag.Title = "Chi Nhánh";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -30,7 +30,7 @@
                             var actAgency;
                             if (item.daxoa) {
                                 trType = '<tr class="table-danger">';
-                                deleteButton = '<a class="green-text" data-toggle="modal" data-target="#deleteModal" onclick="setupModal(\'recover\', \'' + item.machinhanh + '\', true)"><i class="fa fa-refresh" aria-hidden="true"></i></a>';
+                                deleteButton = '<a class="green-text" data-toggle="modal" data-target="#recoverModal" onclick="setupModal(\'recover\', \'' + item.machinhanh + '\', true)"><i class="fa fa-refresh" aria-hidden="true"></i></a>';
                                 editButton = '';
                                 importButton = '';
                                 actAgency = '';
@@ -68,7 +68,7 @@
                 }
             })
         };
-        
+
         function xoachinhanh(machinhanh) {
             callAjax('post', {
                 Token: Cookies.get('token'),
@@ -108,7 +108,16 @@
         };
 
         function setupModal(str, id, cond) {
-            $('#deleteModal_btnYes').attr('onclick', 'modalAction(\'' + str + '\', \'' + id + '\', ' + cond + ')');
+            //$('#recoverModal_btnYes').attr('onclick', 'modalAction(\'' + str + '\', \'' + id + '\', ' + cond + ')')
+            //recoverModal_btnYes
+            if (str == "recover") {
+                $('#recoverModal_btnYes').attr('onclick', 'modalAction(\'' + str + '\', \'' + id + '\', ' + cond + ')');
+            } else if (str == "delete") {
+                $('#deleteModal_btnYes').attr('onclick', 'modalAction(\'' + str + '\', \'' + id + '\', ' + cond + ')');
+            }
+            else {
+                alert("hello");
+            }
         }
         function modalAction(str, id, cond) {
             if (cond) {
@@ -181,6 +190,23 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
                 <button id="deleteModal_btnYes" type="button" class="btn btn-danger" data-dismiss="modal">Tiếp</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="recoverModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                <h4 class="modal-title w-100">Khôi phục chi nhánh</h4>
+            </div>
+            <div class="modal-body text-center">
+                Bạn có muốn tiếp tục?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                <button id="recoverModal_btnYes" type="button" class="btn btn-danger" data-dismiss="modal">Tiếp</button>
             </div>
         </div>
     </div>
