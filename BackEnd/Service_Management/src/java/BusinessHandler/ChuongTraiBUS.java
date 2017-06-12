@@ -19,12 +19,12 @@ public class ChuongTraiBUS {
             response.NameErrors.add("Tên chuồng không được để trống!");
             response.IsError = true;
         }
-        if (request.Data.getSucchua() == null
-                || request.Data.getSucchua() < 0
-                || request.Data.getDangchua() > request.Data.getSucchua()) {
-            response.SlotErrors.add("Sức chứa không hợp lệ");
-            response.IsError = true;
-        }
+//        if (request.Data.getSucchua() == null
+//                || request.Data.getSucchua() < 0
+//                || request.Data.getDangchua() > request.Data.getSucchua()) {
+//            response.SlotErrors.add("Sức chứa không hợp lệ");
+//            response.IsError = true;
+//        }
         return !response.IsError;
     }
 }

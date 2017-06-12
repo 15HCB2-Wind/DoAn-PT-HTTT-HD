@@ -252,7 +252,7 @@ public class KhoSuaAPIs {
         TokenData tkdata = TokenBUS.tokenData(request, response, 1);
         if (tkdata!=null){
             try{
-                response.IsError = KhoSuaAdapter.updateMilk(ChiNhanhAdapter.getSingle(tkdata.AgencyId).getKhotam(), request.Value);
+                response.IsError = !KhoSuaAdapter.updateMilk(ChiNhanhAdapter.getSingle(tkdata.AgencyId).getKhotam(), request.Value);
             }catch(Exception ex){
                 response.IsError = true;
             }
@@ -296,7 +296,7 @@ public class KhoSuaAPIs {
         WarehouseResponse response = new WarehouseResponse();
         if (BusinessHandler.TokenBUS.tokenCheck(request, response, 2)){
             try{
-                response.IsError = KhoSuaAdapter.updateMilk(request.Id, request.Value);
+                response.IsError = !KhoSuaAdapter.updateMilk(request.Id, request.Value);
             }catch(Exception ex){
                 response.IsError = true;
             }

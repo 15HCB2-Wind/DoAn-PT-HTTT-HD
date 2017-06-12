@@ -179,8 +179,8 @@
                         hoten: $("#hoten").val(),
                         ngaysinh: ngaysinh,
                         gioitinh: $("input[name=gioitinh]:checked", "#form_editstaff").val(),
-                        diachi: diachi,
-                        sodt: sodt,
+                        diachi: $('#diachi').val(),
+                        sodt: $('#sodt').val(),
                         manhanvien: $("#manv").val(),
                     }
                 }, Cookies.get("area"), "management", "NhanVien/update",
