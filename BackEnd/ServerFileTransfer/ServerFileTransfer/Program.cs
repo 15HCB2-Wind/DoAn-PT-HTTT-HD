@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -36,7 +37,7 @@ namespace ServerFileTransfer
         {
             get
             {
-                return "ServiceLogin_SQLlog";
+                return "ServiceLogin_SQLlog.sql";
             }
         }
 
@@ -73,7 +74,7 @@ namespace ServerFileTransfer
         {
             get
             {
-                return "ServiceLogin_SQLlog";
+                return "ServiceLogin_SQLlog.sql";
             }
         }
 
@@ -82,6 +83,14 @@ namespace ServerFileTransfer
             get
             {
                 return 44444;
+            }
+        }
+
+        static string SqlInstanceName
+        {
+            get
+            {
+                return @"CHIPHONG\SQLEXPRESS_2012";
             }
         }
         #endregion
@@ -124,10 +133,11 @@ namespace ServerFileTransfer
                 EnableRaisingEvents = true,
             }).ExecuteFunction = (s, e) =>
             {
-                using (var reader = new StreamReader(e))
-                {
-                    Console.WriteLine(reader.ReadToEnd());
-                }
+                //backup
+                var backupFileName = RBackup + DateTime.Now;
+                File.Copy(e, backupFileName);
+                //read sql
+                Process.Start("sqlcmd", string.Format("-S {0} -i {1} -o RESULT_{2}", SqlInstanceName, e, backupFileName));
             };
         }
     }

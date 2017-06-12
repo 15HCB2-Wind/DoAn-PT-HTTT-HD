@@ -30,7 +30,7 @@ public class DataProvider
             return new
             {
                 Enable = true,
-                FileName = "ServiceLogin_SQLlog",
+                FileName = "ServiceLogin_SQLlog.sql",
                 QueryTypes = new string[] { "insert", "delete", "update" },
             };
         }
