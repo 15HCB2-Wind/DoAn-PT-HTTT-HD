@@ -274,28 +274,6 @@ public class HibernateUtil {
         return result;
     }
 
-    public static <T> List<T> getSingleSQL(String sql, Object[] params){
-        List<T> result = null;
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        try {
-            session.beginTransaction();
-            Query q = session.createSQLQuery(sql);
-            if (params != null){
-                int i = 0;
-                for (Object p : params) {
-                    q.setParameter("p" + i++, p);
-                }
-            }
-            result = q.setMaxResults(1).list();
-            session.getTransaction().commit();
-        } catch (Exception ex) {
-            session.getTransaction().rollback();
-        } finally {
-            session.close();
-        }
-        return result;
-    }
-
     public static int executeSQL(String sql, Object[] params){
         int result = -1;
         Session session = HibernateUtil.getSessionFactory().openSession();

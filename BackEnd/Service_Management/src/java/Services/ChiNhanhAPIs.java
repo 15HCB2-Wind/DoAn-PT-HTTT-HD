@@ -224,4 +224,48 @@ public class ChiNhanhAPIs {
         }
         return gson.toJson(response);
     }
+    
+    @POST
+    @Path("getInfoAgency")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public String getInfoAgency(String json){
+        Gson gson = new Gson();
+        SelectRequest request = gson.fromJson(json, SelectRequest.class);
+        SelectResponse response = new SelectResponse();
+        TokenData token = BusinessHandler.TokenBUS.tokenData(request, response, 2);
+        if (token != null){
+            //if (true){
+                try{
+                    response.Data = ChiNhanhAdapter.getInfoAgency(token.AgencyId);
+                }catch(Exception ex){
+                    response.Errors.add("Lỗi hệ thống.");
+                    response.IsError = true;
+                }
+            //}
+        }
+        return gson.toJson(response);
+    }
+    
+    @POST
+    @Path("getInfoCompany")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public String getInfoCompany(String json){
+        Gson gson = new Gson();
+        SelectRequest request = gson.fromJson(json, SelectRequest.class);
+        SelectResponse response = new SelectResponse();
+        TokenData token = BusinessHandler.TokenBUS.tokenData(request, response, 3);
+        if (token != null){
+            //if (true){
+                try{
+                    response.Data = ChiNhanhAdapter.getInfoCompany(token.AgencyId);
+                }catch(Exception ex){
+                    response.Errors.add("Lỗi hệ thống.");
+                    response.IsError = true;
+                }
+            //}
+        }
+        return gson.toJson(response);
+    }
 }

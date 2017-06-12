@@ -174,4 +174,12 @@ public class ChiNhanhAdapter {
         }
         return success;
     }
+
+    public static Object getInfoAgency(String AgencyId) {
+        return HibernateUtil.getListSQL("call service_management_drinksmile.thongtinchinhanh(:p0)", new Object[] { AgencyId });
+    }
+
+    public static Object getInfoCompany(String AgencyId) {
+        return HibernateUtil.getListSQL("call service_management_drinksmile.thongtincongty()", new Object[] { });
+    }
 }

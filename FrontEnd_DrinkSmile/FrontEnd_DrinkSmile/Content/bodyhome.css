@@ -1,0 +1,27 @@
+﻿body { 
+    margin-top: 56px;
+    position: relative;
+}
+body.HomeIndex { 
+    background: url(innercowhero.jpg) no-repeat center center;
+    background-size: cover;
+}
+body main { 
+    padding: 3rem;
+}
+body.HomeIndex main { 
+    background-color: rgba(0,0,0,.7);
+}
+footer.page-footer {
+    margin-top: 0px;
+    padding-top: 0px;
+    position: absolute;
+    left: 0;
+    bottom: -50px;
+    width: 100%;
+}
+input:-webkit-autofill { -webkit-box-shadow: 0 0 0 50px white inset !important }
+button.navbar-toggler { padding-right: 0px }
+.field-validation-error,
+.mdb-select { margin-left: 3rem }
+.md-form > label { width: 100% }
