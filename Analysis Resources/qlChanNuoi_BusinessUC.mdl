@@ -90,11 +90,17 @@
 	    (object Class "Tong GIam Doc"
 		quid       	"58C60ECD02EE"
 		stereotype 	"Business Actor")
+	    (object Class "Nhan Vien"
+		quid       	"593E0F0F0023"
+		stereotype 	"Business Actor")
 	    (object UseCase "Cham Soc Bo Hang Ngay"
 		quid       	"58C2CEAB0342"
 		stereotype 	"Business Use Case")
 	    (object UseCase "Nhap Bò cho Trang Trai"
 		quid       	"58C2CEC601F9"
+		stereotype 	"Business Use Case")
+	    (object UseCase "Phan Cong Viec Lam"
+		quid       	"593E0F1D012E"
 		stereotype 	"Business Use Case")
 	    (object Association "$UNNAMED$0"
 		quid       	"58C2CEC00072"
@@ -155,7 +161,19 @@
 		    (object Role "$UNNAMED$14"
 			quid       	"58C60EDD000E"
 			supplier   	"Use Case View::Tong GIam Doc"
-			quidu      	"58C60ECD02EE"))))
+			quidu      	"58C60ECD02EE")))
+	    (object Association "$UNNAMED$15"
+		quid       	"593E0F3603DF"
+		roles      	(list role_list
+		    (object Role "$UNNAMED$16"
+			quid       	"593E0F370297"
+			supplier   	"Use Case View::Nhan Vien"
+			quidu      	"593E0F0F0023"
+			is_navigable 	TRUE)
+		    (object Role "$UNNAMED$17"
+			quid       	"593E0F370299"
+			supplier   	"Use Case View::Phan Cong Viec Lam"
+			quidu      	"593E0F1D012E"))))
 	logical_presentations 	(list unit_reference_list
 	    (object UseCaseDiagram "Main"
 		quid       	"58C2CE220150"
@@ -166,38 +184,7 @@
 		origin_x   	0
 		origin_y   	0
 		items      	(list diagram_item_list
-		    (object ClassView "Class" "Use Case View::Chip QL Bò" @1
-			ShowCompartmentStereotypes 	TRUE
-			SuppressAttribute 	TRUE
-			SuppressOperation 	TRUE
-			IncludeAttribute 	TRUE
-			IncludeOperation 	TRUE
-			location   	(2161, 920)
-			font       	(object Font
-			    size       	10
-			    face       	"Arial"
-			    bold       	FALSE
-			    italics    	FALSE
-			    underline  	FALSE
-			    strike     	FALSE
-			    color      	0
-			    default_color 	TRUE)
-			label      	(object ItemLabel
-			    Parent_View 	@1
-			    location   	(2160, 1128)
-			    anchor_loc 	1
-			    nlines     	2
-			    max_width  	570
-			    justify    	0
-			    label      	"Chip QL Bò")
-			icon       	"Business Actor"
-			icon_style 	"Icon"
-			line_color 	3342489
-			quidu      	"58C2CE950342"
-			width      	202
-			annotation 	8
-			autoResize 	TRUE)
-		    (object ClassView "Class" "Use Case View::Nha Cung Cap" @2
+		    (object ClassView "Class" "Use Case View::Nha Cung Cap" @1
 			ShowCompartmentStereotypes 	TRUE
 			SuppressAttribute 	TRUE
 			SuppressOperation 	TRUE
@@ -214,7 +201,7 @@
 			    color      	0
 			    default_color 	TRUE)
 			label      	(object ItemLabel
-			    Parent_View 	@2
+			    Parent_View 	@1
 			    location   	(1389, 1934)
 			    anchor_loc 	1
 			    nlines     	2
@@ -228,7 +215,7 @@
 			width      	202
 			annotation 	8
 			autoResize 	TRUE)
-		    (object UseCaseView "Use Case View::Nhap Bò cho Trang Trai" @3
+		    (object UseCaseView "Use Case View::Nhap Bò cho Trang Trai" @2
 			location   	(1378, 1401)
 			font       	(object Font
 			    size       	10
@@ -240,7 +227,7 @@
 			    color      	0
 			    default_color 	TRUE)
 			label      	(object ItemLabel
-			    Parent_View 	@3
+			    Parent_View 	@2
 			    location   	(1377, 1576)
 			    anchor_loc 	1
 			    nlines     	2
@@ -253,7 +240,7 @@
 			fill_color 	13434879
 			quidu      	"58C2CEC601F9"
 			width      	306)
-		    (object AssociationViewNew "$UNNAMED$6" @4
+		    (object AssociationViewNew "$UNNAMED$6" @3
 			location   	(1384, 1563)
 			font       	(object Font
 			    size       	10
@@ -268,31 +255,31 @@
 			line_color 	3342489
 			quidu      	"58C2CEE200C8"
 			roleview_list 	(list RoleViews
-			    (object RoleView "$UNNAMED$7" @5
-				Parent_View 	@4
+			    (object RoleView "$UNNAMED$7" @4
+				Parent_View 	@3
 				location   	(-479, 319)
 				stereotype 	TRUE
 				line_color 	3342489
 				quidu      	"58C2CEE202EB"
-				client     	@4
-				supplier   	@3
+				client     	@3
+				supplier   	@2
 				vertices   	(list Points
 				    (1384, 1563)
 				    (1378, 1401))
 				line_style 	0)
-			    (object RoleView "$UNNAMED$8" @6
-				Parent_View 	@4
+			    (object RoleView "$UNNAMED$8" @5
+				Parent_View 	@3
 				location   	(-479, 319)
 				stereotype 	TRUE
 				line_color 	3342489
 				quidu      	"58C2CEE202ED"
-				client     	@4
-				supplier   	@2
+				client     	@3
+				supplier   	@1
 				vertices   	(list Points
 				    (1384, 1563)
 				    (1390, 1726))
 				line_style 	0)))
-		    (object ClassView "Class" "Use Case View::Tong GIam Doc" @7
+		    (object ClassView "Class" "Use Case View::Tong GIam Doc" @6
 			ShowCompartmentStereotypes 	TRUE
 			SuppressAttribute 	TRUE
 			SuppressOperation 	TRUE
@@ -309,7 +296,7 @@
 			    color      	0
 			    default_color 	TRUE)
 			label      	(object ItemLabel
-			    Parent_View 	@7
+			    Parent_View 	@6
 			    location   	(687, 1620)
 			    anchor_loc 	1
 			    nlines     	2
@@ -324,7 +311,7 @@
 			width      	202
 			annotation 	8
 			autoResize 	TRUE)
-		    (object AssociationViewNew "$UNNAMED$12" @8
+		    (object AssociationViewNew "$UNNAMED$12" @7
 			location   	(1006, 1404)
 			font       	(object Font
 			    size       	10
@@ -339,30 +326,61 @@
 			line_color 	3342489
 			quidu      	"58C60EDC0193"
 			roleview_list 	(list RoleViews
-			    (object RoleView "$UNNAMED$13" @9
-				Parent_View 	@8
+			    (object RoleView "$UNNAMED$13" @8
+				Parent_View 	@7
 				location   	(317, 457)
 				stereotype 	TRUE
 				line_color 	3342489
 				quidu      	"58C60EDD000C"
-				client     	@8
-				supplier   	@3
+				client     	@7
+				supplier   	@2
 				vertices   	(list Points
 				    (1006, 1404)
 				    (1226, 1401))
 				line_style 	0)
-			    (object RoleView "$UNNAMED$14" @10
-				Parent_View 	@8
+			    (object RoleView "$UNNAMED$14" @9
+				Parent_View 	@7
 				location   	(317, 457)
 				stereotype 	TRUE
 				line_color 	3342489
 				quidu      	"58C60EDD000E"
-				client     	@8
-				supplier   	@7
+				client     	@7
+				supplier   	@6
 				vertices   	(list Points
 				    (1006, 1404)
 				    (786, 1408))
 				line_style 	0)))
+		    (object ClassView "Class" "Use Case View::Chip QL Bò" @10
+			ShowCompartmentStereotypes 	TRUE
+			SuppressAttribute 	TRUE
+			SuppressOperation 	TRUE
+			IncludeAttribute 	TRUE
+			IncludeOperation 	TRUE
+			location   	(2161, 920)
+			font       	(object Font
+			    size       	10
+			    face       	"Arial"
+			    bold       	FALSE
+			    italics    	FALSE
+			    underline  	FALSE
+			    strike     	FALSE
+			    color      	0
+			    default_color 	TRUE)
+			label      	(object ItemLabel
+			    Parent_View 	@10
+			    location   	(2160, 1128)
+			    anchor_loc 	1
+			    nlines     	2
+			    max_width  	570
+			    justify    	0
+			    label      	"Chip QL Bò")
+			icon       	"Business Actor"
+			icon_style 	"Icon"
+			line_color 	3342489
+			quidu      	"58C2CE950342"
+			width      	202
+			annotation 	8
+			autoResize 	TRUE)
 		    (object ClassView "Class" "Use Case View::QL Chi Nhanh" @11
 			ShowCompartmentStereotypes 	TRUE
 			SuppressAttribute 	TRUE
@@ -453,7 +471,7 @@
 				line_color 	3342489
 				quidu      	"58C2CF530389"
 				client     	@13
-				supplier   	@1
+				supplier   	@10
 				vertices   	(list Points
 				    (1775, 920)
 				    (2060, 920))

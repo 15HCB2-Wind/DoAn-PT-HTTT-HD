@@ -32,6 +32,7 @@ public class DataProvider
                 Enable = true,
                 FileName = "ServiceLogin_SQLlog.sql",
                 QueryTypes = new string[] { "insert", "delete", "update" },
+                DatabaseName = "Service_Login",
             };
         }
     }
@@ -49,6 +50,10 @@ public class DataProvider
                     return;
             }
             //write log
+            if (!File.Exists(LogConfigs.FileName))
+            {
+                using (var writer = new StreamWriter(File.Create(LogConfigs.FileName))) { writer.WriteLine(string.Format("use [{0}]", LogConfigs.DatabaseName)); }
+            }
             using (var writer = File.AppendText(LogConfigs.FileName))
             {
                 writer.WriteLine(query);

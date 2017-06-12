@@ -90,17 +90,11 @@
 	    (object Class "Tong GIam Doc"
 		quid       	"58C60ECD02EE"
 		stereotype 	"Business Actor")
-	    (object Class "Nhan Vien Cham Soc"
-		quid       	"58E8828E0074"
-		stereotype 	"Business Actor")
 	    (object UseCase "Cham Soc Bo Hang Ngay"
 		quid       	"58C2CEAB0342"
 		stereotype 	"Business Use Case")
 	    (object UseCase "Nhap Bò cho Trang Trai"
 		quid       	"58C2CEC601F9"
-		stereotype 	"Business Use Case")
-	    (object UseCase "Phan Cong Cham Soc"
-		quid       	"58E8828A0025"
 		stereotype 	"Business Use Case")
 	    (object Association "$UNNAMED$0"
 		quid       	"58C2CEC00072"
@@ -161,31 +155,7 @@
 		    (object Role "$UNNAMED$14"
 			quid       	"58C60EDD000E"
 			supplier   	"Use Case View::Tong GIam Doc"
-			quidu      	"58C60ECD02EE")))
-	    (object Association "$UNNAMED$15"
-		quid       	"58E882B1025C"
-		roles      	(list role_list
-		    (object Role "$UNNAMED$16"
-			quid       	"58E882B20220"
-			supplier   	"Use Case View::Nhan Vien Cham Soc"
-			quidu      	"58E8828E0074"
-			is_navigable 	TRUE)
-		    (object Role "$UNNAMED$17"
-			quid       	"58E882B20222"
-			supplier   	"Use Case View::Phan Cong Cham Soc"
-			quidu      	"58E8828A0025")))
-	    (object Association "$UNNAMED$18"
-		quid       	"58E882D70384"
-		roles      	(list role_list
-		    (object Role "$UNNAMED$19"
-			quid       	"58E882D80220"
-			supplier   	"Use Case View::Phan Cong Cham Soc"
-			quidu      	"58E8828A0025"
-			is_navigable 	TRUE)
-		    (object Role "$UNNAMED$20"
-			quid       	"58E882D80222"
-			supplier   	"Use Case View::QL Chi Nhanh"
-			quidu      	"58C2CE8902EA"))))
+			quidu      	"58C60ECD02EE"))))
 	logical_presentations 	(list unit_reference_list
 	    (object UseCaseDiagram "Main"
 		quid       	"58C2CE220150"
