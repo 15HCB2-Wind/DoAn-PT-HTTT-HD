@@ -1,4 +1,382 @@
 ﻿@{
-    ViewBag.Title = "Index3";
+    ViewBag.Title = "Trang chủ";
     Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row hidden-md-down text-white">
+    <div class="col-lg-5 col-md-5 col-sm-5">
+        <div>
+            <h2 class="h2-responsive wow fadeInLeft">Drink Smile</h2>
+            <hr class="hr-light wow fadeInLeft">
+            <p class="wow fadeInLeft" data-wow-delay="0.4s">Tự hào 20 năm là nhà cung cấp nguyên liệu cho Vinamilk, TH Truemilk và Bò sữa Long Thành</p><br />
+            <p class="wow fadeInLeft" data-wow-delay="0.4s" id="sovung"></p>
+            <p class="wow fadeInLeft" data-wow-delay="0.4s" id="socn"></p>
+            <p class="wow fadeInLeft" data-wow-delay="0.4s" id="sodoitac"></p>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4">
+        <div id="a" style="width:450px"><canvas class="align-middle" id="circlechart"></canvas></div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3">
+        <table id="b">
+            <tbody id="chuThich_CircleChart"></tbody>
+        </table>
+    </div>
+
+    <div class="row col-lg-12 col-md-12 col-sm-12">
+        <br />
+        <br />
+    </div>
+
+    <div class="row col-lg-12 col-md-12 col-sm-12">
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            <canvas id="myChart"></canvas>
+            <h4 class="text-center">Cân nặng trung bình</h4>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            <canvas id="myChart2"></canvas>
+            <h4 class="text-center">Chiều cao trung bình</h4>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('body').attr('class', 'HomeIndex');
+
+            callAjax('post', { Token: Cookies.get('token') }, Cookies.get('area'), "management", "ChiNhanh/getInfoCompany", function (data) {
+                if (data.Data && data.Data.length > 0) {
+                    $('#sovung').html("Số vùng hỗ trợ: "+data.Data[0][0]);
+                    $('#socn').html("Số chi nhánh: "+data.Data[0][1]);
+                    $('#sodoitac').html('Số đối tác: ' + data.Data[0][2]);
+                }
+            });
+        });
+    </script>
+
+
+    <!--=====-->
+
+    <script>
+        $(document).ready(function () {
+            //ẩn loader
+            $('#loader').hide();
+
+            //auto run statistic
+            ThongKeClick();
+        });
+
+        var datapiechart = new Array();
+        var sobothucte = new Array();
+        var namelabel = new Array();
+        var namelabelB = new Array();
+        var countcolor = 0;
+        var valueofchinhanhs = [];
+        var cannang = [[]];
+        var chieucao = [[]];
+        var temp = new Array();
+
+        function ThongKeClick() {
+            callAjax('post', { Token: Cookies.get('token') }, Cookies.get('area'), "management", "ChiNhanh/getAll", function (data) {
+                if (data.IsError) {
+                    for (var i = 0; i < data.Errors.length; i++) {
+                        toastr["error"](data.Errors[i]);
+                    }
+                } else if (data.Data) {
+                    //prepare agency
+                    valueofchinhanhs.push(data.Data);
+                    //get statistic-data
+                    var ngaybatdau = new Date().addDays(-6);
+                    callAjax('post', {
+                        Token: Cookies.get('token'),
+                        NgayBatDau: ngaybatdau
+                    }, Cookies.get('area'), "animal_care", "animalcare/reportTinhTrangBo3", function (data) {
+                        if (data.IsError) {
+                            toastr["error"](data.Errors[0]);
+                        }
+                        else if (data.Data) {
+                            data['start_date'] = ngaybatdau;
+                            LapThongKeA(data);
+                        }
+                    });
+                }
+            });
+
+            callAjax('post',
+                {
+                    Token: Cookies.get('token')
+                }, Cookies.get('area'), "management", "Report/getAllCowOfCompany", function (data) {
+                    if (data.IsError) {
+                        for (var i = 0; i < data.Errors.length; i++) {
+                            toastr["error"](data.Errors[i]);
+                        }
+                    } else if (data.Data) {
+                        LapThongKeB(data);
+                    }
+                });
+        }
+
+        function LapThongKeA(data) {
+            console.log(valueofchinhanhs);
+            for (var i = 0; i < valueofchinhanhs[0].length; i++) {
+                chieucao[i] = [];
+                cannang[i] = [];
+                for (var j = 0; j < data.Data.length; j++) {
+                    if (valueofchinhanhs[0][i].machinhanh == data.Data[j].MaChiNhanh) {
+                        chieucao[i].push({
+                            ChieuCao: data.Data[j].ChieuCao,
+                            Ngay: new Date(data.Data[j].Ngay)
+                        });
+                        cannang[i].push({
+                            CanNang: data.Data[j].CanNang,
+                            Ngay: new Date(data.Data[j].Ngay)
+                        });
+                    }
+                }
+            }
+            if (cannang[0]) {
+                for (var i = 0; i < cannang[0].length; i++) {
+                    namelabel.push(data['start_date'].addDays(i).getDate() + '/' +
+                        (data['start_date'].addDays(i).getMonth() + 1) + '/' +
+                        data['start_date'].addDays(i).getFullYear());
+                }
+            }
+            createchart(data);
+        }
+
+        function LapThongKeB(data) {
+            console.log(data);
+            for (var i = 0; i < data.Data.length; i++) {
+                namelabelB.push(data.Data[i][1]);
+                sobothucte.push(data.Data[i][3]);
+            }
+
+            for (var i = 0; i < data.Data.length; i++) {
+                if (countcolor >= colors.length) {
+                    countcolor = 0;
+                }
+                datapiechart.push({
+                    value: sobothucte[i],
+                    color: colors[countcolor].normal_hex,
+                    highlight: colors[countcolor].hover_hex,
+                    label: namelabelB[i]
+                })
+                $('#chuThich_CircleChart').append(
+                    '<tr>' +
+                        '<td class="row"><div style="width:24px; height:24px; background-color:' + colors[countcolor].normal_hex + '"></div>&nbsp;' + namelabelB[i] + '</td>' +
+                    '</tr>'
+                    );
+                countcolor++;
+            }
+
+            var option = {
+                responsive: true
+            };
+            // get the context of the canvas element we want to select
+
+            var ctxPie = document.getElementById("circlechart").getContext('2d');
+            var myPieChart = new Chart(ctxPie).Pie(datapiechart, option);
+        }
+
+        //chart
+        function createchart(data) {
+
+            //==================================================
+            //==================================================
+            //==================================================
+            //Tạo biểu đồ (chart)
+            var datachartcannang = {
+                labels: namelabel,
+                datasets: []
+            };
+            var datachartchieucao = {
+                labels: namelabel,
+                datasets: []
+            };
+
+            //if (valueofchinhanhs) {
+            for (var i = 0; i < valueofchinhanhs[0].length; i++) {
+                var tempcannang = new Array();
+                var tempchieucao = new Array();
+                for (var j = 0; j < namelabel.length; j++) {
+                    tempcannang.push(cannang[i][j].CanNang);
+                    tempchieucao.push(chieucao[i][j].ChieuCao);
+                }
+                if (countcolor >= colors.length) {
+                    countcolor = 0;
+                }
+
+                datachartcannang.datasets.push({
+                    fillColor: "rgba(225,225,225,0)",
+                    strokeColor: colors[countcolor].normal,
+                    pointColor: "rgba(220,220,220,1)",
+                    pointStrokeColor: "#333",
+                    pointHighlightFill: "#333",
+                    pointHighlightStroke: "rgba(220,220,220,1)",
+                    data: tempcannang
+                });
+                datachartchieucao.datasets.push({
+                    fillColor: "rgba(225,225,225,0)",
+                    strokeColor: colors[countcolor].normal,
+                    pointColor: "rgba(220,220,220,1)",
+                    pointStrokeColor: "#333",
+                    pointHighlightFill: "#333",
+                    pointHighlightStroke: "rgba(220,220,220,1)",
+                    data: tempchieucao
+                });
+
+                countcolor++;
+            }
+            //}
+            console.log(cannang);
+            console.log(chieucao);
+            var option = {
+                responsive: true
+            };
+            // get the context of the canvas element we want to select
+
+            var ctx = document.getElementById("myChart").getContext('2d');
+            ctx.clearRect(0, 0, document.getElementById("myChart").width, document.getElementById("myChart").height);
+            var mylinechart = new Chart(ctx).Line(datachartcannang, option); //'line' defines type of the chart.
+
+            var ctx2 = document.getElementById("myChart2").getContext('2d');
+            ctx2.clearRect(0, 0, document.getElementById("myChart2").width, document.getElementById("myChart2").height);
+            var mylinechart2 = new Chart(ctx2).Line(datachartchieucao, option);
+
+        }
+
+
+        Chart.defaults.global = {
+            // Boolean - Whether to animate the chart
+            animation: true,
+
+            // Number - Number of animation steps
+            animationSteps: 60,
+
+            // String - Animation easing effect
+            // Possible effects are:
+            // [easeInOutQuart, linear, easeOutBounce, easeInBack, easeInOutQuad,
+            //  easeOutQuart, easeOutQuad, easeInOutBounce, easeOutSine, easeInOutCubic,
+            //  easeInExpo, easeInOutBack, easeInCirc, easeInOutElastic, easeOutBack,
+            //  easeInQuad, easeInOutExpo, easeInQuart, easeOutQuint, easeInOutCirc,
+            //  easeInSine, easeOutExpo, easeOutCirc, easeOutCubic, easeInQuint,
+            //  easeInElastic, easeInOutSine, easeInOutQuint, easeInBounce,
+            //  easeOutElastic, easeInCubic]
+            animationEasing: "easeOutQuart",
+
+            // Boolean - If we should show the scale at all
+            showScale: true,
+
+            // Boolean - If we want to override with a hard coded scale
+            scaleOverride: false,
+
+            // ** Required if scaleOverride is true **
+            // Number - The number of steps in a hard coded scale
+            scaleSteps: null,
+            // Number - The value jump in the hard coded scale
+            scaleStepWidth: null,
+            // Number - The scale starting value
+            scaleStartValue: null,
+
+            // String - Colour of the scale line
+            scaleLineColor: "rgba(0,0,0,.1)",
+
+            // Number - Pixel width of the scale line
+            scaleLineWidth: 1,
+
+            // Boolean - Whether to show labels on the scale
+            scaleShowLabels: true,
+
+            // Interpolated JS string - can access value
+            scaleLabel: "<%=value%>",
+
+            // Boolean - Whether the scale should stick to integers, not floats even if drawing space is there
+            scaleIntegersOnly: true,
+
+            // Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
+            scaleBeginAtZero: false,
+
+            // String - Scale label font declaration for the scale label
+            scaleFontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+
+            // Number - Scale label font size in pixels
+            scaleFontSize: 12,
+
+            // String - Scale label font weight style
+            scaleFontStyle: "normal",
+
+            // String - Scale label font colour
+            scaleFontColor: "#fff",
+
+            // Boolean - whether or not the chart should be responsive and resize when the browser does.
+            responsive: false,
+
+            // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
+            maintainAspectRatio: true,
+
+            // Boolean - Determines whether to draw tooltips on the canvas or not
+            showTooltips: true,
+
+            // Function - Determines whether to execute the customTooltips function instead of drawing the built in tooltips (See [Advanced - External Tooltips](#advanced-usage-custom-tooltips))
+            customTooltips: false,
+
+            // Array - Array of string names to attach tooltip events
+            tooltipEvents: ["touchstart", "touchmove", "mousemove"],
+
+            // String - Tooltip background colour
+            tooltipFillColor: "rgba(0,0,0,0.8)",
+
+            // String - Tooltip label font declaration for the scale label
+            tooltipFontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+
+            // Number - Tooltip label font size in pixels
+            tooltipFontSize: 14,
+
+            // String - Tooltip font weight style
+            tooltipFontStyle: "normal",
+
+            // String - Tooltip label font colour
+            tooltipFontColor: "#fff",
+
+            // String - Tooltip title font declaration for the scale label
+            tooltipTitleFontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+
+            // Number - Tooltip title font size in pixels
+            tooltipTitleFontSize: 14,
+
+            // String - Tooltip title font weight style
+            tooltipTitleFontStyle: "bold",
+
+            // String - Tooltip title font colour
+            tooltipTitleFontColor: "#fff",
+
+            // Number - pixel width of padding around tooltip text
+            tooltipYPadding: 6,
+
+            // Number - pixel width of padding around tooltip text
+            tooltipXPadding: 6,
+
+            // Number - Size of the caret on the tooltip
+            tooltipCaretSize: 8,
+
+            // Number - Pixel radius of the tooltip border
+            tooltipCornerRadius: 6,
+
+            // Number - Pixel offset from point x to tooltip edge
+            tooltipXOffset: 10,
+
+            // String - Template string for single tooltips
+            tooltipTemplate: "<%if (label){%><%=label%>: <%}%><%= value %>",
+
+            // String - Template string for multiple tooltips
+            multiTooltipTemplate: "<%= value %>",
+
+            // Function - Will fire on animation progression.
+            onAnimationProgress: function () { },
+
+            // Function - Will fire on animation completion.
+            onAnimationComplete: function () { }
+        }
+    </script>
 }

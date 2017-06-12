@@ -28,7 +28,8 @@ namespace FrontEnd_DrinkSmile
                       "~/Content/bootstrap.min.css",
                       "~/Content/font-awesome.min.css",
                       "~/Content/compiled.min.css",
-                      "~/Content/style.css"));
+                      "~/Content/style.css",
+                      "~/Content/bodyhome.css"));
 
             //BundleTable.EnableOptimizations = true;
         }
