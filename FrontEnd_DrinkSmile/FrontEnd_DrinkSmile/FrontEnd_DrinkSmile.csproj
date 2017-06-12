@@ -140,6 +140,7 @@
     <Content Include="Content\Edit-26.png" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\Home2.css" />
     <Content Include="Content\logo.png" />
     <Content Include="Content\style.css" />
     <Content Include="favicon.ico" />

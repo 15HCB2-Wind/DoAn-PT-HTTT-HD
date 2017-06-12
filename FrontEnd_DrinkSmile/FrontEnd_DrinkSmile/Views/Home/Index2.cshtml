@@ -2,4 +2,82 @@
 @{
     ViewBag.Title = "Index2";
     Layout = "~/Views/Shared/_Layout.cshtml";
+}@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+            $('.mdb-select').material_select();
+            $('#loader').hide();
+            $('#form_login').submit(function (e) {
+                e.preventDefault();
+                callAjax('post',
+                    { Username: $('#username').val(), Password: $('#password').val() },
+                    $('#area').val(), "login", "account/login",
+                    function (data) {
+                        if (data.IsError) {
+                            toastr["error"](data.Errors[0]);
+                            $("#error").show();
+                            $("#error").text(data.Errors[0]);
+                        }
+                        else {
+                            Cookies.set("token", data.Data.Token);
+                            Cookies.set("name", data.Data.FullName);
+                            Cookies.set("role", data.Data.PermissionLevel);
+                            Cookies.set("area", $('#area').val());
+                            location.href = "/Account/Login?ReturnUrl=@ViewBag.ReturnUrl";
+                        }
+                    }
+                );
+            });
+        });
+    </script>
 }
+
+<div class="row">
+    <div class="col-lg-6 hidden-md-down">
+        <div class="text-white" style="padding-top: 25%">
+            <h2 class="h2-responsive wow fadeInLeft">Nông trại Drink Smile</h2>
+            <hr class="hr-light wow fadeInLeft">
+            <p class="wow fadeInLeft" data-wow-delay="0.4s">Tự hào 20 năm là nhà cung cấp nguyên liệu cho Vinamilk, TH Truemilk và Bò sữa Long Thành</p>
+        </div>
+    </div>
+    <div class="offset-lg-0 col-lg-6 offset-md-2 col-md-8 offset-sm-1 col-sm-10 col-xs-12">
+        <fieldset class="card wow fadeInRight">
+            <form method="post" class="card-block" id="form_login" role="form">
+                <div class="text-center">
+                    <h3><i class="fa fa-sign-in"></i> Đăng nhập</h3>
+                    <hr class="mt-2 mb-2">
+                </div>
+                <p id="error" class="text-danger text-center"></p>
+                <div class="md-form">
+                    <i class="fa fa-server prefix"></i>
+                    <select id="area" class="mdb-select colorful-select dropdown-primary">
+                        <option value="hcm">Hồ Chí Minh</option>
+                        <option value="hn">Hà Nội</option>
+                    </select>
+                    <label>Máy chủ</label>
+                </div>
+                <div class="md-form">
+                    <i class="fa fa-envelope prefix"></i>
+                    <input id="username" class="form-control" type="text" />
+                    <label for="username">Email (tên đăng nhập)</label>
+                </div>
+                <div class="md-form">
+                    <i class="fa fa-lock prefix"></i>
+                    <input id="password" class="form-control" type="password" />
+                    <label for="password">Mật khẩu</label>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">
+                        Đăng nhập <i id="loader" class="fa fa-circle-o-notch fa-pulse fa-lg fa-fw"></i>
+                    </button>
+                </div>
+            </form>
+            <div class="modal-footer">
+                <div class="options">
+                    <p>@Html.ActionLink("Quên mật khẩu?", "ForgotPassword")</p>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</div>
