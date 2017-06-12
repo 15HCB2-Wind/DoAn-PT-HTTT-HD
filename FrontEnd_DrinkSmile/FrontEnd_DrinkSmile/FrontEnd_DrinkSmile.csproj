@@ -123,7 +123,6 @@
     <Compile Include="Areas\Manage\ManageAreaRegistration.cs" />
     <Compile Include="Areas\Report\Controllers\AnimalCountController.cs" />
     <Compile Include="Areas\Report\Controllers\AnimalStateController.cs" />
-    <Compile Include="Areas\Report\Controllers\ExportController.cs" />
     <Compile Include="Areas\Report\ReportAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -152,7 +151,6 @@
     <Content Include="Areas\Manage\Views\Barn\Index.cshtml" />
     <Content Include="Areas\Manage\Views\WareHouse\Index.cshtml" />
     <Content Include="Areas\Report\Views\web.config" />
-    <Content Include="Areas\Report\Views\Export\Index.cshtml" />
     <Content Include="Areas\Manage\Views\Provider\Index.cshtml" />
     <Content Include="Areas\Manage\Views\Staff\Create.cshtml" />
     <Content Include="fonts\fontawesome-webfont.eot" />

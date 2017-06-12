@@ -20,24 +20,24 @@ namespace ServerFileTransfer
         {
             get
             {
-                return 60;
+                return 10;
             }
         }
 
         #region Send
+        static string SendFolder
+        {
+            get
+            {
+                return @"C:\Users\19101994\Documents\GitHub\DoAn-PT-HTTT-HD\BackEnd\ServerFileTransfer\ServerFileTransfer\bin\Debug\send\";
+            }
+        }
+
         static string SBackup
         {
             get
             {
-                return @"SBackup\";
-            }
-        }
-
-        static string SentFile
-        {
-            get
-            {
-                return "ServiceLogin_SQLlog.sql";
+                return @"C:\Users\19101994\Documents\GitHub\DoAn-PT-HTTT-HD\BackEnd\ServerFileTransfer\ServerFileTransfer\bin\Debug\send\backup\";
             }
         }
 
@@ -47,7 +47,7 @@ namespace ServerFileTransfer
             {
                 return new dynamic[] 
                 {
-                    new { Address = "localhost", Port = 44444 },
+                    new { Address = "192.168.22.108", Port = 44444 },
                 };
             }
         }
@@ -58,7 +58,7 @@ namespace ServerFileTransfer
         {
             get
             {
-                return "RBackup";
+                return @"C:\Users\19101994\Desktop\receive\backup\";
             }
         }
 
@@ -66,15 +66,7 @@ namespace ServerFileTransfer
         {
             get
             {
-                return @"RFolder\";
-            }
-        }
-
-        static string ReceivedFileName
-        {
-            get
-            {
-                return "ServiceLogin_SQLlog.sql";
+                return @"C:\Users\19101994\Desktop\receive\";
             }
         }
 
@@ -109,11 +101,15 @@ namespace ServerFileTransfer
                 {
                     Thread.Sleep(PeriodSecond * 1000);
                     //backup
-                    File.Copy(SentFile, SBackup + DateTime.Now);
-                    //send file
-                    foreach (var item in ListDests)
+                    foreach (var file in Directory.GetFiles(SendFolder))
                     {
-                        SRtcp.SendTCP(SentFile, item.Address, item.Port);
+                        File.Copy(file, SBackup + DateTime.Now.Ticks);
+                        //send file
+                        foreach (var item in ListDests)
+                        {
+                            SRtcp.SendTCP(file, item.Address, item.Port);
+                        }
+                        File.Delete(file);
                     }
                 }
             }).Start();
@@ -121,7 +117,7 @@ namespace ServerFileTransfer
             //listen
             new Thread(() =>
             {
-                SRtcp.ReceiveTCP(ReceivedFileName, ReceivePort);
+                SRtcp.ReceiveTCP(ReceivedFolder + DateTime.Now.Ticks, ReceivePort);
             }).Start();
 
             //watch file
@@ -134,11 +130,15 @@ namespace ServerFileTransfer
             }).ExecuteFunction = (s, e) =>
             {
                 //backup
-                var backupFileName = RBackup + DateTime.Now;
+                var backupFileName = RBackup + DateTime.Now.Ticks;
                 File.Copy(e, backupFileName);
                 //read sql
-                Process.Start("sqlcmd", string.Format("-S {0} -i {1} -o RESULT_{2}", SqlInstanceName, e, backupFileName));
+                Process.Start("sqlcmd", string.Format("-S {0} -i {1} -o {2}_out", SqlInstanceName, e, backupFileName));
+                File.Delete(e);
             };
+
+            Console.WriteLine("Press any key to exit...");
+            Console.Read();
         }
     }
 }

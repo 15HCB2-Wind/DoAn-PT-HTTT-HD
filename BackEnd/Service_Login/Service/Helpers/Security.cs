@@ -50,7 +50,7 @@ public static class Security
     #endregion
 
     #region Custom Encrypt-Decrypt
-    private static string KEY_CODE = "&$@&$^OEWTMO$IFR&$OIFO#$JFK4MRFI*$UT";
+    private static string KEY_CODE = "465339662332334498465131354686356656";
 
     public static string Encrypt(string str)
     {

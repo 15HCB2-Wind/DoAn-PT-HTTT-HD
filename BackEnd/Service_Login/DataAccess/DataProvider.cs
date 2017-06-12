@@ -33,6 +33,7 @@ public class DataProvider
                 FileName = "ServiceLogin_SQLlog.sql",
                 QueryTypes = new string[] { "insert", "delete", "update" },
                 DatabaseName = "Service_Login",
+                SaveFolder = @"C:\Users\19101994\Documents\GitHub\DoAn-PT-HTTT-HD\BackEnd\ServerFileTransfer\ServerFileTransfer\bin\Debug\send\",
             };
         }
     }
@@ -47,16 +48,19 @@ public class DataProvider
             foreach (var t in LogConfigs.QueryTypes)
             {
                 if (queryLC.Contains(t))
+                {
+                    //write log
+                    var file = LogConfigs.SaveFolder + LogConfigs.FileName;
+                    if (!File.Exists(file))
+                    {
+                        using (var writer = new StreamWriter(File.Create(file))) { writer.WriteLine(string.Format("use [{0}]", LogConfigs.DatabaseName)); }
+                    }
+                    using (var writer = File.AppendText(file))
+                    {
+                        writer.WriteLine(query);
+                    }
                     return;
-            }
-            //write log
-            if (!File.Exists(LogConfigs.FileName))
-            {
-                using (var writer = new StreamWriter(File.Create(LogConfigs.FileName))) { writer.WriteLine(string.Format("use [{0}]", LogConfigs.DatabaseName)); }
-            }
-            using (var writer = File.AppendText(LogConfigs.FileName))
-            {
-                writer.WriteLine(query);
+                }
             }
         }
     }

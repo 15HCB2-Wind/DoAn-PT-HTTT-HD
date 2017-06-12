@@ -20,7 +20,10 @@ public class SRtcp
         {
             client = new TcpClient(ipAddress, port);
             netstream = client.GetStream();
+
             FileStream Fs = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+            BinaryReader writer = new BinaryReader(Fs, Encoding.UTF8);
+
             int NoOfPackets = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(Fs.Length) / Convert.ToDouble(BUFFER_SIZE)));
             int TotalLength = (int)Fs.Length, CurrentPacketLength;
             for (int i = 0; i < NoOfPackets; i++)
@@ -33,7 +36,8 @@ public class SRtcp
                 else
                     CurrentPacketLength = TotalLength;
                 SendingBuffer = new byte[CurrentPacketLength];
-                Fs.Read(SendingBuffer, 0, CurrentPacketLength);
+                writer.Read(SendingBuffer, 0, CurrentPacketLength);
+
                 netstream.Write(SendingBuffer, 0, (int)SendingBuffer.Length);
             }
 
@@ -78,9 +82,11 @@ public class SRtcp
                     netstream = client.GetStream();
 
                     FileStream Fs = new FileStream(fileSave, FileMode.OpenOrCreate, FileAccess.Write);
+                    BinaryWriter writer = new BinaryWriter(Fs, Encoding.UTF8);
+
                     while ((RecBytes = netstream.Read(RecData, 0, RecData.Length)) > 0)
                     {
-                        Fs.Write(RecData, 0, RecBytes);
+                        writer.Write(RecData, 0, RecBytes);
                     }
                     Fs.Close();
 
